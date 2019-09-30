@@ -1,3 +1,22 @@
+import { VirtwooAuthConfig } from '@virtwoo/auth';
+import { RoutesName } from 'src/app/app-routing.module';
+// import { Paths } from '@common/route';
+
+export const virtwooAuthEnvironment: VirtwooAuthConfig = {
+  accesssId: '5d9133964492113124a8e3d4',
+  apiUrl: 'http://127.0.0.1:5000',
+  apiVersion: 'v1',
+  social: 'ALL',
+  redirectUrl: 'http://127.0.0.1:3000/api/users/authenticate',
+  logoUrl: '/assets/icon/favicon.png',
+  resCallback: (response) => {
+    console.log('esta es la respuesta', response);
+    // localStorage.setItem('token', JSON.stringify(response));
+
+    return RoutesName.Home;
+  }
+};
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.

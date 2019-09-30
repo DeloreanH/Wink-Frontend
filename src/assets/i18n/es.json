@@ -1,0 +1,73 @@
+{
+  "VIRTWOO_AUTH": {
+    "APP_NAME": "Handshake",
+    "ERROR": {
+      "FACEBOOK": {
+        "PLUGIN": "Plugin Facebook no instalado"
+      },
+      "GOOGLE": {
+        "PLUGIN": "Plugin Google no instalado"
+      }
+    },
+    "MESSAGE": {
+      "WITHOUT_ACCOUNT": "¿No tienes una cuenta?",
+      "ALREADY_ACCOUNT": "¿Ya tienes una cuenta?",
+      "OTHER_METHODS": "¿Otros métodos para iniciar?",
+      "SENDING_SMS": "Enviado SMS...",
+      "EMAIL_SENT": "Te hemos enviado un correo para restablecer tu contraseña",
+      "FORGOT_PASSWORD": {
+        "TITLE": "¿Olvidaste tu password?",
+        "SUB_TITLE": "Por favor ingresa tu dirección de correo, te enviaremos un email para resetear tu password."
+      },
+      "SEND_SMS": {
+        "TITLE": "Iniciar con SMS",
+        "SUB_TITLE": "Por favor ingresa tu número de teléfono"
+      },
+      "HTTP_RESPONSE": {
+        "CODE_NOT_VALID": "Código inválido",
+        "COULD_NOT_SEND_MAIL": "No pudimos enviar el correo",
+        "NOT_NETWORK_CON": "Revisa tu conexión a internet",
+        "PASSWORD_NOT_VALID": "Usuario o contraseña incorrectos",
+        "REGISTERED_USER": "Usuario registrado",
+        "SERVER_ERROR": "Tuvimos un problema, intente más tarde",
+        "SERVER_UNREACHABLE": "Tuvimos problemas para conectar",
+        "USER_NOT_EXIST": "Usuario o contraseña incorrectos"
+      }
+    },
+    "FORM": {
+      "PLACEHOLDER": {
+        "USERNAME": "Usuario",
+        "EMAIL": "Correo",
+        "PASSWORD": "Password"
+      },
+      "BUTTON": {
+        "LOGIN": "Ingresar",
+        "REGISTER": "Registrar",
+        "SEND": "ENVIAR",
+        "VERIFY": "Verificar"
+      },
+      "CONTROL": {
+        "REQUIRED": "Debes ingresar un valor",
+        "EMAIL": "Email inválido",
+        "MINLENGTH": "Mínimo 8 caracteres",
+        "MAXLENGTH": "Máximo 8 caracteres"
+      }
+    }
+  },
+  "TITLES": {
+    "PROFILE_TYPE": "Seleccione un tipo de perfil"
+  },
+  "USER_TYPE": {
+    "TITLE": "Seleccione su tipo de usuario",
+    "MESSAGES": {
+      "OR": "Or",
+      "CLIENT": "Usuario cliente",
+      "PROFESSIONAL": "Ofrecer servicios"
+    },
+    "BUTTONS": {
+      "CLIENT": "Cliente",
+      "PROFESSIONAL": "Ofrecer Servicios",
+      "STARTED": "Get Started"
+    }
+  }
+}

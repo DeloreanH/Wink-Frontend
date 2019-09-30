@@ -1,0 +1,66 @@
+{
+  "VIRTWOO_AUTH": {
+    "APP_NAME": "Handshake",
+    "ERROR": {
+      "FACEBOOK": {
+        "PLUGIN": "Plugin Facebook no instalado"
+      },
+      "GOOGLE": {
+        "PLUGIN": "Plugin Google no instalado"
+      }
+    },
+    "MESSAGE": {
+      "WITHOUT_ACCOUNT": "You don't have any account?",
+      "ALREADY_ACCOUNT": "You already have an account?",
+      "OTHER_METHODS": "Other startup methods?",
+      "SENDING_SMS": "Enviado SMS...",
+      "FORGOT_PASSWORD": {
+        "TITLE": "Forgot your password?",
+        "SUB_TITLE": "Please enter the email address associated <br/> with your email. We will email you a <br/> link to reset your password."
+      },
+      "CHANGE_PASSWORD": {
+        "TITLE": "Change your password",
+        "SUB_TITLE": "Please enter the new password."
+      },
+      "SEND_SMS": {
+        "TITLE": "Login Sms",
+        "SUB_TITLE": "Please enter your phone number"
+      },
+      "HTTP_RESPONSE": {
+        "CODE_NOT_VALID": "Invalid code",
+        "NOT_NETWORK_CON": "Not network connection",
+        "PASSWORD_NOT_VALID": "Invalid user or password",
+        "REGISTERED_USER": "Usuario registrado",
+        "SERVER_ERROR": "",
+        "USER_NOT_EXIST": "Invalid user or password"
+      }
+    },
+    "FORM": {
+      "PLACEHOLDER": {
+        "USERNAME": "Usuario",
+        "EMAIL": "Correo",
+        "PASSWORD": "Password"
+      },
+      "BUTTON": {
+        "LOGIN": "Login",
+        "REGISTER": "Register",
+        "SEND": "SEND",
+        "VERIFY": "Verificar"
+      },
+      "CONTROL": {
+        "REQUIRED": "You must enter a value",
+        "EMAIL": "Not a valid email",
+        "MINLENGTH": "Min 8 characters",
+        "MAXLENGTH": "Max 8 characters"
+      }
+    }
+  },
+  "BUTTONS": {
+    "CLIENT": "Cliente",
+    "PROFESSIONAL": "Professional",
+    "OK": "Ok"
+  },
+  "TITLES": {
+    "PROFILE_TYPE": "Seleccione un tipo de perfil"
+  }
+}

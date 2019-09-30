@@ -17,7 +17,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@virtwoo/sl-router": ["./vlibs/sl-router/index"],
+      "@virtwoo/auth": ["./vlibs/virtwoo-auth/index"],
+      "@virtwoo/sl-base-page": ["./vlibs/sl-base-page/index"],
+      "@virtwoo/find-countries": ["./vlibs/find-countries/index"]
+  }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
