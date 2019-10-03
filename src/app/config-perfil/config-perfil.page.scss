@@ -1,0 +1,34 @@
+.acordion{
+  min-height: 10px;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contenedor {
+  justify-content: center;
+  display: flex;
+  padding-top: 2%;
+}
+.item {
+  align-self: center;
+}
+.contenedorDerecha {
+  justify-content: flex-end;
+  display: flex;
+}
+.acordion {
+  widows: 100%;
+  min-height: 20px;
+}
+
+button {
+  width: 0% !important;
+}

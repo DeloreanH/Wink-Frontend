@@ -1,0 +1,134 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Mi Perfil</ion-title>
+    <ion-buttons slot="primary">
+      <ion-icon [name]="ordenar? 'list' : 'list-box'" (click)="Ordenar()" style="font-size: 150%;"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content fullscreen> 
+  <div class="contenedor" >
+    <ion-avatar> 
+      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" >
+    </ion-avatar>
+  </div>
+
+  <div class="contenedor" >
+    <ion-item style="width: 90%;">
+      <ion-label style="font-size: xx-large; text-align: center;">
+          {{nombre}}
+      </ion-label>
+    </ion-item>
+  </div>
+  <ion-list cdkDropListGroup>
+    <mat-accordion multi="true">
+      <mat-expansion-panel #pp 
+        cdkDropList
+        [cdkDropListData]="publico"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="AbrirPanel(pp)"
+        >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Publico
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="acordion">
+          <form [formGroup]="grupoForm">
+            <ion-item formArrayName="items"
+            *ngFor="let item of grupoForm.controls ; let i = index;">
+              <app-item-perfil 
+              cdkDrag 
+              [cdkDragDisabled]="ordenar"
+              [ordenando]="ordenar" 
+              [item]="item"
+              [posicion]="i"
+              (eliminar)="EliminarElemento(item)">
+              </app-item-perfil>
+            </ion-item>
+          </form>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel  #pg  
+        cdkDropList
+        [cdkDropListData]="general"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="AbrirPanel(pg)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            General
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="acordion" >
+
+        
+          <app-item-perfil 
+          *ngFor="let item of general; let i = index;" 
+          cdkDrag 
+          [cdkDragDisabled]="ordenar"
+          [ordenando]="ordenar" 
+          [item]="item"
+          (eliminar)="EliminarElemento(item)">
+          </app-item-perfil>
+        </div>
+      </mat-expansion-panel>
+      
+      <mat-expansion-panel  #pper  
+      cdkDropList
+        [cdkDropListData]="personal"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="AbrirPanel(pper)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Personal
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="acordion">
+
+        
+          <app-item-perfil 
+          *ngFor="let item of personal; let i = index;" 
+          cdkDrag 
+          [cdkDragDisabled]="ordenar"
+          [ordenando]="ordenar" 
+          [item]="item"
+          (eliminar)="EliminarElemento(item)">
+          </app-item-perfil>
+        </div>
+      </mat-expansion-panel>
+      
+      <mat-expansion-panel  #ppro  
+      cdkDropList
+        [cdkDropListData]="profesional"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="AbrirPanel(ppro)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Profesional
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="acordion">
+
+        
+          <app-item-perfil 
+          *ngFor="let item of profesional; let i = index;" 
+          cdkDrag 
+          [cdkDragDisabled]="ordenar"
+          [ordenando]="ordenar" 
+          [item]="item"
+          (eliminar)="EliminarElemento(item)">
+          </app-item-perfil>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed"  >
+    <ion-fab-button size="small" (click)="SeleccionSeccion()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+

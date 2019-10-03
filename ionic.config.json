@@ -1,5 +1,7 @@
 {
   "name": "wink-front",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -39,7 +39,8 @@ export class AppComponent {
     if (token) {
       this.slRouterService.setRoot(RoutesName.Home, true);
     } else {
-      this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+      this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
+      // this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
     }
   }
 }
