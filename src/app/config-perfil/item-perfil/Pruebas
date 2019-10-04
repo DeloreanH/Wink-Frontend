@@ -1,0 +1,15 @@
+<form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-xs-12" formArrayName="items">
+        <div class="row"
+        *ngFor="let ingredientCtrl of ItemsForm.controls; let i = index"
+        [formGroupName]="i"
+        style="margin-top: 10px;">
+          <app-item-perfil formControlName="item">
+            
+          </app-item-perfil>
+        </div>
+      </div>
+  </div>
+
+  </form>

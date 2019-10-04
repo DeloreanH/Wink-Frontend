@@ -66,7 +66,7 @@ export class InformacionPerfilService {
   ];
   constructor() { }
 
-  BuscarTItemCategoria(idCategoria: number) {
+  BuscarTItemCategoria(idCategoria: number): TipoItem[] {
     const resultado = this.tiposItems.filter(
       (item: TipoItem) => {
         return item.id_categoria === idCategoria;
@@ -76,7 +76,17 @@ export class InformacionPerfilService {
     return resultado;
   }
 
-  BuscarValoresTipoItem(idTipoItem: number) {
+  BuscarTipoItem(idTipoItem: number): TipoItem {
+    const resultado = this.tiposItems.filter(
+      (item: TipoItem) => {
+        return item.id === idTipoItem;
+      }
+    );
+    console.log('Resultados BuscarIDCategoria: ', resultado[0]);
+    return resultado[0];
+  }
+
+  BuscarValoresTipoItem(idTipoItem: number): ValorTI[] {
     const resultado = this.valoresIT.filter(
       (item: ValorTI) => {
         return item.id_tipoitem === idTipoItem;

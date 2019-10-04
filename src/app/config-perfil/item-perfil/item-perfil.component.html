@@ -11,10 +11,21 @@
   <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
   <div style="display: flex; flex-direction: column; width:  auto;" *ngIf="tipoItem && selecionado">
     <!--Primer input-->
-    <ion-input *ngIf="(tipoItem && tipoItem.tipo === 0) || (tipoItem && tipoItem.tipo === 2) && selecionado"  [placeholder]="MarcaAgua(0)" style="margin-left: 2%;" [(ngModel)]="valor" (ionChange)="AlmacenarValores()"></ion-input>
+    <ion-input 
+    *ngIf="(tipoItem && tipoItem.tipo === 0) || (tipoItem && tipoItem.tipo === 2) && selecionado"  
+    [placeholder]="MarcaAgua(0)" 
+    style="margin-left: 2%;" 
+    (ionChange)="AlmacenarValores()"
+    (input)="onInput($event.target.value)"
+    [value]="value.valor"
+    [disabled]="isDisabled"></ion-input>
     
     <!--Segundo input-->
-    <ion-input *ngIf="(tipoItem && tipoItem.tipo === 2) && selecionado"  [placeholder]="MarcaAgua(1)" style="margin-left: 2%;" [(ngModel)]="valor2" (ionChange)="AlmacenarValores()"></ion-input>
+    <ion-input 
+    *ngIf="(tipoItem && tipoItem.tipo === 2) && selecionado"  
+    [placeholder]="MarcaAgua(1)" style="margin-left: 2%;" 
+    [(ngModel)]="valor2" 
+    (ionChange)="AlmacenarValores()"></ion-input>
   </div>
 
   <!--Selector para item de seleccion-->

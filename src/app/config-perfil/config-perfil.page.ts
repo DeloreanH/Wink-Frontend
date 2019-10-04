@@ -7,7 +7,7 @@ import { TipoItem } from '../modelos/TipoItem.model';
 import { InformacionPerfilService } from '../servicios/informacion-perfil.service';
 import { Seccion } from '../modelos/Seccion.model';
 import { Item } from '../modelos/Item.model';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-config-perfil',
@@ -15,24 +15,20 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
   styleUrls: ['./config-perfil.page.scss'],
 })
 export class ConfigPerfilPage implements OnInit {
-  arrastre = false;
+
   nombre = 'John Doe';
-  panelOpenState = null;
-  step;
   ordenar = true;
 
+  publicoArray = new FormArray([]);
+  generalArray = new FormArray([]);
+  personalArray = new FormArray([]);
+  profesionalArray = new FormArray([]);
   grupoForm: FormGroup;
-  items: FormArray;
 
-  publico: Item[] = [];
-  general: Item[] = [];
-  personal: Item[] = [];
-  profesional: Item[] = [];
   seleccionSeccion: number;
   seleccionCategoria: number;
 
   categorias: Categoria[] = [];
-  tiposItems: TipoItem[] = [];
   secciones: Seccion[] = [];
 
   constructor(
@@ -40,55 +36,81 @@ export class ConfigPerfilPage implements OnInit {
     private informacionPerfilService: InformacionPerfilService,
     private formBuilder: FormBuilder
     ) {
-      this.categorias = this.informacionPerfilService.categorias;
-      this.tiposItems = this.informacionPerfilService.tiposItems;
-      this.secciones = this.informacionPerfilService.secciones;
-      this.grupoForm = this.formBuilder.group({
-        items: this.formBuilder.array([ ])
-      });
-     }
+    this.categorias = this.informacionPerfilService.categorias;
+    this.secciones = this.informacionPerfilService.secciones;
+    this.grupoForm = this.formBuilder.group({
+      publico: this.publicoArray,
+      general: this.generalArray,
+      personal: this.personalArray,
+      profesional: this.profesionalArray
+    });
 
-  drop(event: CdkDragDrop<string[]>) {
-    console.log('drop...', event);
-    console.log(this.publico);
+    }
+
+  // drop(event: CdkDragDrop<any[]>) {
+    drop(event: any) {
+    // console.log('drop...', event.container.data, event.previousIndex, event.currentIndex );
+    // console.log('publicoArray', this.publicoArray);
     if (event.previousContainer === event.container) {
-      console.log('Data:' , event.container.data[event.previousIndex]);
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      // console.log('Data:' , event.container.data.controls[event.previousIndex]);
+      moveItemInArray(event.container.data.controls, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
+      // console.log('Data cambio:' , event.previousContainer.data);
+      transferArrayItem(event.previousContainer.data.controls,
+                        event.container.data.controls,
                         event.previousIndex,
                         event.currentIndex);
     }
   }
 
-  CambiarPosicion() {
-
+  onSubmit() {
+    console.log('Formulario: ', this.grupoForm);
   }
 
   AggItem() {
     switch (this.seleccionSeccion) {
       case 1:
-        this.publico.push(new Item({id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}));
+        console.log(this.publicoArray);
+        this.publicoArray.push(
+          new FormGroup({
+          item: new FormControl(
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            Validators.required
+          )
+        })
+        );
+        console.log(this.publicoArray);
         break;
       case 2:
-        this.general.push(new Item({id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}));
+        this.generalArray.push(
+          new FormGroup({
+          item: new FormControl(
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            Validators.required
+          )
+        })
+        );
         break;
       case 3:
-        this.personal.push(new Item({id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}));
+        this.personalArray.push(
+          new FormGroup({
+          item: new FormControl(
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            Validators.required
+          )
+        })
+        );
         break;
       case 4:
-        this.profesional.push(new Item({id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}));
-        break;
+        this.profesionalArray.push(
+          new FormGroup({
+          item: new FormControl(
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            Validators.required
+          )
+        })
+        );
     }
-  }
-
-  allowDrop(e) {
-    console.log('allwDrop...', e);
-  }
-
-  drag(e) {
-    console.log('drap..', e);
   }
 
   ngOnInit() {
@@ -98,58 +120,18 @@ export class ConfigPerfilPage implements OnInit {
     this.ordenar = !this.ordenar;
   }
 
-  toggleReorder(reorderGroup) {
-    // const reorderGroup = document.getElementById('reorder');
-    reorderGroup.disabled = !reorderGroup.disabled;
-    reorderGroup.addEventListener('ionItemReorder', ({detail}) => {
-      detail.complete(true);
-    });
-  }
-
-  doReorder(ev: any) {
-    // The `from` and `to` properties contain the index of the item
-    // when the drag started and ended, respectively
-    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
-    ev.detail.complete();
-  }
-
-  Arrastrar() {
-    console.log('arrastrar');
-    this.arrastre = true;
-  }
-
-  Parar() {
-    console.log('parar');
-    this.arrastre = false;
-  }
-
   AbrirPanel(panel: MatExpansionPanel) {
     console.log('AbrirPanel() ');
     panel.open();
-    if (this.arrastre) {
-      panel.open();
-    }
   }
 
-  Previo(panelOrigen: MatExpansionPanel, panelDestino: MatExpansionPanel) {
-    panelDestino.open();
-    panelOrigen.close();
-  }
-
-  Siguiente(panelOrigen: MatExpansionPanel, panelDestino: MatExpansionPanel) {
-    panelDestino.open();
-    panelOrigen.close();
-  }
-
-  EliminarElemento(elemento: Item) {
+  EliminarElemento(elemento: any, arreglo: FormArray) {
     console.log('Eliminar item-perfil', elemento);
-    switch (elemento.id_seccion) {
+    arreglo.controls.splice(arreglo.controls.indexOf(elemento), 1);
+   /* switch (elemento.value.item.id_seccion) {
       case 1:
-        this.publico.splice(this.publico.indexOf(elemento), 1);
+        console.log('Indice', this.publicoArray.controls.indexOf(elemento));
+        this.publicoArray.controls.splice(this.publicoArray.controls.indexOf(elemento), 1);
         break;
       case 2:
         // this.general.splice(elemento, 1);
@@ -160,7 +142,7 @@ export class ConfigPerfilPage implements OnInit {
       case 4:
         // this.profesional.splice(elemento, 1);
         break;
-    }
+    }*/
   }
 
   async SeleccionSeccion() {
@@ -227,5 +209,21 @@ export class ConfigPerfilPage implements OnInit {
       });
     }
     return obj;
+  }
+
+  get publicoForm() {
+    return (this.grupoForm.get('publico') as FormArray);
+  }
+
+  get generalForm() {
+    return (this.grupoForm.get('general') as FormArray);
+  }
+
+  get personalForm() {
+    return (this.grupoForm.get('personal') as FormArray);
+  }
+
+  get profesionalForm() {
+    return (this.grupoForm.get('profesional') as FormArray);
   }
 }

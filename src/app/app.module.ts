@@ -14,7 +14,7 @@ import { virtwooAuthEnvironment } from '../environments/environment';
 import { SlRouterModule } from '@virtwoo/sl-router';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ReactiveFormsModule, } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, } from '@angular/forms';
 
 
 
@@ -36,6 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     VirtwooAuthModule.forRoot(virtwooAuthEnvironment),
