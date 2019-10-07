@@ -13,6 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ItemPerfilComponent } from './item-perfil/item-perfil.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatExpansionModule,
     DragDropModule,
+    FontAwesomeModule,
   ],
   declarations: [ConfigPerfilPage, ItemPerfilComponent]
 })

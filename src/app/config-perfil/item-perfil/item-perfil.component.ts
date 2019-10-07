@@ -5,7 +5,8 @@ import { TipoItem } from 'src/app/modelos/TipoItem.model';
 import { ValorTI } from 'src/app/modelos/ValorTI.model';
 import { Item } from 'src/app/modelos/Item.model';
 import { Subscription } from 'rxjs';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
+   NG_VALIDATORS, Validator, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-item-perfil',
@@ -16,10 +17,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl } from 
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ItemPerfilComponent),
       multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => ItemPerfilComponent),
+      multi: true,
     }
   ]
 })
-export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
+export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Validator {
 
   @Input() ordenando;
   @Input() categoria;
@@ -39,7 +45,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   tiposItems: TipoItem[] = [];
   valoresTI: ValorTI[] = [];
   tipoItem: TipoItem;
-  @Input() personalizado: string;
+  personalizado: string;
+
+  itemForm: FormGroup;
 
 
   onChange = (_: Item) => { };
@@ -82,11 +90,30 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
+  validate(control: import('@angular/forms').AbstractControl): import('@angular/forms').ValidationErrors {
+     // throw new Error('Method not implemented.');
 
+    // tslint:disable-next-line: triple-equals
+    console.log('control: ', control);
+    return null; /*{item: {
+      valid: true,
+      },
+    };*/
+  }
+
+  registerOnValidatorChange?(fn: () => void): void {
+    console.log('registerOnValidatorChange', fn);
+    this.onChange = fn;
+    // throw new Error('Method not implemented.');
+  }
 
   constructor(
-    private informacionPerfilService: InformacionPerfilService
+    private informacionPerfilService: InformacionPerfilService,
+    private formBuilder: FormBuilder
   ) {
+    this.itemForm = this.formBuilder.group({
+      campo: new FormControl('', Validators.required),
+    });
   }
 
   ngOnInit() {
@@ -106,7 +133,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     console.log('tiposItems', this.tiposItems);
   }
 
-  BuscarValoresTI() {
+  BuscarValoresTI(event) {
     this.AlmacenarValores();
     this.selecionado = true;
     this.value.id = 0;
@@ -114,6 +141,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (this.tipoItem && this.tipoItem.tipo === 1) {
       this.valoresTI = this.informacionPerfilService.BuscarValoresTipoItem(this.tipoItem.id);
     }
+    this.onInput(event.target.value);
   }
 
   Eliminar() {

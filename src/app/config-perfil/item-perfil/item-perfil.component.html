@@ -16,7 +16,7 @@
     [placeholder]="MarcaAgua(0)" 
     style="margin-left: 2%;" 
     (ionChange)="AlmacenarValores()"
-    (input)="onInput($event.target.value)"
+    (ionInput)="onInput($event.target.value)"
     [value]="value.valor"
     [disabled]="isDisabled"></ion-input>
     
@@ -24,23 +24,50 @@
     <ion-input 
     *ngIf="(tipoItem && tipoItem.tipo === 2) && selecionado"  
     [placeholder]="MarcaAgua(1)" style="margin-left: 2%;" 
-    [(ngModel)]="valor2" 
-    (ionChange)="AlmacenarValores()"></ion-input>
+    [value]="value.valor"
+    (ionChange)="AlmacenarValores()"
+    (ionInput)="onInput($event.target.value)"></ion-input>
   </div>
 
   <!--Selector para item de seleccion-->
-  <ion-select *ngIf="(tipoItem && tipoItem.tipo === 1) && selecionado" style="position: relative; margin-left: 2%;" interface="popover" ok-text="Aceptar" cancel-text="Cancelar" [(ngModel)]="valor" placeholder="Seleccione una opcion">
+  <ion-select 
+  *ngIf="(tipoItem && tipoItem.tipo === 1) && selecionado" 
+  style="position: relative; margin-left: 2%;" 
+  interface="popover" ok-text="Aceptar" 
+  cancel-text="Cancelar" 
+  [(ngModel)]="valor" 
+  placeholder="Seleccione una opcion"
+  (ionInput)="onInput($event.target.value)">
     <ion-select-option *ngFor="let valor of valoresTI" [value]="valor.id">{{valor.valor}}</ion-select-option>
   </ion-select>
 
   <!--Input para fecha-->
-  <ion-datetime *ngIf="(tipoItem && tipoItem.tipo === 3) && selecionado" style="position: relative; margin-left: 2%;" displayFormat="DD/MM/YYYY" min="1900-01-01" [max]="FechaActual() | date:'yyy-MM-dd'"  [value]="FechaActual() | date:'MM-dd-yyyy'" cancel-text="Cancelar" done-text="Aceptar" [(ngModel)]="valor" (ionChange)="AlmacenarValores()"></ion-datetime>
+  <ion-datetime 
+  *ngIf="(tipoItem && tipoItem.tipo === 3) && selecionado" 
+  style="position: relative; margin-left: 2%;" 
+  displayFormat="DD/MM/YYYY" 
+  min="1900-01-01" 
+  [max]="FechaActual() | date:'yyy-MM-dd'"  
+  [value]="FechaActual() | date:'MM-dd-yyyy'" 
+  cancel-text="Cancelar" done-text="Aceptar" 
+  [(ngModel)]="valor" 
+  (ionChange)="AlmacenarValores()"
+  (ionInput)="onInput($event.target.value)"></ion-datetime>
   
   <!--Icono para eliminar-->
   <ion-icon *ngIf="!ordenando" name="close-circle-outline" slot="end" (click)="Eliminar()" style="margin-inline-start: 1px !important; position: relative; align-self:flex-start"></ion-icon>
   
   <!--Seleccionar tipo de item-->
-  <ion-select *ngIf="!selecionado" ok-text="Aceptar" cancel-text="Cancelar" style="max-width: 100% !important; position: relative;" [(ngModel)]="tipoItem" interface="popover" placeholder="Seleccione una opcion" (ionChange)="BuscarValoresTI()"  >
+  <ion-select 
+  *ngIf="!selecionado" 
+  ok-text="Aceptar" 
+  cancel-text="Cancelar" 
+  style="max-width: 100% !important; position: relative;" 
+  [(ngModel)]="tipoItem" 
+  interface="popover" 
+  placeholder="Seleccione una opcion" 
+  (ionChange)="BuscarValoresTI($event)"  
+  (ionInput)="onInput($event.target.value)">
     <ion-select-option *ngFor="let item of tiposItems" [value]="item">{{item.descripcion}}</ion-select-option>
   </ion-select>
 

@@ -22,7 +22,13 @@
       </ion-label>
     </ion-item>
   </div>
-
+  <ion-item>
+    <ion-input ([ngModel])="valor"></ion-input>
+    <fa-icon [icon]="['fas', 'graduation-cap']" slot="end"></fa-icon>
+  </ion-item>
+  <ion-button (click)="AbrirI()">
+    Abrir Instagram
+  </ion-button>
   <form [formGroup]="grupoForm"  (submit)="onSubmit()">
   
   <ion-list cdkDropListGroup
@@ -39,7 +45,6 @@
         cdkDropList
         [cdkDropListData]="publicoForm"
         (cdkDropListDropped)="drop($event)"
-        
         class="acordion" formArrayName="publico">
           <div style="width: 100%;"
           *ngFor="let itemPublico of publicoForm.controls; let i = index"
@@ -47,7 +52,7 @@
           cdkDrag 
           [cdkDragDisabled]="ordenar"
           >
-            <app-item-perfil 
+            <app-item-perfil  
             formControlName="item"
             [ordenando]="ordenar" 
             [posicion]="i"

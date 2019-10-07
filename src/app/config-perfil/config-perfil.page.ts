@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList} from '@angular/cdk/drag-drop';
+import {moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { MatExpansionPanel } from '@angular/material';
 import {  ActionSheetController } from '@ionic/angular';
 import { Categoria } from '../modelos/Categoria.model';
-import { TipoItem } from '../modelos/TipoItem.model';
 import { InformacionPerfilService } from '../servicios/informacion-perfil.service';
 import { Seccion } from '../modelos/Seccion.model';
 import { Item } from '../modelos/Item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { EnlacesService } from '../servicios/enlaces.service';
 
 @Component({
   selector: 'app-config-perfil',
@@ -18,6 +19,7 @@ export class ConfigPerfilPage implements OnInit {
 
   nombre = 'John Doe';
   ordenar = true;
+  valor;
 
   publicoArray = new FormArray([]);
   generalArray = new FormArray([]);
@@ -34,7 +36,8 @@ export class ConfigPerfilPage implements OnInit {
   constructor(
     public actionSheetController: ActionSheetController,
     private informacionPerfilService: InformacionPerfilService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private enlaceService: EnlacesService
     ) {
     this.categorias = this.informacionPerfilService.categorias;
     this.secciones = this.informacionPerfilService.secciones;
@@ -45,6 +48,15 @@ export class ConfigPerfilPage implements OnInit {
       profesional: this.profesionalArray
     });
 
+    }
+
+    AbrirI() {
+      // cordova.InAppBrowser.open('https://www.instagram.com/' + this.valor, '_system');
+      this.enlaceService.AbrirRedSocial('facebook', 'anibalbarreras');
+      // let browser = new InAppBrowser();
+      // browser.create('instagram://user?username=' + this.valor, '_system').show();
+      // window.open('instagram://user?username=hloretto', '_system');
+      // InAppBrowser('instagram://user?username=' + this.valor, '_system');
     }
 
   // drop(event: CdkDragDrop<any[]>) {

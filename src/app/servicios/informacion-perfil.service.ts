@@ -15,7 +15,8 @@ export class InformacionPerfilService {
     new Categoria({id: 3, categoria: 'Laboral'}),
     new Categoria({id: 4, categoria: 'Personal'}),
     new Categoria({id: 5, categoria: 'Red Social'}),
-    new Categoria({id: 6, categoria: 'Otro'}),
+    new Categoria({id: 5, categoria: 'Mensajeria'}),
+    new Categoria({id: 6, categoria: 'Otra'}),
   ];
 
   tiposItems: TipoItem[] = [
@@ -26,8 +27,8 @@ export class InformacionPerfilService {
     new TipoItem({id: 5, descripcion: 'Skype', id_categoria: 1, icono: 'logo-skype', tipo: 0}),
 
     new TipoItem({id: 6, descripcion: 'Nivel de instruccion', id_categoria: 2, icono: 'bookmark', tipo: 1}),
-    new TipoItem({id: 7, descripcion: 'Profesion', id_categoria: 2, icono: 'school', tipo: 0}),
-    new TipoItem({id: 8, descripcion: 'Universidad', id_categoria: 2, icono: '', tipo: 0}),
+    new TipoItem({id: 7, descripcion: 'Profesion', id_categoria: 2, icono: 'medal', tipo: 0}),
+    new TipoItem({id: 8, descripcion: 'Universidad', id_categoria: 2, icono: 'school', tipo: 0}),
 
     new TipoItem({id: 9, descripcion: 'Ocupacion', id_categoria: 3, icono: 'briefcase', tipo: 0}),
     new TipoItem({id: 10, descripcion: 'Trabajo', id_categoria: 3, icono: 'business', tipo: 2}),
