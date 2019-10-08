@@ -22,13 +22,7 @@
       </ion-label>
     </ion-item>
   </div>
-  <ion-item>
-    <ion-input ([ngModel])="valor"></ion-input>
-    <fa-icon [icon]="['fas', 'graduation-cap']" slot="end"></fa-icon>
-  </ion-item>
-  <ion-button (click)="AbrirI()">
-    Abrir Instagram
-  </ion-button>
+  
   <form [formGroup]="grupoForm"  (submit)="onSubmit()">
   
   <ion-list cdkDropListGroup
@@ -53,9 +47,9 @@
           [cdkDragDisabled]="ordenar"
           >
             <app-item-perfil  
+            [form]="itemPublico"
             formControlName="item"
             [ordenando]="ordenar" 
-            [posicion]="i"
             (eliminar)="EliminarElemento(itemPublico, publicoForm)">
             </app-item-perfil>
           </div>
@@ -79,9 +73,9 @@
         [cdkDragDisabled]="ordenar"
         >
           <app-item-perfil 
+          [form]="itemPublico"
           formControlName="item"
           [ordenando]="ordenar" 
-          [posicion]="i"
           (eliminar)="EliminarElemento($event, generalForm)">
           </app-item-perfil>
         </div>
@@ -107,9 +101,9 @@
         [cdkDragDisabled]="ordenar"
         >
           <app-item-perfil 
+          [form]="itemPublico"
           formControlName="item"
           [ordenando]="ordenar" 
-          [posicion]="i"
           (eliminar)="EliminarElemento(itemPublico, personalForm)">
           </app-item-perfil>
         </div>
@@ -135,9 +129,9 @@
         [cdkDragDisabled]="ordenar"
         >
           <app-item-perfil 
+          [form]="itemPublico"
           formControlName="item"
           [ordenando]="ordenar" 
-          [posicion]="i"
           (eliminar)="EliminarElemento($event, profesionalForm)">
           </app-item-perfil>
         </div>

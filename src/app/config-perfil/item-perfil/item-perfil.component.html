@@ -1,61 +1,77 @@
-<ion-item style="padding: 0px;display: flex; align-items: flex-start">
+<ion-item style="padding: 0px;display: flex; align-items: flex-start" [formGroup]="form">
 
   <!--Icono del item-->
-  <ion-icon *ngIf="tipoItem && selecionado" [name]="tipoItem? tipoItem.icono : null" (click)="MostrarSelector()" slot="start" style="margin-inline-end: 0px !important; align-self:flex-start"></ion-icon>
+  <fa-icon 
+  *ngIf="tipoItem && selecionado"
+  [icon]="tipoItem? [prefijoIcono, iconoValor] : null"  
+  (click)="MostrarSelector()" 
+  class="icono"
+  slot="start" ></fa-icon>
+ 
   
   <!--Titulo del item-->
-  <ion-label position="floating" style="padding-left: 10px;" *ngIf="selecionado">
+  <ion-label 
+  position="floating" 
+  style="padding-left: 10px;" 
+  *ngIf="selecionado">
     {{tipoItem? tipoItem.descripcion : ''}}
   </ion-label>
 
   <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
-  <div style="display: flex; flex-direction: column; width:  auto;" *ngIf="tipoItem && selecionado">
+  <div 
+  style="display: flex; flex-direction: column; width:  auto;" 
+  *ngIf="tipoItem && selecionado">
     <!--Primer input-->
     <ion-input 
     *ngIf="(tipoItem && tipoItem.tipo === 0) || (tipoItem && tipoItem.tipo === 2) && selecionado"  
     [placeholder]="MarcaAgua(0)" 
     style="margin-left: 2%;" 
-    (ionChange)="AlmacenarValores()"
-    (ionInput)="onInput($event.target.value)"
-    [value]="value.valor"
-    [disabled]="isDisabled"></ion-input>
+    (ionInput)="onInput($event.target.value, 0)"
+    [value]="Valor(0)"
+    [disabled]="isDisabled"
+    maxlength="150"
+    minlength="2"
+    formControlName="campo1"></ion-input>
     
     <!--Segundo input-->
     <ion-input 
     *ngIf="(tipoItem && tipoItem.tipo === 2) && selecionado"  
     [placeholder]="MarcaAgua(1)" style="margin-left: 2%;" 
-    [value]="value.valor"
-    (ionChange)="AlmacenarValores()"
-    (ionInput)="onInput($event.target.value)"></ion-input>
+    [value]="Valor(1)"
+    (ionInput)="onInput($event.target.value, 1)"
+    [disabled]="isDisabled"></ion-input>
   </div>
 
   <!--Selector para item de seleccion-->
   <ion-select 
-  *ngIf="(tipoItem && tipoItem.tipo === 1) && selecionado" 
+  *ngIf="(tipoItem && tipoItem.tipo === 4) && selecionado" 
   style="position: relative; margin-left: 2%;" 
   interface="popover" ok-text="Aceptar" 
   cancel-text="Cancelar" 
-  [(ngModel)]="valor" 
   placeholder="Seleccione una opcion"
-  (ionInput)="onInput($event.target.value)">
+  (ionInput)="onInput($event.target.value, 0)">
     <ion-select-option *ngFor="let valor of valoresTI" [value]="valor.id">{{valor.valor}}</ion-select-option>
   </ion-select>
 
   <!--Input para fecha-->
   <ion-datetime 
-  *ngIf="(tipoItem && tipoItem.tipo === 3) && selecionado" 
+  *ngIf="(tipoItem && tipoItem.tipo === 5) && selecionado" 
   style="position: relative; margin-left: 2%;" 
   displayFormat="DD/MM/YYYY" 
   min="1900-01-01" 
   [max]="FechaActual() | date:'yyy-MM-dd'"  
   [value]="FechaActual() | date:'MM-dd-yyyy'" 
   cancel-text="Cancelar" done-text="Aceptar" 
-  [(ngModel)]="valor" 
   (ionChange)="AlmacenarValores()"
-  (ionInput)="onInput($event.target.value)"></ion-datetime>
+  (ionInput)="onInput($event.target.value, 0)"></ion-datetime>
   
   <!--Icono para eliminar-->
-  <ion-icon *ngIf="!ordenando" name="close-circle-outline" slot="end" (click)="Eliminar()" style="margin-inline-start: 1px !important; position: relative; align-self:flex-start"></ion-icon>
+  <ion-icon 
+  *ngIf="!ordenando" 
+  name="close-circle-outline" 
+  slot="end" 
+  (click)="Eliminar()" 
+  style="margin-inline-start: 1px !important; position: relative; align-self:flex-start"></ion-icon>
   
   <!--Seleccionar tipo de item-->
   <ion-select 
@@ -63,12 +79,16 @@
   ok-text="Aceptar" 
   cancel-text="Cancelar" 
   style="max-width: 100% !important; position: relative;" 
-  [(ngModel)]="tipoItem" 
   interface="popover" 
+  [value]="tipoItem" 
   placeholder="Seleccione una opcion" 
-  (ionChange)="BuscarValoresTI($event)"  
-  (ionInput)="onInput($event.target.value)">
+  (ionChange)="BuscarValoresTI($event.target.value)"  
+  formControlName="selector"
+  >
     <ion-select-option *ngFor="let item of tiposItems" [value]="item">{{item.descripcion}}</ion-select-option>
   </ion-select>
 
 </ion-item>
+<ion-text *ngIf="errors" color="danger" class="form-error">
+  {{errors}}
+</ion-text>

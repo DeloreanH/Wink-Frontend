@@ -32,3 +32,6 @@
 button {
   width: 0% !important;
 }
+ion-input.ng-invalid {
+    border: 1px solid red;
+}

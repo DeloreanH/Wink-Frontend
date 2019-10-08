@@ -7,7 +7,6 @@ import { InformacionPerfilService } from '../servicios/informacion-perfil.servic
 import { Seccion } from '../modelos/Seccion.model';
 import { Item } from '../modelos/Item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { EnlacesService } from '../servicios/enlaces.service';
 
 @Component({
@@ -26,6 +25,7 @@ export class ConfigPerfilPage implements OnInit {
   personalArray = new FormArray([]);
   profesionalArray = new FormArray([]);
   grupoForm: FormGroup;
+  profileForm: FormGroup;
 
   seleccionSeccion: number;
   seleccionCategoria: number;
@@ -45,18 +45,20 @@ export class ConfigPerfilPage implements OnInit {
       publico: this.publicoArray,
       general: this.generalArray,
       personal: this.personalArray,
-      profesional: this.profesionalArray
+      profesional: this.profesionalArray,
+    });
+    this.profileForm = new FormGroup({
+      campo: new FormControl('', Validators.required),
     });
 
     }
 
+    Prueba() {
+      console.log('form: ', this.profileForm);
+    }
+
     AbrirI() {
-      // cordova.InAppBrowser.open('https://www.instagram.com/' + this.valor, '_system');
-      this.enlaceService.AbrirRedSocial('facebook', 'anibalbarreras');
-      // let browser = new InAppBrowser();
-      // browser.create('instagram://user?username=' + this.valor, '_system').show();
-      // window.open('instagram://user?username=hloretto', '_system');
-      // InAppBrowser('instagram://user?username=' + this.valor, '_system');
+      this.enlaceService.AbrirRedSocial(1, 'UCpdIqzXKwpNWwSup_-Ys2FA');
     }
 
   // drop(event: CdkDragDrop<any[]>) {
@@ -86,8 +88,7 @@ export class ConfigPerfilPage implements OnInit {
         this.publicoArray.push(
           new FormGroup({
           item: new FormControl(
-            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
-            Validators.required
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion, valor: ''})
           )
         })
         );
@@ -97,7 +98,7 @@ export class ConfigPerfilPage implements OnInit {
         this.generalArray.push(
           new FormGroup({
           item: new FormControl(
-            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion, valor: ''}),
             Validators.required
           )
         })
@@ -107,7 +108,7 @@ export class ConfigPerfilPage implements OnInit {
         this.personalArray.push(
           new FormGroup({
           item: new FormControl(
-            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion, valor: ''}),
             Validators.required
           )
         })
@@ -117,7 +118,7 @@ export class ConfigPerfilPage implements OnInit {
         this.profesionalArray.push(
           new FormGroup({
           item: new FormControl(
-            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion}),
+            new Item({id: -1, id_categoria: this.seleccionCategoria, id_seccion: this.seleccionSeccion, valor: ''}),
             Validators.required
           )
         })
@@ -133,7 +134,7 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   AbrirPanel(panel: MatExpansionPanel) {
-    console.log('AbrirPanel() ');
+    // console.log('AbrirPanel() ');
     panel.open();
   }
 
@@ -167,7 +168,7 @@ export class ConfigPerfilPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          // console.log('Cancel clicked');
         }
       }]
     });
@@ -184,7 +185,7 @@ export class ConfigPerfilPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          // console.log('Cancel clicked');
         }
       }]
     });
@@ -198,7 +199,7 @@ export class ConfigPerfilPage implements OnInit {
         text: item.categoria,
         icon: 'trash',
         handler: () => {
-          console.log('Categoria: ', item.categoria, item.id);
+          // console.log('Categoria: ', item.categoria, item.id);
           this.seleccionCategoria = item.id;
           this.AggItem();
         }
@@ -214,7 +215,7 @@ export class ConfigPerfilPage implements OnInit {
         text: item.seccion,
         icon: 'trash',
         handler: () => {
-          console.log('Seccion: ', item.seccion, item.id);
+          // console.log('Seccion: ', item.seccion, item.id);
           this.seleccionSeccion = item.id;
           this.SeleccionCategoria();
         }

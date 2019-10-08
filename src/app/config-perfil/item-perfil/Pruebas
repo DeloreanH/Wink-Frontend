@@ -13,3 +13,5 @@
   </div>
 
   </form>
+
+   <ion-icon *ngIf="tipoItem && selecionado" [name]="tipoItem? tipoItem.icono : null" ></ion-icon>

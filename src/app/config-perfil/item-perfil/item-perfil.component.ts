@@ -31,15 +31,22 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
   @Input() categoria;
   @Input() seccion;
   @Input() tipo;
-  @Input() posicion;
-  @Input() public item: Item;
+  @Input()  item: Item;
   valor: string;
   valor2: string;
   selecionado = false;
+  prefijoIcono: string;
+  iconoValor: string;
   @Output() eliminar = new EventEmitter();
-  eventoCambio = new Subscription();
   value: Item;
   isDisabled: boolean;
+
+  entrada = true;
+
+  @Input()  form: FormGroup;
+
+  errors;
+  valido: boolean;
 
   categorias: Categoria[] = [];
   tiposItems: TipoItem[] = [];
@@ -55,26 +62,28 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
 
   writeValue(obj: Item): void {
     // throw new Error('Method not implemented.');
-    console.log('writeValue', obj);
-    if (obj) {
-      this.value = obj || null;
-    } else {
-      this.value = null;
-    }
-    this.CargarItem(obj);
+
+      console.log('writeValue', obj);
+      if (obj) {
+        this.value = obj || null;
+      } else {
+        this.value = null;
+      }
+      this.onChange(this.value);
+      this.CargarItem(obj);
   }
   registerOnChange(fn: any): void {
-    console.log('registerOnChange', fn);
+    // console.log('registerOnChange', fn);
     // throw new Error('Method not implemented.');
     this.onChange = fn;
   }
   registerOnTouched(fn: any): void {
-    console.log('registerOnTouched', fn);
+    // console.log('registerOnTouched', fn);
     // throw new Error('Method not implemented.');
     this.onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    console.log('setDisabledState', isDisabled);
+    // console.log('setDisabledState', isDisabled);
     // throw new Error('Method not implemented.');
     this.isDisabled = isDisabled;
   }
@@ -94,11 +103,50 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
      // throw new Error('Method not implemented.');
 
     // tslint:disable-next-line: triple-equals
-    console.log('control: ', control);
-    return null; /*{item: {
-      valid: true,
-      },
-    };*/
+    /* console.log('this.selecionado', this.selecionado);
+    console.log('control validate: ', control);
+    if (!this.selecionado) {
+      this.errors = 'Debe seleccionar una opcion';
+      return {
+        message : 'Debe seleccionar una opcion'
+      };
+    }
+    switch (this.tipoItem.tipo) {
+      case 0:
+        console.log(control);
+        if (this.value.valor.length < 2) {
+          this.errors = 'Cantidad minima de caracteres: 2';
+          return  {message : 'Cantidad minima de caracteres: 2'};
+        }
+        if (this.value.valor.length > 150) {
+          this.errors = 'Cantidad maxima de caracteres: 150';
+          return  {message : 'Cantidad maxima de caracteres: 150'};
+        }
+        this.errors = null;
+        return null;
+      case 1:
+        this.errors = null;
+        return null;
+      case 2:
+        this.errors = null;
+        return null;
+      case 3:
+        this.errors = null;
+        return null;
+      case 4:
+        this.errors = null;
+        return null;
+      case 5:
+        this.errors = null;
+        return null;
+      case 6:
+        this.errors = null;
+        return null;
+      case 7:
+        this.errors = null;
+        return null;
+    }*/
+    return null;
   }
 
   registerOnValidatorChange?(fn: () => void): void {
@@ -111,37 +159,90 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
     private informacionPerfilService: InformacionPerfilService,
     private formBuilder: FormBuilder
   ) {
-    this.itemForm = this.formBuilder.group({
-      campo: new FormControl('', Validators.required),
-    });
   }
 
   ngOnInit() {
     // this.item.posicion = this.posicion;
+    console.log('Aquiiiiiii', this.form);
+    /*this.form.setControl(
+      'campo1', new FormControl('', [Validators.required
+        , Validators.minLength(5)]),
+    );*/
+    this.AggCampoForm();
+  }
+
+  AggCampoForm() {
+    if (this.tipoItem) {
+      this.form.removeControl('selector');
+      switch (this.tipoItem.tipo) {
+        case 0:
+          this.form.setControl(
+            'campo1', new FormControl('', [Validators.required
+              , Validators.minLength(5)]),
+          );
+          break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+      }
+    } else {
+      this.form.setControl(
+        'selector', new FormControl(null, Validators.required),
+      );
+    }
   }
 
   BuscarTItem() {
     if (this.value) {
       this.tipoItem = this.informacionPerfilService.BuscarTipoItem(this.value.id_tipoitem);
       this.BuscarTItems(this.tipoItem.id_categoria);
-      console.log('tiposItem', this.tipoItem);
+      // console.log('tiposItem', this.tipoItem);
     }
+    this.CargarIcono();
   }
 
   BuscarTItems(idCategoria: number) {
     this.tiposItems = this.informacionPerfilService.BuscarTItemCategoria(idCategoria);
-    console.log('tiposItems', this.tiposItems);
+    // console.log('tiposItems', this.tiposItems);
   }
 
-  BuscarValoresTI(event) {
-    this.AlmacenarValores();
+  async BuscarValoresTI(event: TipoItem) {
+    // this.AlmacenarValores();
+    console.log('BuscarValoresTI event', event);
+    console.log('BuscarValoresTI tipoItem', this.tipoItem);
+    this.tipoItem = event;
     this.selecionado = true;
     this.value.id = 0;
-    console.log(this.tipoItem);
-    if (this.tipoItem && this.tipoItem.tipo === 1) {
-      this.valoresTI = this.informacionPerfilService.BuscarValoresTipoItem(this.tipoItem.id);
+    this.value.id_tipoitem = await event.id;
+    console.log('BuscarValoresTI tipoItem', this.tipoItem, this.value);
+    // console.log(this.tipoItem);
+    if (this.tipoItem && this.tipoItem.tipo === 4) {
+      this.valoresTI =  this.informacionPerfilService.BuscarValoresTipoItem(this.tipoItem.id);
     }
-    this.onInput(event.target.value);
+    this.AggCampoForm();
+    this.onChange(this.value);
+    this.CargarIcono();
+    // this.onInput(event.target.value);
+  }
+
+  CargarIcono() {
+    console.log('tipoItem: ', this.tipoItem);
+    if (this.tipoItem) {
+      const valores = this.tipoItem.icono.split(' ');
+      this.prefijoIcono = valores[0];
+      this.iconoValor = valores[1];
+    }
   }
 
   Eliminar() {
@@ -161,8 +262,19 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
     }
   }
 
+  Valor(campo: number): string {
+    switch (campo) {
+      case 0:
+        return this.value.valor;
+      case 1:
+        return this.value.personalizado;
+    }
+  }
+
   MostrarSelector() {
+    this.tipoItem = null;
     this.selecionado = false;
+    this.onChange(this.value);
   }
 
   AlmacenarValores() {
@@ -176,10 +288,17 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
     }
   }
 
-  onInput(value: string) {
-    console.log('Valor: ', value);
-    this.valor = value;
-    this.value.valor = this.valor;
+  onInput(value: string, campo: number) {
+    switch (campo) {
+      case 0:
+        this.value.valor = value;
+        break;
+      case 1:
+        this.value.personalizado = value;
+        break;
+    }
+    // console.log('Valor: ', value);
+    // console.log('Valor: ', this.value);
     this.onTouch(this.value);
     this.onChange(this.value);
   }
