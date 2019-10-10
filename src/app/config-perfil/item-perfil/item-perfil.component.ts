@@ -1,12 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, ViewChildren, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { InformacionPerfilService } from 'src/app/servicios/informacion-perfil.service';
 import { Categoria } from 'src/app/modelos/Categoria.model';
 import { TipoItem } from 'src/app/modelos/TipoItem.model';
 import { ValorTI } from 'src/app/modelos/ValorTI.model';
 import { Item } from 'src/app/modelos/Item.model';
-import { Subscription } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
-   NG_VALIDATORS, Validator, FormBuilder, Validators } from '@angular/forms';
+   NG_VALIDATORS, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-item-perfil',
@@ -25,76 +24,63 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
     }
   ]
 })
-export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Validator {
+export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   @Input() ordenando;
-  @Input() categoria;
-  @Input() seccion;
-  @Input() tipo;
-  @Input()  item: Item;
-  valor: string;
-  valor2: string;
-  selecionado = false;
+  @Input()  form: FormGroup;
+  @Output() eliminar = new EventEmitter();
+
   prefijoIcono: string;
   iconoValor: string;
-  @Output() eliminar = new EventEmitter();
   value: Item;
+  tipoItem: TipoItem;
+  personalizado: string;
   isDisabled: boolean;
-
-  entrada = true;
-
-  @Input()  form: FormGroup;
-
-  errors;
-  valido: boolean;
+  tipo = 'text';
 
   categorias: Categoria[] = [];
   tiposItems: TipoItem[] = [];
   valoresTI: ValorTI[] = [];
-  tipoItem: TipoItem;
-  personalizado: string;
 
-  itemForm: FormGroup;
+  constructor(
+    private informacionPerfilService: InformacionPerfilService,
+  ) {
+  }
 
+  ngOnInit() {
+  }
 
   onChange = (_: Item) => { };
   onTouch = (_: Item) => { };
 
   writeValue(obj: Item): void {
-    // throw new Error('Method not implemented.');
-
-      console.log('writeValue', obj);
-      if (obj) {
-        this.value = obj || null;
-      } else {
-        this.value = null;
-      }
+    if (obj) {
+      this.value = obj || null;
       this.onChange(this.value);
       this.CargarItem(obj);
+      this.AggCampoForm();
+    } else {
+      this.value = null;
+    }
   }
+
   registerOnChange(fn: any): void {
-    // console.log('registerOnChange', fn);
-    // throw new Error('Method not implemented.');
     this.onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
-    // console.log('registerOnTouched', fn);
-    // throw new Error('Method not implemented.');
     this.onTouch = fn;
   }
+
   setDisabledState?(isDisabled: boolean): void {
-    // console.log('setDisabledState', isDisabled);
-    // throw new Error('Method not implemented.');
     this.isDisabled = isDisabled;
   }
 
   CargarItem(item: Item) {
-    if (item.id >= 0) {
-      this.selecionado = true;
-      this.valor = this.value.valor;
+    if (item.valor) {
       this.BuscarTItem();
+      this.BuscarValoresTI();
     } else {
-      this.valor = this.value.valor;
       this.BuscarTItems(item.id_categoria);
     }
   }
@@ -150,50 +136,99 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
   }
 
   registerOnValidatorChange?(fn: () => void): void {
-    console.log('registerOnValidatorChange', fn);
     this.onChange = fn;
-    // throw new Error('Method not implemented.');
-  }
-
-  constructor(
-    private informacionPerfilService: InformacionPerfilService,
-    private formBuilder: FormBuilder
-  ) {
-  }
-
-  ngOnInit() {
-    // this.item.posicion = this.posicion;
-    console.log('Aquiiiiiii', this.form);
-    /*this.form.setControl(
-      'campo1', new FormControl('', [Validators.required
-        , Validators.minLength(5)]),
-    );*/
-    this.AggCampoForm();
   }
 
   AggCampoForm() {
+    this.form.removeControl('selector');
+    this.form.removeControl('campo1');
+    this.form.removeControl('campo2');
     if (this.tipoItem) {
-      this.form.removeControl('selector');
       switch (this.tipoItem.tipo) {
         case 0:
+          this.tipo = 'text';
           this.form.setControl(
-            'campo1', new FormControl('', [Validators.required
-              , Validators.minLength(5)]),
+            'campo1', new FormControl(this.Valor(0), [
+              Validators.required,
+              Validators.minLength(2),
+              Validators.maxLength(150)]),
           );
           break;
         case 1:
+            this.tipo = 'email';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+                Validators.email
+              ]),
+            );
             break;
         case 2:
+            this.tipo = 'text';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]),
+            );
+            this.form.setControl(
+              'campo2', new FormControl(this.Valor(1), [
+                Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]),
+            );
             break;
         case 3:
+            this.tipo = 'url';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+                Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/)
+              ]),
+            );
             break;
         case 4:
+            this.tipo = 'text';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+              ]),
+            );
             break;
         case 5:
+            this.tipo = 'text';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+              ]),
+            );
             break;
         case 6:
+            this.tipo = 'number';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+              ]),
+            );
             break;
         case 7:
+            this.tipo = 'text';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0), [
+                Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]),
+            );
+            this.form.setControl(
+              'campo2', new FormControl(this.Valor(1), [
+                Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]),
+            );
             break;
       }
     } else {
@@ -207,37 +242,32 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
     if (this.value) {
       this.tipoItem = this.informacionPerfilService.BuscarTipoItem(this.value.id_tipoitem);
       this.BuscarTItems(this.tipoItem.id_categoria);
-      // console.log('tiposItem', this.tipoItem);
     }
     this.CargarIcono();
   }
 
-  BuscarTItems(idCategoria: number) {
+  BuscarTItems(idCategoria: string) {
     this.tiposItems = this.informacionPerfilService.BuscarTItemCategoria(idCategoria);
     // console.log('tiposItems', this.tiposItems);
   }
 
-  async BuscarValoresTI(event: TipoItem) {
-    // this.AlmacenarValores();
-    console.log('BuscarValoresTI event', event);
-    console.log('BuscarValoresTI tipoItem', this.tipoItem);
+  SelecionarTipoItem(event: TipoItem) {
     this.tipoItem = event;
-    this.selecionado = true;
-    this.value.id = 0;
-    this.value.id_tipoitem = await event.id;
-    console.log('BuscarValoresTI tipoItem', this.tipoItem, this.value);
-    // console.log(this.tipoItem);
+    this.value.id_tipoitem =  event.id;
+    this.value.valor  = '';
+    this.BuscarValoresTI();
+    this.AggCampoForm();
+    this.onChange(this.value);
+  }
+
+  BuscarValoresTI() {
     if (this.tipoItem && this.tipoItem.tipo === 4) {
       this.valoresTI =  this.informacionPerfilService.BuscarValoresTipoItem(this.tipoItem.id);
     }
-    this.AggCampoForm();
-    this.onChange(this.value);
     this.CargarIcono();
-    // this.onInput(event.target.value);
   }
 
   CargarIcono() {
-    console.log('tipoItem: ', this.tipoItem);
     if (this.tipoItem) {
       const valores = this.tipoItem.icono.split(' ');
       this.prefijoIcono = valores[0];
@@ -246,7 +276,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
   }
 
   Eliminar() {
-    this.eliminar.emit(this.item);
+    this.eliminar.emit(this.value);
   }
 
   FechaActual() {
@@ -254,11 +284,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
   }
 
   MarcaAgua(campo: number) {
-    switch (campo) {
-      case 0:
-        return this.tipoItem.tipo !== 2 ? this.tipoItem.descripcion : 'Puesto';
-      case 1:
-        return this.tipoItem.tipo !== 2 ? this.tipoItem.descripcion : 'Empresa';
+    switch (this.tipoItem.tipo) {
+      case 2:
+        return campo === 0 ? 'Puesto' : 'Empresa';
+      case 7:
+        return campo === 0 ? 'Título' : 'Valor';
+      default:
+        return this.tipoItem.descripcion;
     }
   }
 
@@ -273,19 +305,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
 
   MostrarSelector() {
     this.tipoItem = null;
-    this.selecionado = false;
     this.onChange(this.value);
-  }
-
-  AlmacenarValores() {
-    if (this.tipoItem) {
-      this.value.id_tipoitem = this.tipoItem.id;
-      if (this.tipoItem.tipo === 2) {
-        this.value.valor = this.valor + '-' + this.valor2;
-      } else {
-        this.value.valor = this.valor;
-      }
-    }
+    this.AggCampoForm();
   }
 
   onInput(value: string, campo: number) {
@@ -297,10 +318,36 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit, Valida
         this.value.personalizado = value;
         break;
     }
-    // console.log('Valor: ', value);
-    // console.log('Valor: ', this.value);
     this.onTouch(this.value);
     this.onChange(this.value);
+  }
+
+  MensajeError() {
+    if (!this.tipoItem) {
+      return this.form.get('selector').hasError('required') && this.form.get('selector').touched ? 'Campo requerido.' : null;
+    } else {
+      if (this.form.get('campo1').errors && this.form.get('campo1').touched ) {
+        if (this.form.get('campo1').hasError('required')) {
+          return 'Campo requerido.';
+        } else if (this.form.get('campo1').hasError('email')) {
+          return 'Formato invalido.';
+        } else if (this.form.get('campo1').hasError('pattern')) {
+          return 'URL invalida.';
+        } else if (this.form.get('campo1').hasError('minlength')) {
+          return 'Minimo 2 caracteres.';
+        } else if (this.form.get('campo1').hasError('maxlength')) {
+          return 'Maximo 150 caracteres.';
+        }
+      } else  if (this.form.get('campo2') && this.form.get('campo2').touched) {
+        if (this.form.get('campo2').hasError('required')) {
+          return 'Campo requerido.';
+        } else if (this.form.get('campo2').hasError('minlength')) {
+          return 'Minimo 2 caracteres.';
+        } else if (this.form.get('campo2').hasError('maxlength')) {
+          return 'Maximo 150 caracteres.';
+        }
+      }
+    }
   }
 
 }

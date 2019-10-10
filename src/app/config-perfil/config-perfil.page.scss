@@ -25,13 +25,11 @@
   display: flex;
 }
 .acordion {
-  widows: 100%;
-  min-height: 30px;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  min-height: 50px;
 }
 
 button {
   width: 0% !important;
-}
-ion-input.ng-invalid {
-    border: 1px solid red;
 }

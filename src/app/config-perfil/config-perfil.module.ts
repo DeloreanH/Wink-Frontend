@@ -15,6 +15,7 @@ import { ItemPerfilComponent } from './item-perfil/item-perfil.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+
 const routes: Routes = [
   {
     path: '',

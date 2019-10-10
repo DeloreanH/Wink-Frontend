@@ -23,124 +23,141 @@
     </ion-item>
   </div>
   
+    
+  
   <form [formGroup]="grupoForm"  (submit)="onSubmit()">
   
-  <ion-list cdkDropListGroup
-  >
-    <mat-accordion multi="true">
+      
+  <ion-list >
+    <ion-item>
+      <fa-icon 
+      [icon]="['fas', 'book-open'] "
+      class="icono"
+      slot="start"></fa-icon>
+      <ion-label position="floating">Biografia</ion-label>
+      <ion-textarea maxlength="250"
+      formControlName="biografia"></ion-textarea>
+    </ion-item>
+    <mat-accordion multi="true" cdkDropListGroup>
       <mat-expansion-panel #pp 
+      cdkDropList
+        [cdkDropListData]="publicoForm"
+        (cdkDropListDropped)="MoverItem($event)"
+        (cdkDropListEntered)="AbrirPanel(pp)"
+        (cdkDropListExited)="CerrarPanel(pp)"
+        class="acordion" formArrayName="publico"
         >
         <mat-expansion-panel-header>
           <mat-panel-title>
             Publico
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div 
-        cdkDropList
-        [cdkDropListData]="publicoForm"
-        (cdkDropListDropped)="drop($event)"
-        class="acordion" formArrayName="publico">
-          <div style="width: 100%;"
+        <div
+          style="width: 100%;"
           *ngFor="let itemPublico of publicoForm.controls; let i = index"
           [formGroupName]="i"
           cdkDrag 
-          [cdkDragDisabled]="ordenar"
-          >
+          [cdkDragDisabled]="ordenar">
             <app-item-perfil  
-            [form]="itemPublico"
-            formControlName="item"
-            [ordenando]="ordenar" 
-            (eliminar)="EliminarElemento(itemPublico, publicoForm)">
+              [form]="itemPublico"
+              formControlName="item"
+              [ordenando]="ordenar" 
+              (eliminar)="EliminarElemento(itemPublico, publicoForm)">
             </app-item-perfil>
-          </div>
-          
         </div>
       </mat-expansion-panel>
-      <mat-expansion-panel  #pg  >
+      <mat-expansion-panel  #pg  
+      cdkDropList
+        [cdkDropListData]="generalForm"
+        (cdkDropListDropped)="MoverItem($event)"
+        (cdkDropListEntered)="AbrirPanel(pg)"
+        (cdkDropListExited)="CerrarPanel(pg)"
+        class="acordion" formArrayName="general"
+        >
         <mat-expansion-panel-header>
           <mat-panel-title>
             General
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="acordion" 
-        cdkDropList
-        [cdkDropListData]="generalForm"
-        (cdkDropListDropped)="drop($event)"formArrayName="general">
-        <div style="width: 100%;"
-        *ngFor="let itemPublico of generalForm.controls; let i = index"
-        [formGroupName]="i"
-        cdkDrag 
-        [cdkDragDisabled]="ordenar"
-        >
-          <app-item-perfil 
-          [form]="itemPublico"
-          formControlName="item"
-          [ordenando]="ordenar" 
-          (eliminar)="EliminarElemento($event, generalForm)">
-          </app-item-perfil>
-        </div>
-        
-      </div>
+          <div style="width: 100%;"
+          *ngFor="let itemGeneral of generalForm.controls; let i = index"
+          [formGroupName]="i"
+          cdkDrag 
+          [cdkDragDisabled]="ordenar"
+          >
+            <app-item-perfil  
+            [form]="itemGeneral"
+            formControlName="item"
+            [ordenando]="ordenar" 
+            (eliminar)="EliminarElemento(itemGeneral, generalForm)">
+            </app-item-perfil>
+          </div>
       </mat-expansion-panel>
       
       <mat-expansion-panel  #pper  
+      class="acordion" 
+        cdkDropList
+        [cdkDropListData]="personalForm"
+        (cdkDropListEntered)="AbrirPanel(pper)"
+        (cdkDropListDropped)="MoverItem($event)"
+        (cdkDropListExited)="CerrarPanel(pper)"
+        formArrayName="personal"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
             Personal
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="acordion" 
-        cdkDropList
-        [cdkDropListData]="personalForm"
-        (cdkDropListDropped)="drop($event)"formArrayName="personal">
         <div style="width: 100%;"
-        *ngFor="let itemPublico of personalForm.controls; let i = index"
+        *ngFor="let itemPersonal of personalForm.controls; let i = index"
         [formGroupName]="i"
         cdkDrag 
         [cdkDragDisabled]="ordenar"
         >
           <app-item-perfil 
-          [form]="itemPublico"
+          [form]="itemPersonal"
           formControlName="item"
           [ordenando]="ordenar" 
-          (eliminar)="EliminarElemento(itemPublico, personalForm)">
+          (eliminar)="EliminarElemento(itemPersonal, personalForm)">
           </app-item-perfil>
         </div>
-        
-      </div>
       </mat-expansion-panel>
       
       <mat-expansion-panel  #ppro  
+      class="acordion" 
+        cdkDropList
+        [cdkDropListData]="profesionalForm"
+        (cdkDropListEntered)="AbrirPanel(ppro)"
+        (cdkDropListDropped)="MoverItem($event)"
+        (cdkDropListExited)="CerrarPanel(ppro)"
+        formArrayName="profesional"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
             Profesional
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="acordion" 
-        cdkDropList
-        [cdkDropListData]="profesionalForm"
-        (cdkDropListDropped)="drop($event)"formArrayName="profesional">
         <div style="width: 100%;"
-        *ngFor="let itemPublico of profesionalForm.controls; let i = index"
+        *ngFor="let itemProfesional of profesionalForm.controls; let i = index"
         [formGroupName]="i"
         cdkDrag 
         [cdkDragDisabled]="ordenar"
         >
           <app-item-perfil 
-          [form]="itemPublico"
+          [form]="itemProfesional"
           formControlName="item"
           [ordenando]="ordenar" 
-          (eliminar)="EliminarElemento($event, profesionalForm)">
+          (eliminar)="EliminarElemento(itemProfesional, profesionalForm)">
           </app-item-perfil>
         </div>
-        
-      </div>
       </mat-expansion-panel>
     </mat-accordion>
   </ion-list>
+  
+  
   </form>
+  
+  
   <ion-fab vertical="bottom" horizontal="end" slot="fixed"  >
       <ion-fab-button size="small" (click)="SeleccionSeccion()">
         <ion-icon name="add"></ion-icon>

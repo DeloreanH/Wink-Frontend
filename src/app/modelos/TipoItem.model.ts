@@ -1,7 +1,7 @@
 export class TipoItem {
-  public id: number;
+  public id: string;
   public descripcion: string;
-  public id_categoria: number;
+  public id_categoria: string;
   public icono: string;
   public tipo: number;
 

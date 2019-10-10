@@ -25,5 +25,15 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-@import "../vlibs/virtwoo-auth/auth.scss"
-
+@import "../vlibs/virtwoo-auth/auth.scss";
+.icono {
+  margin-inline-end: 0px !important; 
+  align-self:flex-start; 
+  min-width: 32px;
+  margin-top: 10px;
+  color: rgba(var(--ion-text-color-rgb,0,0,0),0.54);
+  font-size: 1.6em;
+    --highlight-color-focused: #3880ff;
+    --highlight-color-valid: #10dc60;
+    --highlight-color-invalid: #f04141;
+}

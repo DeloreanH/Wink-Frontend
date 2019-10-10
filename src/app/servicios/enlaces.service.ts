@@ -19,7 +19,7 @@ export class EnlacesService {
     private informacionPerfilService: InformacionPerfilService
   ) { }
 
-  AbrirRedSocial(idTipoItem: number, username: string) {
+  AbrirRedSocial(idTipoItem: string, username: string) {
     let tipoItem;
     let redSocial;
 

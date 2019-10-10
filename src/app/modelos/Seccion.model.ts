@@ -1,7 +1,7 @@
 export class Seccion {
-  public id: number;
+  public id: string;
   public seccion: string;
-  public icono: string;
+  public key: number;
 
   constructor(data: any) {
     Object.assign(this, data);
