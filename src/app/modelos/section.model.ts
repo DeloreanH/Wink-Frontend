@@ -1,6 +1,6 @@
-export class Seccion {
-  public id: string;
-  public seccion: string;
+export class Section {
+  public _id: string;
+  public name: string;
   public key: number;
 
   constructor(data: any) {

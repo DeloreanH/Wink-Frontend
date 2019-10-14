@@ -1,13 +1,13 @@
-
 <ion-item 
-style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;" 
+style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;" 
+[ngClass]="{'item-has-focus': focus}"
 [formGroup]="form"
 >
 
   <!--Icono del item-->
   <fa-icon 
-  *ngIf="tipoItem"
-  [icon]="tipoItem? [prefijoIcono, iconoValor] : null"  
+  *ngIf="itemType"
+  [icon]="itemType? [preIcono, icon] : null"  
   (click)="MostrarSelector()" 
   class="icono"
   slot="start" ></fa-icon>
@@ -16,17 +16,17 @@ style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;
   <ion-label 
   position="floating" 
   style="padding-left: 10px;" 
-  *ngIf="tipoItem">
-    {{tipoItem? tipoItem.descripcion : ''}}
+  *ngIf="itemType">
+    {{itemType? itemType.description : ''}}
   </ion-label>
 
   <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
   <div 
   style="display: flex; flex-direction: column; width:  100%;" 
-  *ngIf="tipoItem">
+  *ngIf="itemType">
     <!--Primer input-->
     <ion-input 
-    *ngIf="tipoItem && tipoItem.tipo === 0 || tipoItem.tipo === 2 || tipoItem.tipo === 1 ||  tipoItem.tipo === 3 ||  tipoItem.tipo === 6 ||  tipoItem.tipo === 7"  
+    *ngIf="itemType && itemType.index === 0 || itemType.index === 2 || itemType.index === 1 ||  itemType.index === 3 ||  itemType.index === 6 ||  itemType.index === 7"  
     [placeholder]="MarcaAgua(0)" 
     style="margin-left: 2%; width: 100%;" 
     (ionInput)="onInput($event.target.value, 0)"
@@ -34,38 +34,43 @@ style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;
     [disabled]="isDisabled"
     maxlength="150"
     minlength="2"
-    [type]="tipo"
+    [type]="type"
     formControlName="campo1"></ion-input>
     
     <!--Segundo input-->
     <ion-input 
-    *ngIf="tipoItem && tipoItem.tipo === 2  || tipoItem.tipo === 7 " 
+    *ngIf="itemType && itemType.index === 2  || itemType.index === 7 " 
     style="margin-left: 2%; width: 100%;"  
     [placeholder]="MarcaAgua(1)"
     [value]="Valor(1)"
     (ionInput)="onInput($event.target.value, 1)"
     [disabled]="isDisabled"
-    [type]="tipo"
+    [type]="type"
     formControlName="campo2"
     ></ion-input>
   </div>
 
   <!--Selector para item de seleccion-->
   <ion-select 
-  *ngIf="tipoItem && tipoItem.tipo === 4" 
+  *ngIf="itemType && itemType.index === 4" 
   style="position: relative; margin-left: 2%; width: 100%;" 
-  interface="popover" ok-text="Aceptar" 
+  interface="popover"
+  ok-text="Aceptar" 
   cancel-text="Cancelar" 
   placeholder="Seleccione una opcion"
   (ionChange)="onInput($event.target.value, 0)"
   [value]="Valor(0)"
   formControlName="campo1">
-    <ion-select-option *ngFor="let valor of valoresTI" [value]="valor.id">{{valor.valor}}</ion-select-option>
+    <ion-select-option
+    *ngFor="let option of itemType.options"
+    [value]="option._id">
+      {{option.name}}
+    </ion-select-option>
   </ion-select>
 
   <!--Input para fecha-->
   <ion-datetime 
-  *ngIf="tipoItem && tipoItem.tipo === 5" 
+  *ngIf="itemType && itemType.index === 5" 
   style="position: relative; margin-left: 2%; width: 100%;" 
   displayFormat="DD/MM/YYYY" 
   min="1900-01-01" 
@@ -76,35 +81,47 @@ style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;
   (ionChange)="onInput($event.target.value, 0)"
   formControlName="campo1"
   ></ion-datetime>
-      <mat-chip-list #chipList *ngIf="tipoItem && tipoItem.tipo === 8" style="margin-top: 5px; flex-wrap: nowrap; width: 100%;">
-          <ion-input #chipControl
-          [value]="Valor(0)"
-          hidden formControlName="campo1">
 
-          </ion-input>
-        <mat-chip *ngFor="let chip of chipArray" [selectable]="selectable"
-                   [removable]="removable" (removed)="remove(chip)">
-            {{chip}}
-            <ion-icon 
-              name="close-circle-outline" 
-              matChipRemove
-              ></ion-icon>
-          </mat-chip>
-          
-          <input placeholder="New fruit..."
-          autocomplete="off"
-                 [matChipInputFor]="chipList"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, chipControl)"
-                 (input)="ValorChip($event.target.value, chipControl)"
-                 >
-          
+  <!--Campos para Chips-->
+  <mat-chip-list 
+  #chipList 
+  *ngIf="itemType && itemType.index === 8" 
+  style="margin-top: 5px; flex-wrap: nowrap; width: 100%;">
+    <ion-input 
+    #chipControl
+    [value]="Valor(0)"
+    hidden
+    formControlName="campo1">
+    </ion-input>
+    <mat-chip 
+    *ngFor="let chip of chipArray" 
+    [selectable]="selectable"
+    [removable]="removable" 
+    (removed)="RemoverChip(chip)">
+      {{chip}}
+      <ion-icon 
+        name="close-circle-outline" 
+        matChipRemove
+        ></ion-icon>
+    </mat-chip>
+      
+    <input 
+    class="native-input sc-ion-input-md sc-ion-input-ios placeholder"
+    [placeholder]="MarcaAgua(0)"
+    (focus)="Focus(true)"
+    (blur)="Focus(false)"
+    autocomplete="off"
+    [matChipInputFor]="chipList"
+    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+    [matChipInputAddOnBlur]="addOnBlur"
+    (matChipInputTokenEnd)="AggChip($event, chipControl)"
+    (input)="ValorChip($event.target.value, chipControl)"
+    >
+  </mat-chip-list>
 
-        </mat-chip-list>
   <!--Icono para eliminar-->
   <ion-icon 
-  *ngIf="!ordenando && !value.basico" 
+  *ngIf="!ordenando && !value.basic" 
   name="close-circle-outline" 
   slot="end" 
   (click)="Eliminar()" 
@@ -113,21 +130,24 @@ style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;
   
   <!--Seleccionar tipo de item-->
   <ion-select 
-  *ngIf="!tipoItem" 
+  *ngIf="!itemType" 
   ok-text="Aceptar" 
   cancel-text="Cancelar" 
   style="min-width: 100% !important; padding-left: 16px; min-height: 56px; position: relative;" 
   interface="popover" 
-  [value]="tipoItem" 
+  [value]="itemType" 
   placeholder="Seleccione una opcion" 
   (ionChange)="SelecionarTipoItem($event.target.value)"  
   formControlName="selector"
   >
-    <ion-select-option *ngFor="let item of tiposItems" [value]="item">{{item.descripcion}}</ion-select-option>
+    <ion-select-option
+    *ngFor="let item of tiposItems" 
+    [disabled]="Unicos(item)" 
+    [value]="item">
+      {{item.description}}
+    </ion-select-option>
   </ion-select>
-  
 </ion-item>
-      <ion-text *ngIf="MensajeError()" color="danger" class="form-error">
-        {{MensajeError()}}
+<ion-text *ngIf="MensajeError()" color="danger" class="form-error">
+  {{MensajeError()}}
 </ion-text>
-

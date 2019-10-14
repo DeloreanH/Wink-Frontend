@@ -43,7 +43,7 @@
         (cdkDropListDropped)="MoverItem($event)"
         (cdkDropListEntered)="AbrirPanel(pp)"
         (cdkDropListExited)="CerrarPanel(pp)"
-        class="acordion" formArrayName="0"
+         formArrayName="0"
         >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -52,6 +52,7 @@
         </mat-expansion-panel-header>
         <div
           style="width: 100%;"
+          class="acordion"
           *ngFor="let itemPublico of publicoForm.controls; let i = index"
           [formGroupName]="i"
           cdkDrag 
@@ -71,7 +72,7 @@
         (cdkDropListDropped)="MoverItem($event)"
         (cdkDropListEntered)="AbrirPanel(pg)"
         (cdkDropListExited)="CerrarPanel(pg)"
-        class="acordion" formArrayName="1"
+        formArrayName="1"
         >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -79,10 +80,12 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
           <div style="width: 100%;"
+          class="acordion"
           *ngFor="let itemGeneral of generalForm.controls; let i = index"
           [formGroupName]="i"
           cdkDrag 
           [cdkDragDisabled]="ordenar"
+          [ngClass]="{'ordenar': !ordenar}"
           >
             <app-item-perfil  
             [form]="itemGeneral"
@@ -94,7 +97,6 @@
       </mat-expansion-panel>
       
       <mat-expansion-panel  #pper  
-      class="acordion" 
         cdkDropList
         [cdkDropListData]="personalForm"
         (cdkDropListEntered)="AbrirPanel(pper)"
@@ -108,10 +110,12 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div style="width: 100%;"
+        class="acordion"
         *ngFor="let itemPersonal of personalForm.controls; let i = index"
         [formGroupName]="i"
         cdkDrag 
         [cdkDragDisabled]="ordenar"
+        [ngClass]="{'ordenar': !ordenar}"
         >
           <app-item-perfil 
           [form]="itemPersonal"
@@ -123,7 +127,6 @@
       </mat-expansion-panel>
       
       <mat-expansion-panel  #ppro  
-      class="acordion" 
         cdkDropList
         [cdkDropListData]="profesionalForm"
         (cdkDropListEntered)="AbrirPanel(ppro)"
@@ -137,10 +140,12 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div style="width: 100%;"
+        class="acordion"
         *ngFor="let itemProfesional of profesionalForm.controls; let i = index"
         [formGroupName]="i"
         cdkDrag 
         [cdkDragDisabled]="ordenar"
+        [ngClass]="{'ordenar': !ordenar}"
         >
           <app-item-perfil 
           [form]="itemProfesional"

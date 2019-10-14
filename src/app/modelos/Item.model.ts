@@ -1,13 +1,14 @@
-import { Seccion } from './Seccion.model';
+import { Section } from './section.model';
 
 export class Item {
-  public valor: string;
-  public posicion: number;
-  public personalizado: string;
-  public id_tipoitem: string;
-  public seccion: Seccion;
-  public basico: boolean;
-  public id_categoria: string;
+  public value: string;
+  public position: number;
+  public custom: string;
+  public section: Section;
+  public basic: boolean;
+  public itemType_id: string;
+  public category_id: string;
+  public user_id: string;
 
   constructor(data: any) {
     Object.assign(this, data);

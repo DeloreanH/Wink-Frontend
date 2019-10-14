@@ -1,4 +1,4 @@
-export enum Error {
+export enum MessageError {
   REQUERIDO = 'Campo requerido.',
   MAXIMO = 'Maximo de caracteres superado.',
   EMAIL = 'Formato invalido.',

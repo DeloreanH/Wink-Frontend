@@ -1,13 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController } from '@ionic/angular';
-import { Categoria } from '../modelos/Categoria.model';
+import { Category } from '../modelos/category.model';
 import { InformacionPerfilService } from '../servicios/informacion-perfil.service';
-import { Seccion } from '../modelos/Seccion.model';
-import { Item } from '../modelos/Item.model';
+import { Item } from '../modelos/item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { Section } from '../modelos/section.model';
 
 @Component({
   selector: 'app-config-perfil',
@@ -33,50 +31,27 @@ export class ConfigPerfilPage implements OnInit {
   seleccionSeccion: number;
   seleccionCategoria: string;
 
-  categorias: Categoria[] = [];
-  secciones: Seccion[] = [];
+  categorias: Category[] = [];
+  secciones: Section[] = [];
 
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruits: {name: string}[] = [
-    {name: 'Lemon'},
-    {name: 'Lime'},
-    {name: 'Apple'},
-  ];
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      this.fruits.push({name: value.trim()});
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(fruit: any): void {
-    const index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
+  item: Item = new Item({
+    category_id: null,
+    section: null,
+    value: null,
+    custom: null,
+    position: null,
+    itemType_id: null,
+    user_id: null,
+    basic: false,
+  });
 
   constructor(
     public actionSheetController: ActionSheetController,
     private informacionPerfilService: InformacionPerfilService,
     private formBuilder: FormBuilder,
     ) {
-    this.categorias = this.informacionPerfilService.categorias;
-    this.secciones = this.informacionPerfilService.secciones;
+    this.categorias = this.informacionPerfilService.categories;
+    this.secciones = this.informacionPerfilService.sections;
     this.grupoArray.push(this.publicoArray);
     this.grupoArray.push(this.generalArray);
     this.grupoArray.push(this.personalArray);
@@ -107,16 +82,16 @@ export class ConfigPerfilPage implements OnInit {
     this.data = [];
     this.data.push(
       new Item({
-        valor: this.grupoForm.value.biografia,
-        posicion: -1,
-        seccion: new Seccion({id: '-1', seccion: 'Biografia', key: -1}),
+        value: this.grupoForm.value.biografia,
+        position: -1,
+        section: new Section({_id: '-1', name: 'Biografia', key: -1}),
         })
     );
     let seccion;
     for (let index = 0; index < 4; index++) {
       seccion = this.secciones.find(seccionx => seccionx.key === index);
       (this.grupoForm.value as any[])[index].forEach((valor: any, i: number) => {
-        valor.item.posicion = i;
+        valor.item.position = i;
         valor.item.seccion = seccion;
         this.data.push(valor.item);
       });
@@ -146,101 +121,60 @@ export class ConfigPerfilPage implements OnInit {
     }
   }
 
-  AggItem() {
-    console.log('grupoArray', this.grupoArray);
-    this.grupoArray[this.seleccionSeccion].push(
+  AggItem(item: Item) {
+    // console.log('grupoArray', this.grupoArray);
+    this.grupoArray[item.section.key].push(
       new FormGroup({
       item: new FormControl(
-        new Item({
-          id_categoria: this.seleccionCategoria,
-          seccion: null,
-          valor: null,
-          personalizado: null,
-          posicion: null,
-          id_tipoitem: null,
-          id_usuario: this.idUser,
-          basico: false,
-        })
+        item
       )
     })
     );
-    /*
-    switch (this.seleccionSeccion) {
-      case 0:
-        console.log(this.publicoArray);
-        this.publicoArray.push(
-          new FormGroup({
-          item: new FormControl(
-            new Item({
-              id_categoria: this.seleccionCategoria,
-              seccion: null,
-              valor: null,
-              personalizado: null,
-              posicion: null,
-              id_tipoitem: null,
-              id_usuario: this.idUser
-            })
-          )
+    this.item = new Item({
+      category_id: null,
+      section: null,
+      value: null,
+      custom: null,
+      position: null,
+      itemType_id: null,
+      user_id: null,
+      basic: false,
+    });
+    /*this.grupoArray[this.seleccionSeccion].push(
+      new FormGroup({
+      item: new FormControl(
+        new Item({
+          category_id: this.seleccionCategoria,
+          section: null,
+          value: null,
+          custom: null,
+          position: null,
+          itemType_id: null,
+          user_id: this.idUser,
+          basic: false,
         })
-        );
-        console.log(this.publicoArray);
-        break;
-      case 1:
-        this.generalArray.push(
-          new FormGroup({
-          item: new FormControl(
-            new Item({
-              id_categoria: this.seleccionCategoria,
-              seccion: null,
-              valor: null,
-              personalizado: null,
-              posicion: null,
-              id_tipoitem: null,
-              id_usuario: this.idUser
-            })
-          )
-        })
-        );
-        break;
-      case 2:
-        this.personalArray.push(
-          new FormGroup({
-          item: new FormControl(
-            new Item({
-              id_categoria: this.seleccionCategoria,
-              seccion: null,
-              valor: null,
-              personalizado: null,
-              posicion: null,
-              id_tipoitem: null,
-              id_usuario: this.idUser
-            })
-          )
-        })
-        );
-        break;
-      case 3:
-        this.profesionalArray.push(
-          new FormGroup({
-          item: new FormControl(
-            new Item({
-              id_categoria: this.seleccionCategoria,
-              seccion: null,
-              valor: null,
-              personalizado: null,
-              posicion: null,
-              id_tipoitem: null,
-              id_usuario: this.idUser
-            })
-          )
-        })
-        );
-    }*/
+      )
+    })
+    );*/
   }
 
   ngOnInit() {
-    // console.log('grupoArray', this.grupoArray);
-    // console.log('Busqueda', this.grupoArray.find((valor, index) => index === 0));
+    this.CargarData();
+  }
+
+  CargarData() {
+    const itemPrueba = new Item(
+      {
+        section: new Section({_id: '1',  name: 'Publico', key: 0}),
+        value: 'anibal prueba',
+        custom: null,
+        position: 0,
+        itemType_id: '9',
+        user_id: 'Anibal',
+        basic: true,
+      }
+    );
+    this.AggItem(itemPrueba);
   }
 
   Ordenar() {
@@ -256,15 +190,7 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   EliminarElemento(arreglo: FormArray, index: number) {
-    // arreglo.removeAt(arreglo.controls.indexOf(elemento));
-    // console.log('arreglo', arreglo.controls);
     arreglo.removeAt(index);
-    // this.grupoForm.removeControl(elemento);
-    // arreglo.controls.splice(arreglo.controls.indexOf(elemento), 1);
-    // console.log('arreglo2', arreglo.controls);
-    // console.log('this.grupoForm1', this.grupoForm.controls);
-    // this.grupoForm.removeControl(elemento);
-    // console.log('this.grupoForm2', this.grupoForm.controls);
   }
 
   async SeleccionSeccion() {
@@ -303,11 +229,11 @@ export class ConfigPerfilPage implements OnInit {
     const obj: any = [];
     for (const categoria of this.categorias) {
       obj.push({
-        text: categoria.categoria,
-        icon: 'trash',
+        text: categoria.name,
+        icon: 'add',
         handler: () => {
-          this.seleccionCategoria = categoria.id;
-          this.AggItem();
+          this.item.category_id = categoria._id;
+          this.AggItem(this.item);
         }
       });
     }
@@ -318,10 +244,10 @@ export class ConfigPerfilPage implements OnInit {
     const obj: any = [];
     for (const seccion of this.secciones) {
       obj.push({
-        text: seccion.seccion,
-        icon: 'trash',
+        text: seccion.name,
+        icon: 'add',
         handler: () => {
-          this.seleccionSeccion = seccion.key;
+          this.item.section = seccion;
           this.SeleccionCategoria();
         }
       });
