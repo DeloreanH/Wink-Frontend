@@ -6,6 +6,8 @@ import { InformacionPerfilService } from '../servicios/informacion-perfil.servic
 import { Seccion } from '../modelos/Seccion.model';
 import { Item } from '../modelos/Item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
   selector: 'app-config-perfil',
@@ -26,11 +28,47 @@ export class ConfigPerfilPage implements OnInit {
   profesionalArray = new FormArray([]);
   grupoForm: FormGroup;
 
-  seleccionSeccion: string;
+  grupoArray: FormArray[] = [];
+
+  seleccionSeccion: number;
   seleccionCategoria: string;
 
   categorias: Categoria[] = [];
   secciones: Seccion[] = [];
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruits: {name: string}[] = [
+    {name: 'Lemon'},
+    {name: 'Lime'},
+    {name: 'Apple'},
+  ];
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.fruits.push({name: value.trim()});
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(fruit: any): void {
+    const index = this.fruits.indexOf(fruit);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+    }
+  }
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -39,12 +77,16 @@ export class ConfigPerfilPage implements OnInit {
     ) {
     this.categorias = this.informacionPerfilService.categorias;
     this.secciones = this.informacionPerfilService.secciones;
+    this.grupoArray.push(this.publicoArray);
+    this.grupoArray.push(this.generalArray);
+    this.grupoArray.push(this.personalArray);
+    this.grupoArray.push(this.profesionalArray);
     this.grupoForm = this.formBuilder.group({
       biografia: new FormControl( null, Validators.maxLength(250)),
-      publico: this.publicoArray,
-      general: this.generalArray,
-      personal: this.personalArray,
-      profesional: this.profesionalArray,
+      0: this.publicoArray,
+      1: this.generalArray,
+      2: this.personalArray,
+      3: this.profesionalArray,
     });
   }
 
@@ -61,32 +103,43 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   onSubmit() {
-    console.log('formulario:', this.grupoForm);
-    let idSeccion;
-    idSeccion = this.secciones.find(seccion => seccion.key === 0);
-    this.grupoForm.value.publico.forEach((valor: any, index: any) => {
-      valor.item.posicion = index;
-      valor.item.id_seccion = idSeccion.id;
-      this.data.push(valor.item);
-    });
-    idSeccion = this.secciones.find(seccion => seccion.key === 1);
+    console.log('form', this.grupoForm);
+    this.data = [];
+    this.data.push(
+      new Item({
+        valor: this.grupoForm.value.biografia,
+        posicion: -1,
+        seccion: new Seccion({id: '-1', seccion: 'Biografia', key: -1}),
+        })
+    );
+    let seccion;
+    for (let index = 0; index < 4; index++) {
+      seccion = this.secciones.find(seccionx => seccionx.key === index);
+      (this.grupoForm.value as any[])[index].forEach((valor: any, i: number) => {
+        valor.item.posicion = i;
+        valor.item.seccion = seccion;
+        this.data.push(valor.item);
+      });
+    }
+    /*
+    seccion = this.secciones.find(seccionx => seccionx.key === 1);
     this.grupoForm.value.general.forEach((valor: any, index: any) => {
       valor.item.posicion = index;
-      valor.item.id_seccion = idSeccion.id;
+      valor.item.id_seccion = seccion;
       this.data.push(valor.item);
     });
-    idSeccion = this.secciones.find(seccion => seccion.key === 2);
+    seccion = this.secciones.find(seccionx => seccionx.key === 2);
     this.grupoForm.value.personal.forEach((valor: any, index: any) => {
       valor.item.posicion = index;
-      valor.item.id_seccion = idSeccion.id;
+      valor.item.id_seccion = seccion;
       this.data.push(valor.item);
     });
-    idSeccion = this.secciones.find(seccion => seccion.key === 3);
+    seccion = this.secciones.find(seccionx => seccionx.key === 3);
     this.grupoForm.value.profesional.forEach((valor: any, index: any) => {
       valor.item.posicion = index;
-      valor.item.id_seccion = idSeccion.id;
+      valor.item.id_seccion = seccion;
       this.data.push(valor.item);
-    });
+    });*/
     console.log('Data', this.data);
     if (this.grupoForm.valid) {
 
@@ -94,15 +147,33 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   AggItem() {
+    console.log('grupoArray', this.grupoArray);
+    this.grupoArray[this.seleccionSeccion].push(
+      new FormGroup({
+      item: new FormControl(
+        new Item({
+          id_categoria: this.seleccionCategoria,
+          seccion: null,
+          valor: null,
+          personalizado: null,
+          posicion: null,
+          id_tipoitem: null,
+          id_usuario: this.idUser,
+          basico: false,
+        })
+      )
+    })
+    );
+    /*
     switch (this.seleccionSeccion) {
-      case '0':
+      case 0:
         console.log(this.publicoArray);
         this.publicoArray.push(
           new FormGroup({
           item: new FormControl(
             new Item({
               id_categoria: this.seleccionCategoria,
-              id_seccion: this.seleccionSeccion,
+              seccion: null,
               valor: null,
               personalizado: null,
               posicion: null,
@@ -114,13 +185,13 @@ export class ConfigPerfilPage implements OnInit {
         );
         console.log(this.publicoArray);
         break;
-      case '1':
+      case 1:
         this.generalArray.push(
           new FormGroup({
           item: new FormControl(
             new Item({
               id_categoria: this.seleccionCategoria,
-              id_seccion: this.seleccionSeccion,
+              seccion: null,
               valor: null,
               personalizado: null,
               posicion: null,
@@ -131,13 +202,13 @@ export class ConfigPerfilPage implements OnInit {
         })
         );
         break;
-      case '2':
+      case 2:
         this.personalArray.push(
           new FormGroup({
           item: new FormControl(
             new Item({
               id_categoria: this.seleccionCategoria,
-              id_seccion: this.seleccionSeccion,
+              seccion: null,
               valor: null,
               personalizado: null,
               posicion: null,
@@ -148,13 +219,13 @@ export class ConfigPerfilPage implements OnInit {
         })
         );
         break;
-      case '3':
+      case 3:
         this.profesionalArray.push(
           new FormGroup({
           item: new FormControl(
             new Item({
               id_categoria: this.seleccionCategoria,
-              id_seccion: this.seleccionSeccion,
+              seccion: null,
               valor: null,
               personalizado: null,
               posicion: null,
@@ -164,10 +235,12 @@ export class ConfigPerfilPage implements OnInit {
           )
         })
         );
-    }
+    }*/
   }
 
   ngOnInit() {
+    // console.log('grupoArray', this.grupoArray);
+    // console.log('Busqueda', this.grupoArray.find((valor, index) => index === 0));
   }
 
   Ordenar() {
@@ -182,9 +255,16 @@ export class ConfigPerfilPage implements OnInit {
     panel.close();
   }
 
-  EliminarElemento(elemento: any, arreglo: FormArray) {
-    arreglo.controls.splice(arreglo.controls.indexOf(elemento), 1);
-    this.grupoForm.removeControl(elemento);
+  EliminarElemento(arreglo: FormArray, index: number) {
+    // arreglo.removeAt(arreglo.controls.indexOf(elemento));
+    // console.log('arreglo', arreglo.controls);
+    arreglo.removeAt(index);
+    // this.grupoForm.removeControl(elemento);
+    // arreglo.controls.splice(arreglo.controls.indexOf(elemento), 1);
+    // console.log('arreglo2', arreglo.controls);
+    // console.log('this.grupoForm1', this.grupoForm.controls);
+    // this.grupoForm.removeControl(elemento);
+    // console.log('this.grupoForm2', this.grupoForm.controls);
   }
 
   async SeleccionSeccion() {
@@ -241,7 +321,7 @@ export class ConfigPerfilPage implements OnInit {
         text: seccion.seccion,
         icon: 'trash',
         handler: () => {
-          this.seleccionSeccion = seccion.key.toString();
+          this.seleccionSeccion = seccion.key;
           this.SeleccionCategoria();
         }
       });
@@ -250,18 +330,18 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   get publicoForm() {
-    return (this.grupoForm.get('publico') as FormArray);
+    return (this.grupoForm.get('0') as FormArray);
   }
 
   get generalForm() {
-    return (this.grupoForm.get('general') as FormArray);
+    return (this.grupoForm.get('1') as FormArray);
   }
 
   get personalForm() {
-    return (this.grupoForm.get('personal') as FormArray);
+    return (this.grupoForm.get('2') as FormArray);
   }
 
   get profesionalForm() {
-    return (this.grupoForm.get('profesional') as FormArray);
+    return (this.grupoForm.get('3') as FormArray);
   }
 }

@@ -23,8 +23,6 @@
     </ion-item>
   </div>
   
-    
-  
   <form [formGroup]="grupoForm"  (submit)="onSubmit()">
   
       
@@ -45,7 +43,7 @@
         (cdkDropListDropped)="MoverItem($event)"
         (cdkDropListEntered)="AbrirPanel(pp)"
         (cdkDropListExited)="CerrarPanel(pp)"
-        class="acordion" formArrayName="publico"
+        class="acordion" formArrayName="0"
         >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -57,12 +55,13 @@
           *ngFor="let itemPublico of publicoForm.controls; let i = index"
           [formGroupName]="i"
           cdkDrag 
-          [cdkDragDisabled]="ordenar">
+          [cdkDragDisabled]="ordenar"
+          [ngClass]="{'ordenar': !ordenar}">
             <app-item-perfil  
               [form]="itemPublico"
               formControlName="item"
               [ordenando]="ordenar" 
-              (eliminar)="EliminarElemento(itemPublico, publicoForm)">
+              (eliminar)="EliminarElemento(publicoForm, i)">
             </app-item-perfil>
         </div>
       </mat-expansion-panel>
@@ -72,7 +71,7 @@
         (cdkDropListDropped)="MoverItem($event)"
         (cdkDropListEntered)="AbrirPanel(pg)"
         (cdkDropListExited)="CerrarPanel(pg)"
-        class="acordion" formArrayName="general"
+        class="acordion" formArrayName="1"
         >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -89,7 +88,7 @@
             [form]="itemGeneral"
             formControlName="item"
             [ordenando]="ordenar" 
-            (eliminar)="EliminarElemento(itemGeneral, generalForm)">
+            (eliminar)="EliminarElemento(generalForm, i)">
             </app-item-perfil>
           </div>
       </mat-expansion-panel>
@@ -101,7 +100,7 @@
         (cdkDropListEntered)="AbrirPanel(pper)"
         (cdkDropListDropped)="MoverItem($event)"
         (cdkDropListExited)="CerrarPanel(pper)"
-        formArrayName="personal"
+        formArrayName="2"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -118,7 +117,7 @@
           [form]="itemPersonal"
           formControlName="item"
           [ordenando]="ordenar" 
-          (eliminar)="EliminarElemento(itemPersonal, personalForm)">
+          (eliminar)="EliminarElemento(personalForm, i)">
           </app-item-perfil>
         </div>
       </mat-expansion-panel>
@@ -130,7 +129,7 @@
         (cdkDropListEntered)="AbrirPanel(ppro)"
         (cdkDropListDropped)="MoverItem($event)"
         (cdkDropListExited)="CerrarPanel(ppro)"
-        formArrayName="profesional"
+        formArrayName="3"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -147,7 +146,7 @@
           [form]="itemProfesional"
           formControlName="item"
           [ordenando]="ordenar" 
-          (eliminar)="EliminarElemento(itemProfesional, profesionalForm)">
+          (eliminar)="EliminarElemento(profesionalForm, i)">
           </app-item-perfil>
         </div>
       </mat-expansion-panel>

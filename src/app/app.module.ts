@@ -26,6 +26,8 @@ import {
   HttpClientJsonpModule
 } from '@angular/common/http';
 
+import {MatChipsModule} from '@angular/material/chips';
+
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -42,6 +44,7 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MatChipsModule,
     VirtwooAuthModule.forRoot(virtwooAuthEnvironment),
     SlRouterModule.forRoot([
       ...VirtwooAuthRoutes,

@@ -43,8 +43,8 @@ export class InformacionPerfilService {
     new TipoItem({id: 17, descripcion: 'Dirección', id_categoria: 5, icono: 'fas map-marker-alt', tipo: 0}),
     new TipoItem({id: 18, descripcion: 'Estado civil', id_categoria: 5, icono: 'fas heart', tipo: 4}),
     new TipoItem({id: 19, descripcion: 'Fecha de nacimiento', id_categoria: 5, icono: 'fas calendar-alt', tipo: 5}),
-    new TipoItem({id: 20, descripcion: 'Hobbies', id_categoria: 5, icono: 'fas star', tipo: 0}),
-    new TipoItem({id: 21, descripcion: 'Intereses', id_categoria: 5, icono: 'fas thumbs-up', tipo: 4}),
+    new TipoItem({id: 20, descripcion: 'Hobbies', id_categoria: 5, icono: 'fas star', tipo: 8}),
+    new TipoItem({id: 21, descripcion: 'Intereses', id_categoria: 5, icono: 'fas thumbs-up', tipo: 8}),
 
     new TipoItem({id: 22, descripcion: 'Facebook', id_categoria: 6, icono: 'fab facebook', tipo: 0}),
     new TipoItem({id: 23, descripcion: 'Instagram', id_categoria: 6, icono: 'fab instagram', tipo: 0}),

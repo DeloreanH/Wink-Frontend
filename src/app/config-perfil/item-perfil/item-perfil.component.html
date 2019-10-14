@@ -76,14 +76,39 @@ style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;
   (ionChange)="onInput($event.target.value, 0)"
   formControlName="campo1"
   ></ion-datetime>
+      <mat-chip-list #chipList *ngIf="tipoItem && tipoItem.tipo === 8" style="margin-top: 5px; flex-wrap: nowrap; width: 100%;">
+          <ion-input #chipControl
+          [value]="Valor(0)"
+          hidden formControlName="campo1">
 
+          </ion-input>
+        <mat-chip *ngFor="let chip of chipArray" [selectable]="selectable"
+                   [removable]="removable" (removed)="remove(chip)">
+            {{chip}}
+            <ion-icon 
+              name="close-circle-outline" 
+              matChipRemove
+              ></ion-icon>
+          </mat-chip>
+          
+          <input placeholder="New fruit..."
+          autocomplete="off"
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event, chipControl)"
+                 (input)="ValorChip($event.target.value, chipControl)"
+                 >
+          
+
+        </mat-chip-list>
   <!--Icono para eliminar-->
   <ion-icon 
-  *ngIf="!ordenando" 
+  *ngIf="!ordenando && !value.basico" 
   name="close-circle-outline" 
   slot="end" 
   (click)="Eliminar()" 
-  style="margin-inline-start: 1px !important; position: relative; align-self:flex-start"
+  style="margin-inline-start: 1px !important; position: relative; align-self:center"
   ></ion-icon>
   
   <!--Seleccionar tipo de item-->
@@ -104,5 +129,5 @@ style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;;
 </ion-item>
       <ion-text *ngIf="MensajeError()" color="danger" class="form-error">
         {{MensajeError()}}
-      </ion-text>
+</ion-text>
 

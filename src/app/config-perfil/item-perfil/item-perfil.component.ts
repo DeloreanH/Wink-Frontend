@@ -6,6 +6,9 @@ import { ValorTI } from 'src/app/modelos/ValorTI.model';
 import { Item } from 'src/app/modelos/Item.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
    NG_VALIDATORS, Validators } from '@angular/forms';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import { Error } from 'src/app/modelos/Error.enum';
 
 @Component({
   selector: 'app-item-perfil',
@@ -42,6 +45,38 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   tiposItems: TipoItem[] = [];
   valoresTI: ValorTI[] = [];
 
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  @Input() chipInput: any;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  chipArray: string[] = [];
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim() && value.length > 2 && this.value.valor.length < 31) {
+      this.chipArray.push(value.trim());
+      this.value.valor = this.chipArray.join(',');
+      if (input) {
+        input.value = '';
+      }
+    }
+    (this.form.controls.campo1 as FormControl).markAsTouched();
+  }
+
+  remove(fruit: any): void {
+    const index = this.chipArray.indexOf(fruit);
+
+    if (index >= 0) {
+      this.chipArray.splice(index, 1);
+      this.value.valor = this.chipArray.join(',');
+    }
+  }
+
   constructor(
     private informacionPerfilService: InformacionPerfilService,
   ) {
@@ -54,10 +89,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   onTouch = (_: Item) => { };
 
   writeValue(obj: Item): void {
+    console.log('obj', obj);
     if (obj) {
-      this.value = obj || null;
-      this.onChange(this.value);
-      this.CargarItem(obj);
+      this.value = obj;
+      // this.onChange(this.value);
+      this.CargarItem();
       this.AggCampoForm();
     } else {
       this.value = null;
@@ -76,12 +112,12 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.isDisabled = isDisabled;
   }
 
-  CargarItem(item: Item) {
-    if (item.valor) {
+  CargarItem() {
+    if (this.value.valor === '' || this.value.valor) {
       this.BuscarTItem();
       this.BuscarValoresTI();
     } else {
-      this.BuscarTItems(item.id_categoria);
+      this.BuscarTItems(this.value.id_categoria);
     }
   }
 
@@ -148,16 +184,26 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 0:
           this.tipo = 'text';
           this.form.setControl(
-            'campo1', new FormControl(this.Valor(0), [
+            'campo1', new FormControl(this.Valor(0),
+            this.value.basico ? [
+              Validators.minLength(2),
+              Validators.maxLength(150),
+            ]
+            : [
               Validators.required,
               Validators.minLength(2),
-              Validators.maxLength(150)]),
+              Validators.maxLength(150)
+            ]),
           );
           break;
         case 1:
             this.tipo = 'email';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [
+                Validators.email
+              ]
+              : [
                 Validators.required,
                 Validators.email
               ]),
@@ -166,14 +212,24 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 2:
             this.tipo = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]
+              : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(150),
               ]),
             );
             this.form.setControl(
-              'campo2', new FormControl(this.Valor(1), [
+              'campo2', new FormControl(this.Valor(1),
+              this.value.basico ? [
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]
+              : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(150),
@@ -183,7 +239,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 3:
             this.tipo = 'url';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [
+                Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/)
+              ]
+              : [
                 Validators.required,
                 Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/)
               ]),
@@ -192,7 +252,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 4:
             this.tipo = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [] :
+              [
                 Validators.required,
               ]),
             );
@@ -200,7 +262,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 5:
             this.tipo = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [] :
+              [
                 Validators.required,
               ]),
             );
@@ -208,25 +272,55 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 6:
             this.tipo = 'number';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [
+                Validators.minLength(3)
+              ]
+              : [
                 Validators.required,
+                Validators.minLength(3)
               ]),
             );
             break;
         case 7:
             this.tipo = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0), [
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]
+              : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(150),
               ]),
             );
             this.form.setControl(
-              'campo2', new FormControl(this.Valor(1), [
+              'campo2', new FormControl(this.Valor(1),
+              this.value.basico ? [
+                Validators.minLength(2),
+                Validators.maxLength(150),
+              ]
+              : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(150),
+              ]),
+            );
+            break;
+          case 8:
+            this.tipo = 'text';
+            this.form.setControl(
+              'campo1', new FormControl(this.Valor(0),
+              this.value.basico ? [
+                Validators.minLength(3),
+                Validators.maxLength(30),
+              ]
+              : [
+                Validators.required,
+                Validators.minLength(3),
+                Validators.maxLength(30),
               ]),
             );
             break;
@@ -257,7 +351,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.value.valor  = '';
     this.BuscarValoresTI();
     this.AggCampoForm();
-    this.onChange(this.value);
+      // this.onChange(this.value);
   }
 
   BuscarValoresTI() {
@@ -304,9 +398,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   MostrarSelector() {
-    this.tipoItem = null;
-    this.onChange(this.value);
-    this.AggCampoForm();
+    if (!this.value.basico) {
+      this.tipoItem = null;
+      this.onChange(this.value);
+      this.AggCampoForm();
+    }
   }
 
   onInput(value: string, campo: number) {
@@ -322,29 +418,39 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.onChange(this.value);
   }
 
+  ValorChip(valor) {
+    this.value.valor = this.chipArray.join(',');
+    this.value.valor = this.value.valor + valor;
+    (this.form.controls.campo1 as FormControl).markAsTouched();
+  }
+
   MensajeError() {
     if (!this.tipoItem) {
-      return this.form.get('selector').hasError('required') && this.form.get('selector').touched ? 'Campo requerido.' : null;
+      return this.form.get('selector').hasError('required') && this.form.get('selector').touched ? Error.REQUERIDO : null;
     } else {
       if (this.form.get('campo1').errors && this.form.get('campo1').touched ) {
         if (this.form.get('campo1').hasError('required')) {
-          return 'Campo requerido.';
+          return Error.REQUERIDO;
         } else if (this.form.get('campo1').hasError('email')) {
-          return 'Formato invalido.';
+          return Error.EMAIL;
         } else if (this.form.get('campo1').hasError('pattern')) {
-          return 'URL invalida.';
+          return Error.URL;
         } else if (this.form.get('campo1').hasError('minlength')) {
-          return 'Minimo 2 caracteres.';
+          if (this.tipoItem.tipo === 6 || this.tipoItem.tipo === 8) {
+            return Error.MINIMO3;
+          } else {
+            return Error.MINIMO2;
+          }
         } else if (this.form.get('campo1').hasError('maxlength')) {
-          return 'Maximo 150 caracteres.';
+            return Error.MAXIMO;
         }
       } else  if (this.form.get('campo2') && this.form.get('campo2').touched) {
         if (this.form.get('campo2').hasError('required')) {
-          return 'Campo requerido.';
+          return Error.REQUERIDO;
         } else if (this.form.get('campo2').hasError('minlength')) {
-          return 'Minimo 2 caracteres.';
+          return Error.MINIMO2;
         } else if (this.form.get('campo2').hasError('maxlength')) {
-          return 'Maximo 150 caracteres.';
+          return Error.MAXIMO;
         }
       }
     }
