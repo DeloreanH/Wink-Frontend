@@ -7,7 +7,7 @@ import { Section } from '../modelos/section.model';
 @Injectable({
   providedIn: 'root'
 })
-export class InformacionPerfilService {
+export class ConfiguracionPerfilService {
 
   unique: string[] = [];
 

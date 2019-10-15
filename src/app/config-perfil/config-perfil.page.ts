@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController } from '@ionic/angular';
 import { Category } from '../modelos/category.model';
-import { InformacionPerfilService } from '../servicios/informacion-perfil.service';
+import { ConfiguracionPerfilService } from '../servicios/configuracion-perfil.service';
 import { Item } from '../modelos/item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Section } from '../modelos/section.model';
@@ -31,8 +31,10 @@ export class ConfigPerfilPage implements OnInit {
   seleccionSeccion: number;
   seleccionCategoria: string;
 
-  categorias: Category[] = [];
-  secciones: Section[] = [];
+  categories: Category[] = [];
+  sections: Section[] = [];
+
+  changeData = false;
 
   item: Item = new Item({
     category_id: null,
@@ -47,11 +49,11 @@ export class ConfigPerfilPage implements OnInit {
 
   constructor(
     public actionSheetController: ActionSheetController,
-    private informacionPerfilService: InformacionPerfilService,
+    private configuracionPerfilService: ConfiguracionPerfilService,
     private formBuilder: FormBuilder,
     ) {
-    this.categorias = this.informacionPerfilService.categories;
-    this.secciones = this.informacionPerfilService.sections;
+    this.categories = this.configuracionPerfilService.categories;
+    this.sections = this.configuracionPerfilService.sections;
     this.grupoArray.push(this.publicoArray);
     this.grupoArray.push(this.generalArray);
     this.grupoArray.push(this.personalArray);
@@ -63,9 +65,11 @@ export class ConfigPerfilPage implements OnInit {
       2: this.personalArray,
       3: this.profesionalArray,
     });
+    console.log('changeData', this.changeData);
   }
 
   MoverItem(event: any) {
+    this.changeData = true;
     if (event.previousContainer === event.container) {
       const item = (event.container.data as FormArray).at(event.previousIndex);
       (event.container.data as FormArray).removeAt(event.previousIndex);
@@ -78,88 +82,55 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   onSubmit() {
-    console.log('form', this.grupoForm);
-    this.data = [];
-    this.data.push(
-      new Item({
-        value: this.grupoForm.value.biografia,
-        position: -1,
-        section: new Section({_id: '-1', name: 'Biografia', key: -1}),
-        })
-    );
-    let seccion;
-    for (let index = 0; index < 4; index++) {
-      seccion = this.secciones.find(seccionx => seccionx.key === index);
-      (this.grupoForm.value as any[])[index].forEach((valor: any, i: number) => {
-        valor.item.position = i;
-        valor.item.seccion = seccion;
-        this.data.push(valor.item);
-      });
-    }
-    /*
-    seccion = this.secciones.find(seccionx => seccionx.key === 1);
-    this.grupoForm.value.general.forEach((valor: any, index: any) => {
-      valor.item.posicion = index;
-      valor.item.id_seccion = seccion;
-      this.data.push(valor.item);
-    });
-    seccion = this.secciones.find(seccionx => seccionx.key === 2);
-    this.grupoForm.value.personal.forEach((valor: any, index: any) => {
-      valor.item.posicion = index;
-      valor.item.id_seccion = seccion;
-      this.data.push(valor.item);
-    });
-    seccion = this.secciones.find(seccionx => seccionx.key === 3);
-    this.grupoForm.value.profesional.forEach((valor: any, index: any) => {
-      valor.item.posicion = index;
-      valor.item.id_seccion = seccion;
-      this.data.push(valor.item);
-    });*/
-    console.log('Data', this.data);
-    if (this.grupoForm.valid) {
 
+    console.log('form', this.grupoForm);
+    console.log('changeData', this.changeData);
+    if (this.grupoForm.valid && this.changeData) {
+      this.data = [];
+      this.data.push(
+        new Item({
+          value: this.grupoForm.value.biografia,
+          position: -1,
+          section: new Section({_id: '-1', name: 'Biografia', key: -1}),
+          })
+      );
+      let section;
+      for (let index = 0; index < 4; index++) {
+        section = this.sections.find(sectionx => sectionx.key === index);
+        (this.grupoForm.value as any[])[index].forEach((valor: any, i: number) => {
+          valor.item.position = i;
+          valor.item.section = section;
+          this.data.push(valor.item);
+        });
+      }
+      console.log('Data', this.data);
     }
   }
 
-  AggItem(item: Item) {
-    // console.log('grupoArray', this.grupoArray);
+  AggItem(item: Item, user: boolean) {
     this.grupoArray[item.section.key].push(
       new FormGroup({
-      item: new FormControl(
-        item
-      )
+      item: new FormControl(item)
     })
     );
-    this.item = new Item({
-      category_id: null,
-      section: null,
-      value: null,
-      custom: null,
-      position: null,
-      itemType_id: null,
-      user_id: null,
-      basic: false,
-    });
-    /*this.grupoArray[this.seleccionSeccion].push(
-      new FormGroup({
-      item: new FormControl(
-        new Item({
-          category_id: this.seleccionCategoria,
-          section: null,
-          value: null,
-          custom: null,
-          position: null,
-          itemType_id: null,
-          user_id: this.idUser,
-          basic: false,
-        })
-      )
-    })
-    );*/
+    if (user) {
+      this.changeData = true;
+      this.item = new Item({
+        category_id: null,
+        section: null,
+        value: null,
+        custom: null,
+        position: null,
+        itemType_id: null,
+        user_id: null,
+        basic: false,
+      });
+    }
   }
 
   ngOnInit() {
     this.CargarData();
+    console.log('changeData', this.changeData);
   }
 
   CargarData() {
@@ -174,7 +145,7 @@ export class ConfigPerfilPage implements OnInit {
         basic: true,
       }
     );
-    this.AggItem(itemPrueba);
+    this.AggItem(itemPrueba, false);
   }
 
   Ordenar() {
@@ -190,6 +161,7 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   EliminarElemento(arreglo: FormArray, index: number) {
+    this.changeData = true;
     arreglo.removeAt(index);
   }
 
@@ -227,13 +199,13 @@ export class ConfigPerfilPage implements OnInit {
 
   CargarCategorias(): [] {
     const obj: any = [];
-    for (const categoria of this.categorias) {
+    for (const categoria of this.categories) {
       obj.push({
         text: categoria.name,
         icon: 'add',
         handler: () => {
           this.item.category_id = categoria._id;
-          this.AggItem(this.item);
+          this.AggItem(this.item, true);
         }
       });
     }
@@ -242,7 +214,7 @@ export class ConfigPerfilPage implements OnInit {
 
   CargarSecciones(): [] {
     const obj: any = [];
-    for (const seccion of this.secciones) {
+    for (const seccion of this.sections) {
       obj.push({
         text: seccion.name,
         icon: 'add',
@@ -269,5 +241,15 @@ export class ConfigPerfilPage implements OnInit {
 
   get profesionalForm() {
     return (this.grupoForm.get('3') as FormArray);
+  }
+
+  FormValid() {
+    console.log('this.changeData', this.changeData);
+    // console.log('this.grupoForm.invalid', this.grupoForm.invalid);
+    return this.changeData && this.grupoForm.valid;
+  }
+
+  ChangeForm() {
+    this.changeData = true;
   }
 }

@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SlRouterService } from '@virtwoo/sl-router';
 import { VirtwooAuthPathName } from '@virtwoo/auth';
 import { RoutesName } from './app-routing.module';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private translateService: TranslateService,
-    private slRouterService: SlRouterService
+    private slRouterService: SlRouterService,
+    private authServicie: AuthService
   ) {
     this.initializeApp();
     this.translateService.setDefaultLang('en');
@@ -34,13 +36,15 @@ export class AppComponent {
   }
 
   private checkUser(): void {
-    const token = localStorage.getItem('token');
+    this.authServicie.AuthoLogin();
+    const token = localStorage.getItem('userData');
 
     if (token) {
-      this.slRouterService.setRoot(RoutesName.Home, true);
-    } else {
+      // this.slRouterService.setRoot(RoutesName.Home, true);
       this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
-      // this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+    } else {
+      // this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
+      this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
     }
   }
 }

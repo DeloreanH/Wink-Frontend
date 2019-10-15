@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InAppBrowser} from '@ionic-native/in-app-browser/ngx';
-import { InformacionPerfilService } from './informacion-perfil.service';
+import { ConfiguracionPerfilService } from './configuracion-perfil.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class EnlacesService {
     {redSocial: 'youtube', url: 'https://www.youtube.com/channel/'},
   ];
   constructor(
-    private informacionPerfilService: InformacionPerfilService
+    private informacionPerfilService: ConfiguracionPerfilService
   ) { }
 
   AbrirRedSocial(idTipoItem: string, username: string) {

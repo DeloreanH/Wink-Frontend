@@ -3,15 +3,15 @@ import { RoutesName } from 'src/app/app-routing.module';
 // import { Paths } from '@common/route';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {
-  accesssId: '5d9133964492113124a8e3d4',
+  accesssId: '5da628a08f6a5f1dec374c65',
   apiUrl: 'http://127.0.0.1:5000',
   apiVersion: 'v1',
   social: 'ALL',
-  redirectUrl: 'http://127.0.0.1:3000/api/users/authenticate',
+  redirectUrl: 'http://127.0.0.1:3000/api/auth/authenticate',
   logoUrl: '/assets/icon/favicon.png',
   resCallback: (response) => {
     console.log('esta es la respuesta', response);
-    // localStorage.setItem('token', JSON.stringify(response));
+    localStorage.setItem('userData', JSON.stringify(response));
 
     return RoutesName.Home;
   }

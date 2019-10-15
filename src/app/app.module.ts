@@ -23,10 +23,12 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   HttpClient,
   HttpClientModule,
-  HttpClientJsonpModule
+  HttpClientJsonpModule,
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
 
 import {MatChipsModule} from '@angular/material/chips';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -61,7 +63,8 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent]
 })

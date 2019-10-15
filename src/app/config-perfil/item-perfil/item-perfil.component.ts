@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { InformacionPerfilService } from 'src/app/servicios/informacion-perfil.service';
-import { Category } from 'src/app/modelos/category.model';
+import { ConfiguracionPerfilService } from 'src/app/servicios/configuracion-perfil.service';
 import { ItemType } from 'src/app/modelos/itemType.model';
 import { Item } from 'src/app/modelos/item.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
@@ -19,11 +18,11 @@ import { MessageError } from 'src/app/modelos/messageError.enum';
       useExisting: forwardRef(() => ItemPerfilComponent),
       multi: true
     },
-    {
+    /*{
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => ItemPerfilComponent),
       multi: true,
-    }
+    }*/
   ]
 })
 export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
@@ -31,7 +30,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   @Input() ordenando;
   @Input() form: FormGroup;
   @Output() eliminar = new EventEmitter();
+  @Output() cambio = new EventEmitter();
   @Input() chipInput: any;
+
 
   preIcono: string;
   icon: string;
@@ -52,9 +53,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(
-    private informacionPerfilService: InformacionPerfilService,
+    private configuracionPerfilService: ConfiguracionPerfilService,
   ) {
-    this.unique = this.informacionPerfilService.unique;
+    this.unique = this.configuracionPerfilService.unique;
   }
 
   ngOnInit() {
@@ -116,59 +117,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  validate(control: import('@angular/forms').AbstractControl): import('@angular/forms').ValidationErrors {
-     // throw new Error('Method not implemented.');
-
-    // tslint:disable-next-line: triple-equals
-    /* console.log('this.selecionado', this.selecionado);
-    console.log('control validate: ', control);
-    if (!this.selecionado) {
-      this.errors = 'Debe seleccionar una opcion';
-      return {
-        message : 'Debe seleccionar una opcion'
-      };
-    }
-    switch (this.tipoItem.tipo) {
-      case 0:
-        console.log(control);
-        if (this.value.valor.length < 2) {
-          this.errors = 'Cantidad minima de caracteres: 2';
-          return  {message : 'Cantidad minima de caracteres: 2'};
-        }
-        if (this.value.valor.length > 150) {
-          this.errors = 'Cantidad maxima de caracteres: 150';
-          return  {message : 'Cantidad maxima de caracteres: 150'};
-        }
-        this.errors = null;
-        return null;
-      case 1:
-        this.errors = null;
-        return null;
-      case 2:
-        this.errors = null;
-        return null;
-      case 3:
-        this.errors = null;
-        return null;
-      case 4:
-        this.errors = null;
-        return null;
-      case 5:
-        this.errors = null;
-        return null;
-      case 6:
-        this.errors = null;
-        return null;
-      case 7:
-        this.errors = null;
-        return null;
-    }*/
+  /*validate(control: import('@angular/forms').AbstractControl): import('@angular/forms').ValidationErrors {
     return null;
   }
 
   registerOnValidatorChange?(fn: () => void): void {
     this.onChange = fn;
-  }
+  }*/
 
   AggCampoForm() {
     this.form.removeControl('selector');
@@ -329,28 +284,29 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   BuscarTItem() {
     if (this.value) {
-      this.itemType = this.informacionPerfilService.BuscarTipoItem(this.value.itemType_id);
-      console.log('Aquiii', this.informacionPerfilService.BuscarTipoItem(this.value.itemType_id), this.value );
+      this.itemType = this.configuracionPerfilService.BuscarTipoItem(this.value.itemType_id);
+      console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemType_id), this.value );
       this.BuscarTItems(this.itemType.category_id);
     }
     this.CargarIcono();
   }
 
   BuscarTItems(idCategoria: string) {
-    this.tiposItems = this.informacionPerfilService.BuscarTItemCategoria(idCategoria);
+    this.tiposItems = this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
     // console.log('tiposItems', this.tiposItems);
   }
 
   SelecionarTipoItem(event: ItemType) {
     this.itemType = event;
-    this.AggUnico();
+    if (!event.repeat) {
+      this.AggUnico();
+    }
     this.value.itemType_id =  event._id;
     this.value.value  = '';
     this.CargarIcono();
     this.AggCampoForm();
       // this.onChange(this.value);
   }
-
 
   CargarIcono() {
     if (this.itemType) {
@@ -391,6 +347,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   MostrarSelector() {
     if (!this.value.basic) {
+      this.cambio.emit(true);
       this.EliminarUnico();
       this.itemType = null;
       this.onChange(this.value);
@@ -409,6 +366,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
     this.onTouch(this.value);
     this.onChange(this.value);
+    this.cambio.emit(true);
   }
 
   ValorChip(valor) {
@@ -422,15 +380,17 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   AggUnico() {
+    console.log('lista', this.unique);
     if (this.unique.indexOf(this.itemType._id) === -1) {
       this.unique.push(this.itemType._id);
     }
   }
 
   EliminarUnico() {
+    console.log('lista', this.unique);
     const index = this.unique.indexOf(this.itemType._id);
     if (index !== -1) {
-      this.unique.splice(index);
+      this.unique.splice(index, 1);
     }
   }
 
