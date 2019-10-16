@@ -37,3 +37,9 @@
     --highlight-color-valid: #10dc60;
     --highlight-color-invalid: #f04141;
 }
+.spinner {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}

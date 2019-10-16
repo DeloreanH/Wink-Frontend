@@ -4,12 +4,13 @@ export class AuthUser {
 
   constructor(
     private token: string,
-    private exp: Date,
+    private exp: number,
     public user: User
   ) {}
 
   get Token() {
-    if (!this.exp  || new Date() > this.exp) {
+    console.log('Token', (new Date().getTime() / 1000 ) > this.exp);
+    if (!this.exp  || (new Date().getTime() / 1000 ) > this.exp) {
       return null;
     }
     return this.token;

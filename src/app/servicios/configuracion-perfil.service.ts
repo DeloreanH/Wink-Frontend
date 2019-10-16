@@ -3,6 +3,11 @@ import { Category } from '../modelos/category.model';
 import { ItemType } from '../modelos/itemType.model';
 import { Option } from '../modelos/option.model';
 import { Section } from '../modelos/section.model';
+import { HttpClient } from '@angular/common/http';
+import { Routes } from '../modelos/routes.enum';
+import { AuthService } from '../auth/auth.service';
+import { take, exhaustMap } from 'rxjs/operators';
+import { Item } from '../modelos/item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +16,7 @@ export class ConfiguracionPerfilService {
 
   unique: string[] = [];
 
-  categories: Category[] = [
+  categories: Category[] = []; /*
     new Category({_id: 1, name: 'Contacto'}),
     new Category({_id: 2, name: 'Educación'}),
     new Category({_id: 3, name: 'Laboral'}),
@@ -19,9 +24,11 @@ export class ConfiguracionPerfilService {
     new Category({_id: 5, name: 'Personal'}),
     new Category({_id: 6, name: 'Red Social'}),
     new Category({_id: 7, name: 'Otra'}),
-  ];
+  ];*/
 
-  itemTypes: ItemType[] = [
+  categories2: Category[] = [];
+
+  itemTypes: ItemType[] = []; /*[
     new ItemType({_id: 1, description: 'Celular', category_id: 1, icon: 'fas mobile-alt', index: 6, repeat: true}),
     new ItemType({_id: 2, description: 'Correo', category_id: 1, icon: 'fas envelope', index: 1, repeat: true}),
     new ItemType({_id: 3, description: 'Sitio web', category_id: 1, icon: 'fas at', index: 3, repeat: true}),
@@ -72,42 +79,108 @@ export class ConfiguracionPerfilService {
     new ItemType({_id: 30, description: 'YouTube', category_id: 6, icon: 'fab youtube', index: 0, repeat: true}),
 
     new ItemType({_id: 31, description: 'Personalizado', category_id: 7, icon: 'fas asterisk', index: 7, repeat: true}),
-  ];
+  ];*/
 
   sections: Section[] = [
-    new Section({_id: '1',  name: 'Publico', key: 0}),
-    new Section({_id: '2',  name: 'General', key: 1}),
-    new Section({_id: '3',  name: 'Personal', key: 2}),
-    new Section({_id: '4',  name: 'Profesional', key: 3}),
+    new Section({name: 'Publico', key: 0}),
+    new Section({name: 'General', key: 1}),
+    new Section({name: 'Personal', key: 2}),
+    new Section({name: 'Profesional', key: 3}),
   ];
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
+    this.CargarCategorias();
+    this.CargarTiposItem();
+   }
 
-  BuscarTItemCategoria(idCategory: string): ItemType[] {
+  BuscarTItemCategoria(nameCategory: string): ItemType[] {
+    if (this.categories.length === 0) {
+      this.CargarCategorias();
+    }
+    if (this.itemTypes.length === 0) {
+      this.CargarTiposItem();
+    }
     const resultado = this.itemTypes.filter(
       (item: ItemType) => {
-        return item.category_id === idCategory;
+        return item.category === nameCategory;
       }
     );
+    console.log('resultados:' , resultado);
     return resultado;
   }
 
-  BuscarTipoItem(idItemType: string): ItemType {
-    console.log('idItemType', idItemType);
-    const resultado = this.itemTypes.filter(
-      (item: ItemType) => {
-        return item._id === idItemType;
+  BuscarTipoItem(nameItemType: string): ItemType {
+    // console.log('idItemType', idItemType);
+    console.log('nameItemType', nameItemType);
+    if (nameItemType) {
+      if (this.itemTypes.length === 0) {
+        this.CargarTiposItem();
       }
-    );
-    return resultado[0];
+      const resultado = this.itemTypes.filter(
+        (item: ItemType) => {
+          return item.name === nameItemType;
+        }
+      );
+      console.log('resultado ItemType', resultado);
+      return resultado[0];
+    }
   }
 
-  /*BuscarValoresTipoItem(_idTipoItem: string): Option[] {
-    const resultado = this.valoresIT.filter(
-      (item: Option) => {
-        return item._id_tipoitem === _idTipoItem;
+  async CargarCategorias() {
+    try {
+      const respuesta = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
+      // console.log('respuesta', respuesta);
+      this.categories = [];
+      this.categories.push(...respuesta);
+      // console.log('categories', this.categories);
+    } catch (error) {
+
+    }
+  }
+
+  async CargarTiposItem() {
+    try {
+      const respuesta = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
+      // console.log('respuesta', respuesta);
+      this.itemTypes = [];
+      this.itemTypes.push(...respuesta);
+      // console.log('itemTypes', this.itemTypes);
+    } catch (error) {
+
+    }
+  }
+
+  async CargarItemsUsuario() {
+    try {
+      const respuesta = await this.authService.user.pipe(
+        take(1),
+        exhaustMap(
+          user => {
+            if (!user) {
+              return null;
+            }
+            return this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER + user.user._id);
+          }
+        )
+        ).toPromise();
+      return respuesta;
+      console.log('respuesta', respuesta);
+    } catch (error) {
+
+    }
+  }
+
+  async GuardarItems(data: Item[]) {
+    if (data) {
+      try {
+        const respuesta = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
+        console.log('respuesta', respuesta);
+      } catch (error) {
+
       }
-    );
-    // console.log('Resultados Valores: ', resultado);
-    return resultado;
-  }*/
+    }
+
+  }
 }

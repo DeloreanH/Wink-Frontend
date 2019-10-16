@@ -17,7 +17,8 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.user.pipe(
+      this.authService.AuthoLogin();
+      return this.authService.user.pipe(
       take(1),
       map( user => {
         const isAuth = !!user;
@@ -25,7 +26,7 @@ export class AuthGuard implements CanActivate {
           return true;
         }
         // ruta a redirigir si no esta autenticado
-        return this.router.createUrlTree(['']);
+        return this.router.createUrlTree(['virtwoo-auth/login']);
       })
       );
   }

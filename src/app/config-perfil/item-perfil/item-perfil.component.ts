@@ -113,7 +113,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (this.value.value === '' || this.value.value) {
       this.BuscarTItem();
     } else {
-      this.BuscarTItems(this.value.category_id);
+      this.BuscarTItems(this.value.category);
     }
   }
 
@@ -284,16 +284,21 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   BuscarTItem() {
     if (this.value) {
-      this.itemType = this.configuracionPerfilService.BuscarTipoItem(this.value.itemType_id);
-      console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemType_id), this.value );
-      this.BuscarTItems(this.itemType.category_id);
+      console.log('Aquiii', this.value);
+      this.itemType = this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype);
+      console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype));
+      if (this.itemType) {
+        this.BuscarTItems(this.itemType.category);
+      }
     }
     this.CargarIcono();
   }
 
   BuscarTItems(idCategoria: string) {
-    this.tiposItems = this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
-    // console.log('tiposItems', this.tiposItems);
+    if (idCategoria) {
+      this.tiposItems = this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
+      console.log('tiposItems', this.tiposItems);
+    }
   }
 
   SelecionarTipoItem(event: ItemType) {
@@ -301,7 +306,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (!event.repeat) {
       this.AggUnico();
     }
-    this.value.itemType_id =  event._id;
+    this.value.itemtype =  event.name;
     this.value.value  = '';
     this.CargarIcono();
     this.AggCampoForm();
@@ -309,10 +314,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   CargarIcono() {
-    if (this.itemType) {
+    if (this.itemType.icon) {
       const valores = this.itemType.icon.split(' ');
       this.preIcono = valores[0];
       this.icon = valores[1];
+    } else {
+      this.preIcono = 'far';
+      this.icon = 'smile-wink';
     }
   }
 

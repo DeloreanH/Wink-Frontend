@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -14,7 +14,7 @@ import { AuthService } from './auth/auth.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -28,6 +28,10 @@ export class AppComponent {
     this.checkUser();
   }
 
+  ngOnInit() {
+    this.authServicie.AuthoLogin();
+  }
+
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -36,15 +40,19 @@ export class AppComponent {
   }
 
   private checkUser(): void {
-    this.authServicie.AuthoLogin();
     const token = localStorage.getItem('userData');
 
     if (token) {
       // this.slRouterService.setRoot(RoutesName.Home, true);
-      this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
+      this.slRouterService.setRoot(RoutesName.Home, true);
     } else {
       // this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
       this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
     }
+  }
+
+  Login() {
+    console.log('login', this.authServicie.usuario ? true : false);
+    return this.authServicie.usuario ? true : false;
   }
 }

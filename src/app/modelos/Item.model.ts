@@ -6,8 +6,8 @@ export class Item {
   public custom: string;
   public section: Section;
   public basic: boolean;
-  public itemType_id: string;
-  public category_id: string;
+  public itemtype: string;
+  public category: string;
   public user_id: string;
 
   constructor(data: any) {

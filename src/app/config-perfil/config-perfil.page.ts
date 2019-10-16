@@ -6,6 +6,7 @@ import { ConfiguracionPerfilService } from '../servicios/configuracion-perfil.se
 import { Item } from '../modelos/item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Section } from '../modelos/section.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-config-perfil',
@@ -15,9 +16,10 @@ import { Section } from '../modelos/section.model';
 export class ConfigPerfilPage implements OnInit {
 
   nombre = 'John Doe';
+  avatar = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y';
   ordenar = true;
 
-  idUser = 'prueba';
+  loading = true;
   data: Item[] = [];
 
   publicoArray = new FormArray([]);
@@ -37,13 +39,13 @@ export class ConfigPerfilPage implements OnInit {
   changeData = false;
 
   item: Item = new Item({
-    category_id: null,
+    category: null,
     section: null,
     value: null,
     custom: null,
     position: null,
     itemType_id: null,
-    user_id: null,
+    user_id: this.authService.usuario._id,
     basic: false,
   });
 
@@ -51,8 +53,8 @@ export class ConfigPerfilPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private configuracionPerfilService: ConfiguracionPerfilService,
     private formBuilder: FormBuilder,
+    private authService: AuthService
     ) {
-    this.categories = this.configuracionPerfilService.categories;
     this.sections = this.configuracionPerfilService.sections;
     this.grupoArray.push(this.publicoArray);
     this.grupoArray.push(this.generalArray);
@@ -69,6 +71,7 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   MoverItem(event: any) {
+    console.log('changeData', this.changeData);
     this.changeData = true;
     if (event.previousContainer === event.container) {
       const item = (event.container.data as FormArray).at(event.previousIndex);
@@ -82,16 +85,18 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   onSubmit() {
-
-    console.log('form', this.grupoForm);
-    console.log('changeData', this.changeData);
+    // console.log('form', this.grupoForm);
+    console.log('Validaciones', this.changeData, this.grupoForm.valid);
     if (this.grupoForm.valid && this.changeData) {
+      this.loading = true;
       this.data = [];
       this.data.push(
         new Item({
           value: this.grupoForm.value.biografia,
           position: -1,
-          section: new Section({_id: '-1', name: 'Biografia', key: -1}),
+          section: new Section({name: 'Biografia', key: -1}),
+          basic: false,
+          user_id: this.authService.usuario._id,
           })
       );
       let section;
@@ -100,9 +105,11 @@ export class ConfigPerfilPage implements OnInit {
         (this.grupoForm.value as any[])[index].forEach((valor: any, i: number) => {
           valor.item.position = i;
           valor.item.section = section;
-          this.data.push(valor.item);
+          this.data.push(new Item(valor.item));
         });
       }
+      this.configuracionPerfilService.GuardarItems(this.data);
+      this.loading = false;
       console.log('Data', this.data);
     }
   }
@@ -116,13 +123,13 @@ export class ConfigPerfilPage implements OnInit {
     if (user) {
       this.changeData = true;
       this.item = new Item({
-        category_id: null,
+        category: null,
         section: null,
         value: null,
         custom: null,
         position: null,
-        itemType_id: null,
-        user_id: null,
+        itemType: null,
+        user_id: this.authService.usuario._id,
         basic: false,
       });
     }
@@ -130,11 +137,22 @@ export class ConfigPerfilPage implements OnInit {
 
   ngOnInit() {
     this.CargarData();
+    this.nombre = this.authService.usuario.firstName + ' ' + this.authService.usuario.lastName;
+    this.avatar = this.authService.usuario.avatarUrl;
     console.log('changeData', this.changeData);
   }
 
   CargarData() {
-    const itemPrueba = new Item(
+    this.configuracionPerfilService.CargarItemsUsuario().then(
+      (respuesta: Item[])  => {
+        console.log('respuestaaa', respuesta);
+        for (const dato of respuesta) {
+          this.AggItem(dato, false);
+        }
+        this.loading = false;
+      }
+    );
+    /*const itemPrueba = new Item(
       {
         section: new Section({_id: '1',  name: 'Publico', key: 0}),
         value: 'anibal prueba',
@@ -145,7 +163,7 @@ export class ConfigPerfilPage implements OnInit {
         basic: true,
       }
     );
-    this.AggItem(itemPrueba, false);
+    this.AggItem(itemPrueba, false);*/
   }
 
   Ordenar() {
@@ -199,12 +217,16 @@ export class ConfigPerfilPage implements OnInit {
 
   CargarCategorias(): [] {
     const obj: any = [];
+    if (this.categories.length === 0) {
+      this.categories = this.configuracionPerfilService.categories;
+    }
+    console.log('this.categories', this.categories);
     for (const categoria of this.categories) {
       obj.push({
-        text: categoria.name,
+        text: categoria.description,
         icon: 'add',
         handler: () => {
-          this.item.category_id = categoria._id;
+          this.item.category = categoria.name;
           this.AggItem(this.item, true);
         }
       });
@@ -251,5 +273,9 @@ export class ConfigPerfilPage implements OnInit {
 
   ChangeForm() {
     this.changeData = true;
+  }
+
+  Logout() {
+    this.authService.Logout();
   }
 }
