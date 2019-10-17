@@ -17,7 +17,7 @@ import { ItemPerfilComponent } from './item-perfil/item-perfil.component';
 import {MatChipsModule} from '@angular/material/chips';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SpinnerComponent } from '../herramientas/spinner/spinner.component';
+import { SpinnerComponent } from 'src/app/herramientas/spinner/spinner.component';
 
 
 const routes: Routes = [

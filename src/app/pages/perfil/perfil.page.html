@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form"  (ngSubmit)="onSubmit()">
+    <div class="contenedorAvatar" >
+      <ion-avatar> 
+        <img [src]="user.avatarUrl ? user.avatarUrl : avatar" >
+      </ion-avatar>
+    </div>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating" >
+          avatarUrl
+        </ion-label>
+        <ion-input 
+          
+          formControlName="avatarUrl"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" >
+          firstName
+        </ion-label>
+        <ion-input 
+          
+          formControlName="firstName"
+        >
+
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" >
+          lastName
+        </ion-label>
+        <ion-input 
+          
+          formControlName="lastName"
+        >
+
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" >
+          email
+        </ion-label>
+        <ion-input 
+          
+          formControlName="email"
+          type="email"
+        >
+
+        </ion-input>
+      </ion-item>
+      <div style="width: 100%; display: flex;">
+      <ion-item style="flex: 0 0 25%; margin-right: 5%;">
+        <ion-label position="floating" >
+          Code
+        </ion-label>
+        
+        <ion-input 
+          type="number"
+          formControlName="phoneCode"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-item style="flex: 0 0 70%;">
+          <ion-label position="floating" >
+            Phone Number
+          </ion-label>
+          <ion-input 
+            type="number"
+            formControlName="phoneNumber"
+          >
+          </ion-input>
+        </ion-item>
+    </div>
+      
+      <ion-item>
+        <ion-label position="floating" >
+          birthday
+        </ion-label>
+        <ion-datetime 
+          displayFormat="DD/MM/YYYY" 
+          min="1900-01-01" 
+          [max]="FechaActual() | date:'yyy-MM-dd'"
+          cancel-text="Cancelar" 
+          done-text="Aceptar" 
+          formControlName="birthday"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" >
+          gender
+        </ion-label>
+        <ion-select 
+          interface="popover"
+          ok-text="Aceptar" 
+          cancel-text="Cancelar" 
+          placeholder="Seleccione un sexo"
+          formControlName="gender">
+          <ion-select-option value="Mujer">
+            Mujer
+          </ion-select-option>
+          <ion-select-option value="Hombre">
+            Hombre
+          </ion-select-option>
+          <ion-select-option value="Otro">
+            Otro
+          </ion-select-option>
+          <ion-select-option value="Prefiero no decirlo">
+            Prefiero no decirlo
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+    </ion-list>
+    <ion-button expand="block" type="submit">Save</ion-button>
+  </form>
+</ion-content>

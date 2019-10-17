@@ -27,6 +27,7 @@ export class ConfiguracionPerfilService {
   ];*/
 
   categories2: Category[] = [];
+  biografia: Item;
 
   itemTypes: ItemType[] = []; /*[
     new ItemType({_id: 1, description: 'Celular', category_id: 1, icon: 'fas mobile-alt', index: 6, repeat: true}),
@@ -107,13 +108,13 @@ export class ConfiguracionPerfilService {
         return item.category === nameCategory;
       }
     );
-    console.log('resultados:' , resultado);
+    // console.log('resultados:' , resultado);
     return resultado;
   }
 
   BuscarTipoItem(nameItemType: string): ItemType {
     // console.log('idItemType', idItemType);
-    console.log('nameItemType', nameItemType);
+    // console.log('nameItemType', nameItemType);
     if (nameItemType) {
       if (this.itemTypes.length === 0) {
         this.CargarTiposItem();
@@ -123,7 +124,7 @@ export class ConfiguracionPerfilService {
           return item.name === nameItemType;
         }
       );
-      console.log('resultado ItemType', resultado);
+      // console.log('resultado ItemType', resultado);
       return resultado[0];
     }
   }
@@ -154,7 +155,7 @@ export class ConfiguracionPerfilService {
 
   async CargarItemsUsuario() {
     try {
-      const respuesta = await this.authService.user.pipe(
+      let respuesta = await this.authService.user.pipe(
         take(1),
         exhaustMap(
           user => {
@@ -165,8 +166,18 @@ export class ConfiguracionPerfilService {
           }
         )
         ).toPromise();
+      // console.log('respuesta', respuesta);
+      respuesta = respuesta.filter(
+        (item: Item) => {
+          if (item.position === -1) {
+            this.biografia = item;
+          } else {
+            return item;
+          }
+        }
+      );
+      // console.log('respuesta con filtro', respuesta);
       return respuesta;
-      console.log('respuesta', respuesta);
     } catch (error) {
 
     }
@@ -176,7 +187,7 @@ export class ConfiguracionPerfilService {
     if (data) {
       try {
         const respuesta = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
-        console.log('respuesta', respuesta);
+        // console.log('respuesta', respuesta);
       } catch (error) {
 
       }

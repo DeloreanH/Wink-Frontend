@@ -284,9 +284,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   BuscarTItem() {
     if (this.value) {
-      console.log('Aquiii', this.value);
+      // console.log('Aquiii', this.value);
       this.itemType = this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype);
-      console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype));
+      // console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype));
       if (this.itemType) {
         this.BuscarTItems(this.itemType.category);
       }
@@ -297,7 +297,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   BuscarTItems(idCategoria: string) {
     if (idCategoria) {
       this.tiposItems = this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
-      console.log('tiposItems', this.tiposItems);
+      // console.log('tiposItems', this.tiposItems);
     }
   }
 
@@ -388,14 +388,14 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   AggUnico() {
-    console.log('lista', this.unique);
+    // console.log('lista', this.unique);
     if (this.unique.indexOf(this.itemType._id) === -1) {
       this.unique.push(this.itemType._id);
     }
   }
 
   EliminarUnico() {
-    console.log('lista', this.unique);
+    // console.log('lista', this.unique);
     const index = this.unique.indexOf(this.itemType._id);
     if (index !== -1) {
       this.unique.splice(index, 1);

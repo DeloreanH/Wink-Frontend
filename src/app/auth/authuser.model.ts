@@ -9,7 +9,6 @@ export class AuthUser {
   ) {}
 
   get Token() {
-    console.log('Token', (new Date().getTime() / 1000 ) > this.exp);
     if (!this.exp  || (new Date().getTime() / 1000 ) > this.exp) {
       return null;
     }

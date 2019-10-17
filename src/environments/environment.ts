@@ -10,10 +10,9 @@ export const virtwooAuthEnvironment: VirtwooAuthConfig = {
   redirectUrl: 'http://127.0.0.1:3000/api/auth/authenticate',
   logoUrl: '/assets/icon/favicon.png',
   resCallback: (response) => {
-    console.log('esta es la respuesta', response);
+    // console.log('esta es la respuesta', response);
     localStorage.setItem('userData', JSON.stringify(response));
-
-    return RoutesName.Home;
+    return RoutesName.APP;
   }
 };
 

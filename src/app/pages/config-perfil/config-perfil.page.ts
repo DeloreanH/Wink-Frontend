@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController } from '@ionic/angular';
-import { Category } from '../modelos/category.model';
-import { ConfiguracionPerfilService } from '../servicios/configuracion-perfil.service';
-import { Item } from '../modelos/item.model';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { Section } from '../modelos/section.model';
-import { AuthService } from '../auth/auth.service';
+import { Category } from 'src/app/modelos/category.model';
+import { Item } from 'src/app/modelos/item.model';
+import { Section } from 'src/app/modelos/section.model';
+import { ConfiguracionPerfilService } from 'src/app/servicios/configuracion-perfil.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/modelos/user.model';
+import { UserService } from 'src/app/servicios/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-config-perfil',
   templateUrl: './config-perfil.page.html',
   styleUrls: ['./config-perfil.page.scss'],
 })
-export class ConfigPerfilPage implements OnInit {
+export class ConfigPerfilPage implements OnInit, OnDestroy {
 
   nombre = 'John Doe';
   avatar = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y';
@@ -21,6 +24,8 @@ export class ConfigPerfilPage implements OnInit {
 
   loading = true;
   data: Item[] = [];
+
+  isDrag = false;
 
   publicoArray = new FormArray([]);
   generalArray = new FormArray([]);
@@ -38,23 +43,18 @@ export class ConfigPerfilPage implements OnInit {
 
   changeData = false;
 
-  item: Item = new Item({
-    category: null,
-    section: null,
-    value: null,
-    custom: null,
-    position: null,
-    itemType_id: null,
-    user_id: this.authService.usuario._id,
-    basic: false,
-  });
+  item: Item;
+  user: User;
+  userSusbcription =  new Subscription();
 
   constructor(
     public actionSheetController: ActionSheetController,
     private configuracionPerfilService: ConfiguracionPerfilService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
     ) {
+    this.user = this.userService.User();
     this.sections = this.configuracionPerfilService.sections;
     this.grupoArray.push(this.publicoArray);
     this.grupoArray.push(this.generalArray);
@@ -67,11 +67,11 @@ export class ConfigPerfilPage implements OnInit {
       2: this.personalArray,
       3: this.profesionalArray,
     });
-    console.log('changeData', this.changeData);
+    // console.log('changeData', this.changeData);
   }
 
   MoverItem(event: any) {
-    console.log('changeData', this.changeData);
+    // console.log('changeData', this.changeData);
     this.changeData = true;
     if (event.previousContainer === event.container) {
       const item = (event.container.data as FormArray).at(event.previousIndex);
@@ -86,7 +86,7 @@ export class ConfigPerfilPage implements OnInit {
 
   onSubmit() {
     // console.log('form', this.grupoForm);
-    console.log('Validaciones', this.changeData, this.grupoForm.valid);
+    // console.log('Validaciones', this.changeData, this.grupoForm.valid);
     if (this.grupoForm.valid && this.changeData) {
       this.loading = true;
       this.data = [];
@@ -96,7 +96,7 @@ export class ConfigPerfilPage implements OnInit {
           position: -1,
           section: new Section({name: 'Biografia', key: -1}),
           basic: false,
-          user_id: this.authService.usuario._id,
+          user_id: this.user._id,
           })
       );
       let section;
@@ -110,6 +110,7 @@ export class ConfigPerfilPage implements OnInit {
       }
       this.configuracionPerfilService.GuardarItems(this.data);
       this.loading = false;
+      this.changeData = false;
       console.log('Data', this.data);
     }
   }
@@ -129,7 +130,7 @@ export class ConfigPerfilPage implements OnInit {
         custom: null,
         position: null,
         itemType: null,
-        user_id: this.authService.usuario._id,
+        user_id: this.user._id,
         basic: false,
       });
     }
@@ -137,33 +138,41 @@ export class ConfigPerfilPage implements OnInit {
 
   ngOnInit() {
     this.CargarData();
-    this.nombre = this.authService.usuario.firstName + ' ' + this.authService.usuario.lastName;
-    this.avatar = this.authService.usuario.avatarUrl;
-    console.log('changeData', this.changeData);
+    this.nombre = this.user.firstName + ' ' + this.user.lastName;
+    this.avatar = this.user.avatarUrl;
+    this.item = new Item({
+      category: null,
+      section: null,
+      value: null,
+      custom: null,
+      position: null,
+      itemType_id: null,
+      user_id: this.user._id,
+      basic: false,
+    });
+    this.userSusbcription = this.userService.userChanged.subscribe(
+      (data) => {
+        this.user = data;
+      }
+    );
+    // console.log('changeData', this.changeData);
+  }
+
+  ngOnDestroy(): void {
+    this.userSusbcription.unsubscribe();
   }
 
   CargarData() {
     this.configuracionPerfilService.CargarItemsUsuario().then(
       (respuesta: Item[])  => {
-        console.log('respuestaaa', respuesta);
+        // console.log('respuestaaa', respuesta);
         for (const dato of respuesta) {
           this.AggItem(dato, false);
         }
+        this.grupoForm.controls.biografia.setValue(this.configuracionPerfilService.biografia.value);
         this.loading = false;
       }
     );
-    /*const itemPrueba = new Item(
-      {
-        section: new Section({_id: '1',  name: 'Publico', key: 0}),
-        value: 'anibal prueba',
-        custom: null,
-        position: 0,
-        itemType_id: '9',
-        user_id: 'Anibal',
-        basic: true,
-      }
-    );
-    this.AggItem(itemPrueba, false);*/
   }
 
   Ordenar() {
@@ -220,7 +229,7 @@ export class ConfigPerfilPage implements OnInit {
     if (this.categories.length === 0) {
       this.categories = this.configuracionPerfilService.categories;
     }
-    console.log('this.categories', this.categories);
+    // console.log('this.categories', this.categories);
     for (const categoria of this.categories) {
       obj.push({
         text: categoria.description,
@@ -266,7 +275,6 @@ export class ConfigPerfilPage implements OnInit {
   }
 
   FormValid() {
-    console.log('this.changeData', this.changeData);
     // console.log('this.grupoForm.invalid', this.grupoForm.invalid);
     return this.changeData && this.grupoForm.valid;
   }
@@ -277,5 +285,13 @@ export class ConfigPerfilPage implements OnInit {
 
   Logout() {
     this.authService.Logout();
+  }
+
+  Drag() {
+    this.isDrag = true;
+  }
+
+  Drop() {
+    this.isDrag = false;
   }
 }

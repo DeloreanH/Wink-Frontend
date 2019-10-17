@@ -1,4 +1,5 @@
 import { Phone } from './phone.model';
+import { VisibilityOption } from './visibilityOptions.emun';
 
 export class User {
   public _id: string;
@@ -15,6 +16,8 @@ export class User {
   public username: string;
   public created: string;
   public updated: string;
+  public visibility: VisibilityOption;
+
   constructor(data: any) {
     Object.assign(this, data);
   }

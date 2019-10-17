@@ -4,6 +4,10 @@ import { AuthUser } from './authuser.model';
 import { User } from '../modelos/user.model';
 import { SlRouterService } from '@virtwoo/sl-router';
 import { VirtwooAuthPathName } from '@virtwoo/auth';
+import { Router } from '@angular/router';
+import { UserService } from '../servicios/user.service';
+import { HttpClient } from '@angular/common/http';
+import { Routes } from '../modelos/routes.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +19,9 @@ export class AuthService {
   private tokenExpiration: any;
   constructor(
     private slRouterService: SlRouterService,
+    private userService: UserService,
+    private router: Router,
+    private http: HttpClient
   ) {
    }
 
@@ -29,36 +36,36 @@ export class AuthService {
 
   AuthoLogin() {
     const userData: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
-    console.log('Usuario:', userData);
     if (!userData) {
       return;
     }
-    // console.log('****', userData.exp);
-    // console.log('HOy', new Date().getTime() / 1000);
-    // console.log('Condicion', + userData.exp < new Date().getTime());
-    const expDate = new Date(new Date().getTime() + +userData.exp );
     const loadedUser = new AuthUser(userData.token, userData.exp, userData.user);
-    // console.log('expDate:', expDate);
-    // console.log('loadedUser:', loadedUser);
-    // console.log('loadedUser.Token:', loadedUser.Token);
     if (loadedUser.Token) {
       this.user.next(loadedUser);
-      this.usuario = loadedUser.user;
+      this.userService.User(loadedUser.user);
       const expDuration =  userData.exp - (new Date().getTime() / 1000);
-      // console.log('expDuration', expDuration);
       this.AutoLogout(expDuration);
     }
   }
 
-  Logout() {
-    this.user.next(null);
-    this.usuario = null;
-    this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
-    localStorage.removeItem('userData');
-    if (this.tokenExpiration) {
-      clearTimeout(this.tokenExpiration);
+  async Logout() {
+    try {
+      const respuesta: any = await this.http.post(Routes.BASE + Routes.LOGOUT, null).toPromise();
+      console.log('Logout', respuesta);
+      if (respuesta.status === 'logout successfully' ) {
+        this.user.next(null);
+        this.userService.User(null);
+        // this.router.navigate(['/virtwoo-auth/login']);
+        this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+        localStorage.removeItem('userData');
+        if (this.tokenExpiration) {
+          clearTimeout(this.tokenExpiration);
+        }
+        this.tokenExpiration = null;
+      }
+    } catch (error) {
+
     }
-    this.tokenExpiration = null;
   }
 
   AutoLogout(expDuration: number) {
