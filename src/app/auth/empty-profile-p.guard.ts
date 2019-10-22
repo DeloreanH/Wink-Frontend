@@ -26,6 +26,7 @@ export class EmptyProfilePGuard implements CanActivate {
         if (!user.user.emptyProfile) {
           return true;
         }
+        // return true;
         // ruta a redirigir si no esta autenticado
         return this.router.createUrlTree(['perfil']);
       })

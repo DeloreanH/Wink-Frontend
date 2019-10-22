@@ -71,6 +71,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
       // this.onChange(this.value);
       this.CargarItem();
       this.AggCampoForm();
+      this.CargarChips();
     } else {
       this.value = null;
     }
@@ -106,14 +107,28 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (index >= 0) {
       this.chipArray.splice(index, 1);
       this.value.value = this.chipArray.join(',');
+      this.focus = true;
     }
   }
 
   CargarItem() {
     if (this.value.value === '' || this.value.value) {
       this.BuscarTItem();
+      if (!this.itemType.repeat) {
+        this.AggUnico();
+      }
     } else {
       this.BuscarTItems(this.value.category);
+    }
+  }
+
+  CargarChips() {
+    if (this.itemType && this.itemType.index === 8 && this.value.value !== '') {
+      const valores = this.value.value.split(',');
+      for (const valor of valores) {
+        this.chipArray.push(valor.trim());
+      }
+      (this.form.controls.campo1 as FormControl).markAsTouched();
     }
   }
 
@@ -396,9 +411,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   EliminarUnico() {
     // console.log('lista', this.unique);
-    const index = this.unique.indexOf(this.itemType._id);
-    if (index !== -1) {
-      this.unique.splice(index, 1);
+    if (this.itemType) {
+      const index = this.unique.indexOf(this.itemType._id);
+      if (index !== -1) {
+        this.unique.splice(index, 1);
+      }
     }
   }
 

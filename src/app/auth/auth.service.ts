@@ -50,19 +50,19 @@ export class AuthService {
 
   async Logout() {
     try {
-      const respuesta: any = await this.http.post(Routes.BASE + Routes.LOGOUT, null).toPromise();
-      console.log('Logout', respuesta);
-      if (respuesta.status === 'logout successfully' ) {
-        this.user.next(null);
-        this.userService.User(null);
-        // this.router.navigate(['/virtwoo-auth/login']);
-        this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
-        localStorage.removeItem('userData');
-        if (this.tokenExpiration) {
-          clearTimeout(this.tokenExpiration);
-        }
-        this.tokenExpiration = null;
+      // const respuesta: any = await this.http.post(Routes.BASE + Routes.LOGOUT, null).toPromise();
+      console.log('Logout', );
+      // if (respuesta.status === 'logout successfully' ) {
+      this.user.next(null);
+      this.userService.User(null);
+      localStorage.removeItem('userData');
+      // this.router.navigate(['/virtwoo-auth/login']);
+      this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+      if (this.tokenExpiration) {
+        clearTimeout(this.tokenExpiration);
       }
+      this.tokenExpiration = null;
+    // }
     } catch (error) {
 
     }

@@ -6,6 +6,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PerfilPage } from './perfil.page';
+import { ChooseImageModule } from 'vlibs/choose-image/choose-image.module';
+import { ChooseImageService } from 'vlibs/choose-image/choose-image.service';
+import { ChooseImageComponent } from 'vlibs/choose-image/choose-image.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 const routes: Routes = [
   {
@@ -21,7 +26,11 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule,
+    ChooseImageModule,
+    FontAwesomeModule
   ],
-  declarations: [PerfilPage]
+  declarations: [PerfilPage],
+  providers: [ChooseImageService, WebView],
+  entryComponents: [ChooseImageComponent]
 })
 export class PerfilPageModule {}

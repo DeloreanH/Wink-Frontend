@@ -29,6 +29,8 @@ import {
 
 import {MatChipsModule} from '@angular/material/chips';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { ChooseImageModule } from 'vlibs/choose-image/choose-image.module';
+import { ChooseImageComponent } from 'vlibs/choose-image/choose-image.component';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -36,7 +38,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
+  entryComponents: [ChooseImageComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -59,6 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    ChooseImageModule
   ],
   providers: [
     StatusBar,

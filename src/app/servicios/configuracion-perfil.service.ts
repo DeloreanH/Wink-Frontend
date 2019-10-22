@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Category } from '../modelos/category.model';
 import { ItemType } from '../modelos/itemType.model';
-import { Option } from '../modelos/option.model';
 import { Section } from '../modelos/section.model';
 import { HttpClient } from '@angular/common/http';
 import { Routes } from '../modelos/routes.enum';
@@ -192,6 +191,5 @@ export class ConfiguracionPerfilService {
 
       }
     }
-
   }
 }

@@ -17,6 +17,7 @@ export class User {
   public created: string;
   public updated: string;
   public visibility: VisibilityOption;
+  public autosave: boolean;
 
   constructor(data: any) {
     Object.assign(this, data);

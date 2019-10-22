@@ -7,22 +7,20 @@
 <ion-content class="ion-padding">
   <form [formGroup]="form"  (ngSubmit)="onSubmit()">
     <div class="contenedorAvatar" >
-      <ion-avatar> 
-        <img [src]="user.avatarUrl ? user.avatarUrl : avatar" >
+      <ion-avatar (click)="SeleccionarImagen()" style="height: 100px;
+      width: 100px;"> 
+        <img [src]="user.avatarUrl ? user.avatarUrl : avatar.filePath" >
       </ion-avatar>
     </div>
+    <ion-button (click)="SeleccionarImagen()">Camara</ion-button>
+    <ion-button (click)="SeleccionarImagen()">Galeria</ion-button>
     <ion-list>
-      <ion-item>
-        <ion-label position="floating" >
-          avatarUrl
-        </ion-label>
-        <ion-input 
-          
-          formControlName="avatarUrl"
-        >
-        </ion-input>
-      </ion-item>
-      <ion-item>
+      <ion-item >
+          <fa-icon 
+          [icon]="['fas', 'user']"
+          class="icono"
+          style="align-self:center;"
+          slot="start" ></fa-icon>
         <ion-label position="floating" >
           firstName
         </ion-label>
@@ -34,6 +32,11 @@
         </ion-input>
       </ion-item>
       <ion-item>
+          <fa-icon 
+          [icon]="['fas', 'user']"
+          class="icono"
+          style="align-self:center;"
+          slot="start" ></fa-icon>
         <ion-label position="floating" >
           lastName
         </ion-label>
@@ -45,6 +48,11 @@
         </ion-input>
       </ion-item>
       <ion-item>
+          <fa-icon 
+          [icon]="['fas', 'envelope']"
+          class="icono"
+          style="align-self:center;"
+          slot="start" ></fa-icon>
         <ion-label position="floating" >
           email
         </ion-label>
@@ -57,7 +65,13 @@
         </ion-input>
       </ion-item>
       <div style="width: 100%; display: flex;">
-      <ion-item style="flex: 0 0 25%; margin-right: 5%;">
+          
+      <ion-item style="flex: 0 0 35%; margin-right: 5%;">
+          <fa-icon 
+          [icon]="['fas', 'mobile-alt']"
+          class="icono"
+          style="align-self:center;"
+          slot="start" ></fa-icon>
         <ion-label position="floating" >
           Code
         </ion-label>
@@ -68,7 +82,7 @@
         >
         </ion-input>
       </ion-item>
-      <ion-item style="flex: 0 0 70%;">
+      <ion-item style="flex: 0 0 60%;">
           <ion-label position="floating" >
             Phone Number
           </ion-label>
@@ -81,6 +95,11 @@
     </div>
       
       <ion-item>
+          <fa-icon 
+          [icon]="['fas', 'calendar-alt']"
+          class="icono"
+          style="align-self:center;"
+          slot="start" ></fa-icon>
         <ion-label position="floating" >
           birthday
         </ion-label>
@@ -94,6 +113,11 @@
         ></ion-datetime>
       </ion-item>
       <ion-item>
+          <fa-icon 
+          [icon]="['fas', 'genderless']"
+          class="icono"
+          style="align-self:center;"
+          slot="start" ></fa-icon>
         <ion-label position="floating" >
           gender
         </ion-label>
@@ -117,8 +141,14 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      
+      <ion-item>
+        <ion-toggle color="primary" formControlName="autosave" style="padding-left: 0px !important;"></ion-toggle>
+        <ion-label  >
+            Autoguardado de contactos
+          </ion-label>
+      </ion-item>
     </ion-list>
     <ion-button expand="block" type="submit">Save</ion-button>
+    <ion-button expand="block" color="danger" (click)="user.emptyProfile ? Logout() : null">Cancel</ion-button>
   </form>
 </ion-content>
