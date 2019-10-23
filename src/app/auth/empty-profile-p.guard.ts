@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { map, take } from 'rxjs/operators';
+import { RoutesPrincipal } from '../app-routing.module';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class EmptyProfilePGuard implements CanActivate {
         }
         // return true;
         // ruta a redirigir si no esta autenticado
-        return this.router.createUrlTree(['perfil']);
+        return this.router.createUrlTree([RoutesPrincipal.DATOS_BASICOS]);
       })
       );
   }

@@ -1,5 +1,5 @@
 import { VirtwooAuthConfig } from '@virtwoo/auth';
-import { RoutesName } from 'src/app/app-routing.module';
+import { RoutesPrincipal } from 'src/app/app-routing.module';
 import { Routes } from 'src/app/modelos/routes.enum';
 // import { Paths } from '@common/route';
 
@@ -13,7 +13,7 @@ export const virtwooAuthEnvironment: VirtwooAuthConfig = {
   resCallback: (response) => {
     // console.log('esta es la respuesta', response);
     localStorage.setItem('userData', JSON.stringify(response));
-    return RoutesName.APP;
+    return RoutesPrincipal.APP;
   }
 };
 

@@ -29,8 +29,7 @@ import {
 
 import {MatChipsModule} from '@angular/material/chips';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
-import { ChooseImageModule } from 'vlibs/choose-image/choose-image.module';
-import { ChooseImageComponent } from 'vlibs/choose-image/choose-image.component';
+import { Camera } from '@ionic-native/camera/ngx';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -38,7 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [ChooseImageComponent],
+  entryComponents: [],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -61,11 +60,11 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    ChooseImageModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
   ],

@@ -6,5 +6,6 @@ export enum Routes {
   ITEMS_USER = 'user-config/items/user/',
   CREATE_ITEM = 'user-config/items/user/create',
   LOGOUT = 'auth/logout',
-  UPLOAD_AVATAR = 'user-config/user/upload/avatar'
+  UPLOAD_AVATAR = 'user-config/user/upload/avatar',
+  UPDATE_BASIC_DATE = 'user-config/user/update/basic-data'
 }

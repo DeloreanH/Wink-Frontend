@@ -3,6 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { TabsComponent } from './tabs.component';
 
+export enum RoutesAPP {
+  BASE = 'app/',
+  HOME = 'home',
+  CONFIGURAR_PERFIL = 'config-profile'
+}
+
 const routes: Routes = [
   {
     path: '',

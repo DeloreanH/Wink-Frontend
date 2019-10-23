@@ -7,7 +7,6 @@ import { VirtwooAuthPathName } from '@virtwoo/auth';
 import { Router } from '@angular/router';
 import { UserService } from '../servicios/user.service';
 import { HttpClient } from '@angular/common/http';
-import { Routes } from '../modelos/routes.enum';
 
 @Injectable({
   providedIn: 'root'

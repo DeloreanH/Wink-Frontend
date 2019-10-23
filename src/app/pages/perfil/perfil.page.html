@@ -1,19 +1,23 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-title>Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<div *ngIf="loading" class="spinner">
+  <spinner></spinner>
+</div>
+
+<ion-content *ngIf="!loading" class="ion-padding">
   <form [formGroup]="form"  (ngSubmit)="onSubmit()">
     <div class="contenedorAvatar" >
       <ion-avatar (click)="SeleccionarImagen()" style="height: 100px;
       width: 100px;"> 
-        <img [src]="user.avatarUrl ? user.avatarUrl : avatar.filePath" >
+        <img *ngIf="!loadingAvatar" [src]="user.avatarUrl ? user.avatarUrl : avatar.filePath" >
+        <ion-spinner *ngIf="loadingAvatar" name="crescent" style="width: 100%; height: 100%;"></ion-spinner>
       </ion-avatar>
     </div>
-    <ion-button (click)="SeleccionarImagen()">Camara</ion-button>
-    <ion-button (click)="SeleccionarImagen()">Galeria</ion-button>
     <ion-list>
       <ion-item >
           <fa-icon 
@@ -148,7 +152,7 @@
           </ion-label>
       </ion-item>
     </ion-list>
-    <ion-button expand="block" type="submit">Save</ion-button>
-    <ion-button expand="block" color="danger" (click)="user.emptyProfile ? Logout() : null">Cancel</ion-button>
+    <ion-button expand="block" type="submit" [disabled]="FormValid()">Save</ion-button>
+    <ion-button expand="block" color="danger" (click)="user.emptyProfile ? Logout() : Cancel()">Cancel</ion-button>
   </form>
 </ion-content>

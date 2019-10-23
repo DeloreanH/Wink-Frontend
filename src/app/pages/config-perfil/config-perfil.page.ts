@@ -1,15 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, MenuController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { Category } from 'src/app/modelos/category.model';
-import { Item } from 'src/app/modelos/item.model';
-import { Section } from 'src/app/modelos/section.model';
-import { ConfiguracionPerfilService } from 'src/app/servicios/configuracion-perfil.service';
-import { AuthService } from 'src/app/auth/auth.service';
-import { User } from 'src/app/modelos/user.model';
-import { UserService } from 'src/app/servicios/user.service';
+import { Category } from '../../../app/modelos/category.model';
+import { Item } from '../../../app/modelos/item.model';
+import { Section } from '../../../app/modelos/section.model';
+import { ConfiguracionPerfilService } from '../../../app/servicios/configuracion-perfil.service';
+import { AuthService } from '../../../app/auth/auth.service';
+import { User } from '../../../app/modelos/user.model';
+import { UserService } from '../../../app/servicios/user.service';
 import { Subscription } from 'rxjs';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { RoutesPrincipal } from 'src/app/app-routing.module';
+import { RoutesAPP } from '../tabs/tabs-routing.module';
 
 @Component({
   selector: 'app-config-perfil',
@@ -46,13 +49,16 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
   item: Item;
   user: User;
   userSusbcription =  new Subscription();
+  eventRouter = new Subscription();
 
   constructor(
     public actionSheetController: ActionSheetController,
     private configuracionPerfilService: ConfiguracionPerfilService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
+    private menu: MenuController
     ) {
     this.user = this.userService.User();
     this.sections = this.configuracionPerfilService.sections;
@@ -155,21 +161,41 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
         this.user = data;
       }
     );
-    // console.log('changeData', this.changeData);
+    this.eventRouter = this.router.events.subscribe(
+      (valor: any) => {
+        if (valor instanceof NavigationStart) {
+          if (valor.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL) {
+            this.CloseMenu();
+          }
+        }
+        if (valor instanceof NavigationEnd) {
+          if (valor.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL) {
+            this.CloseMenu();
+          }
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.userSusbcription.unsubscribe();
+    this.eventRouter .unsubscribe();
   }
 
   CargarData() {
     this.configuracionPerfilService.CargarItemsUsuario().then(
       (respuesta: Item[])  => {
         // console.log('respuestaaa', respuesta);
+        if (!respuesta) {
+          return;
+        }
         for (const dato of respuesta) {
           this.AggItem(dato, false);
         }
-        this.grupoForm.controls.biografia.setValue(this.configuracionPerfilService.biografia.value);
+        const valor = this.configuracionPerfilService.biografia;
+        if (valor) {
+          this.grupoForm.controls.biografia.setValue(valor.value);
+        }
         this.loading = false;
       }
     );
@@ -285,6 +311,9 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
 
   Logout() {
     this.authService.Logout();
+    if (this.menu.isOpen) {
+      this.menu.close();
+    }
   }
 
   Drag() {
@@ -293,5 +322,20 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
 
   Drop() {
     this.isDrag = false;
+  }
+
+  IrDatosBasicos() {
+    this.router.navigate(['/' + RoutesPrincipal.DATOS_BASICOS]);
+    this.CloseMenu();
+  }
+
+  CloseMenu() {
+    if (this.menu.isOpen) {
+      this.menu.close();
+    }
+  }
+
+  Scroll(event) {
+    console.log('Scroll', event);
   }
 }

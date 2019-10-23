@@ -4,12 +4,11 @@ import { User } from '../../../app/modelos/user.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../../app/auth/auth.service';
-import {
-  Camera,
-  CameraOptions,
-} from '@ionic-native/camera/ngx/';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, MenuController } from '@ionic/angular';
 import { UpdateAvatarService } from '../../../app/servicios/updateAvatar/update-avatar.service';
+import { Router, NavigationEnd } from '@angular/router';
+import { RoutesAPP } from '../tabs/tabs-routing.module';
+import { RoutesPrincipal } from 'src/app/app-routing.module';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
@@ -24,26 +23,36 @@ export class PerfilPage implements OnInit, OnDestroy {
   };
   user: User;
   userSusbcription = new Subscription();
+  formSusbcription = new Subscription();
   form: FormGroup;
+  loading = false;
+  loadingAvatar = false;
+  uploadAvatar = false;
+  edit = false;
 
   constructor(
     public actionSheetController: ActionSheetController,
     private userService: UserService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private camera: Camera,
-    private avatarService: UpdateAvatarService
+    private avatarService: UpdateAvatarService,
+    private router: Router,
   ) {
     this.user = this.userService.User();
     this.form = this.formBuilder.group({
       firstName: new FormControl( this.user.firstName,  [Validators.required]),
       lastName: new FormControl( this.user.lastName,  [Validators.required]),
-      email: new FormControl( this.user.email, [Validators.required, Validators.email]),
-      phoneCode: new FormControl( this.user.phone ? this.user.phone.phoneCode : null,  [Validators.required]),
-      phoneNumber: new FormControl( this.user.phone ? this.user.phone.phoneNumber : null,  [Validators.required]),
+      email: new FormControl( {value: this.user.email, disabled: this.DisableEmail()}, [Validators.required, Validators.email]),
+      phoneCode: new FormControl( {
+        value: this.user.phone ? this.user.phone.phoneCode : null,
+        disabled: this.DisableEmail() },  [Validators.required]),
+      phoneNumber: new FormControl({
+        value: this.user.phone ? this.user.phone.phoneNumber : null,
+        disabled: this.DisablePhone()}, [Validators.required]),
       birthday: new FormControl( this.user.birthday, [Validators.required]),
       gender: new FormControl( this.user.gender, [Validators.required]),
-      autosave: new FormControl( this.user.autosave , [Validators.required]),
+      autosave: new FormControl( this.user.autosave  ? this.user.autosave : true),
+      phone: new FormControl('')
     });
    }
 
@@ -53,69 +62,43 @@ export class PerfilPage implements OnInit, OnDestroy {
         this.user = data;
       }
     );
+    this.form.valueChanges.subscribe(
+      () => {
+        this.edit = true;
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.userSusbcription.unsubscribe();
   }
 
-  onSubmit() {
-    console.log('Data', this.form);
+  async onSubmit() {
+    this.loading = true;
+    try {
+      this.form.value.phone = {
+        phoneCode: this.form.value.phoneCode,
+        phoneNumber: this.form.value.phoneNumber
+      };
+      console.log('Data', this.form.value);
+      const respuesta = await this.userService.UpdateDate(this.form.value);
+      if (respuesta.status === 'user updated successfully') {
+        this.authService.AuthoLogin();
+        console.log('cambio ruta');
+        this.router.navigate(['/' + RoutesAPP.BASE + RoutesAPP.HOME]);
+      }
+    } catch (err) {
+      console.log('Error submit', err);
+    }
+    this.loading = false;
   }
 
   FechaActual() {
     return new Date();
   }
 
-  SeleccionarImagen2(camara: boolean) {
-    this.camera.getPicture({
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: camara ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY,
-    }).then((imageData) => {
-      this.userService.UpdateAvatar(imageData);
-     }, (err) => {
-      console.log('Error', err);
-     });
-  }
-
   Logout() {
     this.authService.Logout();
-  }
-
-  Camara() {
-    this.camera.getPicture({
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-
-    }).then((imageData) => {
-      const base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.user.avatarUrl = base64Image;
-      this.userService.UpdateAvatar(imageData);
-     }, (err) => {
-      console.log('Error', err);
-     });
-  }
-
-  Galeria() {
-    this.camera.getPicture({
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-    }).then((imageData) => {
-      const base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.user.avatarUrl = base64Image;
-      this.userService.UpdateAvatar(imageData);
-     }, (err) => {
-      console.log('Error', err);
-     });
   }
 
   async SeleccionarImagen() {
@@ -124,14 +107,14 @@ export class PerfilPage implements OnInit, OnDestroy {
       buttons: [{
         text: 'Camara',
         icon: 'camera',
-        handler: () => {
-          const respuesta = this.avatarService.OpenUpdate(true);
+        handler:  async () => {
+          this.SolicitudImage(true);
         }
       }, {
         text: 'Galeria',
         icon: 'image',
-        handler: () => {
-          const respuesta = this.avatarService.OpenUpdate(false);
+        handler:   () => {
+          this.SolicitudImage(false);
         }
       }, {
         text: 'Cancel',
@@ -143,6 +126,44 @@ export class PerfilPage implements OnInit, OnDestroy {
       }]
     });
     await actionSheet.present();
+  }
+
+  private async SolicitudImage(camera: boolean) {
+    try {
+      this.loadingAvatar = true;
+      const respuesta: any = await this.avatarService.OpenUpdate(camera);
+      this.userService.UpdateAvatar(respuesta.link);
+      console.log('Respuesta imagen', respuesta);
+      this.uploadAvatar = true;
+    } catch (err) {
+      console.log('Error SolicitudImage', err);
+    }
+    this.loadingAvatar = false;
+  }
+
+  FormValid() {
+    if (this.user) {
+      if (this.user.emptyProfile) {
+        return (this.form.valid && this.uploadAvatar) ? false : true;
+      } else {
+        return (this.form.valid && this.edit) ? false : true;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  Cancel() {
+    this.router.navigate(['/' + RoutesAPP.BASE + RoutesAPP.CONFIGURAR_PERFIL]);
+  }
+
+
+  DisableEmail(): boolean {
+    return (this.user.emptyProfile && this.user.email !== '') ? true : false;
+  }
+
+  DisablePhone(): boolean {
+    return (this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber) ? true : false;
   }
 
 }

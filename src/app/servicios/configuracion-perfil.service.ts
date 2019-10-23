@@ -26,7 +26,7 @@ export class ConfiguracionPerfilService {
   ];*/
 
   categories2: Category[] = [];
-  biografia: Item;
+  biografia: Item = null;
 
   itemTypes: ItemType[] = []; /*[
     new ItemType({_id: 1, description: 'Celular', category_id: 1, icon: 'fas mobile-alt', index: 6, repeat: true}),

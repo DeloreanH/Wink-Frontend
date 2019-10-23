@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ConfiguracionPerfilService } from 'src/app/servicios/configuracion-perfil.service';
-import { ItemType } from 'src/app/modelos/itemType.model';
-import { Item } from 'src/app/modelos/item.model';
+import { ConfiguracionPerfilService } from '../../../../app/servicios/configuracion-perfil.service';
+import { ItemType } from '../../../../app/modelos/itemType.model';
+import { Item } from '../../../../app/modelos/item.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
    NG_VALIDATORS, Validators } from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-import { MessageError } from 'src/app/modelos/messageError.enum';
+import { MessageError } from '../../../../app/modelos/messageError.enum';
 
 @Component({
   selector: 'app-item-perfil',
@@ -114,7 +114,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   CargarItem() {
     if (this.value.value === '' || this.value.value) {
       this.BuscarTItem();
-      if (!this.itemType.repeat) {
+      if (this.itemType && !this.itemType.repeat) {
         this.AggUnico();
       }
     } else {
@@ -329,7 +329,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   CargarIcono() {
-    if (this.itemType.icon) {
+    if (this.itemType) {
       const valores = this.itemType.icon.split(' ');
       this.preIcono = valores[0];
       this.icon = valores[1];

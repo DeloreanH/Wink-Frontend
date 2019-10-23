@@ -25,7 +25,7 @@ export class UpdateAvatarService {
       async (resolve, reject) => {
         try {
           const open = await this.Open(camera);
-          console.log('open', open);
+          // console.log('open', open);
           if (open) {
             const update = await this.UpdateAvatar();
             console.log('update', update);
@@ -52,7 +52,7 @@ export class UpdateAvatarService {
               sourceType: camera ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY,
             });
           this.imageBase64 = image;
-          resolve(true);
+          resolve(image);
       } catch (err) {
         reject(err);
       }
@@ -70,11 +70,11 @@ export class UpdateAvatarService {
           const dataForm = new FormData();
           const imgBlob = this.ToBlob(this.imageBase64);
           dataForm.append('avatar', imgBlob, 'avatar.jpg');
-          const respuesta = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
-          console.log(respuesta);
+          const respuesta: any = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
+          console.log('UpdateAvatar', respuesta.status);
           resolve(respuesta);
         } catch (error) {
-          console.log('error', error);
+          // console.log('error', error);
           reject(error);
         }
       }
