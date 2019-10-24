@@ -50,7 +50,10 @@ export class UpdateAvatarService {
               encodingType: this.camera.EncodingType.JPEG,
               mediaType: this.camera.MediaType.PICTURE,
               sourceType: camera ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY,
+              correctOrientation: true,
+              allowEdit: true
             });
+          // image = await this.crop.crop(image, { quality: 100 });
           this.imageBase64 = image;
           resolve(image);
       } catch (err) {

@@ -166,4 +166,9 @@ export class PerfilPage implements OnInit, OnDestroy {
     return (this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber) ? true : false;
   }
 
+  ErrorImagen() {
+    console.log('Error');
+    this.user.avatarUrl = this.avatar.fileSrc;
+  }
+
 }

@@ -29,7 +29,7 @@ export class AuthService {
     const expDate = new Date(new Date().getTime() + + ExpUser * 1000);
     const userx = new AuthUser('', ExpUser, new User({}));
     this.user.next(userx);
-    this.AutoLogout(ExpUser * 1000);
+    // this.AutoLogout(ExpUser * 1000);
     localStorage.setItem('userData', JSON.stringify(userx));
    }
 
@@ -43,7 +43,7 @@ export class AuthService {
       this.user.next(loadedUser);
       this.userService.User(loadedUser.user);
       const expDuration =  userData.exp - (new Date().getTime() / 1000);
-      this.AutoLogout(expDuration);
+      // this.AutoLogout(expDuration);
     }
   }
 

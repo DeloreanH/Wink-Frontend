@@ -1,0 +1,20 @@
+.contenedor{
+  position: relative;
+  display: block;
+  text-align: center;
+}
+
+.texto-encima{
+  position: absolute;
+  top: 0px;
+}
+.centrado{
+  position: absolute;
+  top: 85%;
+  left: 3%;
+  // transform: translate(0%, 0%);
+}
+.imagen {
+  height: 220px;
+  max-width: 170px;
+}

@@ -30,7 +30,7 @@ import {
 import {MatChipsModule} from '@angular/material/chips';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { Camera } from '@ionic-native/camera/ngx';
-
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -65,6 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
     StatusBar,
     SplashScreen,
     Camera,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
   ],
