@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <ion-button (click)="Logout()">
+    Salir
+  </ion-button>
+  <ion-button (click)="GPS()">
+    GPS
+  </ion-button>
+  <ion-grid *ngIf="users.length !== 0" style="padding-left: 0%; padding-right: 0%;">
+      <ion-row style="padding-left: 5px; padding-right: 5px;" > 
+        <ion-col 
+        sizeXs="6" 
+        sizeSm="4" 
+        sizeMd="3" 
+        sizeLg="2.4" 
+        sizeXl="2"  
+        style=" padding: 5px;"
+        *ngFor="let user of users">
+          <card [user]="user"></card>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+  
+  
+</ion-content>

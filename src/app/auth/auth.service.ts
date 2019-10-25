@@ -43,7 +43,7 @@ export class AuthService {
       this.user.next(loadedUser);
       this.userService.User(loadedUser.user);
       const expDuration =  userData.exp - (new Date().getTime() / 1000);
-      // this.AutoLogout(expDuration);
+      this.AutoLogout(expDuration * 1000);
     }
   }
 

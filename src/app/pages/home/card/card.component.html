@@ -1,3 +1,4 @@
+
 <ion-card style="margin: 0px; max-width: 170px;" class="contenedor">
   <div style="display: flex; justify-content: flex-end; width: 100%; padding-top: 2%; padding-right: 3%;" class="texto-encima">
     <p style="
@@ -6,9 +7,9 @@
       font-weight: bold; 
       text-transform: capitalize;
       margin: 0%;
-      text-shadow: 1px 1px 3px #000;" >Busco sexo parejo</p>
+      text-shadow: 1px 1px 3px #000;" >{{user ? user.status : 'Disponible'}}</p>
   </div>
-  <ion-img class="imagen" alt="Avatar" src="http://192.168.1.119:3000/public/uploads/avatar/0f499988-aa48-4f4e-b1ca-dabc268a001b.jpg"></ion-img>
+  <ion-img class="imagen" alt="Avatar" (ionError)="ErrorImagen()" [src]="user ? user.avatarUrl : avatar"></ion-img>
   <p class="centrado" 
   style="
   color: #fff;
@@ -17,6 +18,6 @@
   text-transform: capitalize;
   margin: 0%;
   text-shadow: 1px 1px 3px #000;
-  ">Anibal Farinas</p>
+  ">{{user ? user.firstName + ' ' +  user.lastName : 'John Doe'}}</p>
   
 </ion-card>

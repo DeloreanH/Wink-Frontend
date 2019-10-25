@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Routes } from '../modelos/routes.enum';
 import { AuthService } from '../auth/auth.service';
 import { AuthUser } from '../auth/authuser.model';
+import { VisibilityOption } from '../modelos/visibilityOptions.emun';
+import { NearbyService } from '../service/nearby.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
+    private nearbyService: NearbyService,
   ) { }
 
   User(data?: User, updateStorage?: boolean) {
@@ -34,8 +37,7 @@ export class UserService {
   UpdateAvatar(link: string) {
     if (link) {
       this.user.avatarUrl = link;
-      this.userChanged.next(this.user);
-      this.UpdateStorage();
+      this.User(this.user, true);
     }
   }
 
@@ -64,5 +66,57 @@ export class UserService {
       const loadedUser = new AuthUser(userData.token, userData.exp, this.user);
       localStorage.setItem('userData', JSON.stringify(loadedUser));
     }
+  }
+
+  async UpdateStatus(status: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!status) {
+            reject(false);
+          }
+          const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, status).toPromise();
+          this.user.status = status;
+          this.User(this.user, true);
+          resolve(response);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async UpdateProfiles(value: VisibilityOption) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!value) {
+            reject(false);
+          }
+          const response = await this.http.post(Routes.BASE + Routes.UPDATE_PROFILES, value).toPromise();
+          this.user.visibility = value;
+          this.User(this.user, true);
+          resolve(response);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async UpdateLocation() {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const response = await this.nearbyService.Open();
+          this.user.location.latitud = response.location.latitude;
+          this.user.location.longitud = response.location.longitude;
+          this.User(this.user, true);
+          resolve(response.users);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
   }
 }

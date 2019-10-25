@@ -1,5 +1,6 @@
 import { Phone } from './phone.model';
 import { VisibilityOption } from './visibilityOptions.emun';
+import { Location } from './location.model';
 
 export class User {
   public _id: string;
@@ -18,6 +19,7 @@ export class User {
   public updated: string;
   public visibility: VisibilityOption;
   public autosave: boolean;
+  public location: Location;
 
   constructor(data: any) {
     Object.assign(this, data);

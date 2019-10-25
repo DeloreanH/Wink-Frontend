@@ -7,5 +7,8 @@ export enum Routes {
   CREATE_ITEM = 'user-config/items/user/create',
   LOGOUT = 'auth/logout',
   UPLOAD_AVATAR = 'user-config/user/upload/avatar',
-  UPDATE_BASIC_DATE = 'user-config/user/update/basic-data'
+  UPDATE_BASIC_DATE = 'user-config/user/update/basic-data',
+  NEARBY_USER = 'wink/nearby-users',
+  UPDATE_STATUS = 'wink/nearby-users',
+  UPDATE_PROFILES = 'wink/nearby-users',
 }
