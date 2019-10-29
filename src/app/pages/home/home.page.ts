@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../app/auth/auth.service';
-import { NearbyService } from 'src/app/service/nearby.service';
-import { User } from 'src/app/modelos/user.model';
-import { UserService } from 'src/app/servicios/user.service';
+import { User } from '../../../app/modelos/user.model';
+import { UserService } from '../../../app/servicios/user.service';
 import { Subscription } from 'rxjs';
-import { Config } from 'src/app/config/config.enum';
-import { VisibilityOption } from 'src/app/modelos/visibilityOptions.emun';
+import { Config } from '../../../app/config/config.enum';
+import { VisibilityOption } from '../../../app/modelos/visibilityOptions.emun';
+import { RoutesAPP } from '../tabs/tabs-routing.module';
+import { WinkService } from '../../../app/service/wink.service';
 
 @Component({
   selector: 'app-home',
@@ -22,17 +23,19 @@ export class HomePage implements OnInit, OnDestroy {
   placeholderStatus = Config.MESSAGE_PLACEHOLDER_STATUS;
   personal = true;
   profesional  = true;
+  urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   private contadorUser; number = 10;
 
   constructor(
     private authService: AuthService,
-    private nearbyService: NearbyService,
-    private userService: UserService
+    private userService: UserService,
+    private winkService: WinkService
   ) {
     this.user = this.userService.User();
   }
 
   ngOnInit() {
+    this.GPS();
     this.userSusbcription = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
@@ -64,19 +67,19 @@ export class HomePage implements OnInit, OnDestroy {
     this.userSusbcription.unsubscribe();
   }
 
-  async GPS(event) {
+  async GPS(event?) {
     try {
-      // const response = await this.userService.UpdateLocation();
-      const respuesta = await this.nearbyService.OpenP();
+      const respuesta = await this.winkService.GetNearby2();
       if (respuesta) {
         this.originUsers = respuesta;
         this.LoadUsers();
-        console.log('User:', this.users.slice(0, 10));
       }
     } catch (err) {
       console.log('GPS error', err.message);
     }
-    event.target.complete();
+    if (event) {
+      event.target.complete();
+    }
   }
 
   Logout() {
@@ -100,9 +103,10 @@ export class HomePage implements OnInit, OnDestroy {
     console.log('Foco', event);
     if (event.target.value !== this.user.status) {
       try {
-        // const response = await this.userService.UpdateStatus(event.target.value);
-        // console.log('Respuesta ChangeStatus', response);
+        const response = await this.userService.UpdateStatus(event.target.value);
+        console.log('Respuesta ChangeStatus', response);
       } catch (err) {
+        event.target.value = this.user.status;
         console.log('Error ChangeStatus', err.message);
       }
     }
@@ -152,9 +156,10 @@ export class HomePage implements OnInit, OnDestroy {
       }
       try {
         // console.log(this.user.visibility);
-        // const response = await this.userService.UpdateProfiles(this.user.visibility);
-        // console.log('Respuesta ChangeProfiles', response);
+        const response = await this.userService.UpdateProfiles(this.user.visibility);
+        console.log('Respuesta ChangeProfiles', response);
       } catch (err) {
+        this.user = this.userService.User();
         console.log('Error ChangeProfiles', err.message);
       }
     }

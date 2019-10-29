@@ -1,23 +1,20 @@
-
-<ion-card style="margin: 0px; max-width: 170px;" class="contenedor">
-  <div style="display: flex; justify-content: flex-end; width: 100%; padding-top: 2%; padding-right: 3%;" class="texto-encima">
-    <p style="
-      font-style: oblique; 
-      color: rgb(236, 235, 235);
-      font-weight: bold; 
-      text-transform: capitalize;
-      margin: 0%;
-      text-shadow: 1px 1px 3px #000;" >{{user ? user.status : 'Disponible'}}</p>
+<ion-card class="contenedor-card card-list">
+  <div class="status-card">
+    <p 
+      class="text-card text-status" >
+      {{user.status ? user.status : 'Disponible'}}
+    </p>
   </div>
-  <ion-img class="imagen" alt="Avatar" (ionError)="ErrorImagen()" [src]="user ? user.avatarUrl : avatar"></ion-img>
-  <p class="centrado" 
-  style="
-  color: #fff;
-  font-size: 18px; 
-  font-weight: bold; 
-  text-transform: capitalize;
-  margin: 0%;
-  text-shadow: 1px 1px 3px #000;
-  ">{{user ? user.firstName + ' ' +  user.lastName : 'John Doe'}}</p>
-  
+  <ion-img 
+    class="imagen" 
+    alt="Avatar" 
+    (ionError)="ErrorImagen()" 
+    [src]="user ? user.avatarUrl : avatar"
+  >
+  </ion-img>
+  <p 
+    class="name-card text-card text-name" 
+  >
+    {{user ? user.firstName + ' ' +  user.lastName : 'John Doe'}}
+  </p>
 </ion-card>

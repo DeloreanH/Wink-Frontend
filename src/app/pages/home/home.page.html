@@ -27,20 +27,28 @@
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
-      <ion-grid *ngIf="users.length !== 0" style="padding-left: 0%; padding-right: 0%; width: 100%;">
-        <ion-row style="padding-left: 5px; padding-right: 5px;" > 
+      <ion-grid *ngIf="users.length > 0" class="grid-home">
+        <ion-row > 
           <ion-col 
           sizeXs="6" 
           sizeSm="4" 
           sizeMd="3" 
           sizeLg="2.4" 
-          sizeXl="2"  
-          style=" padding: 5px;"
+          sizeXl="2"
+          class="col-home"
           *ngFor="let user of users">
-            <card [user]="user"></card>
+            <card 
+            [routerLink]="[urlPublic, user._id]"
+            [user]="user"></card>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <div *ngIf="users.length === 0" class="vacio">
+        <p >
+          No hay usuarios cercanos.
+        </p>
+        <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+      </div>
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed"  >

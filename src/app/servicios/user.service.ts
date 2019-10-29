@@ -6,7 +6,8 @@ import { Routes } from '../modelos/routes.enum';
 import { AuthService } from '../auth/auth.service';
 import { AuthUser } from '../auth/authuser.model';
 import { VisibilityOption } from '../modelos/visibilityOptions.emun';
-import { NearbyService } from '../service/nearby.service';
+import { LocationService } from '../service/location.service';
+import { Location } from '../modelos/location.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private nearbyService: NearbyService,
+    private nearbyService: LocationService,
   ) { }
 
   User(data?: User, updateStorage?: boolean) {
@@ -72,10 +73,7 @@ export class UserService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          if (!status) {
-            reject(false);
-          }
-          const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, status).toPromise();
+          const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, { status: status }).toPromise();
           this.user.status = status;
           this.User(this.user, true);
           resolve(response);
@@ -93,7 +91,7 @@ export class UserService {
           if (!value) {
             reject(false);
           }
-          const response = await this.http.post(Routes.BASE + Routes.UPDATE_PROFILES, value).toPromise();
+          const response = await this.http.post(Routes.BASE + Routes.UPDATE_PROFILES, {visibility: value}).toPromise();
           this.user.visibility = value;
           this.User(this.user, true);
           resolve(response);
@@ -104,15 +102,14 @@ export class UserService {
     );
   }
 
-  async UpdateLocation() {
+  async UpdateLocation(location: Location) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.nearbyService.Open();
-          this.user.location.latitud = response.location.latitude;
-          this.user.location.longitud = response.location.longitude;
+          this.user.location.latitude = location.latitude;
+          this.user.location.longitude = location.longitude;
           this.User(this.user, true);
-          resolve(response.users);
+          resolve(true);
         } catch (err) {
           reject(err);
         }

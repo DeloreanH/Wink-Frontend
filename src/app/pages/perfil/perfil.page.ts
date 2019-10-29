@@ -29,6 +29,12 @@ export class PerfilPage implements OnInit, OnDestroy {
   loadingAvatar = false;
   uploadAvatar = false;
   edit = false;
+  genders = [
+    'Mujer',
+    'Hombre',
+    'Otro',
+    'Prefiero no decirlo'
+  ];
 
   constructor(
     public actionSheetController: ActionSheetController,

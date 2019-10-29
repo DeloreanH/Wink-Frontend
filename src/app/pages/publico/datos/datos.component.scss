@@ -1,0 +1,11 @@
+.contenedor-down {
+  display: flex;
+  justify-content: center;
+}
+
+.arrow {
+  margin-inline-end: 0px !important; 
+  align-self:flex-start; 
+  color: rgba(var(--ion-text-color-rgb,0,0,0),0.54);
+  font-size: 1.6em;
+}

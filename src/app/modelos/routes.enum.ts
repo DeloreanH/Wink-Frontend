@@ -9,6 +9,7 @@ export enum Routes {
   UPLOAD_AVATAR = 'user-config/user/upload/avatar',
   UPDATE_BASIC_DATE = 'user-config/user/update/basic-data',
   NEARBY_USER = 'wink/nearby-users',
-  UPDATE_STATUS = 'wink/nearby-users',
-  UPDATE_PROFILES = 'wink/nearby-users',
+  UPDATE_STATUS = 'wink/user/update/status',
+  UPDATE_PROFILES = 'wink/user/update/visibility',
+  SHOW_PUBLIC_PROFILE = 'wink/show-public-profile',
 }

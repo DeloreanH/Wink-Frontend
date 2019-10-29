@@ -6,7 +6,8 @@ import { TabsComponent } from './tabs.component';
 export enum RoutesAPP {
   BASE = 'app/',
   HOME = 'home',
-  CONFIGURAR_PERFIL = 'config-profile'
+  CONFIGURAR_PERFIL = 'config-profile',
+  PERFIL_PUBLICO = 'public-profile',
 }
 
 const routes: Routes = [
@@ -29,6 +30,15 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../config-perfil/config-perfil.module').then(m => m.ConfigPerfilPageModule)
+          }
+        ]
+      },
+      {
+        path: 'public-profile/:user',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../publico/publico.module').then(m => m.PublicoPageModule)
           }
         ]
       },

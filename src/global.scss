@@ -50,3 +50,41 @@
   padding-top: 2%;
   
 }
+
+.contenedor-card{
+  position: relative;
+  display: block;
+  text-align: center;
+}
+
+.text-card {
+  color: rgb(236, 235, 235);
+  font-weight: bold;
+  text-shadow: 1px 1px 3px #000;
+  margin: 0%;
+}
+
+.status-card{
+  position: absolute;
+  top: 0px;
+  display: flex; 
+  justify-content: flex-end; 
+  width: 100%; 
+  padding-top: 2%; 
+  padding-right: 3%;
+}
+.name-card{
+  position: absolute;
+  top: 85%;
+  left: 3%;
+  // transform: translate(0%, 0%);
+}
+
+.total {
+  height: 100%;
+  width: 100%;
+}
+
+.text-status {
+  font-style: oblique;
+}

@@ -1,0 +1,26 @@
+.avatar-profile {
+  height: 100px;
+  width: 100px;
+}
+
+.icon-center{
+  align-self:center;
+}
+
+.toggle-profile {
+  padding-left: 0px !important;
+}
+
+.phone {
+  width: 100%; 
+  display: flex;
+}
+
+.phoneCode {
+  flex: 0 0 35%; 
+  margin-right: 5%;
+}
+
+.phoneNumber {
+  flex: 0 0 60%;
+}

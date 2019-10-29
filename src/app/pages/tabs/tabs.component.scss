@@ -60,3 +60,9 @@
     }
   }
 }
+
+.ocultar {
+  > ion-tab-bar{
+    display: none;
+  }
+}

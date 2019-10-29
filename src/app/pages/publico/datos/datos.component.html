@@ -1,0 +1,12 @@
+<ion-content fullscreen  class="ion-padding">
+  <div class="contenedor-down">
+      <fa-icon [icon]="['fas', 'angle-double-down']" class="arrow"></fa-icon>
+  </div>
+  <ion-refresher slot="fixed" (ionRefresh)="Cerrar()">
+  </ion-refresher>
+  <ion-list>
+    <ion-item *ngFor="let item of publicItems">
+      <ion-label>{{ item.value}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -20,6 +20,7 @@ export class User {
   public visibility: VisibilityOption;
   public autosave: boolean;
   public location: Location;
+  public distance: number;
 
   constructor(data: any) {
     Object.assign(this, data);

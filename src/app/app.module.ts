@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -23,7 +23,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   HttpClient,
   HttpClientModule,
-  HttpClientJsonpModule,
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
 
@@ -36,6 +35,18 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+import { HammerGestureConfig } from '@angular/platform-browser';
+import * as Hammer from 'hammerjs';
+
+// create a class that overrides hammer default config
+
+export class MyHammerConfig extends HammerGestureConfig  {
+  overrides = {
+    swipe: { direction: Hammer.DIRECTION_ALL } // override default settings
+  } as any;
+}
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -69,7 +80,8 @@ export function createTranslateLoader(http: HttpClient) {
     Geolocation,
     LocationAccuracy,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
+    {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},
   ],
   bootstrap: [AppComponent]
 })
