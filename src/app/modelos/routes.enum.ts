@@ -1,5 +1,5 @@
 export enum Routes {
-  BASE = 'http://192.168.1.119:3000/api/',
+  BASE = 'http://192.168.1.108:3000/api/',
   CATEGORIES = 'user-config/categories',
   ITEM_TYPES = 'user-config/itemtypes',
   CATEGORIES_ITEM_TYPES = 'user-config/categories-items',

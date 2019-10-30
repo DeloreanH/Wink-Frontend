@@ -52,45 +52,66 @@ export class ConfiguracionPerfilService {
     return resultado;
   }
 
-  BuscarTipoItem(nameItemType: string): ItemType {
-    // console.log('idItemType', idItemType);
-    // console.log('nameItemType', nameItemType);
-    if (nameItemType) {
-      if (this.itemTypes.length === 0) {
-        this.CargarTiposItem();
-      }
-      const resultado = this.itemTypes.filter(
-        (item: ItemType) => {
-          return item.name === nameItemType;
+  async BuscarTipoItem(nameItemType: string) {
+    console.log('nameItemType', nameItemType);
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!nameItemType) {
+            reject(false);
+          }
+          let load = null;
+          if (this.itemTypes.length === 0) {
+            load = await this.CargarTiposItem();
+          } else {
+            load = true;
+          }
+          if (!load) {
+            reject(false);
+          }
+          const resultado = this.itemTypes.filter(
+            (item: ItemType) => {
+              return item.name === nameItemType;
+            }
+          );
+          resolve(resultado[0]);
+        } catch (err) {
+          reject(err);
         }
-      );
-      // console.log('resultado ItemType', resultado);
-      return resultado[0];
-    }
+      }
+    );
   }
 
   async CargarCategorias() {
-    try {
-      const respuesta = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
-      // console.log('respuesta', respuesta);
-      this.categories = [];
-      this.categories.push(...respuesta);
-      // console.log('categories', this.categories);
-    } catch (error) {
-
-    }
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
+          // console.log('respuesta', respuesta);
+          this.categories = [];
+          this.categories.push(...response);
+          resolve(response);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
   }
 
   async CargarTiposItem() {
-    try {
-      const respuesta = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
-      // console.log('respuesta', respuesta);
-      this.itemTypes = [];
-      this.itemTypes.push(...respuesta);
-      // console.log('itemTypes', this.itemTypes);
-    } catch (error) {
-
-    }
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
+          // console.log('respuesta', response);
+          this.itemTypes = [];
+          this.itemTypes.push(...response);
+          resolve(response);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
   }
 
   async CargarItemsUsuario() {

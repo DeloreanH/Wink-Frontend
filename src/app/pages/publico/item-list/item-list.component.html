@@ -1,0 +1,21 @@
+<ion-item *ngIf="item && item.value !== ''">
+  <!--Icono del item-->
+  <fa-icon 
+  *ngIf="item"
+  [icon]="[preIcono, icon]"  
+  class="icono"
+  slot="start" ></fa-icon>
+
+  <!--Titulo del item-->
+  <ion-label 
+  position="floating" 
+  style="padding-left: 10px;" 
+  *ngIf="item">
+    {{itemType? itemType.description : ''}}
+  </ion-label>
+
+  <ion-input 
+    style="margin-left: 2%;" 
+    [value]="item? item.value : ''"></ion-input>
+
+</ion-item>

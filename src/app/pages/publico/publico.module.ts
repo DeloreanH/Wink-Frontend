@@ -9,6 +9,7 @@ import { PublicoPage } from './publico.page';
 import { DatosComponent } from './datos/datos.component';
 import { IonicSwipeAllModule } from 'ionic-swipe-all';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ItemListComponent } from './item-list/item-list.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
     FontAwesomeModule
   ],
   entryComponents: [DatosComponent],
-  declarations: [PublicoPage, DatosComponent],
+  declarations: [PublicoPage, DatosComponent, ItemListComponent],
   providers: [
   ],
 })

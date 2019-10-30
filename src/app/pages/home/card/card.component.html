@@ -1,4 +1,4 @@
-<ion-card class="contenedor-card card-list">
+<ion-card class="contenedor-card card-list dimension">
   <div class="status-card">
     <p 
       class="text-card text-status" >
@@ -6,7 +6,7 @@
     </p>
   </div>
   <ion-img 
-    class="imagen" 
+    class="imagen-full" 
     alt="Avatar" 
     (ionError)="ErrorImagen()" 
     [src]="user ? user.avatarUrl : avatar"

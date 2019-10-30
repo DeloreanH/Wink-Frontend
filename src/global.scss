@@ -37,6 +37,15 @@
     --highlight-color-valid: #10dc60;
     --highlight-color-invalid: #f04141;
 }
+
+.icono-white {
+  margin-inline-end: 0px !important; 
+  align-self:flex-start; 
+  margin-top: 10px;
+  color: #fff;
+  font-size: 1.6em;
+  padding-inline-start: 3%;
+}
 .spinner {
   align-items: center;
   display: flex;
@@ -64,6 +73,10 @@
   margin: 0%;
 }
 
+.sombra {
+  text-shadow: 1px 1px 3px #000;
+}
+
 .status-card{
   position: absolute;
   top: 0px;
@@ -72,6 +85,11 @@
   width: 100%; 
   padding-top: 2%; 
   padding-right: 3%;
+}
+
+.end {
+  display: flex; 
+  justify-content: flex-end; 
 }
 .name-card{
   position: absolute;
@@ -87,4 +105,14 @@
 
 .text-status {
   font-style: oblique;
+}
+
+.imagen-full {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.transparent {
+  --background: transparent;
 }
