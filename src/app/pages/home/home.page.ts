@@ -7,6 +7,7 @@ import { Config } from '../../../app/config/config.enum';
 import { VisibilityOption } from '../../../app/modelos/visibilityOptions.emun';
 import { RoutesAPP } from '../tabs/tabs-routing.module';
 import { WinkService } from '../../../app/service/wink.service';
+import { LinkService } from 'src/app/servicios/link.service';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,8 @@ export class HomePage implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private winkService: WinkService
+    private winkService: WinkService,
+    private linkService: LinkService
   ) {
     this.user = this.userService.User();
   }
@@ -165,4 +167,17 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
+  OpenLink(numb: number) {
+    switch (numb) {
+      case 0:
+        this.linkService.OpenTel('');
+        break;
+      case 1:
+        this.linkService.OpenMail('');
+        break;
+      case 2:
+        this.linkService.OpenSocialNetwork('facebook', 'anibalbarreras');
+        break;
+    }
+  }
 }

@@ -3,6 +3,8 @@ import { Item } from 'src/app/modelos/item.model';
 import { ItemType } from 'src/app/modelos/itemType.model';
 import { ConfiguracionPerfilService } from 'src/app/servicios/configuracion-perfil.service';
 import { Config } from 'src/app/config/config.enum';
+import { IndexItemType } from 'src/app/config/indexItemType.emun';
+import { LinkService } from 'src/app/servicios/link.service';
 
 @Component({
   selector: 'item-list',
@@ -16,29 +18,34 @@ export class ItemListComponent implements OnInit {
   preIcono = 'far';
   icon = 'smile-wink';
   chips = [];
+  indexChip = IndexItemType.CHIP;
+  indexBiogarfia = IndexItemType.BIOGARFIA;
+  indexEmail = IndexItemType.EMAIL;
+  indexURL = IndexItemType.URL;
 
   constructor(
-    private cpService: ConfiguracionPerfilService
+    private cpService: ConfiguracionPerfilService,
+    private linkService: LinkService
   ) {
    }
 
   async ngOnInit() {
     try {
       if (this.item) {
-        if (this.item.position !== -1) {
+        if (this.item.position !== IndexItemType.BIOGARFIA) {
           this.itemType = await  this.cpService.BuscarTipoItem(this.item.itemtype);
         } else {
           if (this.item.section) {
             this.itemType = new ItemType({
               icon: Config.ICON_BIOGRAFIA,
               description: Config.NAME_BIOGRAFIA,
-              index: -1,
+              index: IndexItemType.BIOGARFIA,
             });
           } else {
             this.itemType = new ItemType({
               icon: this.item._id,
               description: this.item.custom,
-              index: 0,
+              index: IndexItemType.CAMPO,
             });
           }
         }
@@ -63,18 +70,26 @@ export class ItemListComponent implements OnInit {
   }
 
   LoadChips() {
-    if (this.itemType.index === 8) {
+    if (this.itemType.index === IndexItemType.CHIP) {
       this.chips = this.item.value.split(',');
     }
   }
 
   IsSelect() {
-    if (this.itemType.index === 4) {
+    if (this.itemType.index === IndexItemType.SELECTOR) {
       this.itemType.options.forEach( (option) => {
         if (option._id === this.item.value) {
           this.item.value = option.name;
         }
       });
+    }
+  }
+
+  OpenLink() {
+    if (this.itemType.index === this.indexEmail) {
+      this.linkService.OpenMail(this.item.value);
+    } else if (this.itemType.index === this.indexURL) {
+      this.linkService.OpenURL(this.item.value);
     }
   }
 

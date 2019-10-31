@@ -5,10 +5,10 @@ import { Routes } from 'src/app/modelos/routes.enum';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {
   accesssId: '5db899011a551c05e8657a4f',
-  apiUrl: 'http://192.168.1.108:5000',
+  apiUrl: Routes.IP + ':5000',
   apiVersion: 'v1',
   social: 'ALL',
-  redirectUrl: 'http://192.168.1.108:3000/api/auth/authenticate',
+  redirectUrl: Routes.BASE + Routes.AUTH,
   logoUrl: '/assets/icon/favicon.png',
   resCallback: (response) => {
     // console.log('esta es la respuesta', response);

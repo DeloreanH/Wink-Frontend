@@ -28,7 +28,7 @@
     </div>    
     <ion-fab *ngIf="load" class="button-wink end">
       <div *ngIf="wink" class="end">
-          <ion-fab-button *ngIf="!send && !wink.approved || wink.approved" size="small" color="light">
+          <ion-fab-button *ngIf="!send && !wink.approved || wink.approved" (click)="GoProfiles()" size="small" color="light">
               <ion-icon name="document"></ion-icon>
           </ion-fab-button>
           <ion-fab-button *ngIf="!send && !wink.approved" (click)="Acept()" size="small" color="success">
@@ -37,7 +37,7 @@
           <ion-fab-button *ngIf="!send && !wink.approved" (click)="Decline()" size="small" color="danger">
               <ion-icon name="close"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="send && !wink.approved" size="small" color="dark">
+          <ion-fab-button *ngIf="send && !wink.approved" (click)="Decline()" size="small" color="dark">
               <ion-icon name="happy"></ion-icon>
           </ion-fab-button>
       </div>

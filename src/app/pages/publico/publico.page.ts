@@ -9,6 +9,7 @@ import { Item } from 'src/app/modelos/item.model';
 import { Wink } from 'src/app/modelos/wink.model';
 import { UserService } from 'src/app/servicios/user.service';
 import { Config } from 'src/app/config/config.enum';
+import { IndexItemType } from 'src/app/config/indexItemType.emun';
 
 @Component({
   selector: 'app-publico',
@@ -46,19 +47,6 @@ export class PublicoPage implements OnInit {
     this.GetWink();
   }
 
-  async Datos(event) {
-    if (event.direction === 8) {
-      const modal = await this.modalController.create({
-        component: DatosComponent,
-        showBackdrop: true,
-        componentProps: {
-          publicItems: this.publicItems
-        }
-      });
-      return await modal.present();
-    }
-  }
-
   async GetWink() {
     try {
       if (this.userWink) {
@@ -71,7 +59,7 @@ export class PublicoPage implements OnInit {
           _id: Config.ICON_AGE,
           value: userW.age + ' años',
           custom: Config.NAME_AGE,
-          position: -1,
+          position: IndexItemType.BIOGARFIA,
           section: null
         });
         this.publicItems.splice(contador, 0, age);
@@ -79,9 +67,9 @@ export class PublicoPage implements OnInit {
         if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
           const gender = new Item({
             _id: Config.ICON_GENDER,
-            value: 'response.',
+            value: userW.gender,
             custom: Config.NAME_GENDER,
-            position: -1,
+            position: IndexItemType.BIOGARFIA,
             section: null
           });
           this.publicItems.splice(contador, 0, gender);
@@ -123,5 +111,9 @@ export class PublicoPage implements OnInit {
         approved: false
       }
     );
+  }
+
+  GoProfiles() {
+
   }
 }

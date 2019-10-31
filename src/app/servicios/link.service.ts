@@ -5,7 +5,7 @@ import { ConfiguracionPerfilService } from './configuracion-perfil.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EnlacesService {
+export class LinkService {
 
   // private redesSociales: {redSocial: string, iosName: string, androidName: string, app: string, url: string}[] = [];
   private redesSociales: {redSocial: string,  url: string}[] = [
@@ -15,14 +15,21 @@ export class EnlacesService {
     {redSocial: 'linkedin', url: 'https://www.linkedin.com/in/'},
     {redSocial: 'youtube', url: 'https://www.youtube.com/channel/'},
   ];
+
+  private mail = 'mailto:';
+  private tel = 'tel:';
   constructor(
     private informacionPerfilService: ConfiguracionPerfilService
   ) { }
 
-  AbrirRedSocial(idTipoItem: string, username: string) {
+  OpenSocialNetwork(red: string, username: string) {
+    console.log('OpenSocialNetwork');
     let tipoItem;
     let redSocial;
-
+    // redSocial = this.BuscarRedSocial(tipoItem.descripcion);
+    console.log('https://www.facebook.com/' + username);
+    window.open('fb://facewebmodal/f?href=' + username, '_system', 'location=no');
+/*
     if (idTipoItem && username) {
       tipoItem = this.informacionPerfilService.BuscarTipoItem(idTipoItem);
     }
@@ -40,6 +47,38 @@ export class EnlacesService {
 
     if (!idTipoItem || !username || !tipoItem || !redSocial) {
       return null;
+    }*/
+  }
+
+  OpenMail(mail: string) {
+    console.log('OpenMail');
+    try {
+      window.open(this.mail + 'anibal-1409@hotmail.com', '_system');
+    } catch (err) {
+      console.log('Error OpenMail', err.message);
+    }
+  }
+
+  OpenURL(url: string) {
+    console.log('OpenURL');
+    try {
+      console.log('URL', url.startsWith('http'));
+      if (url.startsWith('http')) {
+        window.open(encodeURI(url), '_system', 'location=yes');
+      } else {
+        window.open(encodeURI('http://' + 'facebook.com'), '_system', 'location=yes');
+      }
+    } catch (err) {
+      console.log('Error OpenURL', err.message);
+    }
+  }
+
+  OpenTel(num: string) {
+    console.log('OpenURL');
+    try {
+        window.open(encodeURI(this.tel + '+584120872584' ), '_system', 'location=yes');
+    } catch (err) {
+      console.log('Error OpenURL', err.message);
     }
   }
 
