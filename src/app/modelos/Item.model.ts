@@ -1,6 +1,7 @@
 import { Section } from './section.model';
 
 export class Item {
+  public _id: string;
   public value: string;
   public position: number;
   public custom: string;

@@ -26,6 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 @import "../vlibs/virtwoo-auth/auth.scss";
+
 .icono {
   margin-inline-end: 0px !important; 
   align-self:flex-start; 
@@ -115,4 +116,11 @@
 
 .transparent {
   --background: transparent;
+}
+
+.placeholder {
+  --placeholder-color: initial;
+  --placeholder-font-style: initial;
+  --placeholder-font-weight: initial;
+  --placeholder-opacity: .5;
 }

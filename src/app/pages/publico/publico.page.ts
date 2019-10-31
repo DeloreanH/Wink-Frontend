@@ -60,34 +60,40 @@ export class PublicoPage implements OnInit {
   }
 
   async GetWink() {
-    if (this.userWink) {
-      try {
+    try {
+      if (this.userWink) {
         const response = await this.winkService.GetPublicItems(this.userWink._id);
-        console.log(response);
-        const gender = new Item({
-          icon: Config.ICON_GENDER,
-          value: 'response.',
-          description: Config.NAME_GENDER,
-          position: -1,
-          section: null
-        });
+        let contador = 1;
+        const userW = new User(response.user);
+        this.publicItems.push(...response.userItems);
+        // console.log(response);
         const age = new Item({
-          icon: Config.ICON_AGE,
-          value: 'response.',
-          description: Config.NAME_AGE,
+          _id: Config.ICON_AGE,
+          value: userW.age + ' años',
+          custom: Config.NAME_AGE,
           position: -1,
           section: null
         });
-        this.publicItems.includes(age, 1);
-        this.publicItems.includes(gender, 2);
-        console.log(2, this.publicItems);
-        // this.wink = response.wink;
-        this.wink = new Wink(
+        this.publicItems.splice(contador, 0, age);
+        contador ++;
+        if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
+          const gender = new Item({
+            _id: Config.ICON_GENDER,
+            value: 'response.',
+            custom: Config.NAME_GENDER,
+            position: -1,
+            section: null
+          });
+          this.publicItems.splice(contador, 0, gender);
+          contador ++;
+        }
+        this.wink = response.wink;
+        /*this.wink = new Wink(
           {
             sender_id : this.userWink._id,
             approved: false
           }
-        );
+        );*/
         // this.wink = null;
         if (this.wink && this.wink.sender_id === this.userWink._id) {
           this.send = false;
@@ -95,9 +101,9 @@ export class PublicoPage implements OnInit {
           this.send = true;
         }
         this.load = true;
-      } catch (err) {
-        console.log('Error GetItems', err.message);
       }
+    } catch (err) {
+      console.log('Error GetWink', err.message);
     }
   }
 

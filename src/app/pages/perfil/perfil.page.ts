@@ -29,12 +29,7 @@ export class PerfilPage implements OnInit, OnDestroy {
   loadingAvatar = false;
   uploadAvatar = false;
   edit = false;
-  genders = [
-    'Mujer',
-    'Hombre',
-    'Otro',
-    'Prefiero no decirlo'
-  ];
+  genders = [];
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -60,6 +55,7 @@ export class PerfilPage implements OnInit, OnDestroy {
       autosave: new FormControl( this.user.autosave  ? this.user.autosave : true),
       phone: new FormControl('')
     });
+    this.genders = this.userService.gender;
    }
 
   ngOnInit() {

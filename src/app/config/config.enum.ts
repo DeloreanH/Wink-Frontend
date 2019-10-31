@@ -7,4 +7,6 @@ export enum Config {
   ICON_GENDER = 'fas genderless',
   NAME_AGE = 'Edad',
   ICON_AGE = 'fas calendar-day',
+  GENDER_HIDEEN = 3,
+
 }

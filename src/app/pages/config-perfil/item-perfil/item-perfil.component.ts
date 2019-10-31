@@ -297,22 +297,30 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  BuscarTItem() {
-    if (this.value) {
-      // console.log('Aquiii', this.value);
-      this.itemType = this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype);
-      // console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype));
-      if (this.itemType) {
-        this.BuscarTItems(this.itemType.category);
+  async BuscarTItem() {
+    try {
+      if (this.value) {
+        // console.log('Aquiii', this.value);
+        this.itemType = await this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype);
+        // console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype));
+        if (this.itemType) {
+          this.BuscarTItems(this.itemType.category);
+        }
       }
+      this.CargarIcono();
+    } catch (err) {
+      console.log('Error BuscarTItem', err.message);
     }
-    this.CargarIcono();
   }
 
-  BuscarTItems(idCategoria: string) {
-    if (idCategoria) {
-      this.tiposItems = this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
-      // console.log('tiposItems', this.tiposItems);
+  async BuscarTItems(idCategoria: string) {
+    try {
+      if (idCategoria) {
+        this.tiposItems = await this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
+        // console.log('tiposItems', this.tiposItems);
+      }
+    } catch (err) {
+      console.log('Error BuscarTItems', err.message);
     }
   }
 

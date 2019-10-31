@@ -15,6 +15,7 @@ export class ItemListComponent implements OnInit {
   itemType: ItemType;
   preIcono = 'far';
   icon = 'smile-wink';
+  chips = [];
 
   constructor(
     private cpService: ConfiguracionPerfilService
@@ -31,10 +32,19 @@ export class ItemListComponent implements OnInit {
             this.itemType = new ItemType({
               icon: Config.ICON_BIOGRAFIA,
               description: Config.NAME_BIOGRAFIA,
+              index: -1,
+            });
+          } else {
+            this.itemType = new ItemType({
+              icon: this.item._id,
+              description: this.item.custom,
+              index: 0,
             });
           }
         }
         this.CargarIcono();
+        this.LoadChips();
+        this.IsSelect();
       }
     } catch (err) {
 
@@ -49,6 +59,22 @@ export class ItemListComponent implements OnInit {
     } else {
       this.preIcono = 'far';
       this.icon = 'smile-wink';
+    }
+  }
+
+  LoadChips() {
+    if (this.itemType.index === 8) {
+      this.chips = this.item.value.split(',');
+    }
+  }
+
+  IsSelect() {
+    if (this.itemType.index === 4) {
+      this.itemType.options.forEach( (option) => {
+        if (option._id === this.item.value) {
+          this.item.value = option.name;
+        }
+      });
     }
   }
 

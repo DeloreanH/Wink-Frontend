@@ -10,6 +10,7 @@ import { DatosComponent } from './datos/datos.component';
 import { IonicSwipeAllModule } from 'ionic-swipe-all';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ItemListComponent } from './item-list/item-list.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes),
     IonicSwipeAllModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatChipsModule
   ],
   entryComponents: [DatosComponent],
   declarations: [PublicoPage, DatosComponent, ItemListComponent],

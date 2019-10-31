@@ -21,8 +21,17 @@ export class User {
   public autosave: boolean;
   public location: Location;
   public distance: number;
+  public age: number;
 
   constructor(data: any) {
     Object.assign(this, data);
+    this.CalculateAge();
+  }
+
+  public CalculateAge() {
+    if (this.birthday) {
+      const timeDiff = Math.abs(Date.now() - new Date(this.birthday).getTime());
+      this.age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
+    }
   }
 }

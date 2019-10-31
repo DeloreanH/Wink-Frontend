@@ -16,6 +16,12 @@ export class UserService {
 
   private user: User = null;
   userChanged = new Subject<User>();
+  gender = [
+    'Mujer',
+    'Hombre',
+    'Otro',
+    'Prefiero no decirlo'
+  ];
 
   constructor(
     private http: HttpClient,

@@ -36,38 +36,38 @@ export class ConfiguracionPerfilService {
     this.CargarTiposItem();
    }
 
-  BuscarTItemCategoria(nameCategory: string): ItemType[] {
-    if (this.categories.length === 0) {
-      this.CargarCategorias();
-    }
-    if (this.itemTypes.length === 0) {
-      this.CargarTiposItem();
-    }
-    const resultado = this.itemTypes.filter(
-      (item: ItemType) => {
-        return item.category === nameCategory;
+  async BuscarTItemCategoria(nameCategory: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!nameCategory) {
+            reject(false);
+          }
+          if (this.itemTypes.length === 0) {
+            const response = await this.CargarTiposItem();
+          }
+          const resultado = this.itemTypes.filter(
+            (item: ItemType) => {
+              return item.category === nameCategory;
+            }
+          );
+          resolve(resultado);
+        } catch (err) {
+          reject(err);
+        }
       }
     );
-    // console.log('resultados:' , resultado);
-    return resultado;
   }
 
   async BuscarTipoItem(nameItemType: string) {
-    console.log('nameItemType', nameItemType);
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!nameItemType) {
             reject(false);
           }
-          let load = null;
           if (this.itemTypes.length === 0) {
-            load = await this.CargarTiposItem();
-          } else {
-            load = true;
-          }
-          if (!load) {
-            reject(false);
+            const reponse = await this.CargarTiposItem();
           }
           const resultado = this.itemTypes.filter(
             (item: ItemType) => {
@@ -115,43 +115,50 @@ export class ConfiguracionPerfilService {
   }
 
   async CargarItemsUsuario() {
-    try {
-      let respuesta = await this.authService.user.pipe(
-        take(1),
-        exhaustMap(
-          user => {
-            if (!user) {
-              return null;
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          let response = await this.authService.user.pipe(
+            take(1),
+            exhaustMap(
+              user => {
+                if (!user) {
+                  return null;
+                }
+                return this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER + user.user._id);
+              }
+            )
+            ).toPromise();
+          response = response.filter(
+            (item: Item) => {
+              if (item.position === -1) {
+                this.biografia = item;
+              } else {
+                return item;
+              }
             }
-            return this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER + user.user._id);
-          }
-        )
-        ).toPromise();
-      // console.log('respuesta', respuesta);
-      respuesta = respuesta.filter(
-        (item: Item) => {
-          if (item.position === -1) {
-            this.biografia = item;
-          } else {
-            return item;
-          }
+          );
+          resolve(response);
+        } catch (err) {
+          reject(err);
         }
-      );
-      // console.log('respuesta con filtro', respuesta);
-      return respuesta;
-    } catch (error) {
-
-    }
+      }
+    );
   }
 
   async GuardarItems(data: Item[]) {
-    if (data) {
-      try {
-        const respuesta = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
-        // console.log('respuesta', respuesta);
-      } catch (error) {
-
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!data) {
+            reject(false);
+          }
+          const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
+          resolve(response);
+        } catch (err) {
+          reject(err);
+        }
       }
-    }
+    );
   }
 }
