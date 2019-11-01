@@ -8,5 +8,8 @@ export enum Config {
   NAME_AGE = 'Edad',
   ICON_AGE = 'fas calendar-day',
   GENDER_HIDEEN = 3,
+  SOCIAL_NETWORK = 'redessociales',
+  BIRTHDAY = 'fechadenacimiento',
+  CUSTOM = 'personalizado',
 
 }

@@ -1,4 +1,4 @@
-<ion-item *ngIf="item && item.value !== ''" (click)="OpenLink()"  class="item-has-value item-interactive item-input item-label-floating">
+<ion-item *ngIf="item && itemType" (click)="OpenLink()"  class="item-has-value item-interactive item-input item-label-floating">
   <!--Icono del item-->
   <fa-icon 
   *ngIf="item"
@@ -24,23 +24,16 @@
     
   </mat-chip-list>
 
-  <ion-text *ngIf="itemType &&  itemType.index === indexEmail && itemType.index === indexURL"
-    style="margin-left: 2%;" >
+  <ion-text *ngIf="itemType &&  itemType.index !== indexChip "
+    style="margin-left: 2%; margin-top: 8px;" >
     {{item? item.value : ''}}
   </ion-text>
-  
-  
-
-  <ion-input 
-    *ngIf="itemType &&  itemType.index !== indexChip && itemType.index !== indexBiogarfia"
-    style="margin-left: 2%;" 
-    [value]="item? item.value : ''" readonly>
-  </ion-input>
+<!--
   <ion-textarea
     *ngIf="itemType &&  itemType.index === indexBiogarfia"
     style="margin-left: 2%;" 
     [value]="item? item.value : ''" readonly>
 
   </ion-textarea>
-
+-->
 </ion-item>

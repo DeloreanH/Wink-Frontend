@@ -4,8 +4,8 @@ import { Routes } from 'src/app/modelos/routes.enum';
 // import { Paths } from '@common/route';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {
-  accesssId: '5db899011a551c05e8657a4f',
-  apiUrl: Routes.IP + ':5000',
+  accesssId: '5dbc467a3fba9c2c20e7e523',
+  apiUrl:  Routes.IP + ':5000',
   apiVersion: 'v1',
   social: 'ALL',
   redirectUrl: Routes.BASE + Routes.AUTH,

@@ -23,7 +23,7 @@
           {{userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe'}}
       </ion-label>
       <ion-label class="text-card text-small">
-          {{userWink ? userWink.distance : ''}}
+          {{userWink ? (userWink.distance | distance) : ''}}
       </ion-label>
     </div>    
     <ion-fab *ngIf="load" class="button-wink end">

@@ -170,13 +170,13 @@ export class HomePage implements OnInit, OnDestroy {
   OpenLink(numb: number) {
     switch (numb) {
       case 0:
-        this.linkService.OpenTel('');
+        this.linkService.Tel('4120872584');
         break;
       case 1:
-        this.linkService.OpenMail('');
+        this.linkService.Mail('anibal-1409@hotmail.com');
         break;
       case 2:
-        this.linkService.OpenSocialNetwork('facebook', 'anibalbarreras');
+        this.linkService.SocialNetwork('facebook', 'anibalbarreras');
         break;
     }
   }

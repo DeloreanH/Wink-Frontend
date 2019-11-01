@@ -11,6 +11,7 @@ import { IonicSwipeAllModule } from 'ionic-swipe-all';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ItemListComponent } from './item-list/item-list.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { DistancePipe } from '../../herramientas/distance.pipe';
 
 const routes: Routes = [
   {
@@ -30,7 +31,7 @@ const routes: Routes = [
     MatChipsModule
   ],
   entryComponents: [DatosComponent],
-  declarations: [PublicoPage, DatosComponent, ItemListComponent],
+  declarations: [PublicoPage, DatosComponent, ItemListComponent, DistancePipe],
   providers: [
   ],
 })

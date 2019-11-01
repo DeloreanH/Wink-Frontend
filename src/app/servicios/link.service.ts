@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import { ConfiguracionPerfilService } from './configuracion-perfil.service';
+import { SocialNetworkLinks } from '../modelos/socialNetworkLinks.mode';
+import { HttpClient } from '@angular/common/http';
+import { Routes } from '../modelos/routes.enum';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -8,28 +12,46 @@ import { ConfiguracionPerfilService } from './configuracion-perfil.service';
 export class LinkService {
 
   // private redesSociales: {redSocial: string, iosName: string, androidName: string, app: string, url: string}[] = [];
-  private redesSociales: {redSocial: string,  url: string}[] = [
+  private socialNetworks: SocialNetworkLinks[] = [];
+
+  /*
     {redSocial: 'instagram', url: 'https://www.instagram.com/'},
     {redSocial: 'twitter', url: 'https://twitter.com/'},
     {redSocial: 'facebook', url: 'https://www.facebook.com/'},
     {redSocial: 'linkedin', url: 'https://www.linkedin.com/in/'},
     {redSocial: 'youtube', url: 'https://www.youtube.com/channel/'},
-  ];
+  */
 
   private mail = 'mailto:';
   private tel = 'tel:';
+
   constructor(
-    private informacionPerfilService: ConfiguracionPerfilService
+    private plataform: Platform,
+    private http: HttpClient
   ) { }
 
-  OpenSocialNetwork(red: string, username: string) {
-    console.log('OpenSocialNetwork');
-    let tipoItem;
-    let redSocial;
+  async SocialNetwork(nameSocialNetwork: string, userName: string) {
+    try {
+      console.log('OpenSocialNetwork');
+      if (this.socialNetworks.length === 0) {
+        const response = await this.LoadSocialNetwork();
+      }
+      const socialNetwork = this.SearchSocialNetwork(nameSocialNetwork);
+      if (socialNetwork) {
+        if ( this.plataform.is('mobile') ) {
+          this.URL(socialNetwork.url + userName + socialNetwork.complement);
+        } else {
+          this.URL(socialNetwork.url + userName );
+        }
+      }
+    } catch (err) {
+      console.log('Error OpenSocialNetwork', err.message);
+    }
     // redSocial = this.BuscarRedSocial(tipoItem.descripcion);
-    console.log('https://www.facebook.com/' + username);
-    window.open('fb://facewebmodal/f?href=' + username, '_system', 'location=no');
-/*
+    // this.URL('https://twitter.com/');
+    // console.log('https://www.facebook.com/' + userName);
+    // window.open('https://twitter.com/', '_system', 'location=yes');
+    /*
     if (idTipoItem && username) {
       tipoItem = this.informacionPerfilService.BuscarTipoItem(idTipoItem);
     }
@@ -50,44 +72,61 @@ export class LinkService {
     }*/
   }
 
-  OpenMail(mail: string) {
+  Mail(mail: string) {
     console.log('OpenMail');
     try {
-      window.open(this.mail + 'anibal-1409@hotmail.com', '_system');
+      window.open(this.mail + mail, '_system');
     } catch (err) {
       console.log('Error OpenMail', err.message);
     }
   }
 
-  OpenURL(url: string) {
+  URL(url: string) {
     console.log('OpenURL');
     try {
-      console.log('URL', url.startsWith('http'));
       if (url.startsWith('http')) {
-        window.open(encodeURI(url), '_system', 'location=yes');
+        window.open(encodeURI(url), '_system');
       } else {
-        window.open(encodeURI('http://' + 'facebook.com'), '_system', 'location=yes');
+        window.open(encodeURI('http://' + url), '_system');
       }
     } catch (err) {
       console.log('Error OpenURL', err.message);
     }
   }
 
-  OpenTel(num: string) {
+  Tel(num: string) {
     console.log('OpenURL');
     try {
-        window.open(encodeURI(this.tel + '+584120872584' ), '_system', 'location=yes');
+        window.open(encodeURI(this.tel + num ), '_system', 'location=yes');
     } catch (err) {
       console.log('Error OpenURL', err.message);
     }
   }
 
-  private BuscarRedSocial(redSocial: string) {
-    return this.redesSociales.filter(
-      (item) => {
-        console.log(item.redSocial.toLowerCase(), redSocial.toLowerCase(), item.redSocial.toLowerCase() === redSocial.toLowerCase());
-        return item.redSocial.toLowerCase() === redSocial.toLowerCase();
+  private SearchSocialNetwork(name: string) {
+    if (this.socialNetworks.length !== 0) {
+      return this.socialNetworks.filter(
+        (socialNetwork) => {
+          return socialNetwork.name.toLowerCase() === name.toLowerCase();
+        }
+      )[0];
+    } else {
+      return null;
+    }
+  }
+
+  private async LoadSocialNetwork() {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const response = await this.http.get<SocialNetworkLinks[]>(Routes.BASE + Routes.SOCIAL_NETWORK).toPromise();
+          this.socialNetworks = [];
+          this.socialNetworks.push(...response);
+          resolve(response);
+        } catch (err) {
+          reject(err);
+        }
       }
-    )[0];
+    );
   }
 }

@@ -22,6 +22,11 @@ export class ItemListComponent implements OnInit {
   indexBiogarfia = IndexItemType.BIOGARFIA;
   indexEmail = IndexItemType.EMAIL;
   indexURL = IndexItemType.URL;
+  indexTel = IndexItemType.TELEFONO;
+  socialNetwork = Config.SOCIAL_NETWORK;
+  birthday = Config.BIRTHDAY;
+  indexCustom = IndexItemType.PERZONALIZADO;
+  indexDouble = IndexItemType.DOBLE_CAMPO;
 
   constructor(
     private cpService: ConfiguracionPerfilService,
@@ -52,6 +57,7 @@ export class ItemListComponent implements OnInit {
         this.CargarIcono();
         this.LoadChips();
         this.IsSelect();
+        this.IsCustom();
       }
     } catch (err) {
 
@@ -87,9 +93,20 @@ export class ItemListComponent implements OnInit {
 
   OpenLink() {
     if (this.itemType.index === this.indexEmail) {
-      this.linkService.OpenMail(this.item.value);
+      this.linkService.Mail(this.item.value);
     } else if (this.itemType.index === this.indexURL) {
-      this.linkService.OpenURL(this.item.value);
+      this.linkService.URL(this.item.value);
+    } else if (this.itemType.category === this.socialNetwork) {
+      this.linkService.SocialNetwork(this.itemType.name, this.item.value);
+    } else if (this.itemType.index === this.indexTel) {
+      this.linkService.Tel(this.item.value);
+    }
+  }
+
+  IsCustom() {
+    if (this.itemType.index === this.indexCustom || this.itemType.index === this.indexDouble) {
+      this.itemType.description = this.item.value;
+      this.item.value = this.item.custom;
     }
   }
 

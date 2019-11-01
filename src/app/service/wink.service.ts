@@ -84,7 +84,7 @@ export class WinkService {
           if (!idUser) {
             reject(false);
           }
-          const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { userToCheckId: idUser}).toPromise();
+          const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
           console.log('Res', response);
           resolve(response);
         } catch (err) {

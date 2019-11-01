@@ -51,30 +51,8 @@ export class PublicoPage implements OnInit {
     try {
       if (this.userWink) {
         const response = await this.winkService.GetPublicItems(this.userWink._id);
-        let contador = 1;
         const userW = new User(response.user);
-        this.publicItems.push(...response.userItems);
-        // console.log(response);
-        const age = new Item({
-          _id: Config.ICON_AGE,
-          value: userW.age + ' años',
-          custom: Config.NAME_AGE,
-          position: IndexItemType.BIOGARFIA,
-          section: null
-        });
-        this.publicItems.splice(contador, 0, age);
-        contador ++;
-        if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
-          const gender = new Item({
-            _id: Config.ICON_GENDER,
-            value: userW.gender,
-            custom: Config.NAME_GENDER,
-            position: IndexItemType.BIOGARFIA,
-            section: null
-          });
-          this.publicItems.splice(contador, 0, gender);
-          contador ++;
-        }
+        this.FilterItems(response.userItems, userW);
         this.wink = response.wink;
         /*this.wink = new Wink(
           {
@@ -115,5 +93,39 @@ export class PublicoPage implements OnInit {
 
   GoProfiles() {
 
+  }
+
+  FilterItems(items: Item[], userW: User) {
+    let contador = 0;
+    items = items.filter(
+      item => {
+        return item.value && item.value !== '';
+      }
+    );
+    console.log('aqui', items);
+    if (items[0].position === -1) {
+      contador++;
+    }
+    const age = new Item({
+      _id: Config.ICON_AGE,
+      value: (userW.age ? userW.age  : '0') + ' años',
+      custom: Config.NAME_AGE,
+      position: IndexItemType.BIOGARFIA,
+      section: null
+    });
+    items.splice(contador, 0, age);
+    contador ++;
+    if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
+      const gender = new Item({
+        _id: Config.ICON_GENDER,
+        value: userW.gender,
+        custom: Config.NAME_GENDER,
+        position: IndexItemType.BIOGARFIA,
+        section: null
+      });
+      items.splice(contador, 0, gender);
+      contador ++;
+    }
+    this.publicItems.push(...items);
   }
 }
