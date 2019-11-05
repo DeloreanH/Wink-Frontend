@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/modelos/user.model';
+import { User } from 'src/app/models/user.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { WinkService } from 'src/app/service/wink.service';
-import { ModalController } from '@ionic/angular';
-import { DatosComponent } from './datos/datos.component';
-import { RoutesAPP } from '../tabs/tabs-routing.module';
-import { Item } from 'src/app/modelos/item.model';
-import { Wink } from 'src/app/modelos/wink.model';
-import { UserService } from 'src/app/servicios/user.service';
-import { Config } from 'src/app/config/config.enum';
-import { IndexItemType } from 'src/app/config/indexItemType.emun';
+import { WinkService } from 'src/app/services/wink.service';
+import { ModalController, AlertController } from '@ionic/angular';
+import { Item } from 'src/app/models/item.model';
+import { Wink } from 'src/app/models/wink.model';
+import { UserService } from 'src/app/services/user.service';
+import { Config } from 'src/app/config/enums/config.enum';
+import { IndexItemType } from 'src/app/config/enums/indexItemType.emun';
+import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 
 @Component({
   selector: 'app-publico',
@@ -23,16 +22,19 @@ export class PublicoPage implements OnInit {
   send = false;
   data = false;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
+  urlWinks = '';
   publicItems: Item[] = [];
   wink: Wink;
   load = false;
+  origin;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private winkService: WinkService,
     public modalController: ModalController,
-    private userService: UserService
+    private userService: UserService,
+    public alertController: AlertController
   ) {
     this.user = this.userService.User();
   }
@@ -41,7 +43,9 @@ export class PublicoPage implements OnInit {
     this.route.params
     .subscribe(
       (params: Params) => {
+        // console.log('params', params);
         this.userWink = this.winkService.GetUser(params.user);
+        this.origin = params.origin;
       }
     );
     this.GetWink();
@@ -73,22 +77,60 @@ export class PublicoPage implements OnInit {
     }
   }
 
-  Acept() {
-    this.wink.approved = true;
-  }
-
-  Decline() {
-    this.wink = null;
-  }
-
-  Send() {
-    this.send = true;
-    this.wink = new Wink(
-      {
-        sender_id : this.user._id,
-        approved: false
+  async AceptWink() {
+    try {
+      if (this.wink) {
+        const response = await this.winkService.ApproveWink(this.wink._id);
+        this.wink.approved = true;
+        this.send = false;
       }
-    );
+    } catch (err) {
+      console.log('Error DeleteWink', err);
+    }
+  }
+
+  async DeleteWink() {
+    try {
+      if (this.wink) {
+        const response = await this.winkService.DeleteWink(this.wink._id);
+        this.wink = null;
+        this.send = false;
+      }
+    } catch (err) {
+      console.log('Error DeleteWink', err);
+    }
+  }
+
+  async SendWink() {
+    try {
+      const response = await this.winkService.SendWink(this.userWink._id);
+      this.wink = response.wink;
+      this.send = true;
+    } catch (err) {
+      console.log('Error SendWink', err);
+    }
+  }
+
+  async CancelWink() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar!',
+      message: 'Desea <strong>cancelar</strong> el wink?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: (blah) => {
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.DeleteWink();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   GoProfiles() {
@@ -102,7 +144,6 @@ export class PublicoPage implements OnInit {
         return item.value && item.value !== '';
       }
     );
-    console.log('aqui', items);
     if (items[0].position === -1) {
       contador++;
     }

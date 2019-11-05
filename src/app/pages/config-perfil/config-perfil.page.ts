@@ -2,17 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController, MenuController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { Category } from '../../../app/modelos/category.model';
-import { Item } from '../../../app/modelos/item.model';
-import { Section } from '../../../app/modelos/section.model';
-import { ConfiguracionPerfilService } from '../../../app/servicios/configuracion-perfil.service';
-import { AuthService } from '../../../app/auth/auth.service';
-import { User } from '../../../app/modelos/user.model';
-import { UserService } from '../../../app/servicios/user.service';
+import { Category } from '../../models/category.model';
+import { Item } from '../../models/item.model';
+import { Section } from '../../models/section.model';
+import { ProfilesService } from '../../services/profiles.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { RoutesPrincipal } from 'src/app/app-routing.module';
-import { RoutesAPP } from '../tabs/tabs-routing.module';
+import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
+import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 
 @Component({
   selector: 'app-config-perfil',
@@ -53,7 +53,7 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
 
   constructor(
     public actionSheetController: ActionSheetController,
-    private configuracionPerfilService: ConfiguracionPerfilService,
+    private profilesServices: ProfilesService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
@@ -61,7 +61,7 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
     private menu: MenuController
     ) {
     this.user = this.userService.User();
-    this.sections = this.configuracionPerfilService.sections;
+    this.sections = this.profilesServices.sections;
     this.grupoArray.push(this.publicoArray);
     this.grupoArray.push(this.generalArray);
     this.grupoArray.push(this.personalArray);
@@ -114,14 +114,14 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
           this.data.push(new Item(valor.item));
         });
       }
-      this.configuracionPerfilService.GuardarItems(this.data);
+      this.profilesServices.SaveItems(this.data);
       this.loading = false;
       this.changeData = false;
       console.log('Data', this.data);
     }
   }
 
-  AggItem(item: Item, user: boolean) {
+  AddItem(item: Item, user: boolean) {
     this.grupoArray[item.section.key].push(
       new FormGroup({
       item: new FormControl(item)
@@ -143,7 +143,7 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.CargarData();
+    this.LoadData();
     this.nombre = this.user.firstName + ' ' + this.user.lastName;
     this.avatar = this.user.avatarUrl;
     this.item = new Item({
@@ -182,23 +182,20 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
     this.eventRouter .unsubscribe();
   }
 
-  CargarData() {
-    this.configuracionPerfilService.CargarItemsUsuario().then(
-      (respuesta: Item[])  => {
-        // console.log('respuestaaa', respuesta);
-        if (!respuesta) {
-          return;
-        }
-        for (const dato of respuesta) {
-          this.AggItem(dato, false);
-        }
-        const valor = this.configuracionPerfilService.biografia;
-        if (valor) {
-          this.grupoForm.controls.biografia.setValue(valor.value);
-        }
-        this.loading = false;
+  async LoadData() {
+    try {
+      const response = await this.profilesServices.CargarItemsUsuario();
+      for (const dato of response) {
+        this.AddItem(dato, false);
       }
-    );
+      const valor = this.profilesServices.biografia;
+      if (valor) {
+        this.grupoForm.controls.biografia.setValue(valor.value);
+      }
+    } catch (err) {
+      console.log('Error LoadData', err.message);
+    }
+    this.loading = false;
   }
 
   Ordenar() {
@@ -253,7 +250,7 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
   CargarCategorias(): [] {
     const obj: any = [];
     if (this.categories.length === 0) {
-      this.categories = this.configuracionPerfilService.categories;
+      this.categories = this.profilesServices.categories;
     }
     // console.log('this.categories', this.categories);
     for (const categoria of this.categories) {
@@ -262,7 +259,7 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
         icon: 'add',
         handler: () => {
           this.item.category = categoria.name;
-          this.AggItem(this.item, true);
+          this.AddItem(this.item, true);
         }
       });
     }
@@ -336,6 +333,6 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
   }
 
   Scroll(event) {
-    console.log('Scroll', event);
+    // console.log('Scroll', event);
   }
 }

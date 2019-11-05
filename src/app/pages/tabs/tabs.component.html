@@ -1,14 +1,14 @@
 <ion-tabs [ngClass]="{'ocultar': ocultar}">
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="config-profile">
+    <ion-tab-button [tab]="profiles">
       <ion-icon name="person"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button tab="home" >
+    <ion-tab-button [tab]="home" >
       <ion-icon name="home"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button >
+    <ion-tab-button [tab]="winks">
       <ion-icon name="happy"></ion-icon>
       <ion-badge>6</ion-badge>
     </ion-tab-button>

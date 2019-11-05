@@ -1,35 +1,34 @@
 <ion-item 
-style="padding: 0px; display: flex; align-items: flex-start; margin-bottom: 1%;" 
-class="item-has-placeholder"
-[ngClass]="{'item-has-focus': focus}"
-[formGroup]="form"
->
+  class="item-has-placeholder item-perfil"
+  [ngClass]="{'item-has-focus': focus}"
+  [formGroup]="form"
+  >
 
   <!--Icono del item-->
   <fa-icon 
-  *ngIf="itemType"
-  [icon]="itemType? [preIcono, icon] : null"  
-  (click)="MostrarSelector()" 
-  class="icono"
-  slot="start" ></fa-icon>
+    *ngIf="itemType"
+    [icon]="itemType? [preIcono, icon] : null"  
+    (click)="MostrarSelector()" 
+    class="icono"
+    slot="start" ></fa-icon>
  
   <!--Titulo del item-->
   <ion-label 
-  position="floating" 
-  style="padding-left: 10px;" 
-  *ngIf="itemType">
+    position="floating" 
+    class="padding-left-10"
+    *ngIf="itemType">
     {{itemType? itemType.description : ''}}
   </ion-label>
 
   <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
   <div 
-  style="display: flex; flex-direction: column; width:  100%;" 
+  class="contenedor-doble"
   *ngIf="itemType">
     <!--Primer input-->
     <ion-input 
     *ngIf="itemType && itemType.index === 0 || itemType.index === 2 || itemType.index === 1 ||  itemType.index === 3 ||  itemType.index === 6 ||  itemType.index === 7"  
     [placeholder]="MarcaAgua(0)" 
-    style="margin-left: 2%; width: 100%;" 
+    class="input-item"
     (ionInput)="onInput($event.target.value, 0)"
     [value]="Valor(0)"
     [disabled]="isDisabled"
@@ -41,7 +40,7 @@ class="item-has-placeholder"
     <!--Segundo input-->
     <ion-input 
     *ngIf="itemType && itemType.index === 2  || itemType.index === 7 " 
-    style="margin-left: 2%; width: 100%;"  
+    class="input-item"
     [placeholder]="MarcaAgua(1)"
     [value]="Valor(1)"
     (ionInput)="onInput($event.target.value, 1)"
@@ -54,7 +53,7 @@ class="item-has-placeholder"
   <!--Selector para item de seleccion-->
   <ion-select 
   *ngIf="itemType && itemType.index === 4" 
-  style="position: relative; margin-left: 2%; width: 100%;" 
+  class="input-item input-relative"
   interface="popover"
   ok-text="Aceptar" 
   cancel-text="Cancelar" 
@@ -72,7 +71,7 @@ class="item-has-placeholder"
   <!--Input para fecha-->
   <ion-datetime 
   *ngIf="itemType && itemType.index === 5" 
-  style="position: relative; margin-left: 2%; width: 100%;" 
+  class="input-item input-relative"
   displayFormat="DD/MM/YYYY" 
   min="1900-01-01" 
   [max]="FechaActual() | date:'yyy-MM-dd'"  
@@ -87,7 +86,7 @@ class="item-has-placeholder"
   <mat-chip-list 
   #chipList 
   *ngIf="itemType && itemType.index === 8" 
-  style="margin-top: 5px; flex-wrap: nowrap; width: 100%;">
+  class="chip-item">
     <ion-input 
     #chipControl
     [value]="Valor(0)"
@@ -98,7 +97,7 @@ class="item-has-placeholder"
     *ngFor="let chip of chipArray" 
     [selectable]="selectable"
     [removable]="removable" 
-    (removed)="RemoverChip(chip)">
+    (removed)="DeleteChip(chip)">
       {{chip}}
       <ion-icon 
         name="close-circle-outline" 
@@ -115,7 +114,7 @@ class="item-has-placeholder"
     [matChipInputFor]="chipList"
     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
     [matChipInputAddOnBlur]="addOnBlur"
-    (matChipInputTokenEnd)="AggChip($event, chipControl)"
+    (matChipInputTokenEnd)="AddChip($event, chipControl)"
     (input)="ValorChip($event.target.value, chipControl)"
     >
   </mat-chip-list>
@@ -126,7 +125,7 @@ class="item-has-placeholder"
   name="close-circle-outline" 
   slot="end" 
   (click)="Eliminar()" 
-  style="margin-inline-start: 1px !important; position: relative; align-self:center"
+  class="input-relative icon-del"
   ></ion-icon>
   
   <!--Seleccionar tipo de item-->
@@ -134,7 +133,7 @@ class="item-has-placeholder"
   *ngIf="!itemType" 
   ok-text="Aceptar" 
   cancel-text="Cancelar" 
-  style="min-width: 100% !important; padding-left: 16px; min-height: 56px; position: relative;" 
+  class="select-type input-relative"
   interface="popover" 
   [value]="itemType" 
   placeholder="Seleccione una opcion" 
@@ -149,6 +148,6 @@ class="item-has-placeholder"
     </ion-select-option>
   </ion-select>
 </ion-item>
-<ion-text *ngIf="MensajeError()" color="danger" class="form-error">
-  {{MensajeError()}}
+<ion-text *ngIf="errorMessage" color="danger" class="form-error">
+  {{errorMessage}}
 </ion-text>

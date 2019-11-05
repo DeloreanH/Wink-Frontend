@@ -1,0 +1,20 @@
+<ion-item>
+  <ion-avatar slot="start" class="avatar-wink">
+    <ion-img [src]="wink && wink.user ? wink.user.avatarUrl : avatar"></ion-img>
+  </ion-avatar>
+  <ion-label>
+    <div>
+      <ion-title class="title-wink">
+        {{wink && wink.user ? wink.user.firstName + ' ' + wink.user.lastName : 'John Doe'}}
+      </ion-title>
+      <div *ngIf="wink" class="date-wink">
+        <ion-icon name="time" color="medium"></ion-icon>
+        <ion-note class="note-wink"  color="medium">{{ wink.approved? Time(wink.updatedAt)  : Time(wink.createdAt)  }}</ion-note>
+      </div>  
+    </div>
+    <div *ngIf="wink && !wink.approved" class="date-wink">
+      <ion-button class="button-50"  color="warning" (click)="Accept()">Wink</ion-button>
+      <ion-button  class="button-ignore button-50" color="light" (click)="Ignore()">Ignore</ion-button>
+    </div>
+  </ion-label>
+</ion-item>

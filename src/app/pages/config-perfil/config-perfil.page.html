@@ -34,7 +34,7 @@
       </ion-buttons>
       <ion-title>Mi Perfil</ion-title>
       <ion-buttons slot="end" *ngIf="!loading">
-        <ion-icon [name]="ordenar? 'list' : 'list-box'" (click)="Ordenar()" style="font-size: 150%;"></ion-icon>
+        <ion-icon [name]="ordenar? 'list' : 'list-box'" (click)="Ordenar()" class="icon-order"></ion-icon>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -51,8 +51,8 @@
     </div>
 
     <div class="contenedor" >
-      <ion-item style="width: 90%;">
-        <ion-label style="font-size: xx-large; text-align: center;">
+      <ion-item class="item-name">
+        <ion-label class="label-name">
             {{nombre}}
         </ion-label>
       </ion-item>
@@ -88,8 +88,8 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div
-            style="width: 100%;"
-            class="acordion"
+            
+            class="acordion width-100"
             *ngFor="let itemPublico of publicoForm.controls; let i = index"
             [formGroupName]="i"
             cdkDrag 
@@ -119,8 +119,8 @@
               General
             </mat-panel-title>
           </mat-expansion-panel-header>
-            <div style="width: 100%;"
-            class="acordion"
+            <div 
+            class="acordion width-100"
             *ngFor="let itemGeneral of generalForm.controls; let i = index"
             [formGroupName]="i"
             cdkDrag 
@@ -152,8 +152,8 @@
               Personal
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div style="width: 100%;"
-          class="acordion"
+          <div 
+          class="acordion width-100"
           *ngFor="let itemPersonal of personalForm.controls; let i = index"
           [formGroupName]="i"
           cdkDrag 
@@ -185,8 +185,8 @@
               Profesional
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div style="width: 100%;"
-          class="acordion"
+          <div 
+          class="acordion width-100"
           *ngFor="let itemProfesional of profesionalForm.controls; let i = index"
           [formGroupName]="i"
           cdkDrag 

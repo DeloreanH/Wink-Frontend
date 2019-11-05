@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Winks</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-segment (ionChange)="TabChanged($event)" [value]="tab">
+    <ion-segment-button value="requests">
+      <ion-label>Requests</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="record">
+      <ion-label>Record</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-list *ngIf="tab === 'requests'">
+    <item-wink
+      *ngFor="let item of requests"
+      [wink]="item"
+    ></item-wink>
+  </ion-list>
+  <ion-list *ngIf="tab === 'record'">
+    <item-wink
+      *ngFor="let item of record"
+      [wink]="item"
+    ></item-wink>
+  </ion-list>
+</ion-content>

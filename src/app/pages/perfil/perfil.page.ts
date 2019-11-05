@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from '../../../app/servicios/user.service';
-import { User } from '../../../app/modelos/user.model';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '../../../app/auth/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { ActionSheetController, MenuController } from '@ionic/angular';
-import { UpdateAvatarService } from '../../../app/servicios/updateAvatar/update-avatar.service';
+import { UpdateAvatarService } from '../../services/update-avatar.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { RoutesAPP } from '../tabs/tabs-routing.module';
-import { RoutesPrincipal } from 'src/app/app-routing.module';
+import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',

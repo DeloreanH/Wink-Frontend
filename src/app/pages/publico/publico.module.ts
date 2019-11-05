@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { MatChipsModule } from '@angular/material/chips';
 
 import { PublicoPage } from './publico.page';
-import { DatosComponent } from './datos/datos.component';
-import { IonicSwipeAllModule } from 'ionic-swipe-all';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ItemListComponent } from './item-list/item-list.component';
-import { MatChipsModule } from '@angular/material/chips';
-import { DistancePipe } from '../../herramientas/distance.pipe';
+
+import { ItemListComponent } from 'src/app/tools/components/item-list/item-list.component';
+import { ToolsModule } from 'src/app/tools/tools.module';
 
 const routes: Routes = [
   {
@@ -26,13 +26,12 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    IonicSwipeAllModule,
+    ToolsModule,
     FontAwesomeModule,
     MatChipsModule
   ],
-  entryComponents: [DatosComponent],
-  declarations: [PublicoPage, DatosComponent, ItemListComponent, DistancePipe],
-  providers: [
-  ],
+  entryComponents: [ItemListComponent],
+  declarations: [PublicoPage],
+  providers: [],
 })
 export class PublicoPageModule {}

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ConfiguracionPerfilService } from '../../../../app/servicios/configuracion-perfil.service';
-import { ItemType } from '../../../../app/modelos/itemType.model';
-import { Item } from '../../../../app/modelos/item.model';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl,
-   NG_VALIDATORS, Validators } from '@angular/forms';
+import { ProfilesService } from '../../../services/profiles.service';
+import { ItemType } from '../../../models/itemType.model';
+import { Item } from '../../../models/item.model';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl, Validators } from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-import { MessageError } from '../../../../app/modelos/messageError.enum';
+import { MessageError } from '../../../config/enums/messageError.enum';
 
 @Component({
   selector: 'app-item-perfil',
@@ -17,12 +16,7 @@ import { MessageError } from '../../../../app/modelos/messageError.enum';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ItemPerfilComponent),
       multi: true
-    },
-    /*{
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => ItemPerfilComponent),
-      multi: true,
-    }*/
+    }
   ]
 })
 export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
@@ -37,10 +31,12 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   preIcono: string;
   icon: string;
   value: Item;
-  itemType: ItemType;
+  itemType: ItemType = null;
   isDisabled: boolean;
   type = 'text';
   focus = false;
+  errorMessage = null;
+  dataLoad = false;
 
   tiposItems: ItemType[] = [];
   unique: string[] = [];
@@ -53,12 +49,14 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(
-    private configuracionPerfilService: ConfiguracionPerfilService,
+    private profilesServices: ProfilesService,
   ) {
-    this.unique = this.configuracionPerfilService.unique;
+    this.unique = this.profilesServices.unique;
+    // this.form.setControl('campo1', new FormControl());
   }
 
   ngOnInit() {
+    this.ErrorMessage();
   }
 
   onChange = (_: Item) => { };
@@ -69,8 +67,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (obj) {
       this.value = obj;
       // this.onChange(this.value);
+      // this.form.setControl('campo1', new FormControl());
+      this.form.setControl(
+        'selector', new FormControl(null, Validators.required),
+      );
       this.CargarItem();
-      this.AggCampoForm();
       this.CargarChips();
     } else {
       this.value = null;
@@ -89,7 +90,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.isDisabled = isDisabled;
   }
 
-  AggChip(event: MatChipInputEvent): void {
+  AddChip(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
     if ((value || '').trim() && value.length > 2 && this.value.value.length < 31) {
@@ -102,7 +103,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     (this.form.controls.campo1 as FormControl).markAsTouched();
   }
 
-  RemoverChip(fruit: any): void {
+  DeleteChip(fruit: any): void {
     const index = this.chipArray.indexOf(fruit);
     if (index >= 0) {
       this.chipArray.splice(index, 1);
@@ -132,19 +133,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  /*validate(control: import('@angular/forms').AbstractControl): import('@angular/forms').ValidationErrors {
-    return null;
-  }
-
-  registerOnValidatorChange?(fn: () => void): void {
-    this.onChange = fn;
-  }*/
-
   AggCampoForm() {
+    console.log(this.form);
     this.form.removeControl('selector');
     this.form.removeControl('campo1');
     this.form.removeControl('campo2');
     if (this.itemType) {
+      console.log(this.itemType);
       switch (this.itemType.index) {
         case 0:
           this.type = 'text';
@@ -291,19 +286,20 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             break;
       }
     } else {
+      console.log(this.itemType);
       this.form.setControl(
         'selector', new FormControl(null, Validators.required),
       );
     }
+    this.dataLoad = true;
   }
 
   async BuscarTItem() {
     try {
       if (this.value) {
-        // console.log('Aquiii', this.value);
-        this.itemType = await this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype);
-        // console.log('Aquiii', this.configuracionPerfilService.BuscarTipoItem(this.value.itemtype));
+        this.itemType = await this.profilesServices.BuscarTipoItem(this.value.itemtype);
         if (this.itemType) {
+          this.AggCampoForm();
           this.BuscarTItems(this.itemType.category);
         }
       }
@@ -316,8 +312,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   async BuscarTItems(idCategoria: string) {
     try {
       if (idCategoria) {
-        this.tiposItems = await this.configuracionPerfilService.BuscarTItemCategoria(idCategoria);
-        // console.log('tiposItems', this.tiposItems);
+        this.tiposItems = await this.profilesServices.BuscarTItemCategoria(idCategoria);
       }
     } catch (err) {
       console.log('Error BuscarTItems', err.message);
@@ -333,7 +328,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.value.value  = '';
     this.CargarIcono();
     this.AggCampoForm();
-      // this.onChange(this.value);
   }
 
   CargarIcono() {
@@ -418,7 +412,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   EliminarUnico() {
-    // console.log('lista', this.unique);
     if (this.itemType) {
       const index = this.unique.indexOf(this.itemType._id);
       if (index !== -1) {
@@ -431,35 +424,40 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.focus = valor;
   }
 
-  MensajeError() {
-    if (!this.itemType) {
-      return this.form.get('selector').hasError('required') && this.form.get('selector').touched ? MessageError.REQUERIDO : null;
-    } else {
-      if (this.form.get('campo1').errors && this.form.get('campo1').touched ) {
-        if (this.form.get('campo1').hasError('required')) {
-          return MessageError.REQUERIDO;
-        } else if (this.form.get('campo1').hasError('email')) {
-          return MessageError.EMAIL;
-        } else if (this.form.get('campo1').hasError('pattern')) {
-          return MessageError.URL;
-        } else if (this.form.get('campo1').hasError('minlength')) {
-          if (this.itemType.index === 6 || this.itemType.index === 8) {
-            return MessageError.MINIMO3;
-          } else {
-            return MessageError.MINIMO2;
+  ErrorMessage() {
+    try {
+      if (!this.itemType) {
+        this.form.get('selector').hasError('required') && this.form.get('selector').touched ?
+        this.errorMessage = MessageError.REQUERIDO : this.errorMessage = null;
+      } else {
+        if (this.form.get('campo1') && this.form.get('campo1').errors && this.form.get('campo1').touched ) {
+          if (this.form.get('campo1').hasError('required')) {
+            this.errorMessage = MessageError.REQUERIDO;
+          } else if (this.form.get('campo1').hasError('email')) {
+            this.errorMessage = MessageError.EMAIL;
+          } else if (this.form.get('campo1').hasError('pattern')) {
+            this.errorMessage = MessageError.URL;
+          } else if (this.form.get('campo1').hasError('minlength')) {
+            if (this.itemType.index === 6 || this.itemType.index === 8) {
+              this.errorMessage = MessageError.MINIMO3;
+            } else {
+              this.errorMessage = MessageError.MINIMO2;
+            }
+          } else if (this.form.get('campo1').hasError('maxlength')) {
+            this.errorMessage = MessageError.MAXIMO;
           }
-        } else if (this.form.get('campo1').hasError('maxlength')) {
-            return MessageError.MAXIMO;
-        }
-      } else  if (this.form.get('campo2') && this.form.get('campo2').touched) {
-        if (this.form.get('campo2').hasError('required')) {
-          return MessageError.REQUERIDO;
-        } else if (this.form.get('campo2').hasError('minlength')) {
-          return MessageError.MINIMO2;
-        } else if (this.form.get('campo2').hasError('maxlength')) {
-          return MessageError.MAXIMO;
+        } else  if (this.form.get('campo2') && this.form.get('campo2').touched) {
+          if (this.form.get('campo2').hasError('required')) {
+            this.errorMessage = MessageError.REQUERIDO;
+          } else if (this.form.get('campo2').hasError('minlength')) {
+            this.errorMessage = MessageError.MINIMO2;
+          } else if (this.form.get('campo2').hasError('maxlength')) {
+            this.errorMessage = MessageError.MAXIMO;
+          }
         }
       }
+    } catch (err) {
+      this.errorMessage = null;
     }
   }
 

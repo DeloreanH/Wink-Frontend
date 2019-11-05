@@ -2,13 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { TabsComponent } from './tabs.component';
-
-export enum RoutesAPP {
-  BASE = 'app/',
-  HOME = 'home',
-  CONFIGURAR_PERFIL = 'config-profile',
-  PERFIL_PUBLICO = 'public-profile',
-}
+import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 
 const routes: Routes = [
   {
@@ -34,7 +28,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'public-profile/:user',
+        path: 'public-profile/:user/:origin',
         children: [
           {
             path: '',
@@ -43,15 +37,24 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'winks',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../winks/winks.module').then(m => m.WinksPageModule)
+          }
+        ]
+      },
+      {
         path: '',
-        redirectTo: '/app/home',
+        redirectTo: '/' + RoutesAPP.BASE + RoutesAPP.HOME,
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/app/home',
+    redirectTo: '/' + RoutesAPP.BASE + RoutesAPP.HOME,
     pathMatch: 'full'
   }
 ];

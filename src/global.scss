@@ -47,6 +47,26 @@
   font-size: 1.6em;
   padding-inline-start: 3%;
 }
+
+.icono-public {
+  font-size: 24px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
+}
+
+.chip-item {
+  margin-top: 5px; 
+  flex-wrap: nowrap; 
+  width: 100%;
+}
+
+.input-item {
+  margin-left: 2%; 
+  width: 100%;
+}
+
 .spinner {
   align-items: center;
   display: flex;
@@ -123,4 +143,12 @@
   --placeholder-font-style: initial;
   --placeholder-font-weight: initial;
   --placeholder-opacity: .5;
+}
+
+.input-relative {
+  position: relative;
+}
+
+.width-100 {
+  width: 100%;
 }

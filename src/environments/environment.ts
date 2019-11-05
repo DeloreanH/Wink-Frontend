@@ -1,6 +1,6 @@
 import { VirtwooAuthConfig } from '@virtwoo/auth';
-import { RoutesPrincipal } from 'src/app/app-routing.module';
-import { Routes } from 'src/app/modelos/routes.enum';
+import { Routes } from 'src/app/config/enums/routes/routes.enum';
+import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
 // import { Paths } from '@common/route';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {

@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../../../app/auth/auth.service';
-import { User } from '../../../app/modelos/user.model';
-import { UserService } from '../../../app/servicios/user.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
-import { Config } from '../../../app/config/config.enum';
-import { VisibilityOption } from '../../../app/modelos/visibilityOptions.emun';
-import { RoutesAPP } from '../tabs/tabs-routing.module';
-import { WinkService } from '../../../app/service/wink.service';
-import { LinkService } from 'src/app/servicios/link.service';
+import { Config } from '../../config/enums/config.enum';
+import { VisibilityOption } from '../../models/visibilityOptions.enum';
+import { WinkService } from '../../services/wink.service';
+import { LinkService } from 'src/app/services/link.service';
+import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 
 @Component({
   selector: 'app-home',
@@ -57,7 +57,7 @@ export class HomePage implements OnInit, OnDestroy {
           this.profesional = true;
           this.personal = true;
           break;
-        case VisibilityOption.TODOS:
+        case VisibilityOption.ALL:
           this.profesional = true;
           this.personal = true;
           break;
@@ -106,7 +106,6 @@ export class HomePage implements OnInit, OnDestroy {
     if (event.target.value !== this.user.status) {
       try {
         const response = await this.userService.UpdateStatus(event.target.value);
-        console.log('Respuesta ChangeStatus', response);
       } catch (err) {
         event.target.value = this.user.status;
         console.log('Error ChangeStatus', err.message);
@@ -115,56 +114,53 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async ChangeProfiles(profile: boolean) {
-    // console.log(this.user.visibility);
-    if (this.user) {
-      if (profile) {
-        switch (this.user.visibility) {
-          case VisibilityOption.GENERAL:
-            this.user.visibility = VisibilityOption.PERSONAL;
-            this.personal = true;
-            break;
-          case VisibilityOption.PERSONAL:
-            this.user.visibility = VisibilityOption.GENERAL;
-            this.personal = false;
-            break;
-          case VisibilityOption.PROFESIONAL:
-            this.user.visibility = VisibilityOption.TODOS;
-            this.personal = true;
-            break;
-          case VisibilityOption.TODOS:
-            this.user.visibility = VisibilityOption.PROFESIONAL;
-            this.personal = false;
-            break;
-        }
-      } else {
-        switch (this.user.visibility) {
-          case VisibilityOption.GENERAL:
-            this.user.visibility = VisibilityOption.PROFESIONAL;
-            this.profesional = true;
-            break;
-          case VisibilityOption.PROFESIONAL:
-            this.user.visibility = VisibilityOption.GENERAL;
-            this.profesional = false;
-            break;
-          case VisibilityOption.PERSONAL:
-            this.user.visibility = VisibilityOption.TODOS;
-            this.profesional = true;
-            break;
-          case VisibilityOption.TODOS:
-            this.user.visibility = VisibilityOption.PERSONAL;
-            this.profesional = false;
-            break;
-        }
-      }
       try {
-        // console.log(this.user.visibility);
+        if (this.user) {
+          if (profile) {
+            switch (this.user.visibility) {
+              case VisibilityOption.GENERAL:
+                this.user.visibility = VisibilityOption.PERSONAL;
+                this.personal = true;
+                break;
+              case VisibilityOption.PERSONAL:
+                this.user.visibility = VisibilityOption.GENERAL;
+                this.personal = false;
+                break;
+              case VisibilityOption.PROFESIONAL:
+                this.user.visibility = VisibilityOption.ALL;
+                this.personal = true;
+                break;
+              case VisibilityOption.ALL:
+                this.user.visibility = VisibilityOption.PROFESIONAL;
+                this.personal = false;
+                break;
+            }
+          } else {
+            switch (this.user.visibility) {
+              case VisibilityOption.GENERAL:
+                this.user.visibility = VisibilityOption.PROFESIONAL;
+                this.profesional = true;
+                break;
+              case VisibilityOption.PROFESIONAL:
+                this.user.visibility = VisibilityOption.GENERAL;
+                this.profesional = false;
+                break;
+              case VisibilityOption.PERSONAL:
+                this.user.visibility = VisibilityOption.ALL;
+                this.profesional = true;
+                break;
+              case VisibilityOption.ALL:
+                this.user.visibility = VisibilityOption.PERSONAL;
+                this.profesional = false;
+                break;
+            }
+          }
+        }
         const response = await this.userService.UpdateProfiles(this.user.visibility);
-        console.log('Respuesta ChangeProfiles', response);
       } catch (err) {
         this.user = this.userService.User();
         console.log('Error ChangeProfiles', err.message);
       }
-    }
   }
 
   OpenLink(numb: number) {

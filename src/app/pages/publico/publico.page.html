@@ -2,7 +2,11 @@
   <ion-fab vertical="top" horizontal="start" slot="fixed"  class="top">
   <ion-header class="opt-top transparent">
       <ion-toolbar class="transparent">
-        <fa-icon slot="start" [icon]="['fas', 'arrow-left']" class="icono-white sombra" [routerLink]="[urlHome]"></fa-icon>
+        <fa-icon 
+          slot="start" 
+          [icon]="['fas', 'arrow-left']" 
+          class="icono-white sombra" 
+          [routerLink]="[origin === '0' ? urlHome : urlWinks]"></fa-icon>
         <div class="end status" slot="end">
           <ion-label
             class="text-card text-status text-small">
@@ -31,18 +35,24 @@
           <ion-fab-button *ngIf="!send && !wink.approved || wink.approved" (click)="GoProfiles()" size="small" color="light">
               <ion-icon name="document"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="!send && !wink.approved" (click)="Acept()" size="small" color="success">
+          <ion-fab-button *ngIf="!send && !wink.approved" (click)="AceptWink()" size="small" color="success">
               <ion-icon name="checkmark"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="!send && !wink.approved" (click)="Decline()" size="small" color="danger">
+          <ion-fab-button *ngIf="!send && !wink.approved" (click)="DeleteWink()" size="small" color="danger">
               <ion-icon name="close"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="send && !wink.approved" (click)="Decline()" size="small" color="dark">
-              <ion-icon name="happy"></ion-icon>
+          <ion-fab-button *ngIf="send && !wink.approved" (click)="CancelWink()" size="small" color="dark">
+              <fa-icon 
+              [icon]="['far', 'smile-wink']" 
+              class="icono-public" 
+              ></fa-icon>  
           </ion-fab-button>
       </div>
-      <ion-fab-button *ngIf="!wink" (click)="Send()"  size="small" color="light">
-          <ion-icon name="sad"></ion-icon>
+      <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light">
+          <fa-icon 
+          [icon]="['far', 'smile-wink']" 
+          class="icono-public" 
+          ></fa-icon>
       </ion-fab-button>
     </ion-fab>
   </div>

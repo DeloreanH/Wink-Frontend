@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PerfilPage } from './perfil.page';
+import { WinksPage } from './winks.page';
+import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ToolsModule } from 'src/app/tools/tools.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: PerfilPage
+    component: WinksPage
   }
 ];
 
@@ -22,12 +22,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    ToolsModule
+    FontAwesomeModule
   ],
-  declarations: [PerfilPage],
-  providers: [],
-  entryComponents: []
+  declarations: [WinksPage, ItemWinkComponent]
 })
-export class PerfilPageModule {}
+export class WinksPageModule {}

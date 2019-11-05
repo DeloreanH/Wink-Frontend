@@ -9,7 +9,6 @@ import {
 import { File, FileEntry, IFile } from '@ionic-native/file/ngx';
 import { Observable, Subscriber, Subscription } from 'rxjs';
 import { BaseService } from '../base';
-import { Routes } from 'src/app/modelos/routes.enum';
 
 @Injectable()
 export class FileUploaderService {
@@ -102,7 +101,7 @@ export class FileUploaderService {
   ): Observable<HttpEvent<T>> {
     const req = new HttpRequest(
       'POST',
-      `${Routes.BASE}/${this.baseService.getAuthUserId()}/upload`,
+      `${''}/${this.baseService.getAuthUserId()}/upload`,
       formData,
       {
         reportProgress: true,

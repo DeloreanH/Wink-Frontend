@@ -1,0 +1,16 @@
+export enum Config {
+  MAX_STATUS = '20',
+  MESSAGE_PLACEHOLDER_STATUS = '¿Qué estás pensando?',
+  ICON_BIOGRAFIA = 'fas book-open',
+  NAME_BIOGRAFIA = 'Biografia',
+  NAME_GENDER = 'Sexo',
+  ICON_GENDER = 'fas genderless',
+  NAME_AGE = 'Edad',
+  ICON_AGE = 'fas calendar-day',
+  GENDER_HIDEEN = 3,
+  SOCIAL_NETWORK = 'redessociales',
+  BIRTHDAY = 'fechadenacimiento',
+  CUSTOM = 'personalizado',
+  AVATAR = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
+
+}

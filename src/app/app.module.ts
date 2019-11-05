@@ -27,7 +27,7 @@ import {
 } from '@angular/common/http';
 
 import {MatChipsModule} from '@angular/material/chips';
-import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AuthInterceptorService } from './auth/services/auth-interceptor.service';
 import { Camera } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';

@@ -6,10 +6,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { SlRouterService } from '@virtwoo/sl-router';
 import { VirtwooAuthPathName } from '@virtwoo/auth';
-import { RoutesPrincipal } from './app-routing.module';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './auth/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { RoutesPrincipal } from './config/enums/routes/routesPrincipal.enum';
 
 @Component({
   selector: 'app-root',

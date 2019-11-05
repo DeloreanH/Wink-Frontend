@@ -1,0 +1,26 @@
+.button-ignore {
+  --ion-color-contrast: var(--ion-color-light-contrast, rgb(214, 208, 208)) !important;
+}
+
+.note-wink {
+  margin-left: 4px;
+  padding-left: 0%;
+  padding-bottom: 3px;
+}
+.date-wink {
+  display: flex; 
+  align-items: center;
+}
+
+.button-50 {
+  width: 50%;
+}
+
+.title-wink {
+  padding-left: 0%;
+}
+
+.avatar-wink {
+  width: 70px; 
+  height: 70px;
+}

@@ -1,0 +1,43 @@
+<ion-item 
+  *ngIf="item && itemType" 
+  (click)="OpenLink()"  
+  class="item-has-value item-interactive item-input item-label-floating">
+  <!--Icono del item-->
+  <fa-icon 
+  *ngIf="item"
+  [icon]="[preIcono, icon]"  
+  class="icono"
+  slot="start" ></fa-icon>
+
+  <!--Titulo del item-->
+  <ion-label 
+  position="floating" 
+  class="padding-left-10" 
+  *ngIf="item">
+    {{itemType? itemType.description : ''}}
+  </ion-label>
+  
+  <mat-chip-list
+    *ngIf="itemType && itemType.index === indexChip" 
+    class="chip-item chip-margin"
+    >
+    <ion-chip outline color="primary"
+    *ngFor="let chip of chips">
+    {{chip}}
+    </ion-chip>
+    
+  </mat-chip-list>
+
+  <ion-text *ngIf="itemType &&  itemType.index !== indexChip "
+    class="text-margin">
+    {{item? item.value : ''}}
+  </ion-text>
+<!--
+  <ion-textarea
+    *ngIf="itemType &&  itemType.index === indexBiogarfia"
+    style="margin-left: 2%;" 
+    [value]="item? item.value : ''" readonly>
+
+  </ion-textarea>
+-->
+</ion-item>

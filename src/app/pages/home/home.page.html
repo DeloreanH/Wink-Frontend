@@ -5,15 +5,6 @@
 </ion-header>
 
 <ion-content >
-  <ion-button (click)="OpenLink(0)">
-    Tel
-  </ion-button>
-  <ion-button (click)="OpenLink(1)">
-    Mail
-  </ion-button>
-  <ion-button (click)="OpenLink(2)">
-    Link
-  </ion-button>
   <ion-card>
     <ion-input 
     #status
@@ -47,7 +38,7 @@
           class="col-home"
           *ngFor="let user of users">
             <card 
-            [routerLink]="[urlPublic, user._id]"
+            [routerLink]="[urlPublic, user._id, 0]"
             [user]="user"></card>
           </ion-col>
         </ion-row>

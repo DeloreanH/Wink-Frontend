@@ -1,18 +1,18 @@
 .acordion{
   min-height: 10px;
 }
-
-.example-headers-align .mat-expansion-panel-header-title,
-.example-headers-align .mat-expansion-panel-header-description {
-  flex-basis: 0;
+.icon-order {
+  font-size: 150%;
 }
 
-.example-headers-align .mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
+.item-name {
+  width: 90%;
 }
 
-
+.label-name {
+  font-size: xx-large; 
+  text-align: center;
+}
 .item {
   align-self: center;
 }

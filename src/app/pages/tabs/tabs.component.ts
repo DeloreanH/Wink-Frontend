@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
-import { RoutesAPP } from './tabs-routing.module';
+import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 
 
 @Component({
@@ -11,6 +11,9 @@ import { RoutesAPP } from './tabs-routing.module';
 export class TabsComponent implements OnInit {
 
   ocultar = false;
+  home = RoutesAPP.HOME;
+  profiles = RoutesAPP.CONFIGURAR_PERFIL;
+  winks = RoutesAPP.WINKS;
 
   constructor(
     private router: Router

@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule } from '@angular/router';
 import { Routes } from '@virtwoo/sl-router';
-import { AuthGuard } from './auth/auth.guard';
-import { EmptyProfilePGuard } from './auth/empty-profile-p.guard';
+import { AuthGuard } from './auth/guards/auth.guard';
+import { EmptyProfilePGuard } from './auth/guards/empty-profile-p.guard';
+import { RoutesPrincipal } from './config/enums/routes/routesPrincipal.enum';
 
-export enum RoutesPrincipal {
-  APP = 'app',
-  DATOS_BASICOS = 'perfil'
-}
+
 
 export const routesApp: Routes = [
   {
