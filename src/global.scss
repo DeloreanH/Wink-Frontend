@@ -48,6 +48,19 @@
   padding-inline-start: 3%;
 }
 
+.icono-arrow {
+  margin-inline-end: 0px !important; 
+  align-self:flex-start; 
+  margin-top: 10px;
+  color: var(--ion-color-medium, #989aa2) !important;
+  font-size: 1.6em;
+  padding-inline-start: 3%;
+}
+
+.color-medium {
+  color:  #7d7e80 !important;
+}
+
 .icono-public {
   font-size: 24px;
 }
@@ -151,4 +164,19 @@
 
 .width-100 {
   width: 100%;
+}
+
+.title-name {
+  font-size: x-large; 
+  text-align: center;
+}
+
+.avatar-profile {
+  height: 100px;
+  width: 100px;
+}
+
+.icon-bar {
+  font-size: 180%;
+  padding-right: 8px;
 }

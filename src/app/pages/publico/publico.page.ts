@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Config } from 'src/app/config/enums/config.enum';
 import { IndexItemType } from 'src/app/config/enums/indexItemType.emun';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { ProfilesService } from 'src/app/services/profiles.service';
 
 @Component({
   selector: 'app-publico',
@@ -23,6 +24,7 @@ export class PublicoPage implements OnInit {
   data = false;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
   urlWinks = '/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS;
+  urlPrivate = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PRIVATE_PROFILES;
   publicItems: Item[] = [];
   wink: Wink;
   load = false;
@@ -30,11 +32,11 @@ export class PublicoPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private winkService: WinkService,
     public modalController: ModalController,
     private userService: UserService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private profilesService: ProfilesService
   ) {
     this.user = this.userService.User();
   }
@@ -54,7 +56,7 @@ export class PublicoPage implements OnInit {
   async GetWink() {
     try {
       if (this.userWink) {
-        const response = await this.winkService.GetPublicItems(this.userWink._id);
+        const response = await this.profilesService.GetPublicItems(this.userWink._id);
         const userW = new User(response.user);
         this.FilterItems(response.userItems, userW);
         if (response.wink) {

@@ -1,7 +1,8 @@
 export enum RoutesAPP {
-  BASE = 'app/',
+  BASE = 'app',
   HOME = 'home',
   CONFIGURAR_PERFIL = 'config-profile',
   PERFIL_PUBLICO = 'public-profile',
-  WINKS = 'winks'
+  WINKS = 'winks',
+  PRIVATE_PROFILES = 'private-profiles'
 }

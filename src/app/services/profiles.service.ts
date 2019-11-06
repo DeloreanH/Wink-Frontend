@@ -162,4 +162,46 @@ export class ProfilesService {
       }
     );
   }
+
+  async GetPublicItems(idUser: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!idUser) {
+            reject(false);
+          }
+          const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
+          // console.log('Res', response);
+          resolve(response);
+        } catch (err) {
+          console.log('Error GetPublicItems: ' + err.message);
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async GetPrivateItems(idUser: string, idWink: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!idUser || !idWink) {
+            reject(false);
+          }
+          const response = await this.http.post(
+            Routes.BASE + Routes.SHOW_PRIVATE_PROFILE,
+            {
+              winkUserId: idUser,
+              wink_id: idWink
+            }
+          ).toPromise();
+          // console.log('Res', response);
+          resolve(response);
+        } catch (err) {
+          console.log('Error GetPrivateItems: ' + err.message);
+          reject(err);
+        }
+      }
+    );
+  }
 }

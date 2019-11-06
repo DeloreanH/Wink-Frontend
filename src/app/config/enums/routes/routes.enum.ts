@@ -17,6 +17,7 @@ export enum Routes {
   UPDATE_STATUS = 'wink/user/update/status',
   UPDATE_PROFILES = 'wink/user/update/visibility',
   SHOW_PUBLIC_PROFILE = 'wink/show-public-profile',
+  SHOW_PRIVATE_PROFILE = 'wink/show-private-profile',
   SOCIAL_NETWORK = 'wink/social-network-links',
   SEND_WINK = 'wink/send-wink',
   APPROVE_WINK = 'wink/approve-wink',

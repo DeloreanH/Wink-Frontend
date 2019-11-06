@@ -1,9 +1,35 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>private-profiles</ion-title>
+      <fa-icon 
+      slot="start" 
+      [icon]="['fas', 'arrow-left']" 
+      class="icono-arrow" 
+      [routerLink]="[urlPublic, userWink._id, origin]"></fa-icon>
+    <ion-title>Private Profiles</ion-title>
+    <ion-icon slot="end" name="save" class="icon-bar" color="medium"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <div class="contenedorAvatar" >
+    <ion-avatar class="avatar-profile"> 
+      <ion-img [src]="userWink.avatarUrl"></ion-img>
+    </ion-avatar>
+  </div>
 
+  <div class="contenedor" >
+    <ion-title class="title-name">
+      {{userWink.firstName + ' ' + userWink.lastName}}
+    </ion-title>
+  </div>
+  <ion-list *ngFor="let section of items; let i = index;" >
+    <ion-list-header *ngIf="section.length > 0">
+      <ion-label>{{sections[i + 1].name}}</ion-label>
+    </ion-list-header>
+    <item-list 
+      *ngFor="let item of section"
+      [item]="item">
+
+    </item-list>
+  </ion-list>
 </ion-content>

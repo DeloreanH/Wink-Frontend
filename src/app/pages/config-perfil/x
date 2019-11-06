@@ -1,0 +1,1 @@
+ <ion-icon  [name]="ordenar? 'list' : 'list-box'" (click)="Ordenar()" class="icon-bar"></ion-icon>

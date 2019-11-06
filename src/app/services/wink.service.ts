@@ -100,24 +100,6 @@ export class WinkService {
     return user[0];
   }
 
-  async GetPublicItems(idUser: string) {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          if (!idUser) {
-            reject(false);
-          }
-          const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
-          // console.log('Res', response);
-          resolve(response);
-        } catch (err) {
-          console.log('Error GetPublicItems: ' + err.message);
-          reject(err);
-        }
-      }
-    );
-  }
-
   async SendWink(idUser: string) {
     return new Promise<any>(
       async (resolve, reject) => {

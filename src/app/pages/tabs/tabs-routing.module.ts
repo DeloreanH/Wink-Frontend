@@ -46,15 +46,24 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'private-profiles/:idUser/:idWink/:origin',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../private-profiles/private-profiles.module').then(m => m.PrivateProfilesPageModule)
+          }
+        ]
+      },
+      {
         path: '',
-        redirectTo: '/' + RoutesAPP.BASE + RoutesAPP.HOME,
+        redirectTo: '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME,
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/' + RoutesAPP.BASE + RoutesAPP.HOME,
+    redirectTo: '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME,
     pathMatch: 'full'
   }
 ];

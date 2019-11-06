@@ -86,7 +86,7 @@ export class PerfilPage implements OnInit, OnDestroy {
       if (respuesta.status === 'user updated successfully') {
         this.authService.AuthoLogin();
         console.log('cambio ruta');
-        this.router.navigate(['/' + RoutesAPP.BASE + RoutesAPP.HOME]);
+        this.router.navigate(['/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME]);
       }
     } catch (err) {
       console.log('Error submit', err);
@@ -155,7 +155,7 @@ export class PerfilPage implements OnInit, OnDestroy {
   }
 
   Cancel() {
-    this.router.navigate(['/' + RoutesAPP.BASE + RoutesAPP.CONFIGURAR_PERFIL]);
+    this.router.navigate(['/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL]);
   }
 
 

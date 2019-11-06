@@ -22,17 +22,20 @@ export class TabsComponent implements OnInit {
   public ngOnInit() {
     this.router.events.subscribe(
       (valor: any) => {
-        this.ocultar = false;
         if (valor instanceof NavigationStart) {
           // console.log('aquii', valor.url.split('/'));
-          if (valor.url.split('/')[2] === RoutesAPP.PERFIL_PUBLICO) {
+          if (valor.url.split('/')[2] === RoutesAPP.PERFIL_PUBLICO || valor.url.split('/')[2] === RoutesAPP.PRIVATE_PROFILES) {
             this.ocultar = true;
+          } else {
+            this.ocultar = false;
           }
         }
         if (valor instanceof NavigationEnd) {
           // console.log('aquii', valor.url.split('/'));
-          if (valor.url.split('/')[2] === RoutesAPP.PERFIL_PUBLICO) {
+          if (valor.url.split('/')[2] === RoutesAPP.PERFIL_PUBLICO || valor.url.split('/')[2] === RoutesAPP.PRIVATE_PROFILES) {
             this.ocultar = true;
+          } else {
+            this.ocultar = false;
           }
         }
       }

@@ -41,7 +41,7 @@
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          firstName
+          First Name
         </ion-label>
         <ion-input 
           
@@ -56,7 +56,7 @@
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          lastName
+          Last Name
         </ion-label>
         <ion-input 
           formControlName="lastName"
@@ -70,7 +70,7 @@
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          email
+          E-mail
         </ion-label>
         <ion-input 
           formControlName="email"
@@ -112,7 +112,7 @@
           slot="start" >
         </fa-icon>
         <ion-label position="floating" >
-          birthday
+          Birthday
         </ion-label>
         <ion-datetime 
           displayFormat="DD/MM/YYYY" 
@@ -129,7 +129,7 @@
         class="icono icon-center"
         slot="start" ></fa-icon>
         <ion-label position="floating" >
-          gender
+          Gender
         </ion-label>
         <ion-select 
           interface="popover"
@@ -145,11 +145,11 @@
       <ion-item>
         <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
         <ion-label  >
-            Autoguardado de contactos
+            Autosave contacts
           </ion-label>
       </ion-item>
     </ion-list>
     <ion-button expand="block" type="submit" [disabled]="FormValid()">Save</ion-button>
-    <ion-button expand="block" color="danger" (click)="user.emptyProfile ? Logout() : Cancel()">Cancel</ion-button>
+    <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Cancel()">Cancel</ion-button>
   </form>
 </ion-content>

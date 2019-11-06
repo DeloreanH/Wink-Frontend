@@ -25,7 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
   placeholderStatus = Config.MESSAGE_PLACEHOLDER_STATUS;
   personal = true;
   profesional  = true;
-  urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
+  urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   private contadorUser; number = 10;
 
   constructor(

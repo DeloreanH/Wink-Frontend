@@ -32,20 +32,20 @@
     </div>    
     <ion-fab *ngIf="load" class="button-wink end">
       <div *ngIf="wink" class="end">
-          <ion-fab-button *ngIf="!send && !wink.approved" (click)="AceptWink()" size="small" color="success">
+          <ion-fab-button *ngIf="!send && !wink.approved" (click)="AceptWink()" size="small" color="primary">
               <ion-icon name="checkmark"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="!send && !wink.approved" (click)="DeleteWink()" size="small" color="danger">
+          <ion-fab-button *ngIf="!send && !wink.approved" (click)="DeleteWink()" size="small" color="primary">
               <ion-icon name="close"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="send && !wink.approved" (click)="CancelWink()" size="small" color="dark">
+          <ion-fab-button *ngIf="send && !wink.approved" (click)="CancelWink()" size="small" color="primary">
               <fa-icon 
               [icon]="['far', 'smile-wink']" 
               class="icono-public" 
               ></fa-icon>  
           </ion-fab-button>
       </div>
-      <ion-fab-button *ngIf="wink && wink.approved" (click)="GoProfiles()" size="small" color="light">
+      <ion-fab-button *ngIf="wink && wink.approved" [routerLink]="[urlPrivate, userWink._id ,wink._id, origin]" routerLinkActive="router-link-active"  (click)="GoProfiles()" size="small" color="light">
         <ion-icon name="document"></ion-icon>
       </ion-fab-button>
       <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light">
