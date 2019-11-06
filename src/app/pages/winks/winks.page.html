@@ -15,14 +15,14 @@
   </ion-segment>
   <ion-list *ngIf="tab === 'requests'">
     <item-wink
-      *ngFor="let item of requests"
-      [wink]="item"
+      *ngFor="let wink of requests"
+      [wink]="wink"
     ></item-wink>
   </ion-list>
   <ion-list *ngIf="tab === 'record'">
     <item-wink
-      *ngFor="let item of record"
-      [wink]="item"
+      *ngFor="let wink of record"
+      [wink]="wink"
     ></item-wink>
   </ion-list>
 </ion-content>

@@ -16,10 +16,11 @@ import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 })
 export class HomePage implements OnInit, OnDestroy {
 
-  users: User[] = [];
-  originUsers: User[] = [];
+  nearbyUsers: User[] = [];
+  originNearbyUsers: User[] = [];
+  nearbyUsersSubscription = new Subscription();
   user: User = null;
-  userSusbcription = new Subscription();
+  userSubscription = new Subscription();
   maxStatus = Config.MAX_STATUS;
   placeholderStatus = Config.MESSAGE_PLACEHOLDER_STATUS;
   personal = true;
@@ -38,7 +39,14 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.GPS();
-    this.userSusbcription = this.userService.userChanged.subscribe(
+    this.originNearbyUsers = this.winkService.NearbyUsers;
+    this.nearbyUsersSubscription = this.winkService.nearbyUsersChanged.subscribe(
+      (nearbyUsers) => {
+        this.originNearbyUsers = nearbyUsers;
+        this.LoadUsers();
+      }
+    );
+    this.userSubscription = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
       }
@@ -66,16 +74,13 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSusbcription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    this.nearbyUsersSubscription.unsubscribe();
   }
 
   async GPS(event?) {
     try {
       const respuesta = await this.winkService.GetNearby2();
-      if (respuesta) {
-        this.originUsers = respuesta;
-        this.LoadUsers();
-      }
     } catch (err) {
       console.log('GPS error', err.message);
     }
@@ -89,13 +94,13 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   LoadUsers(event?) {
-    if (this.contadorUser < this.originUsers.length) {
+    if (this.contadorUser < this.originNearbyUsers.length) {
       this.contadorUser += 10;
     }
-    this.users = this.originUsers.slice(0, this.contadorUser);
+    this.nearbyUsers = this.originNearbyUsers.slice(0, this.contadorUser);
     if (event) {
       event.target.complete();
-      if (this.contadorUser >= this.originUsers.length) {
+      if (this.contadorUser >= this.originNearbyUsers.length) {
         event.target.disabled = true;
       }
     }

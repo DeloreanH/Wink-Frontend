@@ -22,7 +22,7 @@ export class PublicoPage implements OnInit {
   send = false;
   data = false;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
-  urlWinks = '';
+  urlWinks = '/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS;
   publicItems: Item[] = [];
   wink: Wink;
   load = false;
@@ -57,14 +57,10 @@ export class PublicoPage implements OnInit {
         const response = await this.winkService.GetPublicItems(this.userWink._id);
         const userW = new User(response.user);
         this.FilterItems(response.userItems, userW);
-        this.wink = response.wink;
-        /*this.wink = new Wink(
-          {
-            sender_id : this.userWink._id,
-            approved: false
-          }
-        );*/
-        // this.wink = null;
+        if (response.wink) {
+          this.wink = response.wink;
+          this.wink.user = this.userWink;
+        }
         if (this.wink && this.wink.sender_id === this.userWink._id) {
           this.send = false;
         } else {
@@ -80,7 +76,7 @@ export class PublicoPage implements OnInit {
   async AceptWink() {
     try {
       if (this.wink) {
-        const response = await this.winkService.ApproveWink(this.wink._id);
+        const response = await this.winkService.ApproveWink(this.wink);
         this.wink.approved = true;
         this.send = false;
       }
@@ -92,7 +88,7 @@ export class PublicoPage implements OnInit {
   async DeleteWink() {
     try {
       if (this.wink) {
-        const response = await this.winkService.DeleteWink(this.wink._id);
+        const response = await this.winkService.DeleteWink(this.wink);
         this.wink = null;
         this.send = false;
       }

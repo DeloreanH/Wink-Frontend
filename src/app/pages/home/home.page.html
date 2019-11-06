@@ -27,7 +27,7 @@
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
-      <ion-grid *ngIf="users.length > 0" class="grid-home">
+      <ion-grid *ngIf="nearbyUsers.length > 0" class="grid-home">
         <ion-row > 
           <ion-col 
           sizeXs="6" 
@@ -36,14 +36,14 @@
           sizeLg="2.4" 
           sizeXl="2"
           class="col-home"
-          *ngFor="let user of users">
+          *ngFor="let user of nearbyUsers">
             <card 
             [routerLink]="[urlPublic, user._id, 0]"
             [user]="user"></card>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div *ngIf="users.length === 0" class="vacio">
+      <div *ngIf="nearbyUsers.length === 0" class="vacio">
         <p >
           No hay usuarios cercanos.
         </p>

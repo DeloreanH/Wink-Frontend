@@ -1,5 +1,5 @@
 <ion-item>
-  <ion-avatar slot="start" class="avatar-wink">
+  <ion-avatar slot="start" class="avatar-wink" [routerLink]="[urlPublic, wink.user._id, 1]">
     <ion-img [src]="wink && wink.user ? wink.user.avatarUrl : avatar"></ion-img>
   </ion-avatar>
   <ion-label>
@@ -13,8 +13,8 @@
       </div>  
     </div>
     <div *ngIf="wink && !wink.approved" class="date-wink">
-      <ion-button class="button-50"  color="warning" (click)="Accept()">Wink</ion-button>
-      <ion-button  class="button-ignore button-50" color="light" (click)="Ignore()">Ignore</ion-button>
+      <ion-button class="button-50 input-relative" (click)="Accept()">Wink</ion-button>
+      <ion-button  class="button-ignore button-50 input-relative" color="light" (click)="Ignore()">Ignore</ion-button>
     </div>
   </ion-label>
 </ion-item>
