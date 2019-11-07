@@ -6,7 +6,7 @@
       class="icono-arrow" 
       [routerLink]="[urlPublic, userWink._id, origin]"></fa-icon>
     <ion-title>Private Profiles</ion-title>
-    <ion-icon slot="end" name="save" class="icon-bar" color="medium"></ion-icon>
+    <ion-icon slot="end" name="save" class="icon-bar" color="medium" (click)="presentAlertCheckbox()"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -28,7 +28,7 @@
     </ion-list-header>
     <item-list 
       *ngFor="let item of section"
-      [item]="item">
+      [item]="item.item">
 
     </item-list>
   </ion-list>

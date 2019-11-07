@@ -9,17 +9,7 @@ import { Platform } from '@ionic/angular';
 })
 export class LinkService {
 
-  // private redesSociales: {redSocial: string, iosName: string, androidName: string, app: string, url: string}[] = [];
   private socialNetworks: SocialNetworkLinks[] = [];
-
-  /*
-    {redSocial: 'instagram', url: 'https://www.instagram.com/'},
-    {redSocial: 'twitter', url: 'https://twitter.com/'},
-    {redSocial: 'facebook', url: 'https://www.facebook.com/'},
-    {redSocial: 'linkedin', url: 'https://www.linkedin.com/in/'},
-    {redSocial: 'youtube', url: 'https://www.youtube.com/channel/'},
-  */
-
   private mail = 'mailto:';
   private tel = 'tel:';
 
@@ -28,7 +18,7 @@ export class LinkService {
     private http: HttpClient
   ) { }
 
-  async SocialNetwork(nameSocialNetwork: string, userName: string) {
+  async SocialNetwork(nameSocialNetwork: string, userName: string, toReturn?: true) {
     try {
       console.log('OpenSocialNetwork');
       if (this.socialNetworks.length === 0) {
@@ -37,37 +27,22 @@ export class LinkService {
       const socialNetwork = this.SearchSocialNetwork(nameSocialNetwork);
       if (socialNetwork) {
         if ( this.plataform.is('mobile') ) {
-          this.URL(socialNetwork.url + userName + socialNetwork.complement);
+          if (toReturn) {
+            return socialNetwork.url + userName + socialNetwork.complement;
+          } else {
+            this.URL(socialNetwork.url + userName + socialNetwork.complement);
+          }
         } else {
+          if (toReturn) {
+            return socialNetwork.url + userName;
+          } else {
           this.URL(socialNetwork.url + userName );
+          }
         }
       }
     } catch (err) {
       console.log('Error OpenSocialNetwork', err.message);
     }
-    // redSocial = this.BuscarRedSocial(tipoItem.descripcion);
-    // this.URL('https://twitter.com/');
-    // console.log('https://www.facebook.com/' + userName);
-    // window.open('https://twitter.com/', '_system', 'location=yes');
-    /*
-    if (idTipoItem && username) {
-      tipoItem = this.informacionPerfilService.BuscarTipoItem(idTipoItem);
-    }
-
-    if (tipoItem) {
-      redSocial = this.BuscarRedSocial(tipoItem.descripcion);
-    }
-
-    if (redSocial) {
-      console.log(idTipoItem);
-      console.log(redSocial);
-      console.log(redSocial.url);
-      window.open(redSocial.url + username, '_system');
-    }
-
-    if (!idTipoItem || !username || !tipoItem || !redSocial) {
-      return null;
-    }*/
   }
 
   Mail(mail: string) {
