@@ -28,7 +28,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'public-profile/:user/:origin',
+        path: 'public-profile/:id/:origin',
         children: [
           {
             path: '',

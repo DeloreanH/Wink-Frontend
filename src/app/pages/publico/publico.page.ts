@@ -45,12 +45,21 @@ export class PublicoPage implements OnInit {
     this.route.params
     .subscribe(
       (params: Params) => {
-        // console.log('params', params);
-        this.userWink = this.winkService.GetUser(params.user);
-        this.origin = params.origin;
+        if (params.origin) {
+          this.origin = params.origin;
+          if (this.origin === '0') {
+            this.userWink = this.winkService.GetUser(params.id);
+          } else if (this.origin === '1') {
+            this.userWink = this.winkService.GetWinkID(params.id).user;
+          } else {
+            // Regresar
+          }
+          if (this.userWink) {
+            this.GetWink();
+          }
+        }
       }
     );
-    this.GetWink();
   }
 
   async GetWink() {

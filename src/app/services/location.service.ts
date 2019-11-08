@@ -35,15 +35,24 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          let status = true;
           if ( this.plataform.is('mobile') ) {
-            status = await this.locationAccuracy.canRequest();
-            const respon = await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
-          }
-          if (status) {
-            const position = await this.geolocation.getCurrentPosition();
-            this.coords = position;
-            resolve(position);
+            console.log('Mobile');
+            const permissions = await this.locationAccuracy.canRequest().then(
+              async (canRequest: boolean) => {
+                if (canRequest) {
+                  const response = await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+                  console.log('response', response);
+                  if (response) {
+                    const position = await this.geolocation.getCurrentPosition();
+                    console.log('position', position);
+                    this.coords = position;
+                    resolve(position);
+                  } else {
+                    reject(false);
+                  }
+                }
+              }
+            );
           }
         } catch (err) {
           console.log('Error getting location: ' + err.message);

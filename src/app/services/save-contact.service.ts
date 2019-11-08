@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import { Item } from '../models/item.model';
 import { NameCategories } from '../config/enums/nameCaterogies.enum';
 import { LinkService } from './link.service';
+import { IndexItemType } from '../config/enums/indexItemType.emun';
 
 
 @Injectable({
@@ -11,34 +12,54 @@ import { LinkService } from './link.service';
 })
 export class SaveContactService {
 
-  contact: Contact;
-  phoneNumbers: ContactField[] = [];
-  emails: ContactField[] = [];
-  urls: ContactField[] = [];
-  ims: ContactField[] = [];
-  categories: ContactField[] = [];
-  ready = false;
+  // private contact: Contact;
+  private phoneNumbers: ContactField[] = [];
+  private emails: ContactField[] = [];
+  private urls: ContactField[] = [];
+  private ims: ContactField[] = [];
+  private categories: ContactField[] = [];
+  private ready = false;
+  private newValue;
 
   constructor(
     private contacts: Contacts,
     private linkService: LinkService
   ) {
-    this.contact = this.contacts.create();
    }
 
 
   async Create(items: any[], user: User) {
     try {
-      this.contact.name = new ContactName(null, user.lastName, user.firstName);
-      items.forEach(
+      // this.contact = this.contacts.create();
+      // this.contact.name = new ContactName(null, user.lastName, user.firstName);
+      console.log('Aqui llego Create()');
+      const contact: Contact =  this.contacts.create();
+      if (contact) {
+        contact.name = new ContactName(null, 'Smith', 'John');
+        contact.phoneNumbers = [new ContactField('mobile', '6471234567')];
+        contact.save().then(
+          () => console.log('Contact saved!', contact),
+          (error: any) => console.error('Error saving contact.', error)
+        );
+      }
+
+      
+      // console.log('Create contact', response);
+
+      /*items.forEach(
         (value: any, index) => {
           switch (value.itemType.category) {
             case NameCategories.MESSENGER:
-              this.AddIM(value);
+              if (value.itemType.index === IndexItemType.TELEFONO) {
+                this.AddPhoneNumber(value);
+              } else {
+                this.AddIM(value);
+              }
               break;
             case NameCategories.SOCIAL_NETWORKS:
-              value.item.value = this.linkService.SocialNetwork(value.item.itemType, value.item.value, true);
-              this.AddURL(value);
+              this.newValue = Object.assign({}, value);
+              this.newValue.item.value = this.linkService.SocialNetwork(value.itemType.name, value.item.value, true);
+              this.AddURL(this.newValue);
               break;
             default:
               switch (value.itemType.index) {
@@ -49,17 +70,19 @@ export class SaveContactService {
                   this.AddEmail(value);
                   break;
                 case 2:
-                  value.item.value = value.item.value + ' ' + value.item.custom;
-                  this.AddCategory(value);
+                  this.newValue = Object.assign({}, value);
+                  this.newValue.item.value = value.item.value + ' ' + value.item.custom;
+                  this.AddCategory(this.newValue);
                   break;
                 case 3:
                   this.AddURL(value);
                   break;
                 case 4:
+                  this.newValue = Object.assign({}, value);
                   value.itemType.options.forEach( (option) => {
                     if (option._id === value.item.value) {
-                      value.item.value = option.name;
-                      this.AddCategory(value);
+                      this.newValue.item.value = option.name;
+                      this.AddCategory(this.newValue);
                     }
                   });
                   break;
@@ -72,7 +95,8 @@ export class SaveContactService {
                   this.AddCategory(value, true);
                   break;
                 case 8:
-                  value.item.value = value.item.value.replace(',', ' ');
+                  this.newValue = Object.assign({}, value);
+                  this.newValue.item.value = value.item.value.replace(',', ' ');
                   this.AddCategory(value);
                   break;
               }
@@ -90,9 +114,9 @@ export class SaveContactService {
         this.contact.ims = this.ims;
         this.contact.categories = this.categories;
         const response = await this.contact.save();
-      }
+      }*/
     } catch (err) {
-      console.log('Error Create Save-Contact');
+      console.log('Error Create Save-Contact', err);
     }
   }
 
@@ -121,11 +145,11 @@ export class SaveContactService {
   }
 
   private AddNickname(nickname: any) {
-    this.contact.nickname = nickname.value;
+    // this.contact.nickname = nickname.value;
   }
 
   private AddPhoto(photo) {
-    this.contact.photo = photo;
+    // this.contact.photo = photo;
   }
 
 

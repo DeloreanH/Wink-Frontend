@@ -64,7 +64,7 @@
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
             <string>We use your location for full functionality of certain app features.</string>
         </edit-config>
-        <edit-config target="NSContactsUsageDescription" file="*-Info.plist" mode="merge">
+        <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
             <string>need contacts access to search friends</string>
         </edit-config>
         <allow-intent href="itms:*" />

@@ -47,12 +47,16 @@ export class PrivateProfilesPage implements OnInit {
     this.route.params
     .subscribe(
       async (params: Params) => {
+        console.log(params);
         try {
-          this.userWink = this.winkService.GetUser(params.idUser);
-          this.idWink = params.idWink;
-          this.origin = params.origin;
-          const response: Item[] = await this.profilesService.GetPrivateItems(this.userWink._id, this.idWink);
-          this.FiltreItems(response);
+          const wink = this.winkService.GetWinkID(params.idWink);
+          if (wink) {
+            this.userWink = wink.user;
+            this.idWink = params.idWink;
+            this.origin = params.origin;
+            const response: Item[] = await this.profilesService.GetPrivateItems(this.userWink._id, this.idWink);
+            this.FiltreItems(response);
+          }
         } catch (err) {
           console.log('Error ngOnInit private profiles', err.message);
         }
@@ -89,11 +93,11 @@ export class PrivateProfilesPage implements OnInit {
     );
   }
 
-   async presentAlertCheckbox() {
+   async Confirm() {
     const alert = await this.alertController.create({
-      header: 'Checkbox',
+      header: 'Indicate the items you want to save in the contact.',
       inputs: [
-        ...await this.LoadItemsLit()
+        ...await this.LoadItemsList()
       ],
       buttons: [
         {
@@ -106,6 +110,7 @@ export class PrivateProfilesPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (inputs) => {
+            this.SaveContact(inputs);
             console.log('Confirm Ok', inputs);
           }
         }
@@ -115,7 +120,7 @@ export class PrivateProfilesPage implements OnInit {
     await alert.present();
   }
 
-  async LoadItemsLit() {
+  async LoadItemsList() {
     const obj: any = [];
     obj.push({
       name: 'photo',
@@ -140,12 +145,28 @@ export class PrivateProfilesPage implements OnInit {
     return obj;
   }
 
-  private SaveContact() {
-    let data: {item: Item, itemType: ItemType}[] = [];
-    data = data.concat(this.generalItems);
-    data = data.concat(this.personalItems);
-    data = data.concat(this.professionalItems);
-    this.contact.Create(data, this.userWink);
+  private SaveContact(ids: string[]) {
+    let predata: {item: Item, itemType: ItemType}[] = [];
+    let complet = false;
+    predata = predata.concat(this.generalItems);
+    predata = predata.concat(this.personalItems);
+    predata = predata.concat(this.professionalItems);
+    const data: {item: Item, itemType: ItemType}[] = [];
+    let item;
+    ids.forEach(
+      (id, index) => {
+        item = predata.find(value => value.item._id === id);
+        if (item) {
+          data.push(item);
+        }
+        if (ids.length === index + 1) {
+          complet = true;
+        }
+      }
+    );
+    if (complet) {
+      this.contact.Create(data, this.userWink);
+    }
   }
 
 }

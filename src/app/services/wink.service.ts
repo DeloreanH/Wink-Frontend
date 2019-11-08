@@ -19,6 +19,7 @@ export class WinkService {
   requestsChanged = new Subject<Wink[]>();
   private record: Wink[] = [];
   recordChanged = new Subject<Wink[]>();
+  private allWinks: Wink[] = [];
 
   constructor(
     private locationService: LocationService,
@@ -41,15 +42,20 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           const location = await this.locationService.GetLocation();
+          console.log('GetNearby location', location);
           if (location) {
             const myLocation =  new Location({
               latitude: location.coords.latitude,
               longitude: location.coords.longitude
             });
+            console.log('myLocation', myLocation);
             const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
+            console.log('response', response);
             this.SetNearbyUsers((response as User[]));
             this.userService.UpdateLocation(myLocation);
             resolve(response);
+          } else {
+            resolve(false);
           }
         } catch (err) {
           console.log('Error GetNearby: ' + err.message);
@@ -73,6 +79,8 @@ export class WinkService {
             this.SetNearbyUsers((response as User[]));
             this.userService.UpdateLocation(myLocation);
             resolve(response);
+          } else {
+            resolve(false);
           }
         } catch (err) {
           console.log('Error GetNearby: ' + err.message);
@@ -160,11 +168,20 @@ export class WinkService {
     );
   }
 
+  GetWinkID(idWink: string) {
+    return this.allWinks.find(wink => wink._id === idWink);
+  }
+
+  GetWinkIDUser(idUser: string) {
+    return this.allWinks.find(wink => wink.user._id === idUser);
+  }
+
   async GetWinks() {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           const response = await this.http.get(Routes.BASE + Routes.GET_WINKS).toPromise();
+          this.allWinks = (response as Wink[]);
           this.FilterWinks((response as Wink[]));
           // console.log('Res', response);
           resolve(response);

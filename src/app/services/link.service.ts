@@ -20,7 +20,6 @@ export class LinkService {
 
   async SocialNetwork(nameSocialNetwork: string, userName: string, toReturn?: true) {
     try {
-      console.log('OpenSocialNetwork');
       if (this.socialNetworks.length === 0) {
         const response = await this.LoadSocialNetwork();
       }
@@ -28,6 +27,7 @@ export class LinkService {
       if (socialNetwork) {
         if ( this.plataform.is('mobile') ) {
           if (toReturn) {
+            console.log(socialNetwork.url + userName + socialNetwork.complement);
             return socialNetwork.url + userName + socialNetwork.complement;
           } else {
             this.URL(socialNetwork.url + userName + socialNetwork.complement);
@@ -77,7 +77,7 @@ export class LinkService {
   }
 
   private SearchSocialNetwork(name: string) {
-    if (this.socialNetworks.length !== 0) {
+    if (this.socialNetworks.length !== 0 && name) {
       return this.socialNetworks.filter(
         (socialNetwork) => {
           return socialNetwork.name.toLowerCase() === name.toLowerCase();

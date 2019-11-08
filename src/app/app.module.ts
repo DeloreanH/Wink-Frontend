@@ -38,6 +38,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 import { HammerGestureConfig } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
+import { Contacts } from '@ionic-native/contacts/ngx';
 
 // create a class that overrides hammer default config
 
@@ -79,6 +80,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     Camera,
     Geolocation,
     LocationAccuracy,
+    Contacts,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},

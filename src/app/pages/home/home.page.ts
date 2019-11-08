@@ -80,7 +80,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   async GPS(event?) {
     try {
-      const respuesta = await this.winkService.GetNearby2();
+      const respuesta = await this.winkService.GetNearby();
     } catch (err) {
       console.log('GPS error', err.message);
     }
