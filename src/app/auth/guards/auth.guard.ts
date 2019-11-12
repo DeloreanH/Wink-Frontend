@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { map, tap, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class AuthGuard implements CanActivate {
           return true;
         }
         // ruta a redirigir si no esta autenticado
-        return this.router.createUrlTree(['virtwoo-auth/login']);
+        return this.router.createUrlTree([RoutesPrincipal.LOGIN]);
       })
       );
   }

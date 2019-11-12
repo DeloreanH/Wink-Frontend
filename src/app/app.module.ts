@@ -31,6 +31,8 @@ import { AuthInterceptorService } from './auth/services/auth-interceptor.service
 import { Camera } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -78,8 +80,10 @@ export class MyHammerConfig extends HammerGestureConfig  {
     StatusBar,
     SplashScreen,
     Camera,
+    AndroidPermissions,
     Geolocation,
     LocationAccuracy,
+    Diagnostic,
     Contacts,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

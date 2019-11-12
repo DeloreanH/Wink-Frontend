@@ -10,7 +10,7 @@
         <div class="end status" slot="end">
           <ion-label
             class="text-card text-status text-small">
-            {{userWink.status ? userWink.status : 'Disponible'}}
+            {{ userWink && userWink.status ? userWink.status : 'Disponible'}}
           </ion-label>
         </div>
       </ion-toolbar>
@@ -20,7 +20,7 @@
     
     <ion-img 
       class="public-img"
-      [src]="userWink.avatarUrl">
+      [src]="userWink ? userWink.avatarUrl : ''">
     </ion-img>
     <div class="text-bottom">
       <ion-label  class="public-name text-card" >

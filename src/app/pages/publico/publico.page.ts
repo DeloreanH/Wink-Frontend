@@ -38,19 +38,22 @@ export class PublicoPage implements OnInit {
     public alertController: AlertController,
     private profilesService: ProfilesService
   ) {
-    this.user = this.userService.User();
+    // this.user = this.userService.User();
   }
 
   ngOnInit() {
     this.route.params
     .subscribe(
       (params: Params) => {
+        console.log('params', params);
         if (params.origin) {
           this.origin = params.origin;
           if (this.origin === '0') {
             this.userWink = this.winkService.GetUser(params.id);
+            console.log('userWink', this.userWink);
           } else if (this.origin === '1') {
             this.userWink = this.winkService.GetWinkID(params.id).user;
+            console.log('userWink', this.userWink);
           } else {
             // Regresar
           }

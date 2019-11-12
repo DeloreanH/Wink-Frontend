@@ -4,13 +4,12 @@
       slot="start" 
       [icon]="['fas', 'arrow-left']" 
       class="icono-arrow" 
-      [routerLink]="[urlPublic, userWink._id, origin]"></fa-icon>
+      [routerLink]="userWink ? [urlPublic, origin === '0' ? userWink._id : idWink, origin] : [urlHome]"></fa-icon>
     <ion-title>Private Profiles</ion-title>
     <ion-icon 
       slot="end" 
       name="save" 
       class="icon-bar" 
-      *ngIf="generalItems.length > 0 || professionalItems.length > 0  || personalItems.length > 0" 
       color="medium" 
       (click)="Confirm()">
     </ion-icon>
@@ -20,13 +19,13 @@
 <ion-content class="ion-padding">
   <div class="contenedorAvatar" >
     <ion-avatar class="avatar-profile"> 
-      <ion-img [src]="userWink.avatarUrl"></ion-img>
+      <ion-img [src]="userWink ? userWink.avatarUrl : ''"></ion-img>
     </ion-avatar>
   </div>
 
   <div class="contenedor" >
     <ion-title class="title-name">
-      {{userWink.firstName + ' ' + userWink.lastName}}
+      {{userWink ? userWink.firstName + ' ' + userWink.lastName : 'John Doe'}}
     </ion-title>
   </div>
   <ion-list *ngFor="let section of items; let i = index;" >

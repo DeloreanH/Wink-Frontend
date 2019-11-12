@@ -46,6 +46,7 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
 
   changeData = false;
 
+
   item: Item;
   user: User;
   userSusbcription =  new Subscription();
@@ -175,6 +176,11 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
         }
       }
     );
+    /*this.grupoForm.valueChanges.subscribe(
+      () => {
+        this.changeData = true;
+      }
+    );*/
   }
 
   ngOnDestroy(): void {
@@ -302,10 +308,6 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
     return this.changeData && this.grupoForm.valid;
   }
 
-  ChangeForm() {
-    this.changeData = true;
-  }
-
   Logout() {
     this.authService.Logout();
     if (this.menu.isOpen) {
@@ -334,5 +336,9 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
 
   Scroll(event) {
     // console.log('Scroll', event);
+  }
+
+  ChangeData() {
+    this.changeData = true;
   }
 }

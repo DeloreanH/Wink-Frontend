@@ -23,8 +23,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   @Input() ordenando;
   @Input() form: FormGroup;
-  @Output() eliminar = new EventEmitter();
-  @Output() cambio = new EventEmitter();
+  @Output() delete = new EventEmitter();
+  @Output() change = new EventEmitter();
   @Input() chipInput: any;
 
 
@@ -72,7 +72,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         'selector', new FormControl(null, Validators.required),
       );
       this.CargarItem();
-      this.CargarChips();
     } else {
       this.value = null;
     }
@@ -101,6 +100,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
       }
     }
     (this.form.controls.campo1 as FormControl).markAsTouched();
+    this.Change();
   }
 
   DeleteChip(fruit: any): void {
@@ -110,6 +110,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
       this.value.value = this.chipArray.join(',');
       this.focus = true;
     }
+    this.Change();
   }
 
   CargarItem() {
@@ -301,6 +302,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         if (this.itemType) {
           this.AggCampoForm();
           this.BuscarTItems(this.itemType.category);
+          this.CargarChips();
         }
       }
       this.CargarIcono();
@@ -328,6 +330,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.value.value  = '';
     this.CargarIcono();
     this.AggCampoForm();
+    this.Change();
   }
 
   CargarIcono() {
@@ -342,8 +345,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   Eliminar() {
+    this.Change();
     this.EliminarUnico();
-    this.eliminar.emit(this.value);
+    this.delete.emit(this.value);
   }
 
   FechaActual() {
@@ -372,11 +376,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   MostrarSelector() {
     if (!this.value.basic) {
-      this.cambio.emit(true);
       this.EliminarUnico();
       this.itemType = null;
       this.onChange(this.value);
       this.AggCampoForm();
+      this.Change();
     }
   }
 
@@ -391,7 +395,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
     this.onTouch(this.value);
     this.onChange(this.value);
-    this.cambio.emit(true);
+    this.Change();
   }
 
   ValorChip(valor) {
@@ -459,6 +463,10 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     } catch (err) {
       this.errorMessage = null;
     }
+  }
+
+  private Change() {
+    this.change.emit(true);
   }
 
 }

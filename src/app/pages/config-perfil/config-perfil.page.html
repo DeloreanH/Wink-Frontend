@@ -64,7 +64,7 @@
         <ion-label position="floating">Biografia</ion-label>
         <ion-textarea maxlength="250"
         formControlName="biografia"
-        (ionInput)="ChangeForm()"
+        (ionInput)="ChangeData()"
         ></ion-textarea>
       </ion-item>
       <mat-accordion multi="true" cdkDropListGroup>
@@ -95,8 +95,9 @@
                 [form]="itemPublico"
                 formControlName="item"
                 [ordenando]="ordenar" 
-                (eliminar)="EliminarElemento(publicoForm, i)"
-                (cambio)="ChangeForm()">
+                (delete)="EliminarElemento(publicoForm, i)"
+                (change)="ChangeData()"
+                >
               </app-item-perfil>
           </div>
         </mat-expansion-panel>
@@ -127,8 +128,9 @@
               [form]="itemGeneral"
               formControlName="item"
               [ordenando]="ordenar" 
-              (eliminar)="EliminarElemento(generalForm, i)"
-              (cambio)="ChangeForm()">
+              (delete)="EliminarElemento(generalForm, i)"
+              (change)="ChangeData()"
+              >
               </app-item-perfil>
             </div>
         </mat-expansion-panel>
@@ -160,8 +162,9 @@
             [form]="itemPersonal"
             formControlName="item"
             [ordenando]="ordenar" 
-            (eliminar)="EliminarElemento(personalForm, i)"
-            (cambio)="ChangeForm()">
+            (delete)="EliminarElemento(personalForm, i)"
+            (change)="ChangeData()"
+            >
             </app-item-perfil>
           </div>
         </mat-expansion-panel>
@@ -193,8 +196,9 @@
             [form]="itemProfesional"
             formControlName="item"
             [ordenando]="ordenar" 
-            (eliminar)="EliminarElemento(profesionalForm, i)"
-            (cambio)="ChangeForm()">
+            (delete)="EliminarElemento(profesionalForm, i)"
+            (change)="ChangeData()"
+            >
             </app-item-perfil>
           </div>
         </mat-expansion-panel>

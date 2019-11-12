@@ -32,6 +32,7 @@ export class PrivateProfilesPage implements OnInit {
   ];
   sections: Section[] = [];
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
+  urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,14 +66,19 @@ export class PrivateProfilesPage implements OnInit {
   }
 
   private FiltreItems(items: Item[]) {
-    items.forEach(
-      (itemx: Item) => {
-        if (itemx.value && itemx.value !== '') {
-          (this.items[itemx.section.key - 1] as {item: Item, itemType: ItemType}[]).push({ item: itemx, itemType: null});
+    this.generalItems = [];
+    this.personalItems = [];
+    this.professionalItems = [];
+    if (this.generalItems.length === 0  && this.personalItems.length === 0  && this.professionalItems.length === 0) {
+      items.forEach(
+        (itemx: Item) => {
+          if (itemx.value && itemx.value !== '') {
+            (this.items[itemx.section.key - 1] as {item: Item, itemType: ItemType}[]).push({ item: itemx, itemType: null});
+          }
         }
-      }
-    );
-    this.SortItems();
+      );
+      this.SortItems();
+    }
   }
 
   private SortItems() {
@@ -110,8 +116,10 @@ export class PrivateProfilesPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (inputs) => {
-            this.SaveContact(inputs);
-            console.log('Confirm Ok', inputs);
+            if (inputs.length > 0) {
+              this.SaveContact(inputs);
+              console.log('Confirm Ok', inputs);
+            }
           }
         }
       ]
@@ -146,16 +154,21 @@ export class PrivateProfilesPage implements OnInit {
   }
 
   private SaveContact(ids: string[]) {
-    let predata: {item: Item, itemType: ItemType}[] = [];
+    const predata: {item: Item, itemType: ItemType}[] = [];
     let complet = false;
-    predata = predata.concat(this.generalItems);
-    predata = predata.concat(this.personalItems);
-    predata = predata.concat(this.professionalItems);
+    for (const arrays of this.items) {
+      predata.push(...arrays);
+    }
+    console.log('arrays', this.items);
     const data: {item: Item, itemType: ItemType}[] = [];
     let item;
+    if (ids[0] === 'photo') {
+    }
+    console.log('predata', predata, predata.length);
     ids.forEach(
       (id, index) => {
         item = predata.find(value => value.item._id === id);
+        console.log('item index', item, index, id);
         if (item) {
           data.push(item);
         }
@@ -165,6 +178,7 @@ export class PrivateProfilesPage implements OnInit {
       }
     );
     if (complet) {
+      console.log('data', data);
       this.contact.Create(data, this.userWink);
     }
   }

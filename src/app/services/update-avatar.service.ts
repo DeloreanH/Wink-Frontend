@@ -4,6 +4,7 @@ import {
 } from '@ionic-native/camera/ngx/';
 import { HttpClient } from '@angular/common/http';
 import { Routes } from '../config/enums/routes/routes.enum';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class UpdateAvatarService {
   constructor(
     private camera: Camera,
     private http: HttpClient,
+    private platform: Platform
   ) { }
 
   /**
@@ -44,15 +46,15 @@ export class UpdateAvatarService {
       async (resolve, reject) => {
         try {
           const image = await this.camera.getPicture(
-              {
-              quality: 100,
-              destinationType: this.camera.DestinationType.DATA_URL,
-              encodingType: this.camera.EncodingType.JPEG,
-              mediaType: this.camera.MediaType.PICTURE,
-              sourceType: camera ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY,
-              correctOrientation: true,
-              allowEdit: true
-            });
+            {
+            quality: 100,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE,
+            sourceType: camera ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY,
+            correctOrientation: true,
+            allowEdit: true
+          });
           // image = await this.crop.crop(image, { quality: 100 });
           this.imageBase64 = image;
           resolve(image);

@@ -41,7 +41,7 @@ export class WinkService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const location = await this.locationService.GetLocation();
+          const location = await this.locationService.GetPosition();
           console.log('GetNearby location', location);
           if (location) {
             const myLocation =  new Location({

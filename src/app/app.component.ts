@@ -46,10 +46,12 @@ export class AppComponent {
 
     if (token) {
       // this.slRouterService.setRoot(RoutesName.Home, true);
-      this.slRouterService.setRoot(RoutesPrincipal.APP, true);
+      // this.slRouterService.setRoot(RoutesPrincipal.APP, true);
+      this.router.navigate(['/' + RoutesPrincipal.APP]);
     } else {
       // this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
-      this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+      // this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+      this.router.navigate(['/' + RoutesPrincipal.LOGIN]);
     }
   }
 }

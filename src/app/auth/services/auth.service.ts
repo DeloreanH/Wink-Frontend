@@ -7,6 +7,9 @@ import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthUser } from '../models/authuser.model';
 import { User } from '../../models/user.model';
+import { Routes } from 'src/app/config/enums/routes/routes.enum';
+import { NavController } from '@ionic/angular';
+import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +23,8 @@ export class AuthService {
     private slRouterService: SlRouterService,
     private userService: UserService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private navController: NavController
   ) {
    }
 
@@ -49,14 +53,15 @@ export class AuthService {
 
   async Logout() {
     try {
-      // const respuesta: any = await this.http.post(Routes.BASE + Routes.LOGOUT, null).toPromise();
+      const response: any = await this.http.post(Routes.BASE + Routes.LOGOUT, null).toPromise();
       console.log('Logout', );
       // if (respuesta.status === 'logout successfully' ) {
       this.user.next(null);
       this.userService.User(null);
       localStorage.removeItem('userData');
+      this.navController.navigateRoot('/' + RoutesPrincipal.LOGIN);
       // this.router.navigate(['/virtwoo-auth/login']);
-      this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
+      // this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
       if (this.tokenExpiration) {
         clearTimeout(this.tokenExpiration);
       }
