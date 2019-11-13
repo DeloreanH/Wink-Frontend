@@ -16,18 +16,26 @@ export class LinkService {
   constructor(
     private plataform: Platform,
     private http: HttpClient
-  ) { }
+  ) {
+    this.Init();
+  }
 
-  async SocialNetwork(nameSocialNetwork: string, userName: string, toReturn?: true) {
+  private async Init() {
+    if (this.socialNetworks.length === 0) {
+      const response = await this.LoadSocialNetwork();
+    }
+  }
+
+  SocialNetwork(nameSocialNetwork: string, userName: string, toReturn?: true) {
     try {
       if (this.socialNetworks.length === 0) {
-        const response = await this.LoadSocialNetwork();
+        return;
       }
       const socialNetwork = this.SearchSocialNetwork(nameSocialNetwork);
       if (socialNetwork) {
         if ( this.plataform.is('mobile') ) {
           if (toReturn) {
-            console.log(socialNetwork.url + userName + socialNetwork.complement);
+            console.log('SocialNetwork', socialNetwork.url + userName + socialNetwork.complement);
             return socialNetwork.url + userName + socialNetwork.complement;
           } else {
             this.URL(socialNetwork.url + userName + socialNetwork.complement);
@@ -39,6 +47,8 @@ export class LinkService {
           this.URL(socialNetwork.url + userName );
           }
         }
+      } else {
+        return null;
       }
     } catch (err) {
       console.log('Error OpenSocialNetwork', err.message);
@@ -46,7 +56,6 @@ export class LinkService {
   }
 
   Mail(mail: string) {
-    console.log('OpenMail');
     try {
       window.open(this.mail + mail, '_system');
     } catch (err) {
@@ -55,7 +64,6 @@ export class LinkService {
   }
 
   URL(url: string) {
-    console.log('OpenURL');
     try {
       if (url.startsWith('http')) {
         window.open(encodeURI(url), '_system');
@@ -68,7 +76,6 @@ export class LinkService {
   }
 
   Tel(num: string) {
-    console.log('OpenURL');
     try {
         window.open(encodeURI(this.tel + num ), '_system', 'location=yes');
     } catch (err) {

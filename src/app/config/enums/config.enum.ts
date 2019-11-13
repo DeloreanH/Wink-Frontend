@@ -10,7 +10,10 @@ export enum Config {
   GENDER_HIDEEN = 3,
   SOCIAL_NETWORK = 'redessociales',
   BIRTHDAY = 'fechadenacimiento',
+  NICKNAME = 'apodo',
+  ADDRESS = 'direccion',
   CUSTOM = 'personalizado',
   AVATAR = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
+  IMAGE_JPEG = 'image/jpeg',
 
 }

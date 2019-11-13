@@ -10,6 +10,9 @@ import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 import { AlertController } from '@ionic/angular';
 import { ItemType } from 'src/app/models/itemType.model';
 import { SaveContactService } from 'src/app/services/save-contact.service';
+import { NameCategories } from 'src/app/config/enums/nameCaterogies.enum';
+import { IndexItemType } from 'src/app/config/enums/indexItemType.emun';
+import { Config } from 'src/app/config/enums/config.enum';
 
 @Component({
   selector: 'app-private-profiles',
@@ -25,11 +28,7 @@ export class PrivateProfilesPage implements OnInit {
   generalItems: {item: Item, itemType: ItemType}[] = [];
   professionalItems: {item: Item, itemType: ItemType}[] = [];
   personalItems: {item: Item, itemType: ItemType}[] = [];
-  items: any[] = [
-    this.generalItems,
-    this.personalItems,
-    this.professionalItems
-  ];
+  items: any[] = [];
   sections: Section[] = [];
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
@@ -42,6 +41,9 @@ export class PrivateProfilesPage implements OnInit {
     private contact: SaveContactService
   ) {
     this.sections = this.profilesService.sections;
+    this.items.push(this.generalItems);
+    this.items.push(this.personalItems);
+    this.items.push(this.professionalItems);
   }
 
   ngOnInit() {
@@ -66,10 +68,7 @@ export class PrivateProfilesPage implements OnInit {
   }
 
   private FiltreItems(items: Item[]) {
-    this.generalItems = [];
-    this.personalItems = [];
-    this.professionalItems = [];
-    if (this.generalItems.length === 0  && this.personalItems.length === 0  && this.professionalItems.length === 0) {
+    if (this.items[0].length === 0  && this.items[1].length === 0  && this.items[2].length === 0) {
       items.forEach(
         (itemx: Item) => {
           if (itemx.value && itemx.value !== '') {
@@ -134,41 +133,70 @@ export class PrivateProfilesPage implements OnInit {
       name: 'photo',
       type: 'checkbox',
       label: 'Photo',
-      value: 'photo',
+      value: {
+        item: {
+          value: 'photo'
+        },
+        itemType: null
+      },
       checked: true
     });
+    let add;
     for (const items of this.items) {
       for (const item of items) {
+        add = false;
         const itemType = await this.profilesService.BuscarTipoItem(item.item.itemtype);
         item.itemType = itemType;
-        obj.push({
-          name: item.item._id,
-          type: 'checkbox',
-          label: itemType.name,
-          value: item.item._id,
-          checked: true
-        });
+        switch (itemType.category) {
+          case NameCategories.MESSENGER:
+            add = true;
+            break;
+          case NameCategories.SOCIAL_NETWORKS:
+            add = true;
+            break;
+          case NameCategories.CONTACT:
+            add = true;
+            break;
+          case NameCategories.PERSONAL:
+            if (itemType.name === Config.BIRTHDAY) {
+              add = true;
+            } else if (itemType.index === IndexItemType.CAMPO) {
+              add = true;
+            }
+            break;
+        }
+        if (add) {
+          obj.push({
+            name: item.item._id,
+            type: 'checkbox',
+            label: item.item.value,
+            value: Object.assign({}, item),
+            checked: true
+          });
+        }
       }
     }
     return obj;
   }
 
-  private SaveContact(ids: string[]) {
+  private SaveContact(values: any[]) {
+    let photo = false;
+    const data: {item: Item, itemType: ItemType}[] = [];
+    if (values[0].item.value === 'photo') {
+      photo = true;
+      data.push(...values.splice(0, 1));
+    } else {
+      data.push(...values.slice());
+    }
     const predata: {item: Item, itemType: ItemType}[] = [];
     let complet = false;
     for (const arrays of this.items) {
-      predata.push(...arrays);
+      predata.push(...arrays.slice());
     }
-    console.log('arrays', this.items);
-    const data: {item: Item, itemType: ItemType}[] = [];
     let item;
-    if (ids[0] === 'photo') {
-    }
-    console.log('predata', predata, predata.length);
-    ids.forEach(
+    /*ids.forEach(
       (id, index) => {
-        item = predata.find(value => value.item._id === id);
-        console.log('item index', item, index, id);
+        item = Object.assign({}, predata.find(value => value.item._id === id));
         if (item) {
           data.push(item);
         }
@@ -179,8 +207,10 @@ export class PrivateProfilesPage implements OnInit {
     );
     if (complet) {
       console.log('data', data);
-      this.contact.Create(data, this.userWink);
-    }
+      this.contact.Create(data.slice(), this.userWink, ids[0] === 'photo');
+    }*/
+    console.log('data', data);
+    this.contact.Create(data.slice(), this.userWink, photo);
   }
 
 }

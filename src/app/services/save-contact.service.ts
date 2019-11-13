@@ -5,7 +5,9 @@ import { Item } from '../models/item.model';
 import { NameCategories } from '../config/enums/nameCaterogies.enum';
 import { LinkService } from './link.service';
 import { IndexItemType } from '../config/enums/indexItemType.emun';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
+import { Config } from '../config/enums/config.enum';
+import { ToastService } from './toast.service';
 
 
 @Injectable({
@@ -18,61 +20,83 @@ export class SaveContactService {
   private emails: ContactField[] = [];
   private urls: ContactField[] = [];
   private ims: ContactField[] = [];
-  private categories: ContactField[] = [];
   private ready = false;
-  private newValue;
+  private birthday;
+  private nickname;
+  private address;
 
   constructor(
     private contacts: Contacts,
     private linkService: LinkService,
-    private platform: Platform
+    private platform: Platform,
+    private toastService: ToastService
   ) {
    }
 
 
   async Create(items: any[], user: User, photo?: boolean) {
     try {
-      this.LoadItems(items);
-      console.log('items', items);
-      // this.contact = this.contacts.create();
-      // this.contact.name = new ContactName(null, user.lastName, user.firstName);
-      // console.log('Create contact', response);
-
-      if (this.ready) {
-        console.log('Aqui llego Create()');
+      const response: any = await this.LoadItems(items);
+      if (response) {
+        // console.log('Aqui llego Create()');
         const contact: Contact =  this.contacts.create();
         if (contact) {
           contact.name = new ContactName(null, user.lastName, user.firstName);
-          // contact.phoneNumbers = [new ContactField('mobile', '6471234567')];
-          if (this.phoneNumbers.length > 0) {
-            contact.phoneNumbers = this.phoneNumbers;
+          if (photo && user.avatarUrl) {
+            contact.photos = [new ContactField(Config.IMAGE_JPEG, user.avatarUrl, true)];
           }
-          if (this.emails.length > 0) {
-            contact.emails = this.emails;
+          // console.log('this.urls', this.urls);
+          contact.urls = this.urls;
+          // console.log('this.phoneNumbers', this.phoneNumbers);
+          contact.phoneNumbers = this.phoneNumbers;
+          // console.log('this.emails', this.emails);
+          contact.emails = this.emails;
+          // console.log('this.ims', this.ims);
+          contact.ims = this.ims;
+          if (this.address) {
+            contact.addresses = [
+              {
+                pref: true,
+                streetAddress: this.address,
+              },
+            ];
           }
-          if (this.urls.length > 0) {
-            contact.urls = this.urls;
+          contact.nickname = this.nickname;
+          if (this.birthday) {
+            contact.birthday = new Date(this.birthday);
           }
-          if (this.ims.length > 0) {
-            contact.ims = this.ims;
-          }
-          if (this.categories.length > 0) {
-            contact.categories = this.categories;
-          }
+          // console.log('Contact saved! antes', contact);
           contact.save().then(
-            () => console.log('Contact saved!', contact),
-            (error: any) => console.error('Error saving contact.', error)
+            () => {
+              this.toastService.Toast('Contact saved!');
+              // console.log('Contact saved!', contact);
+              this.Clear();
+            },
+            (err: any) => {
+              this.toastService.Toast('Error saving contact.');
+              console.error('Error saving contact.', err);
+              this.Clear();
+            }
           );
         }
       }
     } catch (err) {
+      this.toastService.Toast('Error saving contact.');
       console.log('Error Create Save-Contact', err);
     }
   }
 
-  LoadItems(items) {
+  private Clear() {
+    this.phoneNumbers = [];
+    this.ims = [];
+    this.emails = [];
+    this.urls = [];
+  }
+
+  async LoadItems(items) {
+    let ready = false;
     items.forEach(
-      (value: any, index) => {
+      async (value: any, index) => {
         switch (value.itemType.category) {
           case NameCategories.MESSENGER:
             if (value.itemType.index === IndexItemType.TELEFONO) {
@@ -82,57 +106,51 @@ export class SaveContactService {
             }
             break;
           case NameCategories.SOCIAL_NETWORKS:
-            this.newValue = Object.assign({}, value);
-            this.newValue.item.value = this.linkService.SocialNetwork(value.itemType.name, value.item.value, true);
-            this.AddURL(value);
+            let newValue = Object.assign({}, value);
+            const url: any = this.linkService.SocialNetwork(newValue.itemType.name, newValue.item.value, true);
+            if (url) {
+              newValue.item.value = url;
+              // console.log('this.newValue', newValue, url, this.urls);
+              this.AddURL(newValue);
+            }
             break;
-          default:
+          case NameCategories.CONTACT:
             switch (value.itemType.index) {
-              case 0:
-                this.AddCategory(value);
-                break;
               case 1:
                 this.AddEmail(value);
-                break;
-              case 2:
-                this.newValue = Object.assign({}, value);
-                this.newValue.item.value = value.item.value + ' ' + value.item.custom;
-                this.AddCategory(this.newValue);
                 break;
               case 3:
                 this.AddURL(value);
                 break;
-              case 4:
-                this.newValue = Object.assign({}, value);
-                value.itemType.options.forEach( (option) => {
-                  if (option._id === value.item.value) {
-                    this.newValue.item.value = option.name;
-                    this.AddCategory(this.newValue);
-                  }
-                });
-                break;
-              case 5:
-                break;
               case 6:
                 this.AddPhoneNumber(value);
                 break;
-              case 7:
-                this.AddCategory(value, true);
+            }
+            break;
+          case NameCategories.PERSONAL:
+            switch (value.itemType.name) {
+              case Config.BIRTHDAY:
+                this.birthday = value.item.value;
                 break;
-              case 8:
-                this.newValue = Object.assign({}, value);
-                this.newValue.item.value = value.item.value.replace(',', ' ');
-                this.AddCategory(value);
+              case Config.NICKNAME:
+                // console.log('NICKNAME', value.item.value);
+                this.nickname = value.item.value;
+                break;
+              case Config.ADDRESS:
+                this.address = value.item.value;
                 break;
             }
             break;
         }
         if (index === items.length - 1) {
-          console.log('llegooo');
-          this.ready = true;
+          // console.log('llegooo');
+          ready = true;
         }
       }
     );
+    if (ready) {
+      return true;
+    }
 
   }
 
@@ -145,28 +163,12 @@ export class SaveContactService {
   }
 
   private AddURL(url: any) {
+    console.log('AddURL', url, url.item.value);
     this.urls.push(new ContactField(url.item.itemtype, url.item.value));
   }
 
   private AddEmail(email: any) {
     this.emails.push(new ContactField(email.item.itemtype, email.item.value));
   }
-
-  private AddCategory(categorie: any, custom?: boolean) {
-    if (custom) {
-      this.categories.push(new ContactField(categorie.item.value, categorie.item.cutom));
-    } else {
-      this.categories.push(new ContactField(categorie.item.itemtype, categorie.item.value));
-    }
-  }
-
-  private AddNickname(nickname: any) {
-    // this.contact.nickname = nickname.value;
-  }
-
-  private AddPhoto(photo) {
-    // this.contact.photo = photo;
-  }
-
 
 }
