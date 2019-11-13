@@ -133,12 +133,7 @@ export class PrivateProfilesPage implements OnInit {
       name: 'photo',
       type: 'checkbox',
       label: 'Photo',
-      value: {
-        item: {
-          value: 'photo'
-        },
-        itemType: null
-      },
+      value: 'photo',
       checked: true
     });
     let add;
@@ -170,7 +165,7 @@ export class PrivateProfilesPage implements OnInit {
             name: item.item._id,
             type: 'checkbox',
             label: item.item.value,
-            value: Object.assign({}, item),
+            value: item,
             checked: true
           });
         }
@@ -179,22 +174,15 @@ export class PrivateProfilesPage implements OnInit {
     return obj;
   }
 
-  private SaveContact(values: any[]) {
-    let photo = false;
-    const data: {item: Item, itemType: ItemType}[] = [];
-    if (values[0].item.value === 'photo') {
-      photo = true;
-      data.push(...values.splice(0, 1));
-    } else {
-      data.push(...values.slice());
-    }
+  private SaveContact(ids: string[]) {
     const predata: {item: Item, itemType: ItemType}[] = [];
     let complet = false;
     for (const arrays of this.items) {
       predata.push(...arrays.slice());
     }
+    const data: {item: Item, itemType: ItemType}[] = [];
     let item;
-    /*ids.forEach(
+    ids.forEach(
       (id, index) => {
         item = Object.assign({}, predata.find(value => value.item._id === id));
         if (item) {
@@ -208,9 +196,7 @@ export class PrivateProfilesPage implements OnInit {
     if (complet) {
       console.log('data', data);
       this.contact.Create(data.slice(), this.userWink, ids[0] === 'photo');
-    }*/
-    console.log('data', data);
-    this.contact.Create(data.slice(), this.userWink, photo);
+    }
   }
 
 }
