@@ -21,6 +21,7 @@
     <div class="contenedorAvatar" >
       <ion-avatar (click)="SeleccionarImagen()" class="avatar-profile"> 
         <ion-img  
+          class="img-avatar"
           *ngIf="!loadingAvatar" 
           alt="Avatar" 
           (ionError)="ErrorImagen()" 

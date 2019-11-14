@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
-import { ActionSheetController, MenuController } from '@ionic/angular';
+import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../models/category.model';
 import { Item } from '../../models/item.model';
@@ -59,7 +59,8 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private menu: MenuController
+    private menu: MenuController,
+    private navController: NavController,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -323,19 +324,21 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
     this.isDrag = false;
   }
 
-  IrDatosBasicos() {
-    this.router.navigate(['/' + RoutesPrincipal.DATOS_BASICOS]);
-    this.CloseMenu();
+  async GoBasicData() {
+    try {
+      const response = await this.navController.navigateForward(
+                        ['/' + RoutesPrincipal.DATOS_BASICOS]
+                      );
+      this.CloseMenu();
+    } catch (err) {
+      console.log('Error Go', err);
+    }
   }
 
   CloseMenu() {
     if (this.menu.isOpen) {
       this.menu.close();
     }
-  }
-
-  Scroll(event) {
-    // console.log('Scroll', event);
   }
 
   ChangeData() {

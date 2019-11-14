@@ -38,7 +38,7 @@
           class="col-home"
           *ngFor="let user of nearbyUsers">
             <card 
-            [routerLink]="[urlPublic, user._id, 0]"
+            (click)="GoPublicProfile(user)"
             [user]="user"></card>
           </ion-col>
         </ion-row>
@@ -55,8 +55,16 @@
     <ion-fab-button size="small">
         <ion-icon name="eye"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button (click)="ChangeProfiles(false)" [ngClass]="{'activo': profesional, 'inactivo' : !profesional}"><ion-icon name="logo-youtube"></ion-icon></ion-fab-button>
+    <ion-fab-list side="top">  
+      <ion-fab-button 
+        (click)="ChangeProfiles(false)" 
+        [ngClass]="{'activo': profesional, 'inactivo' : !profesional}">
+          <fa-icon 
+          [icon]="['fas', 'user-tie']" 
+          class="icono-public" 
+          
+          ></fa-icon>
+      </ion-fab-button>
       <ion-fab-button (click)="ChangeProfiles(true)" [ngClass]="{'activo': personal, 'inactivo' : !personal}"><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
     </ion-fab-list>
   </ion-fab>

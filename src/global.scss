@@ -180,3 +180,23 @@
   font-size: 180%;
   padding-right: 8px;
 }
+
+.content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.button-float-skeleton {
+  width: 40px;
+  height: 40px;
+  margin: 8px;
+}
+
+.img-avatar {
+  object-position: top;
+  object-fit: cover;
+}
+
+.chip-margin {
+  margin-bottom: 5px;
+}

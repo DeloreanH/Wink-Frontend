@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { Config } from 'src/app/config/enums/config.enum';
 import { WinkService } from 'src/app/services/wink.service';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'item-wink',
@@ -18,6 +19,7 @@ export class ItemWinkComponent implements OnInit {
 
   constructor(
     private winkService: WinkService,
+    private navController: NavController,
   ) {
    }
 
@@ -49,6 +51,25 @@ export class ItemWinkComponent implements OnInit {
       return;
     }
     return moment(date).fromNow();
+  }
+
+  async GoPrivateProfileA() {
+    try {
+      if (this.wink && this.wink.approved) {
+        const response = await this.navController.navigateForward([this.urlPublic, this.wink._id, 1]);
+      }
+    } catch (err) {
+      console.log('Error Go', err);
+    }
+  }
+  async GoPrivateProfile() {
+    try {
+      if (this.wink && !this.wink.approved) {
+        const response = await this.navController.navigateForward([this.urlPublic, this.wink._id, 1]);
+      }
+    } catch (err) {
+      console.log('Error Go', err);
+    }
   }
 
 }

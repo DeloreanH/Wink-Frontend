@@ -6,7 +6,8 @@
           slot="start" 
           [icon]="['fas', 'arrow-left']" 
           class="icono-white sombra" 
-          [routerLink]="[origin === '0' ? urlHome : urlWinks]"></fa-icon>
+          (click)="Behind()"></fa-icon>
+          <ion-back-button text="buttonText"></ion-back-button>
         <div class="end status" slot="end">
           <ion-label
             class="text-card text-status text-small">
@@ -19,7 +20,7 @@
   <div class="contenedor-card total">
     
     <ion-img 
-      class="public-img"
+      class="public-img img-avatar"
       [src]="userWink ? userWink.avatarUrl : ''">
     </ion-img>
     <div class="text-bottom">
@@ -45,7 +46,7 @@
               ></fa-icon>  
           </ion-fab-button>
       </div>
-      <ion-fab-button *ngIf="wink && wink.approved" [routerLink]="[urlPrivate, userWink._id ,wink._id, origin]" routerLinkActive="router-link-active"  (click)="GoProfiles()" size="small" color="light">
+      <ion-fab-button *ngIf="wink && wink.approved" (click)="GoPrivateProfile()" size="small" color="light">
         <ion-icon name="document"></ion-icon>
       </ion-fab-button>
       <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light">

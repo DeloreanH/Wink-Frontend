@@ -38,20 +38,15 @@ export class SaveContactService {
     try {
       const response: any = await this.LoadItems(items);
       if (response) {
-        // console.log('Aqui llego Create()');
         const contact: Contact =  this.contacts.create();
         if (contact) {
           contact.name = new ContactName(null, user.lastName, user.firstName);
           if (photo && user.avatarUrl) {
             contact.photos = [new ContactField(Config.IMAGE_JPEG, user.avatarUrl, true)];
           }
-          // console.log('this.urls', this.urls);
           contact.urls = this.urls;
-          // console.log('this.phoneNumbers', this.phoneNumbers);
           contact.phoneNumbers = this.phoneNumbers;
-          // console.log('this.emails', this.emails);
           contact.emails = this.emails;
-          // console.log('this.ims', this.ims);
           contact.ims = this.ims;
           if (this.address) {
             contact.addresses = [
@@ -65,11 +60,9 @@ export class SaveContactService {
           if (this.birthday) {
             contact.birthday = new Date(this.birthday);
           }
-          // console.log('Contact saved! antes', contact);
           contact.save().then(
             () => {
               this.toastService.Toast('Contact saved!');
-              // console.log('Contact saved!', contact);
               this.Clear();
             },
             (err: any) => {
@@ -110,7 +103,6 @@ export class SaveContactService {
             const url: any = this.linkService.SocialNetwork(newValue.itemType.name, newValue.item.value, true);
             if (url) {
               newValue.item.value = url;
-              // console.log('this.newValue', newValue, url, this.urls);
               this.AddURL(newValue);
             }
             break;
@@ -133,7 +125,6 @@ export class SaveContactService {
                 this.birthday = value.item.value;
                 break;
               case Config.NICKNAME:
-                // console.log('NICKNAME', value.item.value);
                 this.nickname = value.item.value;
                 break;
               case Config.ADDRESS:
@@ -143,7 +134,6 @@ export class SaveContactService {
             break;
         }
         if (index === items.length - 1) {
-          // console.log('llegooo');
           ready = true;
         }
       }
@@ -162,9 +152,13 @@ export class SaveContactService {
     this.ims.push(new ContactField(im.item.itemtype, im.item.value));
   }
 
-  private AddURL(url: any) {
+  private AddURL(url: any, red?: boolean) {
     console.log('AddURL', url, url.item.value);
-    this.urls.push(new ContactField(url.item.itemtype, url.item.value));
+    if (red) {
+      this.urls.push(new ContactField(url.item.itemtype, url.item.custom));
+    } else {
+      this.urls.push(new ContactField(url.item.itemtype, url.item.value));
+    }
   }
 
   private AddEmail(email: any) {

@@ -7,7 +7,7 @@ import { Item } from 'src/app/models/item.model';
 import { ProfilesService } from 'src/app/services/profiles.service';
 import { Section } from 'src/app/models/section.model';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { ItemType } from 'src/app/models/itemType.model';
 import { SaveContactService } from 'src/app/services/save-contact.service';
 import { NameCategories } from 'src/app/config/enums/nameCaterogies.enum';
@@ -38,7 +38,8 @@ export class PrivateProfilesPage implements OnInit {
     private winkService: WinkService,
     private profilesService: ProfilesService,
     public alertController: AlertController,
-    private contact: SaveContactService
+    private contact: SaveContactService,
+    private navController: NavController,
   ) {
     this.sections = this.profilesService.sections;
     this.items.push(this.generalItems);
@@ -165,7 +166,7 @@ export class PrivateProfilesPage implements OnInit {
             name: item.item._id,
             type: 'checkbox',
             label: item.item.value,
-            value: item,
+            value: item.item._id,
             checked: true
           });
         }
@@ -175,27 +176,43 @@ export class PrivateProfilesPage implements OnInit {
   }
 
   private SaveContact(ids: string[]) {
-    const predata: {item: Item, itemType: ItemType}[] = [];
-    let complet = false;
-    for (const arrays of this.items) {
-      predata.push(...arrays.slice());
-    }
-    const data: {item: Item, itemType: ItemType}[] = [];
-    let item;
-    ids.forEach(
-      (id, index) => {
-        item = Object.assign({}, predata.find(value => value.item._id === id));
-        if (item) {
-          data.push(item);
-        }
-        if (ids.length === index + 1) {
-          complet = true;
-        }
+    try {
+      const predata: {item: Item, itemType: ItemType}[] = [];
+      let complet = false;
+      const copyItems = JSON.parse(JSON.stringify(this.items));
+      for (const arrays of copyItems) {
+        predata.push(...arrays);
       }
-    );
-    if (complet) {
-      console.log('data', data);
-      this.contact.Create(data.slice(), this.userWink, ids[0] === 'photo');
+      console.log('predata', predata);
+      const data: {item: Item, itemType: ItemType}[] = [];
+      let item;
+      ids.forEach(
+        (id, index) => {
+          item = predata.find(value => value.item._id === id);
+          if (item) {
+            data.push(item);
+          }
+          if (ids.length === index + 1) {
+            complet = true;
+          }
+        }
+      );
+      if (complet) {
+        console.log('data', data);
+        this.contact.Create(data.slice(), this.userWink, ids[0] === 'photo');
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async Behind() {
+    try {
+      const response = await this.navController.navigateBack(
+        this.userWink ? [this.urlPublic, this.origin === '0' ? this.userWink._id : this.idWink, this.origin] : [this.urlHome]
+      );
+    } catch (err) {
+      console.log('Error Behind', err);
     }
   }
 

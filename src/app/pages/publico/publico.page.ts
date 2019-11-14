@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WinkService } from 'src/app/services/wink.service';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, NavController } from '@ionic/angular';
 import { Item } from 'src/app/models/item.model';
 import { Wink } from 'src/app/models/wink.model';
 import { UserService } from 'src/app/services/user.service';
@@ -36,7 +36,8 @@ export class PublicoPage implements OnInit {
     public modalController: ModalController,
     private userService: UserService,
     public alertController: AlertController,
-    private profilesService: ProfilesService
+    private profilesService: ProfilesService,
+    private navController: NavController,
   ) {
     // this.user = this.userService.User();
   }
@@ -58,6 +59,7 @@ export class PublicoPage implements OnInit {
             // Regresar
           }
           if (this.userWink) {
+            console.log('Aqui');
             this.GetWink();
           }
         }
@@ -83,7 +85,7 @@ export class PublicoPage implements OnInit {
         this.load = true;
       }
     } catch (err) {
-      console.log('Error GetWink', err.message);
+      console.log('Error GetWink', err);
     }
   }
 
@@ -148,35 +150,58 @@ export class PublicoPage implements OnInit {
   }
 
   FilterItems(items: Item[], userW: User) {
-    let contador = 0;
-    items = items.filter(
-      item => {
-        return item.value && item.value !== '';
+    if (items && items.length > 0) {
+      let contador = 0;
+      items = items.filter(
+        item => {
+          return item.value && item.value !== '';
+        }
+      );
+      if (items[0].position === -1) {
+        contador++;
       }
-    );
-    if (items[0].position === -1) {
-      contador++;
-    }
-    const age = new Item({
-      _id: Config.ICON_AGE,
-      value: (userW.age ? userW.age  : '0') + ' años',
-      custom: Config.NAME_AGE,
-      position: IndexItemType.BIOGARFIA,
-      section: null
-    });
-    items.splice(contador, 0, age);
-    contador ++;
-    if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
-      const gender = new Item({
-        _id: Config.ICON_GENDER,
-        value: userW.gender,
-        custom: Config.NAME_GENDER,
+      const age = new Item({
+        _id: Config.ICON_AGE,
+        value: (userW.age ? userW.age  : '0') + ' años',
+        custom: Config.NAME_AGE,
         position: IndexItemType.BIOGARFIA,
         section: null
       });
-      items.splice(contador, 0, gender);
+      items.splice(contador, 0, age);
       contador ++;
+      if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
+        const gender = new Item({
+          _id: Config.ICON_GENDER,
+          value: userW.gender,
+          custom: Config.NAME_GENDER,
+          position: IndexItemType.BIOGARFIA,
+          section: null
+        });
+        items.splice(contador, 0, gender);
+        contador ++;
+      }
+      this.publicItems.push(...items);
     }
-    this.publicItems.push(...items);
   }
+
+  async Behind() {
+    try {
+      const response = await this.navController.navigateBack(
+        [this.origin === '0' ? this.urlHome : this.urlWinks]
+      );
+    } catch (err) {
+      console.log('Error Behind', err);
+    }
+  }
+
+  async GoPrivateProfile() {
+    try {
+      const response = await this.navController.navigateForward(
+                        [this.urlPrivate, this.userWink._id , this.wink._id, this.origin]
+                      );
+    } catch (err) {
+      console.log('Error Go', err.message);
+    }
+  }
+
 }

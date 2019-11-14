@@ -1,6 +1,6 @@
-<ion-item [routerLink]="wink && wink.approved ? [urlPublic, wink._id, 1] : null">
-  <ion-avatar slot="start" class="avatar-wink" [routerLink]="wink && !wink.approved ?[urlPublic, wink._id, 1] : null">
-    <ion-img [src]="wink && wink.user ? wink.user.avatarUrl : avatar"></ion-img>
+<ion-item (click)="GoPrivateProfileA()">
+  <ion-avatar slot="start" class="avatar-wink" (click)="GoPrivateProfile()">
+    <ion-img [src]="wink && wink.user ? wink.user.avatarUrl : avatar" class="img-avatar"></ion-img>
   </ion-avatar>
   <ion-label>
     <div>

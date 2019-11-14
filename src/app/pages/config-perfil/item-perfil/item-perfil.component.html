@@ -86,24 +86,22 @@
   <mat-chip-list 
   #chipList 
   *ngIf="itemType && itemType.index === 8" 
-  class="chip-item">
+  class="chip-item chip-margin">
     <ion-input 
     #chipControl
     [value]="Valor(0)"
     hidden
     formControlName="campo1">
     </ion-input>
-    <mat-chip 
-    *ngFor="let chip of chipArray" 
-    [selectable]="selectable"
-    [removable]="removable" 
-    (removed)="DeleteChip(chip)">
+    <ion-chip outline color="primary"
+      *ngFor="let chip of chipArray"
+      >
       {{chip}}
       <ion-icon 
-        name="close-circle-outline" 
-        matChipRemove
-        ></ion-icon>
-  </mat-chip>
+        name="close-circle" 
+        (click)="DeleteChip(chip)">
+      </ion-icon>
+    </ion-chip>
       
     <input 
     class="native-input sc-ion-input-md sc-ion-input-ios placeholder"

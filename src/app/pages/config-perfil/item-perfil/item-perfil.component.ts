@@ -395,7 +395,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
     this.onTouch(this.value);
     this.onChange(this.value);
-    this.Change();
+    if (value !== '') {
+      this.Change();
+    }
   }
 
   ValorChip(valor) {

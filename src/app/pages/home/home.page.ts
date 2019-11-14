@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
@@ -8,14 +8,16 @@ import { VisibilityOption } from '../../models/visibilityOptions.enum';
 import { WinkService } from '../../services/wink.service';
 import { LinkService } from 'src/app/services/link.service';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Platform, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit, OnDestroy {
-
+export class HomePage implements OnInit, OnDestroy, AfterViewInit {
+  
   nearbyUsers: User[] = [];
   originNearbyUsers: User[] = [];
   nearbyUsersSubscription = new Subscription();
@@ -26,18 +28,37 @@ export class HomePage implements OnInit, OnDestroy {
   personal = true;
   profesional  = true;
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
-  private contadorUser; number = 10;
+  private contadorUser = 10;
+  cargo = false;
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private winkService: WinkService,
-    private linkService: LinkService
+    private router: Router,
+    private platform: Platform,
+    private navController: NavController,
   ) {
     this.user = this.userService.User();
   }
 
   ngOnInit() {
+    this.platform.backButton.subscribe(
+      (resp) => {
+      console.group('Atras');
+    });
+    this.router.events.subscribe(
+      (valor: any) => {
+        if (valor instanceof NavigationEnd) {
+          if (valor.url.split('/')[2] === RoutesAPP.HOME ) {
+            if (this.originNearbyUsers.length === 0) {
+              this.GPS();
+            }
+            this.VisibilityUser();
+          }
+        }
+      }
+    );
     this.GPS();
     this.originNearbyUsers = this.winkService.NearbyUsers;
     this.nearbyUsersSubscription = this.winkService.nearbyUsersChanged.subscribe(
@@ -49,8 +70,16 @@ export class HomePage implements OnInit, OnDestroy {
     this.userSubscription = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
+        this.VisibilityUser();
       }
     );
+  }
+
+  ngAfterViewInit(): void {
+    this.VisibilityUser();
+  }
+
+  VisibilityUser() {
     if (this.user) {
       switch (this.user.visibility) {
         case VisibilityOption.GENERAL:
@@ -76,6 +105,10 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
     this.nearbyUsersSubscription.unsubscribe();
+  }
+
+  Change() {
+    this.cargo = !this.cargo;
   }
 
   async GPS(event?) {
@@ -107,7 +140,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async ChangeStatus(event) {
-    console.log('Foco', event);
+    // console.log('Foco', event);
     if (event.target.value !== this.user.status) {
       try {
         const response = await this.userService.UpdateStatus(event.target.value);
@@ -162,23 +195,21 @@ export class HomePage implements OnInit, OnDestroy {
           }
         }
         const response = await this.userService.UpdateProfiles(this.user.visibility);
+        console.log(response);
       } catch (err) {
         this.user = this.userService.User();
         console.log('Error ChangeProfiles', err.message);
       }
   }
 
-  OpenLink(numb: number) {
-    switch (numb) {
-      case 0:
-        this.linkService.Tel('4120872584');
-        break;
-      case 1:
-        this.linkService.Mail('anibal-1409@hotmail.com');
-        break;
-      case 2:
-        this.linkService.SocialNetwork('facebook', 'anibalbarreras');
-        break;
+  async GoPublicProfile(user: User) {
+    try {
+      const response = await this.navController.navigateForward(
+                      user ? [this.urlPublic, user._id, 0] : []
+                    );
+    } catch (err) {
+      console.log('Error Go', err.message);
     }
   }
+
 }

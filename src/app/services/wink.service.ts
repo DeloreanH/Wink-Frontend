@@ -7,6 +7,8 @@ import { LocationService } from './location.service';
 import { UserService } from './user.service';
 import { Wink } from '../models/wink.model';
 import { Subject } from 'rxjs';
+import { ToastService } from './toast.service';
+import { MessagesServices } from '../config/enums/messagesServices.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,8 @@ export class WinkService {
   constructor(
     private locationService: LocationService,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService
   ) {
     this.Init();
    }
@@ -42,15 +45,12 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           const location = await this.locationService.GetPosition();
-          console.log('GetNearby location', location);
           if (location) {
             const myLocation =  new Location({
               latitude: location.coords.latitude,
               longitude: location.coords.longitude
             });
-            console.log('myLocation', myLocation);
             const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
-            console.log('response', response);
             this.SetNearbyUsers((response as User[]));
             this.userService.UpdateLocation(myLocation);
             resolve(response);
@@ -119,6 +119,7 @@ export class WinkService {
           // console.log('Res', response);
           resolve(response);
         } catch (err) {
+          this.toastService.Toast(MessagesServices.WINK_ERROR);
           console.log('Error SendWink: ' + err.message);
           reject(err);
         }

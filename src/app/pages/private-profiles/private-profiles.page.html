@@ -4,7 +4,7 @@
       slot="start" 
       [icon]="['fas', 'arrow-left']" 
       class="icono-arrow" 
-      [routerLink]="userWink ? [urlPublic, origin === '0' ? userWink._id : idWink, origin] : [urlHome]"></fa-icon>
+      (click)="Behind()"></fa-icon>
     <ion-title>Private Profiles</ion-title>
     <ion-icon 
       slot="end" 
@@ -19,7 +19,7 @@
 <ion-content class="ion-padding">
   <div class="contenedorAvatar" >
     <ion-avatar class="avatar-profile"> 
-      <ion-img [src]="userWink ? userWink.avatarUrl : ''"></ion-img>
+      <ion-img [src]="userWink ? userWink.avatarUrl : ''" class="img-avatar"></ion-img>
     </ion-avatar>
   </div>
 
