@@ -1,4 +1,4 @@
-<ion-card class="contenedor-card card-list dimension">
+<ion-card class="contenedor-card card-list dimension ion-activatable ion-activatable-up">
   <div class="status-card">
     <p 
       class="text-card text-status" >
@@ -12,9 +12,8 @@
     [src]="user ? user.avatarUrl : avatar"
   >
   </ion-img>
-  <p 
-    class="name-card text-card text-name" 
-  >
-    {{user ? user.firstName + ' ' +  user.lastName : 'John Doe'}}
-  </p>
+  <ion-label class="name-card text-card text-name" >
+      {{(user ? user.firstName + ' ' +  user.lastName : 'John Doe') | names}}
+  </ion-label>
+  <ion-ripple-effect></ion-ripple-effect>
 </ion-card>

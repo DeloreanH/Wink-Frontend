@@ -206,7 +206,7 @@ export class PrivateProfilesPage implements OnInit {
     }
   }
 
-  async Behind() {
+  async Back() {
     try {
       const response = await this.navController.navigateBack(
         this.userWink ? [this.urlPublic, this.origin === '0' ? this.userWink._id : this.idWink, this.origin] : [this.urlHome]

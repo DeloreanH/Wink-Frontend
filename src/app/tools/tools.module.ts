@@ -8,11 +8,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatChipsModule } from '@angular/material/chips';
 import { ItemListComponent } from './components/item-list/item-list.component';
+import { NamesPipe } from './pipes/names.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 
 
 @NgModule({
-  declarations: [SpinnerComponent, ItemListComponent, DistancePipe],
+  declarations: [SpinnerComponent, ItemListComponent, DistancePipe, NamesPipe, TruncatePipe],
   imports: [
     CommonModule,
     IonicModule,
@@ -20,6 +22,6 @@ import { ItemListComponent } from './components/item-list/item-list.component';
     MatChipsModule,
     FormsModule
   ],
-  exports: [SpinnerComponent, ItemListComponent, DistancePipe]
+  exports: [SpinnerComponent, ItemListComponent, DistancePipe, NamesPipe, TruncatePipe]
 })
 export class ToolsModule { }

@@ -25,4 +25,16 @@
       [wink]="wink"
     ></item-wink>
   </ion-list>
+  <div *ngIf="record.length === 0 && tab === 'record'" class="vacio">
+    <p >
+      {{noHistorical}}
+    </p>
+    <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+  </div>
+  <div *ngIf="requests.length === 0 && tab === 'requests'" class="vacio">
+    <p >
+      {{noRequests}}
+    </p>
+    <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+  </div>
 </ion-content>

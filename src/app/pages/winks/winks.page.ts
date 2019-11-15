@@ -3,6 +3,7 @@ import { WinkService } from 'src/app/services/wink.service';
 import { Wink } from 'src/app/models/wink.model';
 import { Subscription } from 'rxjs';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { Config } from 'src/app/config/enums/config.enum';
 
 @Component({
   selector: 'app-winks',
@@ -17,6 +18,8 @@ export class WinksPage implements OnInit, OnDestroy {
   record: Wink[] = [];
   recordSubscription = new Subscription();
   urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
+  noHistorical = Config.NO_HISTORICAL;
+  noRequests = Config.NO_REQUESTS;
 
   constructor(
     private winkService: WinkService,

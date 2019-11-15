@@ -184,7 +184,7 @@ export class PublicoPage implements OnInit {
     }
   }
 
-  async Behind() {
+  async Back() {
     try {
       const response = await this.navController.navigateBack(
         [this.origin === '0' ? this.urlHome : this.urlWinks]

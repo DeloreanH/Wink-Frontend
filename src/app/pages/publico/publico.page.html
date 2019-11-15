@@ -2,12 +2,14 @@
   <ion-fab vertical="top" horizontal="start" slot="fixed"  class="top">
   <ion-header class="opt-top transparent">
       <ion-toolbar class="transparent">
-        <fa-icon 
-          slot="start" 
-          [icon]="['fas', 'arrow-left']" 
-          class="icono-white sombra" 
-          (click)="Behind()"></fa-icon>
-          <ion-back-button text="buttonText"></ion-back-button>
+        <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start">
+          <fa-icon 
+            [icon]="['fas', 'arrow-left']" 
+            class="icono-white" 
+            (click)="Back()"
+          ></fa-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
         <div class="end status" slot="end">
           <ion-label
             class="text-card text-status text-small">
@@ -25,7 +27,7 @@
     </ion-img>
     <div class="text-bottom">
       <ion-label  class="public-name text-card" >
-          {{userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe'}}
+          {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') }}
       </ion-label>
       <ion-label class="text-card text-small">
           {{userWink ? (userWink.distance | distance) : ''}}

@@ -45,6 +45,7 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           const location = await this.locationService.GetPosition();
+          console.log('location', location);
           if (location) {
             const myLocation =  new Location({
               latitude: location.coords.latitude,

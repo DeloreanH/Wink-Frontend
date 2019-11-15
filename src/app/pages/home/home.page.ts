@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
@@ -6,10 +6,9 @@ import { Subscription } from 'rxjs';
 import { Config } from '../../config/enums/config.enum';
 import { VisibilityOption } from '../../models/visibilityOptions.enum';
 import { WinkService } from '../../services/wink.service';
-import { LinkService } from 'src/app/services/link.service';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +16,8 @@ import { Platform, NavController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit, OnDestroy, AfterViewInit {
-  
+
+  @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
   nearbyUsers: User[] = [];
   originNearbyUsers: User[] = [];
   nearbyUsersSubscription = new Subscription();
@@ -30,6 +30,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   private contadorUser = 10;
   cargo = false;
+  noNearby = Config.NO_NEARBY;
 
   constructor(
     private authService: AuthService,
@@ -75,7 +76,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.VisibilityUser();
   }
 
@@ -102,7 +103,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.userSubscription.unsubscribe();
     this.nearbyUsersSubscription.unsubscribe();
   }
@@ -140,7 +141,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async ChangeStatus(event) {
-    // console.log('Foco', event);
     if (event.target.value !== this.user.status) {
       try {
         const response = await this.userService.UpdateStatus(event.target.value);
@@ -195,7 +195,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
           }
         }
         const response = await this.userService.UpdateProfiles(this.user.visibility);
-        console.log(response);
       } catch (err) {
         this.user = this.userService.User();
         console.log('Error ChangeProfiles', err.message);
@@ -205,8 +204,8 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   async GoPublicProfile(user: User) {
     try {
       const response = await this.navController.navigateForward(
-                      user ? [this.urlPublic, user._id, 0] : []
-                    );
+                                user ? [this.urlPublic, user._id, 0] : []
+                              );
     } catch (err) {
       console.log('Error Go', err.message);
     }

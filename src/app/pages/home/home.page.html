@@ -22,34 +22,36 @@
       refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
+  <ion-list>
+    <ion-grid *ngIf="nearbyUsers.length > 0" class="grid-home">
+      <ion-row > 
+        <ion-col 
+        sizeXs="6" 
+        sizeSm="4" 
+        sizeMd="3" 
+        sizeLg="2.4" 
+        sizeXl="2"
+        class="col-home"
+        *ngFor="let user of nearbyUsers">
+          <card 
+          (click)="GoPublicProfile(user)"
+          [user]="user"></card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngIf="nearbyUsers.length === 0" class="vacio">
+      <p >
+        {{noNearby}}
+      </p>
+      <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+    </div>
+  </ion-list>
   
   <ion-infinite-scroll threshold="100px"  (ionInfinite)="LoadUsers($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
-      <ion-grid *ngIf="nearbyUsers.length > 0" class="grid-home">
-        <ion-row > 
-          <ion-col 
-          sizeXs="6" 
-          sizeSm="4" 
-          sizeMd="3" 
-          sizeLg="2.4" 
-          sizeXl="2"
-          class="col-home"
-          *ngFor="let user of nearbyUsers">
-            <card 
-            (click)="GoPublicProfile(user)"
-            [user]="user"></card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div *ngIf="nearbyUsers.length === 0" class="vacio">
-        <p >
-          No hay usuarios cercanos.
-        </p>
-        <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
-      </div>
-    </ion-infinite-scroll-content>
+      loadingText="Loading more data..."
+      ></ion-infinite-scroll-content>    
   </ion-infinite-scroll>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed"  >
     <ion-fab-button size="small">
@@ -65,8 +67,14 @@
           
           ></fa-icon>
       </ion-fab-button>
-      <ion-fab-button (click)="ChangeProfiles(true)" [ngClass]="{'activo': personal, 'inactivo' : !personal}"><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
+      <ion-fab-button
+        (click)="ChangeProfiles(true)" 
+        [ngClass]="{'activo': personal, 'inactivo' : !personal}">
+        <fa-icon 
+          [icon]="['fas', 'user']" 
+          class="icono-public" 
+        ></fa-icon>
+      </ion-fab-button>
     </ion-fab-list>
-  </ion-fab>
- 
+  </ion-fab>  
 </ion-content>

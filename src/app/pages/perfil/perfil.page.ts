@@ -154,7 +154,7 @@ export class PerfilPage implements OnInit, OnDestroy {
     }
   }
 
-  Cancel() {
+  Back() {
     this.router.navigate(['/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL]);
   }
 

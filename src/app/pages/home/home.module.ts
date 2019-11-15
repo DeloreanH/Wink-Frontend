@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomePage } from './home.page';
 import { CardComponent } from './card/card.component';
+import { ToolsModule } from 'src/app/tools/tools.module';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    FontAwesomeModule
+    FontAwesomeModule,
+    ToolsModule,
   ],
   declarations: [HomePage, CardComponent]
 })

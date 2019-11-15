@@ -49,12 +49,9 @@
 }
 
 .icono-arrow {
-  margin-inline-end: 0px !important; 
-  align-self:flex-start; 
   margin-top: 10px;
   color: var(--ion-color-medium, #989aa2) !important;
   font-size: 1.6em;
-  padding-inline-start: 3%;
 }
 
 .color-medium {
@@ -129,6 +126,7 @@
   position: absolute;
   top: 85%;
   left: 3%;
+  text-align: start;
   // transform: translate(0%, 0%);
 }
 
@@ -178,7 +176,6 @@
 
 .icon-bar {
   font-size: 180%;
-  padding-right: 8px;
 }
 
 .content-center {
@@ -199,4 +196,42 @@
 
 .chip-margin {
   margin-bottom: 5px;
+}
+
+.vacio {
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+  padding-top: 10px;
+  > fa-icon {
+      font-size: 59px;
+      width: 100%;
+      margin-bottom: 35px;
+      color: #c7c7c7;
+  }
+  > p {
+      font-size: 20px;
+      color: #c7c7c7;
+  }
+
+}
+
+.ion-activatable-up {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-toolbar {
+  border-radius: 50%;
+  height: auto;
+  width: 40px;
+  align-items: center;
+  text-align: center;
+}
+
+.ripple-toolbar-mis{
+  margin-inline-start: 3%;
+}
+.ripple-toolbar-mie {
+  margin-inline-end: 3%;
 }

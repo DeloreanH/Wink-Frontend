@@ -207,10 +207,8 @@ export class LocationService {
         try {
           this.locationAccuracy.canRequest().then((canRequest) => {
             if (canRequest) {
-              console.log('nada');
               reject(false);
             } else {
-              console.log('aquiiii');
               this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
                 .then(
                   (response) => {
@@ -273,12 +271,12 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          this.geolocation.getCurrentPosition().then((response) => {
-            this.position = response;
-            resolve(response);
-          }).catch((error) => {
-            resolve('Error getting location' + error);
+          console.log('Fin');
+          const geoposition = await this.geolocation.getCurrentPosition({
+            enableHighAccuracy: true,
           });
+          console.log('geoposition', geoposition);
+          resolve(geoposition);
         } catch (err) {
           reject(err);
         }
