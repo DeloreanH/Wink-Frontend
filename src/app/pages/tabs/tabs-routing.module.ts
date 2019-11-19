@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TabsComponent } from './tabs.component';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 
-const routes: Routes = [
+export const routesTab: Routes = [
   {
     path: '',
     component: TabsComponent,
@@ -69,7 +69,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routesTab)],
   exports: [RouterModule]
 })
 export class TabsRoutingModule { }

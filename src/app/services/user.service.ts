@@ -6,7 +6,6 @@ import { Routes } from '../config/enums/routes/routes.enum';
 import { AuthUser } from '../auth/models/authuser.model';
 import { VisibilityOption } from '../models/visibilityOptions.enum';
 import { Location } from '../models/location.model';
-import { LocationService } from './location.service';
 import { SocketService } from './socket.service';
 
 @Injectable({

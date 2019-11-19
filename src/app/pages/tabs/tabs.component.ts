@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
-import { SocketService } from 'src/app/services/socket.service';
+import { SocketService, SocketEventsListen } from 'src/app/services/socket.service';
+import { Subscription } from 'rxjs';
+import { WinkService } from 'src/app/services/wink.service';
+import { User } from 'src/app/models/user.model';
 
 
 @Component({
@@ -9,7 +12,7 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
-export class TabsComponent implements OnInit {
+export class TabsComponent implements OnInit, AfterViewInit {
 
   ocultar = false;
   home = RoutesAPP.HOME;
@@ -17,14 +20,28 @@ export class TabsComponent implements OnInit {
   winks = RoutesAPP.WINKS;
   winksTab = true;
 
+  subs = new Subscription();
+
   constructor(
     private router: Router,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private winkService: WinkService,
   ) { }
+
+  ngAfterViewInit(): void {
+    this.socketService.Connect();
+    this.subs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
+      (user) => {
+        if (user) {
+          this.winkService.UpdateUser(user as User);
+        }
+        console.log(user);
+      }
+    );
+  }
 
   public ngOnInit() {
     // this.socketService.connect();
-    this.socketService.UpdatedUser();
 
     this.router.events.subscribe(
       (valor: any) => {

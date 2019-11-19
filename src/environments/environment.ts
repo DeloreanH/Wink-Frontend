@@ -11,8 +11,9 @@ export const virtwooAuthEnvironment: VirtwooAuthConfig = {
   redirectUrl: Routes.BASE + Routes.AUTH,
   logoUrl: '/assets/icon/favicon.png',
   resCallback: (response) => {
-    // console.log('esta es la respuesta', response);
+    console.log('esta es la respuesta', response);
     localStorage.setItem('userData', JSON.stringify(response));
+    console.log('token en', JSON.parse(localStorage.getItem('userData')));
     return RoutesPrincipal.APP;
   }
 };

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SlRouterService } from '@virtwoo/sl-router';
-import { VirtwooAuthPathName } from '@virtwoo/auth';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TabsRoutingModule } from './tabs-routing.module';
 import { TabsComponent } from './tabs.component';
 import { IonicModule } from '@ionic/angular';
+import { SocketService } from 'src/app/services/socket.service';
 
 
 @NgModule({
@@ -16,6 +17,9 @@ import { IonicModule } from '@ionic/angular';
     TabsRoutingModule,
   ],
   exports: [
+  ],
+  providers:  [
+    SocketService
   ]
 })
 export class TabsModule { }

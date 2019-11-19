@@ -41,9 +41,10 @@ export function createTranslateLoader(http: HttpClient) {
 import { HammerGestureConfig } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
 import { Contacts } from '@ionic-native/contacts/ngx';
-import { SocketService } from './services/socket.service';
 import { TabsModule } from './pages/tabs/tabs.module';
-import { SocketIoModule } from 'ngx-socket-io';
+import { AuthService } from './auth/services/auth.service';
+import { AuthModule } from './auth/auth.module';
+
 
 
 // create a class that overrides hammer default config
@@ -67,11 +68,12 @@ export class MyHammerConfig extends HammerGestureConfig  {
     BrowserAnimationsModule,
     FontAwesomeModule,
     MatChipsModule,
-    SocketIoModule,
+    AuthModule,
+    TabsModule,
     VirtwooAuthModule.forRoot(virtwooAuthEnvironment),
     SlRouterModule.forRoot([
       ...VirtwooAuthRoutes,
-      ...routesApp
+      ...routesApp,
     ]),
     TranslateModule.forRoot({
       loader: {
@@ -90,7 +92,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     LocationAccuracy,
     Diagnostic,
     Contacts,
-    SocketService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},
