@@ -24,7 +24,7 @@ export class WinksPage implements OnInit, OnDestroy {
   constructor(
     private winkService: WinkService,
   ) {
-    this.Winks();
+    // this.Winks();
     this.record = this.winkService.Record;
     this.requests = this.winkService.Requests;
    }
@@ -48,7 +48,6 @@ export class WinksPage implements OnInit, OnDestroy {
   }
 
   TabChanged(event) {
-    // this.winkService.GetWinks();
     this.tab = event.target.value;
 
   }

@@ -62,7 +62,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   onTouch = (_: Item) => { };
 
   writeValue(obj: Item): void {
-    // console.log('obj', obj);
     if (obj) {
       this.value = obj;
       // this.onChange(this.value);
@@ -134,12 +133,10 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   AggCampoForm() {
-    console.log(this.form);
     this.form.removeControl('selector');
     this.form.removeControl('campo1');
     this.form.removeControl('campo2');
     if (this.itemType) {
-      console.log(this.itemType);
       switch (this.itemType.index) {
         case 0:
           this.type = 'text';
@@ -286,7 +283,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             break;
       }
     } else {
-      console.log(this.itemType);
       this.form.setControl(
         'selector', new FormControl(null, Validators.required),
       );
@@ -410,7 +406,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   AggUnico() {
-    // console.log('lista', this.unique);
     if (this.unique.indexOf(this.itemType._id) === -1) {
       this.unique.push(this.itemType._id);
     }
@@ -451,7 +446,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     let prop;
     for (prop in obj) {
     }
-    console.log(obj, prop);
     if (prop) {
       switch (prop) {
         case 'required':

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { SocketService } from 'src/app/services/socket.service';
 
 
 @Component({
@@ -17,10 +18,14 @@ export class TabsComponent implements OnInit {
   winksTab = true;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private socketService: SocketService
   ) { }
 
   public ngOnInit() {
+    // this.socketService.connect();
+    this.socketService.UpdatedUser();
+
     this.router.events.subscribe(
       (valor: any) => {
         if (valor instanceof NavigationStart) {

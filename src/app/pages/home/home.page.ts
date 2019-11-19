@@ -143,7 +143,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   async ChangeStatus(event) {
     if (event.target.value !== this.user.status) {
       try {
-        const response = await this.userService.UpdateStatus(event.target.value);
+        await this.userService.UpdateStatus(event.target.value);
       } catch (err) {
         event.target.value = this.user.status;
         console.log('Error ChangeStatus', err.message);

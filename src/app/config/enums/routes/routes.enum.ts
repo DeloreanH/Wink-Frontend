@@ -1,6 +1,7 @@
 export enum Routes {
-  IP = 'http://192.168.1.110',
-  BASE = 'http://192.168.1.110:3000/api/',
+  IP = 'http://192.168.1.119',
+  BASE = 'http://192.168.1.119:3000/api/',
+  SOCKET = 'http://192.168.1.119:3005',
 
   AUTH = 'auth/authenticate',
   LOGOUT = 'auth/logout',

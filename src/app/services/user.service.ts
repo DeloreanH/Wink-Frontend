@@ -7,6 +7,7 @@ import { AuthUser } from '../auth/models/authuser.model';
 import { VisibilityOption } from '../models/visibilityOptions.enum';
 import { Location } from '../models/location.model';
 import { LocationService } from './location.service';
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private nearbyService: LocationService,
+    private socketService: SocketService
   ) { }
 
   User(data?: User, updateStorage?: boolean) {
@@ -79,7 +80,9 @@ export class UserService {
       async (resolve, reject) => {
         try {
           const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, { status: statusValue }).toPromise();
-          this.user.status = status;
+          this.user.status = statusValue;
+          this.socketService.UpdateUser(this.user);
+          // this.socketService.emit('update-user', this.user);
           this.User(this.user, true);
           resolve(response);
         } catch (err) {

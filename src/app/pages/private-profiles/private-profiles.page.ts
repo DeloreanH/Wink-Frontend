@@ -53,7 +53,7 @@ export class PrivateProfilesPage implements OnInit {
       async (params: Params) => {
         console.log(params);
         try {
-          const wink = this.winkService.GetWinkID(params.idWink);
+          const wink = await this.winkService.GetWinkID(params.idWink);
           if (wink) {
             this.userWink = wink.user;
             this.idWink = params.idWink;

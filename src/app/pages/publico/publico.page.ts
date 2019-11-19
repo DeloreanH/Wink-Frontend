@@ -44,23 +44,26 @@ export class PublicoPage implements OnInit {
   ngOnInit() {
     this.route.params
     .subscribe(
-      (params: Params) => {
+      async (params: Params) => {
         console.log('params', params);
         if (params.origin) {
           this.origin = params.origin;
           if (this.origin === '0') {
-            this.userWink = this.winkService.GetNearbyUser(params.id);
+            this.userWink = await this.winkService.GetNearbyUser(params.id);
             console.log('userWink', this.userWink);
           } else if (this.origin === '1') {
-            this.userWink = this.winkService.GetWinkID(params.id).user;
+            const wink = await this.winkService.GetWinkID(params.id);
+            this.userWink = wink.user;
             console.log('userWink', this.userWink);
           } else {
             this.origin = 0;
             this.Back();
           }
           if (this.userWink) {
-            this.userWink.newWink = true;
-            this.winkService.UpdateUser(this.userWink);
+            if (this.userWink.newWink) {
+              this.userWink.newWink = false;
+              this.winkService.UpdateUser(this.userWink);
+            }
             this.GetWink();
           }
         }

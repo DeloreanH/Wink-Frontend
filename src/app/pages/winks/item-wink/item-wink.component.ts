@@ -27,7 +27,7 @@ export class ItemWinkComponent implements OnInit {
 
   async Accept() {
     try {
-      const response = await this.winkService.ApproveWink(this.wink);
+      await this.winkService.ApproveWink(this.wink);
       /*this.winkService.DeleteRequests(this.wink);
       this.wink.approved = true;
       this.wink.updatedAt = new Date().toString();

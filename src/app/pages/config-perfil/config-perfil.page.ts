@@ -75,11 +75,9 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
       2: this.personalArray,
       3: this.profesionalArray,
     });
-    // console.log('changeData', this.changeData);
   }
 
   MoverItem(event: any) {
-    // console.log('changeData', this.changeData);
     this.changeData = true;
     if (event.previousContainer === event.container) {
       const item = (event.container.data as FormArray).at(event.previousIndex);
@@ -93,8 +91,6 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    // console.log('form', this.grupoForm);
-    // console.log('Validaciones', this.changeData, this.grupoForm.valid);
     if (this.grupoForm.valid && this.changeData) {
       this.loading = true;
       this.data = [];
@@ -119,7 +115,6 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
       this.profilesServices.SaveItems(this.data);
       this.loading = false;
       this.changeData = false;
-      console.log('Data', this.data);
     }
   }
 
@@ -259,7 +254,6 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
     if (this.categories.length === 0) {
       this.categories = this.profilesServices.categories;
     }
-    // console.log('this.categories', this.categories);
     for (const categoria of this.categories) {
       obj.push({
         text: categoria.description,
@@ -305,7 +299,6 @@ export class ConfigPerfilPage implements OnInit, OnDestroy {
   }
 
   FormValid() {
-    // console.log('this.grupoForm.invalid', this.grupoForm.invalid);
     return this.changeData && this.grupoForm.valid;
   }
 
