@@ -35,7 +35,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   isDisabled: boolean;
   type = 'text';
   focus = false;
-  errorMessage = null;
   dataLoad = false;
 
   tiposItems: ItemType[] = [];
@@ -433,37 +432,41 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   ErrorMessage() {
     try {
       if (!this.itemType) {
-        this.form.get('selector').hasError('required') && this.form.get('selector').touched ?
-        this.errorMessage = MessageError.REQUERIDO : this.errorMessage = null;
+        return this.form.get('selector').hasError('required') && this.form.get('selector').touched ?
+        MessageError.REQUIRED :  null;
       } else {
         if (this.form.get('campo1') && this.form.get('campo1').errors && this.form.get('campo1').touched ) {
-          if (this.form.get('campo1').hasError('required')) {
-            this.errorMessage = MessageError.REQUERIDO;
-          } else if (this.form.get('campo1').hasError('email')) {
-            this.errorMessage = MessageError.EMAIL;
-          } else if (this.form.get('campo1').hasError('pattern')) {
-            this.errorMessage = MessageError.URL;
-          } else if (this.form.get('campo1').hasError('minlength')) {
-            if (this.itemType.index === 6 || this.itemType.index === 8) {
-              this.errorMessage = MessageError.MINIMO3;
-            } else {
-              this.errorMessage = MessageError.MINIMO2;
-            }
-          } else if (this.form.get('campo1').hasError('maxlength')) {
-            this.errorMessage = MessageError.MAXIMO;
-          }
+          return this.ValidError('campo1');
         } else  if (this.form.get('campo2') && this.form.get('campo2').touched) {
-          if (this.form.get('campo2').hasError('required')) {
-            this.errorMessage = MessageError.REQUERIDO;
-          } else if (this.form.get('campo2').hasError('minlength')) {
-            this.errorMessage = MessageError.MINIMO2;
-          } else if (this.form.get('campo2').hasError('maxlength')) {
-            this.errorMessage = MessageError.MAXIMO;
-          }
+          return this.ValidError('campo2');
         }
       }
     } catch (err) {
-      this.errorMessage = null;
+      return null;
+    }
+  }
+
+  ValidError(input: string) {
+    const obj = this.form.controls[input].errors;
+    let prop;
+    for (prop in obj) {
+    }
+    console.log(obj, prop);
+    if (prop) {
+      switch (prop) {
+        case 'required':
+          return MessageError.REQUIRED;
+        case 'email':
+          return MessageError.EMAIL;
+        case 'pattern':
+          return MessageError.URL;
+        case 'minlength':
+          return MessageError.MINIMUM;
+        case 'maxlength':
+          return  MessageError.MAXIMUM;
+      }
+    } else {
+      return null;
     }
   }
 

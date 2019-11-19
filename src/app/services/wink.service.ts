@@ -22,6 +22,8 @@ export class WinkService {
   private record: Wink[] = [];
   recordChanged = new Subject<Wink[]>();
   private allWinks: Wink[] = [];
+  private indexUser;
+  private indexWink;
 
   constructor(
     private locationService: LocationService,
@@ -34,7 +36,7 @@ export class WinkService {
 
    private async Init() {
     try {
-      const response = await this.GetWinks();
+      await this.GetWinks();
     } catch (err) {
       console.log('Error Init', err.message);
     }
@@ -45,32 +47,6 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           const location = await this.locationService.GetPosition();
-          console.log('location', location);
-          if (location) {
-            const myLocation =  new Location({
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude
-            });
-            const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
-            this.SetNearbyUsers((response as User[]));
-            this.userService.UpdateLocation(myLocation);
-            resolve(response);
-          } else {
-            resolve(false);
-          }
-        } catch (err) {
-          console.log('Error GetNearby: ' + err.message);
-          reject(err);
-        }
-      }
-    );
-  }
-
-  GetNearby2() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          const location = await this.locationService.OpenP();
           if (location) {
             const myLocation =  new Location({
               latitude: location.coords.latitude,
@@ -94,19 +70,20 @@ export class WinkService {
   SetNearbyUsers(nearbyUsers: User[]) {
     this.nearbyUsers = [];
     this.nearbyUsers.push(...nearbyUsers);
-    this.nearbyUsersChanged.next(this.nearbyUsers.slice());
+    this.nearbyUsersChanged.next(this.nearbyUsers);
   }
 
-  GetUser(idUser: string): User {
+  GetNearbyUser(idUser: string): User {
     if (!idUser) {
       return ;
     }
-    const user = this.nearbyUsers.filter(
-      (userx: User) => {
-        return userx._id === idUser;
-      }
-    );
-    return user[0];
+    return this.nearbyUsers.find(
+      (user, index) => {
+        if (user._id === idUser) {
+          this.indexUser = index;
+          return user;
+        }
+      });
   }
 
   async SendWink(idUser: string) {
@@ -171,11 +148,23 @@ export class WinkService {
   }
 
   GetWinkID(idWink: string) {
-    return this.allWinks.find(wink => wink._id === idWink);
+    return this.allWinks.find(
+      (wink, index) => {
+        if (wink._id === idWink) {
+          this.indexWink = index;
+          return wink;
+        }
+      });
   }
 
   GetWinkIDUser(idUser: string) {
-    return this.allWinks.find(wink => wink.user._id === idUser);
+    return this.allWinks.find(
+      (wink, index) => {
+      if (wink.user._id === idUser ) {
+        this.indexWink = index;
+        return wink;
+      }
+    });
   }
 
   async GetWinks() {
@@ -195,18 +184,18 @@ export class WinkService {
     );
   }
 
-  private FilterWinks(winks: Wink[]) {
+  private FilterWinks(winks: Wink[], newUser?: boolean) {
     const record: Wink[] = [];
     const requests: Wink[] = [];
     winks.forEach(
       (wink: Wink) => {
-        wink.user = wink.user[0];
+        if (!newUser) {
+          wink.user = wink.user[0];
+        }
         if (wink.approved) {
           record.push(wink);
-          // console.log('this.record', this.record);
         } else if (wink.sender_id === wink.user._id) {
           requests.push(wink);
-          // console.log('this.requests', this.requests);
         }
       }
     );
@@ -214,16 +203,17 @@ export class WinkService {
     this.SetRequests(requests);
   }
 
+
   SetRecord(data: Wink[]) {
     this.record = [];
     this.record.push(...data);
-    this.recordChanged.next(this.record.slice());
+    this.recordChanged.next(this.record);
   }
 
   SetRequests(data: Wink[]) {
     this.requests = [];
     this.requests.push(...data);
-    this.requestsChanged.next(this.requests.slice());
+    this.requestsChanged.next(this.requests);
   }
 
   AddRecord(wink: Wink) {
@@ -242,7 +232,7 @@ export class WinkService {
         }
       }
     );
-    this.recordChanged.next(this.record.slice());
+    this.recordChanged.next(this.record);
   }
 
   AddRequests(wink: Wink) {
@@ -264,7 +254,7 @@ export class WinkService {
         }
       }
     );
-    this.requestsChanged.next(this.requests.slice());
+    this.requestsChanged.next(this.requests);
   }
 
   DeleteRecord(wink: Wink) {
@@ -279,7 +269,7 @@ export class WinkService {
     }
     if (index !== -1) {
       this.record.splice(index, 1);
-      this.recordChanged.next(this.record.slice());
+      this.recordChanged.next(this.record);
     }
   }
 
@@ -295,19 +285,55 @@ export class WinkService {
     }
     if (index !== -1) {
       this.requests.splice(index, 1);
-      this.requestsChanged.next(this.requests.slice());
+      this.requestsChanged.next(this.requests);
     }
   }
 
   get Record() {
-    return this.record.slice();
+    return this.record;
   }
 
   get Requests() {
-    return this.requests.slice();
+    return this.requests;
   }
 
   get NearbyUsers() {
-    return this.nearbyUsers.slice();
+    return this.nearbyUsers;
+  }
+
+  UpdateUser(newUser: User) {
+    if (!newUser) {
+      return ;
+    }
+    const nearbyUser = this.GetNearbyUser(newUser._id);
+    if (nearbyUser) {
+      this.UpdatNearbyUser(newUser);
+    }
+    const wink = this.GetWinkIDUser(newUser._id);
+    if (wink) {
+      this.UpdateUserWink(newUser);
+    }
+
+  }
+
+  private UpdatNearbyUser(newUser: User) {
+    if (!newUser) {
+      return ;
+    }
+    if (this.indexUser) {
+      this.nearbyUsers[this.indexUser] = newUser;
+      this.nearbyUsersChanged.next(this.nearbyUsers);
+    }
+  }
+
+  private UpdateUserWink(newUser: User) {
+    if (!newUser) {
+      return ;
+    }
+    if (this.indexWink) {
+      this.allWinks[this.indexWink].user = newUser;
+      this.FilterWinks(this.allWinks, true);
+    }
+
   }
 }

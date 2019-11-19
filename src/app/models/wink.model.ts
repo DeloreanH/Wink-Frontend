@@ -8,6 +8,7 @@ export class Wink {
   public receiverVisibility: string;
   public approved: boolean;
   public user: User;
+  public pending: boolean;
   public createdAt: string;
   public updatedAt: string;
 

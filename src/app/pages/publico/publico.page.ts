@@ -19,7 +19,6 @@ import { ProfilesService } from 'src/app/services/profiles.service';
 export class PublicoPage implements OnInit {
 
   userWink: User;
-  user: User;
   send = false;
   data = false;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
@@ -50,16 +49,18 @@ export class PublicoPage implements OnInit {
         if (params.origin) {
           this.origin = params.origin;
           if (this.origin === '0') {
-            this.userWink = this.winkService.GetUser(params.id);
+            this.userWink = this.winkService.GetNearbyUser(params.id);
             console.log('userWink', this.userWink);
           } else if (this.origin === '1') {
             this.userWink = this.winkService.GetWinkID(params.id).user;
             console.log('userWink', this.userWink);
           } else {
-            // Regresar
+            this.origin = 0;
+            this.Back();
           }
           if (this.userWink) {
-            console.log('Aqui');
+            this.userWink.newWink = true;
+            this.winkService.UpdateUser(this.userWink);
             this.GetWink();
           }
         }
@@ -74,6 +75,7 @@ export class PublicoPage implements OnInit {
         const userW = new User(response.user);
         this.FilterItems(response.userItems, userW);
         if (response.wink) {
+          // this.winkService.GetWinkID(response.wink._id).user = this.userWink;
           this.wink = response.wink;
           this.wink.user = this.userWink;
         }
@@ -145,10 +147,6 @@ export class PublicoPage implements OnInit {
     await alert.present();
   }
 
-  GoProfiles() {
-
-  }
-
   FilterItems(items: Item[], userW: User) {
     if (items && items.length > 0) {
       let contador = 0;
@@ -169,7 +167,7 @@ export class PublicoPage implements OnInit {
       });
       items.splice(contador, 0, age);
       contador ++;
-      if (this.userService.gender[Config.GENDER_HIDEEN] !== userW.gender) {
+      if (this.userService.genders[3].value !== userW.gender) {
         const gender = new Item({
           _id: Config.ICON_GENDER,
           value: userW.gender,
@@ -186,9 +184,13 @@ export class PublicoPage implements OnInit {
 
   async Back() {
     try {
-      const response = await this.navController.navigateBack(
-        [this.origin === '0' ? this.urlHome : this.urlWinks]
-      );
+      setTimeout(
+      async () => {
+        await this.navController.navigateBack(
+          [this.origin === '0' ? this.urlHome : this.urlWinks]
+        );
+      }
+      , 500);
     } catch (err) {
       console.log('Error Behind', err);
     }
@@ -196,9 +198,9 @@ export class PublicoPage implements OnInit {
 
   async GoPrivateProfile() {
     try {
-      const response = await this.navController.navigateForward(
-                        [this.urlPrivate, this.userWink._id , this.wink._id, this.origin]
-                      );
+      await this.navController.navigateForward(
+        [this.urlPrivate, this.userWink._id , this.wink._id, this.origin]
+      );
     } catch (err) {
       console.log('Error Go', err.message);
     }

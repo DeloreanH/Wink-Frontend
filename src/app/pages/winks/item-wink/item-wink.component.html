@@ -1,12 +1,13 @@
-<ion-item (click)="GoPrivateProfileA()" class="ion-activatable ion-activatable-up" >
+<ion-item (click)="GoPrivateProfileA()" class="ion-activatable ion-activatable-up">
   <ion-ripple-effect *ngIf="wink && wink.approved"></ion-ripple-effect>
   <ion-avatar  class="avatar-wink ion-activatable ion-activatable-up" (click)="GoPrivateProfile()">
     <ion-img [src]="wink && wink.user ? wink.user.avatarUrl : avatar" class="img-avatar"></ion-img>
   </ion-avatar>
-  <ion-label style="width: auto; margin-inline-start: 3%;">
+  <ion-label class="label-item">
     <div>
-      <ion-title class="title-wink">
+      <ion-title class="title-wink" (click)="GoPrivateProfile()">
         {{wink && wink.user ? wink.user.firstName + ' ' + wink.user.lastName : 'John Doe'}}
+        <ion-badge *ngIf="!wink.user.newWink" class="item-win-badge">*</ion-badge>
       </ion-title>
       <div *ngIf="wink" class="date-wink">
         <ion-icon name="time" color="medium"></ion-icon>

@@ -10,7 +10,7 @@
 
     <ion-tab-button [tab]="winks" >
       <ion-icon name="happy" ></ion-icon>
-      <ion-badge color="medium">6</ion-badge>
+      <ion-badge color="medium" *ngIf="winksTab"></ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

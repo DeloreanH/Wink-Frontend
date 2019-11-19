@@ -4,10 +4,12 @@ import { User } from '../../models/user.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/services/auth.service';
-import { ActionSheetController, MenuController } from '@ionic/angular';
+import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
 import { UpdateAvatarService } from '../../services/update-avatar.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { Config } from 'src/app/config/enums/config.enum';
+import { MessageError } from 'src/app/config/enums/messageError.enum';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
@@ -15,11 +17,7 @@ import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
 })
 export class PerfilPage implements OnInit, OnDestroy {
 
-  avatar: {fileSrc: string, filePath: string } =
-  {
-    fileSrc : 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-    filePath: 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-  };
+  avatar: string = Config.AVATAR;
   user: User;
   userSusbcription = new Subscription();
   formSusbcription = new Subscription();
@@ -28,7 +26,7 @@ export class PerfilPage implements OnInit, OnDestroy {
   loadingAvatar = false;
   uploadAvatar = false;
   edit = false;
-  genders = [];
+  genders: { value: string, description: string}[] = [];
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -37,24 +35,40 @@ export class PerfilPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private avatarService: UpdateAvatarService,
     private router: Router,
+    private navController: NavController,
   ) {
     this.user = this.userService.User();
     this.form = this.formBuilder.group({
       firstName: new FormControl( this.user.firstName,  [Validators.required]),
       lastName: new FormControl( this.user.lastName,  [Validators.required]),
-      email: new FormControl( {value: this.user.email, disabled: this.DisableEmail()}, [Validators.required, Validators.email]),
+      email: new FormControl({
+          value: this.user.email,
+          disabled: this.DisabledEmail()
+        }, [
+          Validators.required,
+          Validators.email
+        ]),
       phoneCode: new FormControl( {
         value: this.user.phone ? this.user.phone.phoneCode : null,
-        disabled: this.DisableEmail() },  [Validators.required]),
+        disabled: this.DisabledPhone() },  [Validators.required]),
       phoneNumber: new FormControl({
         value: this.user.phone ? this.user.phone.phoneNumber : null,
-        disabled: this.DisablePhone()}, [Validators.required]),
+        disabled: this.DisabledPhone()}, [Validators.required]),
       birthday: new FormControl( this.user.birthday, [Validators.required]),
       gender: new FormControl( this.user.gender, [Validators.required]),
       autosave: new FormControl( this.user.autosave  ? this.user.autosave : true),
-      phone: new FormControl('')
+      phone: new FormControl(''),
+      username: new FormControl({
+          value: this.user.username ?  this.user.username : null,
+          disabled: this.DisabledUsername(),
+        }, [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(16),
+          Validators.pattern(/^[a-zA-Z0-9_s]+$/)
+        ]),
     });
-    this.genders = this.userService.gender;
+    this.genders = this.userService.genders;
    }
 
   ngOnInit() {
@@ -75,23 +89,30 @@ export class PerfilPage implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    this.loading = true;
-    try {
-      this.form.value.phone = {
-        phoneCode: this.form.value.phoneCode,
-        phoneNumber: this.form.value.phoneNumber
-      };
-      console.log('Data', this.form.value);
-      const respuesta = await this.userService.UpdateDate(this.form.value);
-      if (respuesta.status === 'user updated successfully') {
-        this.authService.AuthoLogin();
-        console.log('cambio ruta');
-        this.router.navigate(['/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME]);
+    if (this.form.valid) {
+      this.loading = true;
+      try {
+        this.form.value.phone = {
+          phoneCode: this.form.value.phoneCode,
+          phoneNumber: this.form.value.phoneNumber
+        };
+        const response = await this.userService.UpdateDate(this.form.value);
+        if (response.status === 'user updated successfully') {
+          this.userService.User(response.user, true);
+          this.edit = false;
+          setTimeout(
+            async () => {
+              await this.navController.navigateRoot(
+                '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
+              );
+            }
+            , 500);
+        }
+      } catch (err) {
+        console.log('Error submit', err);
       }
-    } catch (err) {
-      console.log('Error submit', err);
+      this.loading = false;
     }
-    this.loading = false;
   }
 
   FechaActual() {
@@ -106,16 +127,16 @@ export class PerfilPage implements OnInit, OnDestroy {
     const actionSheet = await this.actionSheetController.create({
       header: 'Seleccione una opcion',
       buttons: [{
-        text: 'Camara',
+        text: 'Camera',
         icon: 'camera',
         handler:  async () => {
-          this.SolicitudImage(true);
+          this.RequestImage(true);
         }
       }, {
-        text: 'Galeria',
+        text: 'Gallery',
         icon: 'image',
         handler:   () => {
-          this.SolicitudImage(false);
+          this.RequestImage(false);
         }
       }, {
         text: 'Cancel',
@@ -129,7 +150,7 @@ export class PerfilPage implements OnInit, OnDestroy {
     await actionSheet.present();
   }
 
-  private async SolicitudImage(camera: boolean) {
+  private async RequestImage(camera: boolean) {
     try {
       this.loadingAvatar = true;
       const respuesta: any = await this.avatarService.OpenUpdate(camera);
@@ -155,21 +176,54 @@ export class PerfilPage implements OnInit, OnDestroy {
   }
 
   Back() {
-    this.router.navigate(['/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL]);
+    setTimeout(
+      async () => {
+        await this.navController.navigateBack(
+          '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
+        );
+      }
+      , 500);
   }
 
 
-  DisableEmail(): boolean {
+  private DisabledEmail(): boolean {
     return (this.user.emptyProfile && this.user.email !== '') ? true : false;
   }
 
-  DisablePhone(): boolean {
+  private DisabledUsername(): boolean {
+    return (this.user.emptyProfile && this.user.username !== '') ? true : false;
+  }
+
+  private DisabledPhone(): boolean {
     return (this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber) ? true : false;
   }
 
   ErrorImagen() {
-    console.log('Error');
-    this.user.avatarUrl = this.avatar.fileSrc;
+    this.user.avatarUrl = this.avatar;
+  }
+
+  MessageError(input: string) {
+    console.log(this.form.controls[input].errors);
+    if (this.form.controls[input].errors) {
+      const obj = this.form.controls[input].errors;
+      let prop;
+      for (prop in obj) {
+      }
+      if (prop) {
+        switch (prop) {
+          case 'required':
+            return MessageError.REQUIRED;
+          case 'email':
+            return MessageError.EMAIL;
+          case 'minlength':
+            return MessageError.MINIMUM;
+          case 'maxlength':
+            return MessageError.MAXIMUM;
+          case 'pattern':
+              return MessageError.CHARACTER;
+        }
+      }
+    }
   }
 
 }

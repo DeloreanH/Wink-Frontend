@@ -15,11 +15,11 @@ export class UserService {
 
   private user: User = null;
   userChanged = new Subject<User>();
-  gender = [
-    'Mujer',
-    'Hombre',
-    'Otro',
-    'Prefiero no decirlo'
+  genders: { value: string, description: string}[] = [
+    { value: 'femile', description: 'Mujer' },
+    { value: 'male', description: 'Hombre'},
+    { value: 'other', description: 'Otro'},
+    { value: 'i prefer not to say', description: 'Prefiero no decirlo'}
   ];
 
   constructor(
@@ -74,11 +74,11 @@ export class UserService {
     }
   }
 
-  async UpdateStatus(status: string) {
+  async UpdateStatus(statusValue: string) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, { status: status }).toPromise();
+          const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, { status: statusValue }).toPromise();
           this.user.status = status;
           this.User(this.user, true);
           resolve(response);

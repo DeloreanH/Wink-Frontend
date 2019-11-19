@@ -114,7 +114,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   async GPS(event?) {
     try {
-      const respuesta = await this.winkService.GetNearby();
+      await this.winkService.GetNearby();
     } catch (err) {
       console.log('GPS error', err.message);
     }
@@ -203,9 +203,13 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   async GoPublicProfile(user: User) {
     try {
-      const response = await this.navController.navigateForward(
-                                user ? [this.urlPublic, user._id, 0] : []
-                              );
+      setTimeout(
+        async () => {
+          await this.navController.navigateForward(
+            user ? [this.urlPublic, user._id, 0] : []
+          );
+        }
+        , 500);
     } catch (err) {
       console.log('Error Go', err.message);
     }

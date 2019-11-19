@@ -208,9 +208,13 @@ export class PrivateProfilesPage implements OnInit {
 
   async Back() {
     try {
-      const response = await this.navController.navigateBack(
-        this.userWink ? [this.urlPublic, this.origin === '0' ? this.userWink._id : this.idWink, this.origin] : [this.urlHome]
-      );
+      setTimeout(
+        async () => {
+          await this.navController.navigateBack(
+            this.userWink ? [this.urlPublic, this.origin === '0' ? this.userWink._id : this.idWink, this.origin] : [this.urlHome]
+          );
+        }
+        , 500);
     } catch (err) {
       console.log('Error Behind', err);
     }

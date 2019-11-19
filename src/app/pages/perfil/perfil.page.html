@@ -1,5 +1,13 @@
 <ion-header>
   <ion-toolbar>
+    <div *ngIf="!user.emptyProfile" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
+      <fa-icon 
+        [icon]="['fas', 'arrow-left']" 
+        class="icono-arrow"
+        (click)="Back()"
+      ></fa-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
     <ion-title>
       Basic data
     </ion-title>
@@ -25,13 +33,9 @@
           *ngIf="!loadingAvatar" 
           alt="Avatar" 
           (ionError)="ErrorImagen()" 
-          [src]="user.avatarUrl ? user.avatarUrl : avatar.filePath" >
-      </ion-img>
-        <ion-spinner 
-          *ngIf="loadingAvatar" 
-          name="crescent" 
-          class="avatar-profile">
-        </ion-spinner>
+          [src]="user.avatarUrl ? user.avatarUrl : avatar" >
+        </ion-img>
+        <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
       </ion-avatar>
     </div>
     <ion-list>
@@ -50,6 +54,9 @@
         >
         </ion-input>
       </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('firstName') }}
+      </ion-text>
       <ion-item>
           <fa-icon 
             [icon]="['fas', 'user']"
@@ -64,6 +71,28 @@
         >
         </ion-input>
       </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('lastName') }}
+      </ion-text>
+      <ion-item>
+          <fa-icon 
+            [icon]="['fas', 'envelope']"
+            class="icono icon-center"
+            slot="start" >
+          </fa-icon>
+        <ion-label position="floating" >
+          Username
+        </ion-label>
+        <ion-input 
+          formControlName="username"
+          maxlength="16"
+          minlength="4"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('username') }}
+      </ion-text>
       <ion-item>
           <fa-icon 
             [icon]="['fas', 'envelope']"
@@ -79,32 +108,45 @@
         >
         </ion-input>
       </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('email') }}
+      </ion-text>
       <div class="phone">
-        <ion-item class="phoneCode">
-          <fa-icon 
-            [icon]="['fas', 'mobile-alt']"
-            class="icono icon-center"
-            slot="start" >
-          </fa-icon>
-          <ion-label position="floating" >
-            Code
-          </ion-label>
-          <ion-input 
-            type="number"
-            formControlName="phoneCode"
-          >
-          </ion-input>
-        </ion-item>
-        <ion-item class="phoneNumber">
-          <ion-label position="floating" >
-            Phone Number
-          </ion-label>
-          <ion-input 
-            type="number"
-            formControlName="phoneNumber"
-          >
-          </ion-input>
-        </ion-item>
+        <div class="phoneCode">
+          <ion-item>
+            <fa-icon 
+              [icon]="['fas', 'mobile-alt']"
+              class="icono icon-center"
+              slot="start" >
+            </fa-icon>
+            <ion-label position="floating" >
+              Code
+            </ion-label>
+            <ion-input 
+              type="number"
+              formControlName="phoneCode"
+            >
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger">
+            {{ MessageError('phoneCode') }}
+          </ion-text>
+        </div>
+        <div class="phoneNumber">
+          <ion-item >
+            <ion-label position="floating" >
+              Phone Number
+            </ion-label>
+            <ion-input 
+              type="number"
+              formControlName="phoneNumber"
+            >
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger">
+            {{ MessageError('phoneNumber') }}
+          </ion-text>
+        </div>
       </div>
       <ion-item>
         <fa-icon 
@@ -124,6 +166,9 @@
           formControlName="birthday"
         ></ion-datetime>
       </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('birthday') }}
+      </ion-text>
       <ion-item>
         <fa-icon 
         [icon]="['fas', 'genderless']"
@@ -138,17 +183,23 @@
           cancel-text="Cancelar" 
           placeholder="Seleccione un sexo"
           formControlName="gender">
-          <ion-select-option *ngFor="let gender of genders" [value]="gender">
-            {{gender}}
+          <ion-select-option *ngFor="let gender of genders" [value]="gender.value">
+            {{gender.description}}
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('gender') }}
+      </ion-text>
       <ion-item>
         <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
         <ion-label  >
             Autosave contacts
           </ion-label>
       </ion-item>
+      <ion-text color="danger">
+        {{ MessageError('autosave') }}
+      </ion-text>
     </ion-list>
     <ion-button expand="block" type="submit" [disabled]="FormValid()">Save</ion-button>
     <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()">Cancel</ion-button>

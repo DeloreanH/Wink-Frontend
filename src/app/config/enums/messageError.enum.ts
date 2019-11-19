@@ -1,8 +1,8 @@
 export enum MessageError {
-  REQUERIDO = 'Campo requerido.',
-  MAXIMO = 'Maximo de caracteres superado.',
-  EMAIL = 'Formato invalido.',
-  URL = 'URL invalida.',
-  MINIMO2 = 'Minimo 2 caracteres.',
-  MINIMO3 = 'Minimo 3 caracteres.',
+  REQUIRED = 'Required field.',
+  MAXIMUM = 'Exceeds the character limit.',
+  EMAIL = 'Invalid email.',
+  URL = 'Invalid URL.',
+  MINIMUM = 'Does not meet the minimum characters.',
+  CHARACTER = 'Character not allowed.'
 }

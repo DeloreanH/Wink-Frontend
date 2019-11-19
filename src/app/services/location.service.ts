@@ -4,6 +4,7 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,77 +18,9 @@ export class LocationService {
     private locationAccuracy: LocationAccuracy,
     private platform: Platform,
     private androidPermissions: AndroidPermissions,
-    public toastController: ToastController,
-    private diagnostic: Diagnostic
+    private diagnostic: Diagnostic,
+    private toastService: ToastService
   ) { }
-
-
-  async OpenP() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          const position = await this.GetPosition2();
-          resolve(position);
-        } catch (err) {
-          reject(err);
-        }
-      }
-    );
-  }
-
-  async GetLocation() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          if ( this.platform.is('mobile') ) {
-            console.log('Mobile');
-            this.locationAccuracy.canRequest().then(async (canRequest) => {
-              console.log('canRequest',  `${canRequest}`, `${canRequest}` === '0');
-              if (`${canRequest}` === '0') {
-                /*const auth = await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
-                console.log('auth', auth);
-                if (auth.message === 'All location settings are satisfied.') {
-                  const position = await this.GetPosition();
-                  console.log('position', position);
-                  resolve(position);
-                } else {
-                  reject(auth.message);
-                }*/
-                this.askToTurnOnGPS();
-                resolve(true);
-              } else {
-                /*const auth = await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
-                console.log('auth', auth);
-                const position = await this.GetPosition();
-                resolve(position);*/
-                this.askToTurnOnGPS();
-                resolve(true);
-              }
-            }
-            );
-          } else {
-              const position = await this.GetPosition2();
-              resolve(position);
-          }
-        } catch (err) {
-          console.log('Error getting location: ' + err.message);
-          reject(err);
-        }
-      }
-    );
-  }
-
-  get Position() {
-    return this.position;
-  }
-
-  async Alert(messageText: string) {
-    const toast = await this.toastController.create({
-      message: messageText,
-      duration: 5000
-    });
-    toast.present();
-  }
 
   GetPosition() {
     return new Promise<any> (
@@ -95,39 +28,18 @@ export class LocationService {
         try {
           if (this.platform.is('mobile')) {
             if (this.platform.is('ios')) {
-              this.checkIOS().then(
-                (response) => {
-                  resolve(response);
-                }
-              ).catch(
-                (err) => {
-                  reject(err);
-                }
-              );
+              const response = await this.checkIOS();
+              resolve(response);
             } else if (this.platform.is('android')) {
-              this.checkAndroid().then(
-                (response) => {
-                  resolve(response);
-                }
-              ).catch(
-                (err) => {
-                  reject(err);
-                }
-              );
+              const response = await this.checkAndroid();
+              resolve(response);
             }
           } else {
-            this.getLocationCoordinates().then(
-              (response) => {
-                resolve(response);
-              }
-            ).catch(
-              (err) => {
-                reject(err);
-              }
-            );
+            const response = await this.getLocationCoordinates();
+            resolve(response);
           }
         } catch (err) {
-
+          reject(err);
         }
       }
     );
@@ -137,24 +49,14 @@ export class LocationService {
     return new Promise<any> (
       async (resolve, reject) => {
         try {
-          this.diagnostic.isLocationEnabled().then(
-            (state) => {
-              this.getLocationCoordinates().then(
-                (response) => {
-                  resolve(response);
-                }
-              ).catch(
-                (err) => {
-                  reject(err);
-                }
-              );
-            }
-          ).catch(
-            (err) => {
-              this.Alert('Activate the location of your device to continue.');
-              reject(err);
-            }
-          );
+          const state = await this.diagnostic.isLocationEnabled();
+          if (state) {
+            const response = await this.getLocationCoordinates();
+            resolve(response);
+          } else {
+            this.toastService.Toast('Activate the location of your device to continue.');
+            reject(null);
+          }
         } catch (err) {
           reject(err);
         }
@@ -166,28 +68,34 @@ export class LocationService {
     return new Promise<any> (
       async (resolve, reject) => {
         try {
-          this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
-            result => {
-              if (result.hasPermission) {
-                this.askToTurnOnGPS().then(
-                  (response) => {
-                    resolve(response);
-                  }
-                ).catch(
-                  (err) => {
-                    reject(err);
-                  }
-                );
+          const result = await this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION);
+          if (result.hasPermission) {
+            const response = await this.askToTurnOnGPS();
+            resolve(response);
+          } else {
+            const response = await this.requestGPSPermission();
+            resolve(response);
+          }
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  private requestGPSPermission() {
+    return new Promise<any> (
+      async (resolve, reject) => {
+        try {
+          await this.locationAccuracy.canRequest();
+          this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+            async (response) => {
+              if (response.hasPermission) {
+                const resp = await this.askToTurnOnGPS();
+                resolve(resp);
               } else {
-                this.requestGPSPermission().then(
-                  (response) => {
-                    resolve(response);
-                  }
-                ).catch(
-                  (err) => {
-                    reject(err);
-                  }
-                );
+                this.toastService.Toast('You must activate your location to use the service.');
+                reject(null);
               }
             },
             err => {
@@ -201,64 +109,16 @@ export class LocationService {
     );
   }
 
-  private requestGPSPermission() {
-    return new Promise<any> (
-      async (resolve, reject) => {
-        try {
-          this.locationAccuracy.canRequest().then((canRequest) => {
-            if (canRequest) {
-              reject(false);
-            } else {
-              this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
-                .then(
-                  (response) => {
-                    console.log('response', response);
-                    if (response.hasPermission) {
-                      this.askToTurnOnGPS().then(
-                        (resp) => {
-                          resolve(resp);
-                        }
-                      ).catch(
-                        (err) => {
-                          reject(err);
-                        }
-                      );
-                    } else {
-                      this.Alert('You must activate your location to use the service.');
-                      reject(false);
-                    }
-                  },
-                  error => {
-                    reject(error);
-                  }
-                );
-            }
-          });
-        } catch (err) {
-
-        }
-      }
-    );
-  }
-
   private askToTurnOnGPS() {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-            (valor) => {
-              console.log('valor', valor);
-              this.getLocationCoordinates().then(
-                (response) => {
-                  resolve(response);
-                }
-              ).catch(
-                (err) => {
-                  reject(err);
-                }
-              );
+            async (value) => {
+              const resp = await this.getLocationCoordinates();
+              resolve(resp);
             },
-            error => reject(error)
+            err => reject(err)
           );
         } catch (err) {
           reject(err);
@@ -271,11 +131,10 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          console.log('Fin');
           const geoposition = await this.geolocation.getCurrentPosition({
             enableHighAccuracy: true,
+            timeout: 3000
           });
-          console.log('geoposition', geoposition);
           resolve(geoposition);
         } catch (err) {
           reject(err);
@@ -284,18 +143,4 @@ export class LocationService {
     );
   }
 
-  private GetPosition2() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          const position = await this.geolocation.getCurrentPosition();
-          console.log('position', position);
-          this.position = position;
-          resolve(position);
-        } catch (err) {
-          reject(err);
-        }
-      }
-    );
-  }
 }

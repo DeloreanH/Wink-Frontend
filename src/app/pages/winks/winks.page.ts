@@ -55,28 +55,10 @@ export class WinksPage implements OnInit, OnDestroy {
 
   async Winks() {
     try {
-      const response = await this.winkService.GetWinks();
-
-      // this.FilterWinks(response);
+      await this.winkService.GetWinks();
     } catch (err) {
-
+      console.log(err);
     }
-  }
-
-  FilterWinks(winks: Wink[]) {
-    console.log('winks', winks);
-    winks.forEach(
-      (wink: Wink) => {
-        wink.user = wink.user[0];
-        if (wink.approved) {
-          this.record.push(wink);
-          console.log('this.record', this.record);
-        } else if (wink.sender_id === wink.user._id) {
-          this.requests.push(wink);
-          console.log('this.requests', this.requests);
-        }
-      }
-    );
   }
 
 }

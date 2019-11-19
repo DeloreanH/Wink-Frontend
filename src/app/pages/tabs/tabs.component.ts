@@ -14,6 +14,7 @@ export class TabsComponent implements OnInit {
   home = RoutesAPP.HOME;
   profiles = RoutesAPP.CONFIGURAR_PERFIL;
   winks = RoutesAPP.WINKS;
+  winksTab = true;
 
   constructor(
     private router: Router
@@ -35,6 +36,9 @@ export class TabsComponent implements OnInit {
           if (valor.url.split('/')[2] === RoutesAPP.PERFIL_PUBLICO || valor.url.split('/')[2] === RoutesAPP.PRIVATE_PROFILES) {
             this.ocultar = true;
           } else {
+            if (this.winksTab && valor.url.split('/')[2] === RoutesAPP.WINKS) {
+              this.winksTab = false;
+            }
             this.ocultar = false;
           }
         }

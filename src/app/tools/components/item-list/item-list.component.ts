@@ -92,15 +92,19 @@ export class ItemListComponent implements OnInit {
   }
 
   OpenLink() {
-    if (this.itemType.index === this.indexEmail) {
-      this.linkService.Mail(this.item.value);
-    } else if (this.itemType.index === this.indexURL) {
-      this.linkService.URL(this.item.value);
-    } else if (this.itemType.category === this.socialNetwork) {
-      this.linkService.SocialNetwork(this.itemType.name, this.item.value);
-    } else if (this.itemType.index === this.indexTel) {
-      this.linkService.Tel(this.item.value);
-    }
+    setTimeout(
+      () => {
+        if (this.itemType.index === this.indexEmail) {
+          this.linkService.Mail(this.item.value);
+        } else if (this.itemType.index === this.indexURL) {
+          this.linkService.URL(this.item.value);
+        } else if (this.itemType.category === this.socialNetwork) {
+          this.linkService.SocialNetwork(this.itemType.name, this.item.value);
+        } else if (this.itemType.index === this.indexTel) {
+          this.linkService.Tel(this.item.value);
+        }
+      }
+      , 500);
   }
 
   IsCustom() {
