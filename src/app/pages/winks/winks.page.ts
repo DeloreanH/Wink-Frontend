@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { WinkService } from 'src/app/services/wink.service';
-import { Wink } from 'src/app/models/wink.model';
+import { WinkService } from 'src/app/core/services/wink.service';
+import { Wink } from 'src/app/common/models/wink.model';
 import { Subscription } from 'rxjs';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
-import { Config } from 'src/app/config/enums/config.enum';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
+import { Config } from 'src/app/common/enums/config.enum';
 
 @Component({
   selector: 'app-winks',

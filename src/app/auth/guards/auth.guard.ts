@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { map, tap, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
+import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enum';
 
 @Injectable({
   providedIn: 'root'

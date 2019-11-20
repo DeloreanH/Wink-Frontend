@@ -2,24 +2,24 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { Category } from '../../models/category.model';
-import { Item } from '../../models/item.model';
-import { Section } from '../../models/section.model';
-import { ProfilesService } from '../../services/profiles.service';
+import { Category } from '../../common/models/category.model';
+import { Item } from '../../common/models/item.model';
+import { Section } from '../../common/models/section.model';
+import { ProfilesService } from '../../core/services/profiles.service';
 import { AuthService } from '../../auth/services/auth.service';
-import { User } from '../../models/user.model';
-import { UserService } from '../../services/user.service';
+import { User } from '../../common/models/user.model';
+import { UserService } from '../../core/services/user.service';
 import { Subscription } from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enum';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 
 @Component({
-  selector: 'app-config-perfil',
-  templateUrl: './config-perfil.page.html',
-  styleUrls: ['./config-perfil.page.scss'],
+  selector: 'profile-settings',
+  templateUrl: './profile-settings.page.html',
+  styleUrls: ['./profile-settings.page.scss'],
 })
-export class ConfigPerfilPage implements OnInit, OnDestroy {
+export class ProfileSettingsPage implements OnInit, OnDestroy {
 
   nombre = 'John Doe';
   avatar = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y';

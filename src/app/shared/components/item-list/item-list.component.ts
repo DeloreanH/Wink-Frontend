@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Item } from '../../../models/item.model';
-import { ItemType } from '../../../models/itemType.model';
-import { Config } from '../../../config/enums/config.enum';
-import { IndexItemType } from '../../../config/enums/indexItemType.emun';
-import { LinkService } from '../../../services/link.service';
-import { ProfilesService } from 'src/app/services/profiles.service';
+import { Item } from '../../../common/models/item.model';
+import { ItemType } from '../../../common/models/itemType.model';
+import { Config } from '../../../common/enums/config.enum';
+import { IndexItemType } from '../../../common/enums/indexItemType.emun';
+import { LinkService } from '../../../core/services/link.service';
+import { ProfilesService } from 'src/app/core/services/profiles.service';
 
 @Component({
   selector: 'item-list',

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Location } from '../models/location.model';
+import { Location } from '../../common/models/location.model';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user.model';
-import { Routes } from '../config/enums/routes/routes.enum';
+import { User } from '../../common/models/user.model';
+import { Routes } from '../../common/enums/routes/routes.enum';
 import { LocationService } from './location.service';
 import { UserService } from './user.service';
-import { Wink } from '../models/wink.model';
+import { Wink } from '../../common/models/wink.model';
 import { Subject } from 'rxjs';
 import { ToastService } from './toast.service';
-import { MessagesServices } from '../config/enums/messagesServices.enum';
+import { MessagesServices } from '../../common/enums/messagesServices.enum';
 
 @Injectable({
   providedIn: 'root'

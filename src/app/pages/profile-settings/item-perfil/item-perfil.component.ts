@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ProfilesService } from '../../../services/profiles.service';
-import { ItemType } from '../../../models/itemType.model';
-import { Item } from '../../../models/item.model';
+import { ProfilesService } from '../../../core/services/profiles.service';
+import { ItemType } from '../../../common/models/itemType.model';
+import { Item } from '../../../common/models/item.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl, Validators } from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-import { MessageError } from '../../../config/enums/messageError.enum';
+import { MessageError } from '../../../common/enums/messageError.enum';
 
 @Component({
   selector: 'app-item-perfil',

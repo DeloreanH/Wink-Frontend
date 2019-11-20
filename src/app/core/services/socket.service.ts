@@ -1,9 +1,9 @@
 import { Injectable, NgModule } from '@angular/core';
 import * as io from 'socket.io-client';
-import { Routes } from '../config/enums/routes/routes.enum';
-import { User } from '../models/user.model';
-import { Wink } from '../models/wink.model';
-import { AuthService } from '../auth/services/auth.service';
+import { Routes } from '../../common/enums/routes/routes.enum';
+import { User } from '../../common/models/user.model';
+import { Wink } from '../../common/models/wink.model';
+import { AuthService } from '../../auth/services/auth.service';
 import { take, exhaustMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 

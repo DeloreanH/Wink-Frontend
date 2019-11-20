@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule } from '@angular/router';
 import { Routes } from '@virtwoo/sl-router';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { EmptyProfilePGuard } from './auth/guards/empty-profile-p.guard';
-import { RoutesPrincipal } from './config/enums/routes/routesPrincipal.enum';
+import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 
 
 
@@ -16,7 +16,7 @@ export const routesApp: Routes = [
   },
   {
     path: 'perfil',
-    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule),
+    loadChildren: () => import('./pages/basic-data/basic-data.module').then( m => m.BasicDataPageModule),
     name: RoutesPrincipal.DATOS_BASICOS,
     canActivate: [AuthGuard]
   },

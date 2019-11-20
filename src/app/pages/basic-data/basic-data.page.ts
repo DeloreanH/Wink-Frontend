@@ -1,21 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
+import { UserService } from '../../core/services/user.service';
+import { User } from '../../common/models/user.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/services/auth.service';
 import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
-import { UpdateAvatarService } from '../../services/update-avatar.service';
+import { UpdateAvatarService } from '../../core/services/update-avatar.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
-import { Config } from 'src/app/config/enums/config.enum';
-import { MessageError } from 'src/app/config/enums/messageError.enum';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
+import { Config } from 'src/app/common/enums/config.enum';
+import { MessageError } from 'src/app/common/enums/messageError.enum';
 @Component({
-  selector: 'app-perfil',
-  templateUrl: './perfil.page.html',
-  styleUrls: ['./perfil.page.scss'],
+  selector: 'basic-data',
+  templateUrl: './basic-data.page.html',
+  styleUrls: ['./basic-data.page.scss'],
 })
-export class PerfilPage implements OnInit, OnDestroy {
+export class BasicDataPage implements OnInit, OnDestroy {
 
   avatar: string = Config.AVATAR;
   user: User;

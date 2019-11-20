@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { TabsRoutingModule } from './tabs-routing.module';
+import { PagesRoutingModule } from '../pages-routing.module';
 import { TabsComponent } from './tabs.component';
 import { IonicModule } from '@ionic/angular';
-import { SocketService } from 'src/app/services/socket.service';
 
 
 @NgModule({
@@ -14,12 +13,11 @@ import { SocketService } from 'src/app/services/socket.service';
   imports: [
     CommonModule,
     IonicModule,
-    TabsRoutingModule,
+    PagesRoutingModule,
   ],
   exports: [
   ],
   providers:  [
-    SocketService
   ]
 })
 export class TabsModule { }

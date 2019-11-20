@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
-import { User } from 'src/app/models/user.model';
-import { Wink } from 'src/app/models/wink.model';
-import { WinkService } from 'src/app/services/wink.service';
-import { Item } from 'src/app/models/item.model';
-import { ProfilesService } from 'src/app/services/profiles.service';
-import { Section } from 'src/app/models/section.model';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { User } from 'src/app/common/models/user.model';
+import { Wink } from 'src/app/common/models/wink.model';
+import { WinkService } from 'src/app/core/services/wink.service';
+import { Item } from 'src/app/common/models/item.model';
+import { ProfilesService } from 'src/app/core/services/profiles.service';
+import { Section } from 'src/app/common/models/section.model';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { AlertController, NavController } from '@ionic/angular';
-import { ItemType } from 'src/app/models/itemType.model';
-import { SaveContactService } from 'src/app/services/save-contact.service';
-import { NameCategories } from 'src/app/config/enums/nameCaterogies.enum';
-import { IndexItemType } from 'src/app/config/enums/indexItemType.emun';
-import { Config } from 'src/app/config/enums/config.enum';
+import { ItemType } from 'src/app/common/models/itemType.model';
+import { SaveContactService } from 'src/app/core/services/save-contact.service';
+import { NameCategories } from 'src/app/common/enums/nameCaterogies.enum';
+import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
+import { Config } from 'src/app/common/enums/config.enum';
 
 @Component({
   selector: 'app-private-profiles',

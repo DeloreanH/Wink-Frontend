@@ -3,7 +3,7 @@ import {
   Camera,
 } from '@ionic-native/camera/ngx/';
 import { HttpClient } from '@angular/common/http';
-import { Routes } from '../config/enums/routes/routes.enum';
+import { Routes } from '../../common/enums/routes/routes.enum';
 import { Platform } from '@ionic/angular';
 
 @Injectable({

@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
-import { SocketService, SocketEventsListen } from 'src/app/services/socket.service';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
+import { SocketService, SocketEventsListen } from 'src/app/core/services/socket.service';
 import { Subscription } from 'rxjs';
-import { WinkService } from 'src/app/services/wink.service';
-import { User } from 'src/app/models/user.model';
+import { WinkService } from 'src/app/core/services/wink.service';
+import { User } from 'src/app/common/models/user.model';
 
 
 @Component({

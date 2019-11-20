@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import { User } from 'src/app/common/models/user.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { WinkService } from 'src/app/services/wink.service';
+import { WinkService } from 'src/app/core/services/wink.service';
 import { ModalController, AlertController, NavController } from '@ionic/angular';
-import { Item } from 'src/app/models/item.model';
-import { Wink } from 'src/app/models/wink.model';
-import { UserService } from 'src/app/services/user.service';
-import { Config } from 'src/app/config/enums/config.enum';
-import { IndexItemType } from 'src/app/config/enums/indexItemType.emun';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
-import { ProfilesService } from 'src/app/services/profiles.service';
+import { Item } from 'src/app/common/models/item.model';
+import { Wink } from 'src/app/common/models/wink.model';
+import { UserService } from 'src/app/core/services/user.service';
+import { Config } from 'src/app/common/enums/config.enum';
+import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
+import { ProfilesService } from 'src/app/core/services/profiles.service';
 
 @Component({
-  selector: 'app-publico',
-  templateUrl: './publico.page.html',
-  styleUrls: ['./publico.page.scss'],
+  selector: 'public-profile',
+  templateUrl: './public-profile.page.html',
+  styleUrls: ['./public-profile.page.scss'],
 })
-export class PublicoPage implements OnInit {
+export class PublicProfilePage implements OnInit {
 
   userWink: User;
   send = false;

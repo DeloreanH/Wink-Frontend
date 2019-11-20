@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user.model';
+import { User } from '../../common/models/user.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Routes } from '../config/enums/routes/routes.enum';
-import { AuthUser } from '../auth/models/authuser.model';
-import { VisibilityOption } from '../models/visibilityOptions.enum';
-import { Location } from '../models/location.model';
+import { Routes } from '../../common/enums/routes/routes.enum';
+import { AuthUser } from '../../auth/models/authuser.model';
+import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
+import { Location } from '../../common/models/location.model';
 import { SocketService } from './socket.service';
 
 @Injectable({

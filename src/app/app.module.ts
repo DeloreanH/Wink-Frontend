@@ -42,8 +42,7 @@ import { HammerGestureConfig } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
 import { Contacts } from '@ionic-native/contacts/ngx';
 import { TabsModule } from './pages/tabs/tabs.module';
-import { AuthService } from './auth/services/auth.service';
-import { AuthModule } from './auth/auth.module';
+import { CoreModule } from './core/core.module';
 
 
 
@@ -68,7 +67,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     BrowserAnimationsModule,
     FontAwesomeModule,
     MatChipsModule,
-    AuthModule,
+    CoreModule,
     TabsModule,
     VirtwooAuthModule.forRoot(virtwooAuthEnvironment),
     SlRouterModule.forRoot([

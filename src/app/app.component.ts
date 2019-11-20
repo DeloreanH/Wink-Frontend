@@ -9,7 +9,7 @@ import { VirtwooAuthPathName } from '@virtwoo/auth';
 import { AuthService } from './auth/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
-import { RoutesPrincipal } from './config/enums/routes/routesPrincipal.enum';
+import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 
 @Component({
   selector: 'app-root',

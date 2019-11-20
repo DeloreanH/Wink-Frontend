@@ -6,18 +6,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 
-import { PublicoPage } from './publico.page';
+import { PublicProfilePage } from './public-profile.page';
 
-import { ItemListComponent } from 'src/app/tools/components/item-list/item-list.component';
 import { ToolsModule } from 'src/app/tools/tools.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatChipsModule } from '@angular/material/chips';
+import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PublicoPage
+    component: PublicProfilePage
   }
 ];
 
@@ -32,7 +32,7 @@ const routes: Routes = [
     MatChipsModule
   ],
   entryComponents: [ItemListComponent],
-  declarations: [PublicoPage],
+  declarations: [PublicProfilePage],
   providers: [],
 })
-export class PublicoPageModule {}
+export class PublicProfilePageModule {}

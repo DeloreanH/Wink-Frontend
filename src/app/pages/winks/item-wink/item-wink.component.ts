@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Wink } from 'src/app/models/wink.model';
+import { Wink } from 'src/app/common/models/wink.model';
 import * as moment from 'moment';
-import { Config } from 'src/app/config/enums/config.enum';
-import { WinkService } from 'src/app/services/wink.service';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { Config } from 'src/app/common/enums/config.enum';
+import { WinkService } from 'src/app/core/services/wink.service';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { NavController } from '@ionic/angular';
 
 @Component({

@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
-import { User } from '../../models/user.model';
-import { UserService } from '../../services/user.service';
+import { User } from '../../common/models/user.model';
+import { UserService } from '../../core/services/user.service';
 import { Subscription } from 'rxjs';
-import { Config } from '../../config/enums/config.enum';
-import { VisibilityOption } from '../../models/visibilityOptions.enum';
-import { WinkService } from '../../services/wink.service';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { Config } from '../../common/enums/config.enum';
+import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
+import { WinkService } from '../../core/services/wink.service';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Platform, NavController, IonInfiniteScroll } from '@ionic/angular';
 

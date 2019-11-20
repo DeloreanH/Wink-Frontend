@@ -5,14 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PerfilPage } from './perfil.page';
+import { BasicDataPage } from './basic-data.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToolsModule } from 'src/app/tools/tools.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: PerfilPage
+    component: BasicDataPage
   }
 ];
 
@@ -26,8 +26,8 @@ const routes: Routes = [
     FontAwesomeModule,
     ToolsModule
   ],
-  declarations: [PerfilPage],
+  declarations: [BasicDataPage],
   providers: [],
   entryComponents: []
 })
-export class PerfilPageModule {}
+export class BasicDataPageModule {}

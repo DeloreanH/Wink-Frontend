@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SlRouterService } from '@virtwoo/sl-router';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthUser } from '../models/authuser.model';
-import { User } from '../../models/user.model';
-import { Routes } from 'src/app/config/enums/routes/routes.enum';
+import { User } from '../../common/models/user.model';
+import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { NavController } from '@ionic/angular';
-import { RoutesPrincipal } from 'src/app/config/enums/routes/routesPrincipal.enum';
+import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enum';
 
 @Injectable({
   providedIn: 'root'

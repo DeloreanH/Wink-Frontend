@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { TabsComponent } from './tabs.component';
-import { RoutesAPP } from 'src/app/config/enums/routes/routesApp.enum';
+import { TabsComponent } from './tabs/tabs.component';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 
 export const routesTab: Routes = [
   {
@@ -14,7 +14,7 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+            loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
           }
         ]
       },
@@ -23,7 +23,7 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../config-perfil/config-perfil.module').then(m => m.ConfigPerfilPageModule)
+            loadChildren: () => import('./profile-settings/profile-settings.module').then(m => m.ProfileSettingsPageModule)
           }
         ]
       },
@@ -32,7 +32,7 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../publico/publico.module').then(m => m.PublicoPageModule)
+            loadChildren: () => import('./public-profile/public-profile.module').then(m => m.PublicProfilePageModule)
           }
         ]
       },
@@ -41,7 +41,7 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../winks/winks.module').then(m => m.WinksPageModule)
+            loadChildren: () => import('./winks/winks.module').then(m => m.WinksPageModule)
           }
         ]
       },
@@ -50,7 +50,7 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../private-profiles/private-profiles.module').then(m => m.PrivateProfilesPageModule)
+            loadChildren: () => import('./private-profiles/private-profiles.module').then(m => m.PrivateProfilesPageModule)
           }
         ]
       },
@@ -72,4 +72,4 @@ export const routesTab: Routes = [
   imports: [RouterModule.forChild(routesTab)],
   exports: [RouterModule]
 })
-export class TabsRoutingModule { }
+export class PagesRoutingModule { }

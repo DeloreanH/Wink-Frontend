@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
-import { User } from '../models/user.model';
-import { Item } from '../models/item.model';
-import { NameCategories } from '../config/enums/nameCaterogies.enum';
+import { User } from '../../common/models/user.model';
+import { Item } from '../../common/models/item.model';
+import { NameCategories } from '../../common/enums/nameCaterogies.enum';
 import { LinkService } from './link.service';
-import { IndexItemType } from '../config/enums/indexItemType.emun';
+import { IndexItemType } from '../../common/enums/indexItemType.emun';
 import { Platform, ToastController } from '@ionic/angular';
-import { Config } from '../config/enums/config.enum';
+import { Config } from '../../common/enums/config.enum';
 import { ToastService } from './toast.service';
 
 

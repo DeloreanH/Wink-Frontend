@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Category } from '../models/category.model';
-import { ItemType } from '../models/itemType.model';
-import { Section } from '../models/section.model';
+import { Category } from '../../common/models/category.model';
+import { ItemType } from '../../common/models/itemType.model';
+import { Section } from '../../common/models/section.model';
 import { HttpClient } from '@angular/common/http';
-import { Routes } from '../config/enums/routes/routes.enum';
-import { AuthService } from '../auth/services/auth.service';
+import { Routes } from '../../common/enums/routes/routes.enum';
+import { AuthService } from '../../auth/services/auth.service';
 import { take, exhaustMap } from 'rxjs/operators';
-import { Item } from '../models/item.model';
+import { Item } from '../../common/models/item.model';
 
 @Injectable({
   providedIn: 'root'

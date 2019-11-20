@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ConfigPerfilPage } from './config-perfil.page';
+import { ProfileSettingsPage } from './profile-settings.page';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 
@@ -23,7 +23,7 @@ import { ToolsModule } from 'src/app/tools/tools.module';
 const routes: Routes = [
   {
     path: '',
-    component: ConfigPerfilPage
+    component: ProfileSettingsPage
   }
 ];
 
@@ -40,6 +40,6 @@ const routes: Routes = [
     MatChipsModule,
     ToolsModule
   ],
-  declarations: [ConfigPerfilPage, ItemPerfilComponent]
+  declarations: [ProfileSettingsPage, ItemPerfilComponent]
 })
-export class ConfigPerfilPageModule {}
+export class ProfileSettingsPageModule {}
