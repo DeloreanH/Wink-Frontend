@@ -9,6 +9,7 @@ import { Wink } from '../../common/models/wink.model';
 import { Subject } from 'rxjs';
 import { ToastService } from './toast.service';
 import { MessagesServices } from '../../common/enums/messagesServices.enum';
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class WinkService {
     private locationService: LocationService,
     private http: HttpClient,
     private userService: UserService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private socketService: SocketService
   ) {
     this.Init();
    }
@@ -93,8 +95,11 @@ export class WinkService {
           if (!idUser) {
             reject(false);
           }
-          const response = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
+          console.log('idUser', idUser);
+          const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
           // console.log('Res', response);
+          response.wink.user = this.userService.User();
+          this.socketService.SendWink(idUser, response.wink, response.distance);
           resolve(response);
         } catch (err) {
           this.toastService.Toast(MessagesServices.WINK_ERROR);
@@ -112,13 +117,21 @@ export class WinkService {
           if (!wink) {
             reject(false);
           }
-          const delWink = Object.assign({}, wink);
+          // const delWink = Object.assign({}, wink);
           const response: any = await this.http.post(Routes.BASE + Routes.APPROVE_WINK, { wink_id: wink._id}).toPromise();
           // console.log('Res', response);
-          this.DeleteRequests(delWink);
+          this.DeleteRequests(wink);
           wink.approved = true;
           wink.updatedAt = new Date().toString();
           this.AddRecord(wink);
+          if (wink.user.newWink) {
+            wink.user.newWink = false;
+            this.UpdateUser(wink.user);
+          }
+          this.socketService.ApproveWink(
+            wink.receiver_id === this.userService.User()._id ? wink.sender_id : wink.receiver_id,
+            wink
+          );
           resolve(response);
         } catch (err) {
           console.log('Error ApproveWink: ' + err.message);
@@ -137,7 +150,11 @@ export class WinkService {
           }
           const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
           // console.log('Res', response);
-          this.DeleteRequests(wink);
+          this.DeleteWinkUser(wink);
+          this.socketService.DeleteWink(
+            wink.receiver_id === this.userService.User()._id ? wink.sender_id : wink.receiver_id,
+            wink
+          );
           resolve(response);
         } catch (err) {
           console.log('Error DeleteWink: ' + err.message);
@@ -152,6 +169,7 @@ export class WinkService {
     if (!idWink) {
       return;
     }
+    this.indexWink = null;
     return this.record.find(
       (winkValue, index: number, obj) => {
         if (winkValue._id === idWink) {
@@ -166,6 +184,7 @@ export class WinkService {
     if (!idWink) {
       return;
     }
+    this.indexWink = null;
     return this.requests.find(
       (winkValue, index: number, obj) => {
         if (winkValue._id === idWink) {
@@ -250,7 +269,6 @@ export class WinkService {
     this.SetRequests(requests);
   }
 
-
   SetRecord(data: Wink[]) {
     this.record = [];
     this.record.push(...data);
@@ -269,7 +287,13 @@ export class WinkService {
     if (!wink || !wink.approved) {
       return;
     }
-    this.record.push(wink);
+    this.DeleteRequests(wink);
+    const winkExist = this.GetWinkRecordID(wink._id);
+    if (winkExist  && this.indexWink >= 0) {
+      this.record[this.indexWink] = wink;
+    } else {
+      this.record.push(wink);
+    }
     this.record = this.record.sort(
       (a: Wink, b: Wink) => {
         if (new Date(a.updatedAt).getTime() > new Date(b.updatedAt).getTime()) {
@@ -285,12 +309,13 @@ export class WinkService {
   }
 
   AddRequests(wink: Wink) {
-    if (wink && !wink.user._id) {
+    if (wink && !wink.user) {
       wink.user = wink.user[0];
     }
     if (!wink || wink.approved || wink.sender_id !== wink.user._id) {
       return;
     }
+    this.DeleteRecord(wink);
     const winkExist = this.GetWinkRequestsID(wink._id);
     wink.user.newWink = true;
     const user = this.GetNearbyUser(wink.user._id);
@@ -315,6 +340,11 @@ export class WinkService {
       }
     );
     this.requestsChanged.next(this.requests);
+  }
+
+  DeleteWinkUser(wink: Wink) {
+    this.DeleteRecord(wink);
+    this.DeleteRequests(wink);
   }
 
   DeleteRecord(wink: Wink) {

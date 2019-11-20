@@ -100,32 +100,35 @@ export class PrivateProfilesPage implements OnInit {
   }
 
    async Confirm() {
-    const alert = await this.alertController.create({
-      header: 'Indicate the items you want to save in the contact.',
-      inputs: [
-        ...await this.LoadItemsList()
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: (inputs) => {
-            if (inputs.length > 0) {
-              this.SaveContact(inputs);
-              console.log('Confirm Ok', inputs);
+    setTimeout(
+      async () => {
+        const alert = await this.alertController.create({
+          header: 'Indicate the items you want to save in the contact.',
+          inputs: [
+            ...await this.LoadItemsList()
+          ],
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Confirm Cancel');
+              }
+            }, {
+              text: 'Ok',
+              handler: (inputs) => {
+                if (inputs.length > 0) {
+                  this.SaveContact(inputs);
+                  console.log('Confirm Ok', inputs);
+                }
+              }
             }
-          }
-        }
-      ]
-    });
-
-    await alert.present();
+          ]
+        });
+        await alert.present();
+      }
+      , 500);
   }
 
   async LoadItemsList() {

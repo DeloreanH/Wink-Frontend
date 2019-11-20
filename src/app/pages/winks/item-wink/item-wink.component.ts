@@ -39,7 +39,7 @@ export class ItemWinkComponent implements OnInit {
 
   async Ignore() {
     try {
-      const response = await this.winkService.DeleteWink(this.wink);
+      await this.winkService.DeleteWink(this.wink);
       // this.winkService.DeleteRequests(this.wink);
     } catch (err) {
       console.log('Error Ignore', err.message);
@@ -56,7 +56,7 @@ export class ItemWinkComponent implements OnInit {
   async GoPrivateProfileA() {
     try {
       if (this.wink && this.wink.approved) {
-        const response = await this.navController.navigateForward([this.urlPublic, this.wink._id, 1]);
+        await this.navController.navigateForward([this.urlPublic, this.wink._id, 1]);
       }
     } catch (err) {
       console.log('Error Go', err);
@@ -65,7 +65,7 @@ export class ItemWinkComponent implements OnInit {
   async GoPrivateProfile() {
     try {
       if (this.wink && !this.wink.approved) {
-        const response = await this.navController.navigateForward([this.urlPublic, this.wink._id, 1]);
+        await this.navController.navigateForward([this.urlPublic, this.wink._id, 1]);
       }
     } catch (err) {
       console.log('Error Go', err);

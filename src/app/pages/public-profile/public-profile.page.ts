@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { User } from 'src/app/common/models/user.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WinkService } from 'src/app/core/services/wink.service';
-import { ModalController, AlertController, NavController } from '@ionic/angular';
+import { ModalController, AlertController, NavController, Platform } from '@ionic/angular';
 import { Item } from 'src/app/common/models/item.model';
 import { Wink } from 'src/app/common/models/wink.model';
 import { UserService } from 'src/app/core/services/user.service';
@@ -10,13 +10,15 @@ import { Config } from 'src/app/common/enums/config.enum';
 import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { ProfilesService } from 'src/app/core/services/profiles.service';
+import { SocketEventsListen, SocketService } from 'src/app/core/services/socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'public-profile',
   templateUrl: './public-profile.page.html',
   styleUrls: ['./public-profile.page.scss'],
 })
-export class PublicProfilePage implements OnInit {
+export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
 
   userWink: User;
   send = false;
@@ -28,6 +30,9 @@ export class PublicProfilePage implements OnInit {
   wink: Wink;
   load = false;
   origin;
+  deletedWinkSubs = new Subscription();
+  approvedWinkSubs = new Subscription();
+  sendedWinkSubs = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +42,8 @@ export class PublicProfilePage implements OnInit {
     public alertController: AlertController,
     private profilesService: ProfilesService,
     private navController: NavController,
+    private socketService: SocketService,
+    private platform: Platform,
   ) {
     // this.user = this.userService.User();
   }
@@ -69,7 +76,62 @@ export class PublicProfilePage implements OnInit {
         }
       }
     );
+    this.platform.backButton.subscribe((res) => {
+      res.register(1,
+        () => {
+          this.Back();
+        }
+      );
+    });
   }
+
+  ngAfterViewInit(): void {
+    this.sendedWinkSubs = this.socketService.Listen(SocketEventsListen.SENDED_WINK).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data && data.wink) {
+          const wink: Wink = data.wink;
+          if (wink.receiver_id === this.userWink._id || wink.sender_id === this.userWink._id ) {
+            wink.user = this.userWink;
+            if (wink.user === this.userWink) {
+              this.wink = data.wink;
+              this.send = false;
+            }
+          }
+        }
+      }
+    );
+    this.approvedWinkSubs = this.socketService.Listen(SocketEventsListen.APPROVED_WINK).subscribe(
+      (data: any) => {
+        if (data && data.wink) {
+          if (this.wink._id === data.wink._id) {
+            console.log(data.wink);
+            data.wink.user = this.userWink;
+            if (data.wink.user === this.userWink) {
+              this.wink = data.wink;
+              this.send = false;
+            }
+          }
+        }
+      }
+    );
+    this.deletedWinkSubs = this.socketService.Listen(SocketEventsListen.DELETED_WINK).subscribe(
+      (data: any) => {
+        if (data && data.wink) {
+          if (this.wink._id === data.wink._id) {
+            this.wink = null;
+            this.send = false;
+          }
+        }
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.approvedWinkSubs.unsubscribe();
+    this.deletedWinkSubs.unsubscribe();
+  }
+
 
   async GetWink() {
     try {
@@ -78,6 +140,8 @@ export class PublicProfilePage implements OnInit {
         const userW = new User(response.user);
         this.FilterItems(response.userItems, userW);
         if (response.wink) {
+          console.log(response.wink);
+          console.log(this.userWink);
           // this.winkService.GetWinkID(response.wink._id).user = this.userWink;
           this.wink = response.wink;
           this.wink.user = this.userWink;
@@ -109,7 +173,7 @@ export class PublicProfilePage implements OnInit {
   async DeleteWink() {
     try {
       if (this.wink) {
-        const response = await this.winkService.DeleteWink(this.wink);
+        await this.winkService.DeleteWink(this.wink);
         this.wink = null;
         this.send = false;
       }

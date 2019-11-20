@@ -33,7 +33,7 @@ export class SocketService  {
 
   Create() {
     const authorization: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
-    console.log(authorization.token);
+    // console.log(authorization.token);
     this.socket = io(this.url, {
       transports: ['websocket'],
       autoConnect: false,
@@ -85,7 +85,7 @@ export class SocketService  {
 
   SendWink(idUserSend: string, winkValue: Wink, distanceValue: number) {
     try {
-      console.log('error');
+      console.log('SendWink');
       this.Emit(SocketEvents.SEND_WINK, {
         winkUser: idUserSend,
         wink: winkValue,
@@ -96,19 +96,25 @@ export class SocketService  {
     }
   }
 
-  ApproveWink(wink: Wink) {
+  ApproveWink(idUserSend: string, winkValue: Wink) {
     try {
-      console.log('ApproveWink');
-      this.Emit(SocketEvents.APPROVE_WINK,  wink);
+      console.log('ApproveWink', idUserSend);
+      this.Emit(SocketEvents.APPROVE_WINK,  {
+        winkUser: idUserSend,
+        wink: winkValue,
+      });
     } catch (err) {
       console.log('Error ApproveWink  ', err.message);
     }
   }
 
-  DeleteWink(wink: Wink) {
+  DeleteWink(idUserSend: string, winkValue: Wink) {
     try {
-      console.log('DeleteWink');
-      this.Emit(SocketEvents.DELETE_WINK,  wink);
+      console.log('DeleteWink', idUserSend);
+      this.Emit(SocketEvents.DELETE_WINK, {
+        winkUser: idUserSend,
+        wink: winkValue,
+      });
     } catch (err) {
       console.log('Error DeleteWink  ', err.message);
     }

@@ -4,16 +4,16 @@ import { RoutesPrincipal } from '../app/common/enums/routes/routesPrincipal.enum
 // import { Paths } from '@common/route';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {
-  accesssId: '5d8d208418dbb9401cb62d1e',
+  accesssId: '5dbc467a3fba9c2c20e7e523',
   apiUrl:  Routes.IP + ':5000',
   apiVersion: 'v1',
   social: 'ALL',
   redirectUrl: Routes.BASE + Routes.AUTH,
   logoUrl: '/assets/icon/favicon.png',
   resCallback: (response) => {
-    console.log('esta es la respuesta', response);
+    // console.log('esta es la respuesta', response);
     localStorage.setItem('userData', JSON.stringify(response));
-    console.log('token en', JSON.parse(localStorage.getItem('userData')));
+    // console.log('token en', JSON.parse(localStorage.getItem('userData')));
     return RoutesPrincipal.APP;
   }
 };
