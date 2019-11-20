@@ -8,7 +8,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomePage } from './home.page';
 import { CardComponent } from './card/card.component';
-import { ToolsModule } from 'src/app/tools/tools.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
   {
@@ -22,9 +22,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild(routes),
     FontAwesomeModule,
-    ToolsModule,
   ],
   declarations: [HomePage, CardComponent]
 })

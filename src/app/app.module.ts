@@ -1,74 +1,41 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { AppRoutingModule, routesApp } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VirtwooAuthModule, VirtwooAuthRoutes } from '@virtwoo/auth';
-import { virtwooAuthEnvironment } from '../environments/environment';
+import { virtwooAuthEnvironment } from 'src/environments/environment';
 import { SlRouterModule } from '@virtwoo/sl-router';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { routesApp, AppRoutingModule } from './app-routing.module';
+import { IonicModule } from '@ionic/angular';
+import { HammerGestureConfig } from '@angular/platform-browser';
+import * as Hammer from 'hammerjs';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ReactiveFormsModule, FormsModule, } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import {
-  HttpClient,
-  HttpClientModule,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
-
-import {MatChipsModule} from '@angular/material/chips';
-import { AuthInterceptorService } from './auth/services/auth-interceptor.service';
-import { Camera } from '@ionic-native/camera/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-import { Diagnostic } from '@ionic-native/diagnostic/ngx';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-import { HammerGestureConfig } from '@angular/platform-browser';
-import * as Hammer from 'hammerjs';
-import { Contacts } from '@ionic-native/contacts/ngx';
-import { TabsModule } from './pages/tabs/tabs.module';
-import { CoreModule } from './core/core.module';
-
-
-
 // create a class that overrides hammer default config
-
 export class MyHammerConfig extends HammerGestureConfig  {
   overrides = {
     swipe: { direction: Hammer.DIRECTION_ALL } // override default settings
   } as any;
 }
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    CoreModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    FontAwesomeModule,
-    MatChipsModule,
-    CoreModule,
-    TabsModule,
+    SharedModule.forRoot(),
     VirtwooAuthModule.forRoot(virtwooAuthEnvironment),
     SlRouterModule.forRoot([
       ...VirtwooAuthRoutes,
@@ -83,22 +50,10 @@ export class MyHammerConfig extends HammerGestureConfig  {
     }),
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
-    Camera,
-    AndroidPermissions,
-    Geolocation,
-    LocationAccuracy,
-    Diagnostic,
-    Contacts,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(library: FaIconLibrary) {
-    library.addIconPacks(fas, far, fab);
-  }
+
 }

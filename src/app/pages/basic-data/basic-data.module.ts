@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { BasicDataPage } from './basic-data.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ToolsModule } from 'src/app/tools/tools.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
   {
@@ -21,10 +21,10 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule,
     FontAwesomeModule,
-    ToolsModule
   ],
   declarations: [BasicDataPage],
   providers: [],

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <div *ngIf="!user.emptyProfile" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
-      <fa-icon 
-        [icon]="['fas', 'arrow-left']" 
+      <fa-icon
+        [icon]="['fas', 'arrow-left']"
         class="icono-arrow"
         (click)="Back()"
       ></fa-icon>
@@ -14,25 +14,24 @@
   </ion-toolbar>
 </ion-header>
 
-<div 
-  *ngIf="loading" 
+<div
+  *ngIf="loading"
   class="spinner">
-  <spinner></spinner>
 </div>
 
-<ion-content 
-  *ngIf="!loading" 
+<ion-content
+  *ngIf="!loading"
   class="ion-padding">
-  <form 
+  <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()">
     <div class="contenedorAvatar" >
-      <ion-avatar (click)="SeleccionarImagen()" class="avatar-profile"> 
-        <ion-img  
+      <ion-avatar (click)="SeleccionarImagen()" class="avatar-profile">
+        <ion-img
           class="img-avatar"
-          *ngIf="!loadingAvatar" 
-          alt="Avatar" 
-          (ionError)="ErrorImagen()" 
+          *ngIf="!loadingAvatar"
+          alt="Avatar"
+          (ionError)="ErrorImagen()"
           [src]="user.avatarUrl ? user.avatarUrl : avatar" >
         </ion-img>
         <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
@@ -40,7 +39,7 @@
     </div>
     <ion-list>
       <ion-item >
-          <fa-icon 
+          <fa-icon
             [icon]="['fas', 'user']"
             class="icono icon-center"
             slot="start" >
@@ -48,8 +47,8 @@
         <ion-label position="floating" >
           First Name
         </ion-label>
-        <ion-input 
-          
+        <ion-input
+
           formControlName="firstName"
         >
         </ion-input>
@@ -58,7 +57,7 @@
         {{ MessageError('firstName') }}
       </ion-text>
       <ion-item>
-          <fa-icon 
+          <fa-icon
             [icon]="['fas', 'user']"
             class="icono icon-center"
             slot="start" >
@@ -66,7 +65,7 @@
         <ion-label position="floating" >
           Last Name
         </ion-label>
-        <ion-input 
+        <ion-input
           formControlName="lastName"
         >
         </ion-input>
@@ -75,7 +74,7 @@
         {{ MessageError('lastName') }}
       </ion-text>
       <ion-item>
-          <fa-icon 
+          <fa-icon
             [icon]="['fas', 'envelope']"
             class="icono icon-center"
             slot="start" >
@@ -83,7 +82,7 @@
         <ion-label position="floating" >
           Username
         </ion-label>
-        <ion-input 
+        <ion-input
           formControlName="username"
           maxlength="16"
           minlength="4"
@@ -94,7 +93,7 @@
         {{ MessageError('username') }}
       </ion-text>
       <ion-item>
-          <fa-icon 
+          <fa-icon
             [icon]="['fas', 'envelope']"
             class="icono icon-center"
             slot="start" >
@@ -102,7 +101,7 @@
         <ion-label position="floating" >
           E-mail
         </ion-label>
-        <ion-input 
+        <ion-input
           formControlName="email"
           type="email"
         >
@@ -114,7 +113,7 @@
       <div class="phone">
         <div class="phoneCode">
           <ion-item>
-            <fa-icon 
+            <fa-icon
               [icon]="['fas', 'mobile-alt']"
               class="icono icon-center"
               slot="start" >
@@ -122,7 +121,7 @@
             <ion-label position="floating" >
               Code
             </ion-label>
-            <ion-input 
+            <ion-input
               type="number"
               formControlName="phoneCode"
             >
@@ -137,7 +136,7 @@
             <ion-label position="floating" >
               Phone Number
             </ion-label>
-            <ion-input 
+            <ion-input
               type="number"
               formControlName="phoneNumber"
             >
@@ -149,7 +148,7 @@
         </div>
       </div>
       <ion-item>
-        <fa-icon 
+        <fa-icon
           [icon]="['fas', 'calendar-alt']"
           class="icono icon-center"
           slot="start" >
@@ -157,12 +156,12 @@
         <ion-label position="floating" >
           Birthday
         </ion-label>
-        <ion-datetime 
-          displayFormat="DD/MM/YYYY" 
-          min="1900-01-01" 
+        <ion-datetime
+          displayFormat="DD/MM/YYYY"
+          min="1900-01-01"
           [max]="FechaActual() | date:'yyy-MM-dd'"
-          cancel-text="Cancelar" 
-          done-text="Aceptar" 
+          cancel-text="Cancelar"
+          done-text="Aceptar"
           formControlName="birthday"
         ></ion-datetime>
       </ion-item>
@@ -170,17 +169,17 @@
         {{ MessageError('birthday') }}
       </ion-text>
       <ion-item>
-        <fa-icon 
+        <fa-icon
         [icon]="['fas', 'genderless']"
         class="icono icon-center"
         slot="start" ></fa-icon>
         <ion-label position="floating" >
           Gender
         </ion-label>
-        <ion-select 
+        <ion-select
           interface="popover"
-          ok-text="Aceptar" 
-          cancel-text="Cancelar" 
+          ok-text="Aceptar"
+          cancel-text="Cancelar"
           placeholder="Seleccione un sexo"
           formControlName="gender">
           <ion-select-option *ngFor="let gender of genders" [value]="gender.value">

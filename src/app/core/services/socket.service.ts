@@ -6,6 +6,7 @@ import { Wink } from '../../common/models/wink.model';
 import { AuthService } from '../../auth/services/auth.service';
 import { take, exhaustMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { StorageService } from './storage.service';
 
 
 enum SocketEvents {
@@ -27,26 +28,17 @@ export class SocketService  {
   socket: any;
   private connect = false;
   private readonly url: string = Routes.SOCKET;
-  private authService: AuthService;
-  constructor() { }
+
+  constructor( private storageService: StorageService) { }
 
   Create() {
-    this.authService.AuthoLogin();
+    const authorization: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
+    console.log(authorization.token);
     this.socket = io(this.url, {
       transports: ['websocket'],
       autoConnect: false,
       query: {
-        auth: this.authService.user.pipe(
-          take(1),
-          exhaustMap(
-            user => {
-              if (!user) {
-                return null;
-              }
-              return user.Token;
-            }
-          )
-          )
+        auth: authorization.token,
       }
     });
   }

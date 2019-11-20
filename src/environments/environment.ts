@@ -4,7 +4,7 @@ import { RoutesPrincipal } from '../app/common/enums/routes/routesPrincipal.enum
 // import { Paths } from '@common/route';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {
-  accesssId: '5dbc467a3fba9c2c20e7e523',
+  accesssId: '5d8d208418dbb9401cb62d1e',
   apiUrl:  Routes.IP + ':5000',
   apiVersion: 'v1',
   social: 'ALL',

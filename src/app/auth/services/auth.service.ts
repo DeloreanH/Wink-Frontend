@@ -6,9 +6,9 @@ import { UserService } from '../../core/services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthUser } from '../models/authuser.model';
 import { User } from '../../common/models/user.model';
-import { Routes } from 'src/app/common/enums/routes/routes.enum';
+import { Routes } from '../../../app/common/enums/routes/routes.enum';
 import { NavController } from '@ionic/angular';
-import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enum';
+import { RoutesPrincipal } from '../../../app/common/enums/routes/routesPrincipal.enum';
 
 @Injectable({
   providedIn: 'root'

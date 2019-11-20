@@ -6,11 +6,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PrivateProfilesPage } from './private-profiles.page';
-import { ToolsModule } from 'src/app/tools/tools.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatChipsModule } from '@angular/material/chips';
 import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
   {
@@ -24,8 +24,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild(routes),
-    ToolsModule,
     FontAwesomeModule,
     MatChipsModule
   ],

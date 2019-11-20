@@ -50,6 +50,6 @@ export class StorageService {
   }
 
   public get apiAuthorization(): string {
-    return StorageService.GetItem('');
+    return StorageService.GetItem('userData');
   }
 }
