@@ -153,7 +153,6 @@ export class SaveContactService {
   }
 
   private AddURL(url: any, red?: boolean) {
-    console.log('AddURL', url, url.item.value);
     if (red) {
       this.urls.push(new ContactField(url.item.itemtype, url.item.custom));
     } else {

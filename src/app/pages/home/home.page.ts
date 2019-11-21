@@ -9,6 +9,7 @@ import { WinkService } from '../../core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Platform, NavController, IonInfiniteScroll } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private platform: Platform,
     private navController: NavController,
+    private translateService: TranslateService,
   ) {
     this.user = this.userService.User();
   }
@@ -74,6 +76,10 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         this.VisibilityUser();
       }
     );
+  }
+  language() {
+    this.translateService.setDefaultLang('es');
+    // this.translateService.setDefaultLang('en');
   }
 
   ngAfterViewInit() {
@@ -194,7 +200,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
             }
           }
         }
-        const response = await this.userService.UpdateProfiles(this.user.visibility);
+        await this.userService.UpdateProfiles(this.user.visibility);
       } catch (err) {
         this.user = this.userService.User();
         console.log('Error ChangeProfiles', err.message);

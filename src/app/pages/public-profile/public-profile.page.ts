@@ -33,6 +33,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   deletedWinkSubs = new Subscription();
   approvedWinkSubs = new Subscription();
   sendedWinkSubs = new Subscription();
+  backButtonSubs = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -52,16 +53,13 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     this.route.params
     .subscribe(
       async (params: Params) => {
-        console.log('params', params);
         if (params.origin) {
           this.origin = params.origin;
           if (this.origin === '0') {
             this.userWink = await this.winkService.GetNearbyUser(params.id);
-            console.log('userWink', this.userWink);
           } else if (this.origin === '1') {
             const wink = await this.winkService.GetWinkID(params.id);
             this.userWink = wink.user;
-            console.log('userWink', this.userWink);
           } else {
             this.origin = 0;
             this.Back();
@@ -76,8 +74,10 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    this.platform.backButton.subscribe((res) => {
-      res.register(1,
+    this.backButtonSubs = this.platform.backButton.subscribe((res) => {
+      alert('Aquiiii');
+      this.Back();
+      res.register(0,
         () => {
           this.Back();
         }
@@ -88,7 +88,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     this.sendedWinkSubs = this.socketService.Listen(SocketEventsListen.SENDED_WINK).subscribe(
       (data: any) => {
-        console.log(data);
         if (data && data.wink) {
           const wink: Wink = data.wink;
           if (wink.receiver_id === this.userWink._id || wink.sender_id === this.userWink._id ) {
@@ -96,6 +95,9 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
             if (wink.user === this.userWink) {
               this.wink = data.wink;
               this.send = false;
+            }
+            if (wink.sender_id === this.userService.User()._id) {
+              this.send = true;
             }
           }
         }
@@ -105,7 +107,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       (data: any) => {
         if (data && data.wink) {
           if (this.wink._id === data.wink._id) {
-            console.log(data.wink);
             data.wink.user = this.userWink;
             if (data.wink.user === this.userWink) {
               this.wink = data.wink;
@@ -128,8 +129,10 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.sendedWinkSubs.unsubscribe();
     this.approvedWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
+    this.backButtonSubs.unsubscribe();
   }
 
 
@@ -140,8 +143,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         const userW = new User(response.user);
         this.FilterItems(response.userItems, userW);
         if (response.wink) {
-          console.log(response.wink);
-          console.log(this.userWink);
           // this.winkService.GetWinkID(response.wink._id).user = this.userWink;
           this.wink = response.wink;
           this.wink.user = this.userWink;
@@ -259,7 +260,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       }
       , 500);
     } catch (err) {
-      console.log('Error Behind', err);
+      console.log('Error Back', err);
     }
   }
 

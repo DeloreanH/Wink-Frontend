@@ -25,6 +25,7 @@ export class WinkService {
   private winkType: boolean;
   private indexWink: number = null;
   private indexUser: number = null;
+  idUser: string;
 
   constructor(
     private locationService: LocationService,
@@ -33,12 +34,18 @@ export class WinkService {
     private toastService: ToastService,
     private socketService: SocketService
   ) {
-    this.Init();
+    // this.Init();
    }
 
-   private async Init() {
+   async Init() {
     try {
-      await this.GetWinks();
+        console.log('Init');
+        this.winkType = null;
+        this.indexWink = null;
+        this.indexUser = null;
+        const userData: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
+        this.idUser = userData.user._id;
+        await this.GetWinks();
     } catch (err) {
       console.log('Error Init', err.message);
     }
@@ -62,7 +69,6 @@ export class WinkService {
             resolve(false);
           }
         } catch (err) {
-          console.log('Error GetNearby: ' + err.message);
           reject(err);
         }
       }
@@ -93,11 +99,9 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!idUser) {
-            reject(false);
+            reject(null);
           }
-          console.log('idUser', idUser);
           const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
-          // console.log('Res', response);
           response.wink.user = this.userService.User();
           this.socketService.SendWink(idUser, response.wink, response.distance);
           resolve(response);
@@ -115,12 +119,11 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!wink) {
-            reject(false);
+            reject(null);
           }
           // const delWink = Object.assign({}, wink);
           const response: any = await this.http.post(Routes.BASE + Routes.APPROVE_WINK, { wink_id: wink._id}).toPromise();
-          // console.log('Res', response);
-          this.DeleteRequests(wink);
+          // this.DeleteRequests(wink);
           wink.approved = true;
           wink.updatedAt = new Date().toString();
           this.AddRecord(wink);
@@ -129,7 +132,7 @@ export class WinkService {
             this.UpdateUser(wink.user);
           }
           this.socketService.ApproveWink(
-            wink.receiver_id === this.userService.User()._id ? wink.sender_id : wink.receiver_id,
+            wink.sender_id,
             wink
           );
           resolve(response);
@@ -146,13 +149,12 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!wink) {
-            reject(false);
+            reject(null);
           }
           const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
-          // console.log('Res', response);
           this.DeleteWinkUser(wink);
           this.socketService.DeleteWink(
-            wink.receiver_id === this.userService.User()._id ? wink.sender_id : wink.receiver_id,
+            wink.receiver_id === this.idUser ? wink.sender_id : wink.receiver_id,
             wink
           );
           resolve(response);
@@ -239,7 +241,7 @@ export class WinkService {
           this.FilterWinks((response as Wink[]));
           resolve(response);
         } catch (err) {
-          console.log('Error DeleteWink: ' + err.message);
+          console.log('Error GetWinks: ' + err.message);
           reject(err);
         }
       }
@@ -250,7 +252,6 @@ export class WinkService {
     if (winks.length === 0) {
       return;
     }
-    console.log('FilterWinks');
     const record: Wink[] = [];
     const requests: Wink[] = [];
     winks.forEach(
@@ -273,19 +274,28 @@ export class WinkService {
     this.record = [];
     this.record.push(...data);
     this.recordChanged.next(this.record);
-    console.log('SetRecord');
   }
 
   SetRequests(data: Wink[]) {
     this.requests = [];
     this.requests.push(...data);
     this.requestsChanged.next(this.requests);
-    console.log('SetRequests');
   }
 
-  AddRecord(wink: Wink) {
+  async AddRecord(wink: Wink) {
     if (!wink || !wink.approved) {
       return;
+    }
+    if (!wink.user) {
+      const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
+      let user: any = this.GetNearbyUser(idUserWink);
+      if (user) {
+        wink.user = user;
+      } else {
+        user = await this.GetUser(idUserWink);
+        wink.user = user.winkUser;
+        wink.user.distance = user.distance;
+      }
     }
     this.DeleteRequests(wink);
     const winkExist = this.GetWinkRecordID(wink._id);
@@ -312,7 +322,7 @@ export class WinkService {
     if (wink && !wink.user) {
       wink.user = wink.user[0];
     }
-    if (!wink || wink.approved || wink.sender_id !== wink.user._id) {
+    if (!wink || wink.approved || wink.sender_id === this.idUser  || !wink.user) {
       return;
     }
     this.DeleteRecord(wink);
@@ -380,7 +390,7 @@ export class WinkService {
     return this.nearbyUsers;
   }
 
-  async UpdateUser(newUser: User) {
+  async UpdateUser(newUser: User, updateAvatar?: boolean) {
     if (!newUser) {
       return ;
     }
@@ -389,18 +399,18 @@ export class WinkService {
     try {
       const nearbyUser = this.GetNearbyUser(newUser._id);
       if (nearbyUser) {
-        this.UpdatNearbyUser(nearbyUser, newUser);
+        this.UpdatNearbyUser(nearbyUser, newUser, updateAvatar);
       }
       const wink = this.GetWinkIDUser(newUser._id);
       if (wink) {
-        this.UpdateUserWink(newUser);
+        this.UpdateUserWink(newUser, updateAvatar);
       }
     } catch (err) {
       console.log('Error UpdateUser ', err.message);
     }
   }
 
-  private UpdatNearbyUser(user: User, newUser: User) {
+  private UpdatNearbyUser(user: User, newUser: User, updateAvatar?: boolean) {
     if (!newUser || !user) {
       return ;
     }
@@ -408,27 +418,84 @@ export class WinkService {
       if (user.location) {
         newUser.location = user.location;
       }
-      this.nearbyUsers[this.indexUser] = newUser;
+      if (updateAvatar) {
+        this.nearbyUsers[this.indexUser] = newUser;
+      } else {
+        Object.keys(this.nearbyUsers[this.indexUser]).forEach(
+          (key) => {
+            if (key !== 'avatarUrl ') {
+              this.nearbyUsers[this.indexUser][key] = newUser[key];
+            }
+          }
+        );
+      }
       this.nearbyUsersChanged.next(this.nearbyUsers);
     }
   }
 
-  private UpdateUserWink(newUser: User) {
+  private UpdateUserWink(newUser: User, updateAvatar?: boolean) {
     if (!newUser) {
       return ;
     }
     if (!this.winkType) {
-      console.log(this.indexWink);
       if (this.indexWink >= 0) {
-        this.record[this.indexWink].user = newUser;
+        if (updateAvatar) {
+          this.record[this.indexWink].user = newUser;
+        } else {
+          Object.keys(this.record[this.indexWink].user).forEach(
+            (key) => {
+              if (key !== 'avatarUrl ') {
+                this.record[this.indexWink].user[key] = newUser[key];
+              }
+            }
+          );
+        }
         this.SetRecord(this.record);
       }
     } else {
-      console.log(this.indexWink);
       if (this.indexWink >= 0) {
-        this.requests[this.indexWink].user = newUser;
+        if (updateAvatar) {
+          this.requests[this.indexWink].user = newUser;
+        } else {
+          Object.keys(this.requests[this.indexWink].user).forEach(
+            (key) => {
+              if (key !== 'avatarUrl ') {
+                this.requests[this.indexWink].user[key] = newUser[key];
+              }
+            }
+          );
+        }
         this.SetRequests(this.requests);
       }
     }
   }
+
+
+  Destroy() {
+    this.SetNearbyUsers([]);
+    this.SetRecord([]);
+    this.SetRequests([]);
+    this.winkType = null;
+    this.indexWink = null;
+    this.indexUser = null;
+    this.idUser = null;
+  }
+
+  async GetUser(idUser) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!idUser) {
+            reject(null);
+          }
+          const response: any = await this.http.post(Routes.BASE + Routes.GET_USER, {winkUserId: idUser}).toPromise();
+          resolve(response);
+        } catch (error) {
+          console.log('error', error);
+          reject(error);
+        }
+      }
+    );
+  }
+
 }

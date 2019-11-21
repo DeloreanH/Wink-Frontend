@@ -143,7 +143,6 @@ export class BasicDataPage implements OnInit, OnDestroy {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });
@@ -155,7 +154,6 @@ export class BasicDataPage implements OnInit, OnDestroy {
       this.loadingAvatar = true;
       const respuesta: any = await this.avatarService.OpenUpdate(camera);
       this.userService.UpdateAvatar(respuesta.link);
-      console.log('Respuesta imagen', respuesta);
       this.uploadAvatar = true;
     } catch (err) {
       console.log('Error SolicitudImage', err);
@@ -203,12 +201,15 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
   MessageError(input: string) {
-    console.log(this.form.controls[input].errors);
-    if (this.form.controls[input].errors) {
+    console.log(this.form.controls[input]);
+    if (this.form.controls[input].errors && this.form.controls[input].touched) {
       const obj = this.form.controls[input].errors;
       let prop;
-      for (prop in obj) {
-      }
+      Object.keys(obj).forEach(
+        (key) => {
+          prop = key;
+        }
+      );
       if (prop) {
         switch (prop) {
           case 'required':

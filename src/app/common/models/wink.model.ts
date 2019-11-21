@@ -11,7 +11,7 @@ export class Wink {
   public pending: boolean;
   public createdAt: string;
   public updatedAt: string;
-  public isNew: boolean;
+  public watched: boolean;
 
   constructor(data: any) {
     Object.assign(this, data);

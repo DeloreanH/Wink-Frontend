@@ -62,5 +62,37 @@
   },
   "TITLES": {
     "PROFILE_TYPE": "Seleccione un tipo de perfil"
+  },
+  "WINK": {
+    "BASIC-DATA": {
+
+    },
+    "HOME": {
+      "TITLE": "Home",
+      "STATUS": "What are you thinking?",
+      "REFRESHER": "Pull to update",
+      "REFRESHING": "Refreshing...",
+      "LOADING_NEARBY": "Loading nearby...",
+      "NO_NEARBY": "No nearby users."
+    },
+    "PRIVATE-PROFILES": {
+
+    },
+    "PROFILE-SETTINGS": {
+
+    },
+    "PUBLIC-PROFILE": {
+
+    },
+    "TABS": {
+
+    },
+    "WINKS": {
+      
+    },
+    "STATUS": {
+      "AVAILABLE": "Available",
+      "BUSY": "Busy"
+    }
   }
 }

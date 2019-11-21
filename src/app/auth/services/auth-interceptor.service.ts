@@ -12,13 +12,11 @@ export class AuthInterceptorService implements HttpInterceptor {
   constructor(private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.authService.AuthoLogin();
+    this.authService.AutoLogin();
     return this.authService.user.pipe(
       take(1),
       exhaustMap(
         user => {
-          // console.log('req', req);
-          // console.log('next', next);
           if (!user) {
             return next.handle(req);
           }

@@ -144,7 +144,7 @@ export class PrivateProfilesPage implements OnInit {
     for (const items of this.items) {
       for (const item of items) {
         add = false;
-        const itemType = await this.profilesService.BuscarTipoItem(item.item.itemtype);
+        const itemType = await this.profilesService.SearchItemType(item.item.itemtype);
         item.itemType = itemType;
         switch (itemType.category) {
           case NameCategories.MESSENGER:

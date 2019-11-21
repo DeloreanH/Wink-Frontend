@@ -5,6 +5,9 @@ import { SocketService, SocketEventsListen } from 'src/app/core/services/socket.
 import { Subscription } from 'rxjs';
 import { WinkService } from 'src/app/core/services/wink.service';
 import { User } from 'src/app/common/models/user.model';
+import { UserService } from 'src/app/core/services/user.service';
+import { Wink } from 'src/app/common/models/wink.model';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 
 @Component({
@@ -21,6 +24,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   winksTab = false;
   newWinks = new Map();
   url: string;
+  idUser: string;
 
   updatedUserSubs = new Subscription();
   updatedAvatarSubs = new Subscription();
@@ -32,15 +36,17 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private socketService: SocketService,
     private winkService: WinkService,
-  ) { }
+    private userService: UserService,
+  ) {
+   }
 
   ngAfterViewInit(): void {
     this.Listen();
   }
 
   public ngOnInit() {
-    // this.socketService.connect();
-
+    this.idUser = this.userService.User()._id;
+    this.winkService.Init();
     this.router.events.subscribe(
       (valor: any) => {
         if (valor instanceof NavigationStart) {
@@ -56,8 +62,11 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.url === RoutesAPP.PERFIL_PUBLICO || this.url === RoutesAPP.PRIVATE_PROFILES) {
             this.ocultar = true;
           } else {
-            if (this.winksTab && this.url === RoutesAPP.WINKS) {
-              this.winksTab = false;
+            if (this.url === RoutesAPP.WINKS) {
+              if (this.winksTab) {
+                this.winksTab = false;
+              }
+              // this.winkService.Init();
             }
             this.ocultar = false;
           }
@@ -73,43 +82,44 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (user) {
           this.winkService.UpdateUser(user as User);
         }
-        console.log(user);
       }
     );
     this.sendedWinkSubs = this.socketService.Listen(SocketEventsListen.SENDED_WINK).subscribe(
       (data: any) => {
-        console.log(data);
         if (data && data.wink) {
-          console.log('url', this.url);
+          const wink: Wink = data.wink;
           if (this.url !== RoutesAPP.WINKS) {
             this.winksTab = true;
           }
-          this.newWinks.set(data.wink._id, data.wink._id);
-          this.winkService.AddRequests(data.wink);
+          if (wink.sender_id !== this.idUser) {
+            this.newWinks.set(wink._id, wink._id);
+            this.winkService.AddRequests(wink);
+          }
         }
       }
     );
     this.approvedWinkSubs = this.socketService.Listen(SocketEventsListen.APPROVED_WINK).subscribe(
       (data: any) => {
-        console.log(data);
         if (data && data.wink) {
-          if (this.newWinks.get(data.wink._id)) {
-            this.newWinks.delete(data.wink._id);
+          const wink: Wink = data.wink;
+          wink.user = null;
+          if (this.newWinks.get(wink._id)) {
+            this.newWinks.delete(wink._id);
             this.winksTab = false;
           }
-          this.winkService.AddRecord(data.wink);
+          this.winkService.AddRecord(wink);
         }
       }
     );
     this.deletedWinkSubs = this.socketService.Listen(SocketEventsListen.DELETED_WINK).subscribe(
       (data: any) => {
-        console.log(data);
         if (data && data.wink) {
-          if (this.newWinks.get(data.wink._id)) {
-            this.newWinks.delete(data.wink._id);
+          const wink: Wink = data.wink;
+          if (this.newWinks.get(wink._id)) {
+            this.newWinks.delete(wink._id);
             this.winksTab = false;
           }
-          this.winkService.DeleteWinkUser(data.wink);
+          this.winkService.DeleteWinkUser(wink);
         }
       }
     );

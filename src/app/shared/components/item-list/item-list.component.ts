@@ -38,7 +38,7 @@ export class ItemListComponent implements OnInit {
     try {
       if (this.item) {
         if (this.item.position !== IndexItemType.BIOGARFIA) {
-          this.itemType = await  this.profilesService.BuscarTipoItem(this.item.itemtype);
+          this.itemType = await  this.profilesService.SearchItemType(this.item.itemtype);
         } else {
           if (this.item.section) {
             this.itemType = new ItemType({

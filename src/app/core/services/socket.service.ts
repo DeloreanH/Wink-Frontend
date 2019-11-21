@@ -3,8 +3,6 @@ import * as io from 'socket.io-client';
 import { Routes } from '../../common/enums/routes/routes.enum';
 import { User } from '../../common/models/user.model';
 import { Wink } from '../../common/models/wink.model';
-import { AuthService } from '../../auth/services/auth.service';
-import { take, exhaustMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
 
@@ -33,7 +31,6 @@ export class SocketService  {
 
   Create() {
     const authorization: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
-    // console.log(authorization.token);
     this.socket = io(this.url, {
       transports: ['websocket'],
       autoConnect: false,
@@ -60,6 +57,7 @@ export class SocketService  {
       if (!this.connect) {
         this.socket.close();
         this.connect = false;
+        this.socket = null;
       }
     } catch (err) {
       console.log('Error SocketService Connetc ', err.message);
@@ -68,7 +66,6 @@ export class SocketService  {
 
   UpdateUser(user: User) {
     try {
-      console.log('Socket UpdateUser Error', user);
       this.Emit(SocketEvents.UPDATE_USER, user);
     } catch (err) {
       console.log('Socket UpdateUser Error', err);
@@ -77,7 +74,6 @@ export class SocketService  {
 
   Error() {
     try {
-      console.log('error');
     } catch (err) {
       console.log('Error SocketService  ', err.message);
     }
@@ -85,7 +81,6 @@ export class SocketService  {
 
   SendWink(idUserSend: string, winkValue: Wink, distanceValue: number) {
     try {
-      console.log('SendWink');
       this.Emit(SocketEvents.SEND_WINK, {
         winkUser: idUserSend,
         wink: winkValue,
@@ -98,7 +93,6 @@ export class SocketService  {
 
   ApproveWink(idUserSend: string, winkValue: Wink) {
     try {
-      console.log('ApproveWink', idUserSend);
       this.Emit(SocketEvents.APPROVE_WINK,  {
         winkUser: idUserSend,
         wink: winkValue,
@@ -110,7 +104,6 @@ export class SocketService  {
 
   DeleteWink(idUserSend: string, winkValue: Wink) {
     try {
-      console.log('DeleteWink', idUserSend);
       this.Emit(SocketEvents.DELETE_WINK, {
         winkUser: idUserSend,
         wink: winkValue,

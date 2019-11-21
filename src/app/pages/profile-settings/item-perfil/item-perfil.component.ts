@@ -293,7 +293,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   async BuscarTItem() {
     try {
       if (this.value) {
-        this.itemType = await this.profilesServices.BuscarTipoItem(this.value.itemtype);
+        this.itemType = await this.profilesServices.SearchItemType(this.value.itemtype);
         if (this.itemType) {
           this.AggCampoForm();
           this.BuscarTItems(this.itemType.category);
@@ -309,7 +309,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   async BuscarTItems(idCategoria: string) {
     try {
       if (idCategoria) {
-        this.tiposItems = await this.profilesServices.BuscarTItemCategoria(idCategoria);
+        this.tiposItems = await this.profilesServices.SearchItemTypeCategoryName(idCategoria);
       }
     } catch (err) {
       console.log('Error BuscarTItems', err.message);
@@ -444,8 +444,11 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   ValidError(input: string) {
     const obj = this.form.controls[input].errors;
     let prop;
-    for (prop in obj) {
-    }
+    Object.keys(obj).forEach(
+      (key) => {
+        prop = key;
+      }
+    );
     if (prop) {
       switch (prop) {
         case 'required':

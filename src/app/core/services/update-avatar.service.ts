@@ -5,6 +5,8 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Routes } from '../../common/enums/routes/routes.enum';
 import { Platform } from '@ionic/angular';
+import { ToastService } from './toast.service';
+import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class UpdateAvatarService {
   constructor(
     private camera: Camera,
     private http: HttpClient,
-    private platform: Platform
+    private toastService: ToastService
   ) { }
 
   /**
@@ -27,13 +29,11 @@ export class UpdateAvatarService {
       async (resolve, reject) => {
         try {
           const open = await this.Open(camera);
-          // console.log('open', open);
           if (open) {
             const update = await this.UpdateAvatar();
-            console.log('update', update);
             resolve(update);
           }
-          reject(false);
+          reject(null);
       } catch (err) {
         reject(err);
       }
@@ -70,17 +70,18 @@ export class UpdateAvatarService {
       async (resolve, reject) => {
         try {
           if (!this.imageBase64) {
-            reject(false);
+            reject(null);
           }
           const dataForm = new FormData();
           const imgBlob = this.ToBlob(this.imageBase64);
           dataForm.append('avatar', imgBlob, 'avatar.jpg');
-          const respuesta: any = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
-          console.log('UpdateAvatar', respuesta.status);
-          resolve(respuesta);
-        } catch (error) {
-          // console.log('error', error);
-          reject(error);
+          const response: any = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
+          this.toastService.Toast(MessagesServices.SAVE_PHOTO);
+          resolve(response);
+        } catch (err) {
+          this.toastService.Toast(MessagesServices.ERROR_PHOTO);
+          console.log('error', err);
+          reject(err);
         }
       }
     );

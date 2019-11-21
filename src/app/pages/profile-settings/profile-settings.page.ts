@@ -186,11 +186,11 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
 
   async LoadData() {
     try {
-      const response = await this.profilesServices.CargarItemsUsuario();
+      const response = await this.profilesServices.LoadItemsUser();
       for (const dato of response) {
         this.AddItem(dato, false);
       }
-      const valor = this.profilesServices.biografia;
+      const valor = this.profilesServices.biography;
       if (valor) {
         this.grupoForm.controls.biografia.setValue(valor.value);
       }

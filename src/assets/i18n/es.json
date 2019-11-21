@@ -69,5 +69,37 @@
       "PROFESSIONAL": "Ofrecer Servicios",
       "STARTED": "Get Started"
     }
+  },
+  "WINK": {
+    "BASIC-DATA": {
+
+    },
+    "HOME": {
+      "TITLE": "Home",
+      "STATUS": "¿Qué estás pensando?",
+      "REFRESHER": "Tire para actualizar",
+      "REFRESHING": "Refrescando...",
+      "LOADING_NEARBY": "Cargando cercanos ...",
+      "NO_NEARBY": "No hay usuarios cercanos."
+    },
+    "PRIVATE-PROFILES": {
+
+    },
+    "PROFILE-SETTINGS": {
+
+    },
+    "PUBLIC-PROFILE": {
+
+    },
+    "TABS": {
+
+    },
+    "WINKS": {
+      
+    },
+    "STATUS": {
+      "AVAILABLE": "Disponible",
+      "BUSY": "Ocupado"
+    }
   }
 }

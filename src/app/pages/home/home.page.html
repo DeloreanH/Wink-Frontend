@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-title>
+      {{'WINK.HOME.TITLE' | translate}}
+    </ion-title>
+    <ion-toggle (click)="language()">
+
+    </ion-toggle>
   </ion-toolbar>
 </ion-header>
 
@@ -11,15 +16,15 @@
     [maxlength]="maxStatus"
     [value]="user ? user.status : ''"
     style="text-align: start;" 
-    [placeholder]="placeholderStatus" 
+    [placeholder]="'WINK.HOME.STATUS' | translate" 
     (ionBlur)="ChangeStatus($event)"></ion-input>
   </ion-card>
   <ion-refresher slot="fixed" (ionRefresh)="GPS($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
+      [pullingText]="'WINK.HOME.REFRESHER' | translate"
       refreshingSpinner="circles"
-      refreshingText="Refreshing...">
+      [refreshingText]="'WINK.HOME.REFRESHING' | translate">
     </ion-refresher-content>
   </ion-refresher>
   <ion-list>
@@ -41,7 +46,7 @@
     </ion-grid>
     <div *ngIf="nearbyUsers.length === 0" class="vacio">
       <p >
-        {{noNearby}}
+        {{'WINK.HOME.NO_NEARBY' | translate}}
       </p>
       <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
     </div>
@@ -50,7 +55,7 @@
   <ion-infinite-scroll threshold="100px"  (ionInfinite)="LoadUsers($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data..."
+      [loadingText]="'WINK.HOME.LOADING_NEARBY' | translate"
       ></ion-infinite-scroll-content>    
   </ion-infinite-scroll>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed"  >

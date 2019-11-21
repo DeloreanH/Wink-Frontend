@@ -7,6 +7,9 @@ import { Routes } from '../../common/enums/routes/routes.enum';
 import { AuthService } from '../../auth/services/auth.service';
 import { take, exhaustMap } from 'rxjs/operators';
 import { Item } from '../../common/models/item.model';
+import { UserService } from './user.service';
+import { ToastService } from './toast.service';
+import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -14,37 +17,34 @@ import { Item } from '../../common/models/item.model';
 export class ProfilesService {
 
   unique: string[] = [];
-
   categories: Category[] = [];
-
-  categories2: Category[] = [];
-  biografia: Item = null;
+  biography: Item = null;
 
   itemTypes: ItemType[] = [];
 
   sections: Section[] = [
-    new Section({name: 'Publico', key: 0}),
+    new Section({name: 'Public', key: 0}),
     new Section({name: 'General', key: 1}),
     new Section({name: 'Personal', key: 2}),
-    new Section({name: 'Profesional', key: 3}),
+    new Section({name: 'Professional', key: 3}),
   ];
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private toastService: ToastService
   ) {
-    this.CargarCategorias();
-    this.CargarTiposItem();
+    this.LoadCategories();
+    this.LoadTypesItems();
    }
 
-  async BuscarTItemCategoria(nameCategory: string) {
+  async SearchItemTypeCategoryName(nameCategory: string) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!nameCategory) {
-            reject(false);
+            reject(null);
           }
           if (this.itemTypes.length === 0) {
-            const response = await this.CargarTiposItem();
+            const response = await this.LoadTypesItems();
           }
           const resultado = this.itemTypes.filter(
             (item: ItemType) => {
@@ -59,22 +59,22 @@ export class ProfilesService {
     );
   }
 
-  async BuscarTipoItem(nameItemType: string) {
+  async SearchItemType(nameItemType: string) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!nameItemType) {
-            reject(false);
+            reject(null);
           }
           if (this.itemTypes.length === 0) {
-            const reponse = await this.CargarTiposItem();
+            await this.LoadTypesItems();
           }
-          const resultado = this.itemTypes.filter(
+          const response = this.itemTypes.filter(
             (item: ItemType) => {
               return item.name === nameItemType;
             }
           );
-          resolve(resultado[0]);
+          resolve(response[0]);
         } catch (err) {
           reject(err);
         }
@@ -82,12 +82,11 @@ export class ProfilesService {
     );
   }
 
-  async CargarCategorias() {
+  async LoadCategories() {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
-          // console.log('respuesta', respuesta);
           this.categories = [];
           this.categories.push(...response);
           resolve(response);
@@ -98,12 +97,11 @@ export class ProfilesService {
     );
   }
 
-  async CargarTiposItem() {
+  async LoadTypesItems() {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
-          // console.log('respuesta', response);
           this.itemTypes = [];
           this.itemTypes.push(...response);
           resolve(response);
@@ -114,33 +112,24 @@ export class ProfilesService {
     );
   }
 
-  async CargarItemsUsuario() {
+  async LoadItemsUser() {
+    this.biography = null;
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          let response = await this.authService.user.pipe(
-            take(1),
-            exhaustMap(
-              user => {
-                if (!user) {
-                  return null;
-                }
-                return this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER + user.user._id);
-              }
-            )
-            ).toPromise();
+          let response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
           response = response.filter(
             (item: Item) => {
               if (item.position === -1) {
-                this.biografia = item;
+                this.biography = item;
               } else {
                 return item;
               }
             }
           );
-          console.log('Respuesta', response);
           resolve(response);
         } catch (err) {
+          this.toastService.Toast(MessagesServices.ERROR_GET_INFORMATION);
           reject(err);
         }
       }
@@ -152,11 +141,13 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!data) {
-            reject(false);
+            reject(null);
           }
           const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
+          this.toastService.Toast(MessagesServices.SAVE_ITEMS);
           resolve(response);
         } catch (err) {
+          this.toastService.Toast(MessagesServices.ERROR_SAVE);
           reject(err);
         }
       }
@@ -168,10 +159,9 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!idUser) {
-            reject(false);
+            reject(null);
           }
           const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
-          // console.log('Res', response);
           resolve(response);
         } catch (err) {
           console.log('Error GetPublicItems: ' + err.message);
@@ -186,7 +176,7 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!idUser || !idWink) {
-            reject(false);
+            reject(null);
           }
           const response = await this.http.post(
             Routes.BASE + Routes.SHOW_PRIVATE_PROFILE,
@@ -195,7 +185,6 @@ export class ProfilesService {
               wink_id: idWink
             }
           ).toPromise();
-          // console.log('Res', response);
           resolve(response);
         } catch (err) {
           console.log('Error GetPrivateItems: ' + err.message);

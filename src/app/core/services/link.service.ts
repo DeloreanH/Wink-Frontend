@@ -35,7 +35,6 @@ export class LinkService {
       if (socialNetwork) {
         if ( this.plataform.is('mobile') ) {
           if (toReturn) {
-            console.log('SocialNetwork', socialNetwork.url + userName + socialNetwork.complement);
             return socialNetwork.url + userName + socialNetwork.complement;
           } else {
             this.URL(socialNetwork.url + userName + socialNetwork.complement);

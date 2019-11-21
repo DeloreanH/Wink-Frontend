@@ -2,10 +2,9 @@
   class="contenedor-card card-list dimension ion-activatable ion-activatable-up" 
   [ngClass]="{newWink: user.newWink}">
   <div class="status-card">
-    <p 
-      class="text-card text-status" >
-      {{user.status ? user.status : 'Disponible'}}
-    </p>
+    <ion-label  class="text-card text-status size-text-status" >
+        {{user.status ? user.status : 'WINK.STATUS.AVAILABLE' | translate}}
+    </ion-label>
   </div>
   <ion-img 
     class="imagen-full" 

@@ -9,6 +9,8 @@ import { User } from '../../common/models/user.model';
 import { Routes } from '../../../app/common/enums/routes/routes.enum';
 import { NavController } from '@ionic/angular';
 import { RoutesPrincipal } from '../../../app/common/enums/routes/routesPrincipal.enum';
+import { SocketService } from 'src/app/core/services/socket.service';
+import { WinkService } from 'src/app/core/services/wink.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,9 @@ export class AuthService {
     private userService: UserService,
     private router: Router,
     private http: HttpClient,
-    private navController: NavController
+    private navController: NavController,
+    private socketService: SocketService,
+    private winkService: WinkService,
   ) {
    }
 
@@ -36,7 +40,7 @@ export class AuthService {
     localStorage.setItem('userData', JSON.stringify(userx));
    }
 
-  AuthoLogin() {
+  AutoLogin() {
     const userData: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
       return;
@@ -53,12 +57,13 @@ export class AuthService {
   async Logout() {
     try {
       const response: any = await this.http.post(Routes.BASE + Routes.LOGOUT, null).toPromise();
-      console.log('Logout', );
       // if (respuesta.status === 'logout successfully' ) {
       this.user.next(null);
       this.userService.User(null);
       localStorage.removeItem('userData');
+      this.socketService.Disconnect();
       this.navController.navigateRoot('/' + RoutesPrincipal.LOGIN);
+      this.winkService.Destroy();
       // this.router.navigate(['/virtwoo-auth/login']);
       // this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
       if (this.tokenExpiration) {

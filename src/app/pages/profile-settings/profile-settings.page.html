@@ -25,11 +25,14 @@
         <ion-menu-button ></ion-menu-button>
       </ion-buttons>
       <ion-title>Profile settings</ion-title>
-      <fa-icon 
-        slot="end" *ngIf="!loading"
-        [icon]="[ordenar ? 'far' : 'fas',  'list-alt']"
-        class="icon-bar ripple-toolbar-mie color-medium"
-        (click)="Ordenar()"></fa-icon>
+      <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
+        <fa-icon 
+          [icon]="[ordenar ? 'far' : 'fas',  'list-alt']"
+          class="icon-bar color-medium"
+          (click)="Ordenar()"
+        ></fa-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
        
  
     </ion-toolbar>

@@ -7,6 +7,8 @@ import { AuthUser } from '../../auth/models/authuser.model';
 import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { Location } from '../../common/models/location.model';
 import { SocketService } from './socket.service';
+import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,8 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private toastService: ToastService
   ) { }
 
   User(data?: User, updateStorage?: boolean) {
@@ -52,13 +55,14 @@ export class UserService {
       async (resolve, reject) => {
         try {
           if (!data) {
-            reject(false);
+            reject(null);
           }
-          const respuesta: any = await this.http.put(Routes.BASE + Routes.UPDATE_BASIC_DATE, data).toPromise();
-          this.User(respuesta.user, true);
-          console.log('Put', respuesta);
-          resolve(respuesta);
+          const response: any = await this.http.put(Routes.BASE + Routes.UPDATE_BASIC_DATE, data).toPromise();
+          this.User(response.user, true);
+          this.toastService.Toast(MessagesServices.SAVE_INFORMATION);
+          resolve(response);
         } catch (error) {
+          this.toastService.Toast(MessagesServices.ERROR_SAVE);
           console.log('error', error);
           reject(error);
         }
@@ -96,7 +100,7 @@ export class UserService {
       async (resolve, reject) => {
         try {
           if (!value) {
-            reject(false);
+            reject(null);
           }
           const response = await this.http.post(Routes.BASE + Routes.UPDATE_PROFILES, {visibility: value}).toPromise();
           this.user.visibility = value;

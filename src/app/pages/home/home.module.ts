@@ -9,6 +9,7 @@ import { IonicModule } from '@ionic/angular';
 import { HomePage } from './home.page';
 import { CardComponent } from './card/card.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
     FontAwesomeModule,
+    TranslateModule.forChild(),
   ],
   declarations: [HomePage, CardComponent]
 })

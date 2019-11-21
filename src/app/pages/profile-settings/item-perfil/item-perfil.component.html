@@ -75,7 +75,7 @@
   displayFormat="DD/MM/YYYY" 
   min="1900-01-01" 
   [max]="FechaActual() | date:'yyy-MM-dd'"  
-  [value]="Valor(0)? Valor(0) : FechaActual() | date:'MM-dd-yyyy'"
+  [value]="Valor(0)? Valor(0) : null | date:'MM-dd-yyyy'"
   cancel-text="Cancelar" 
   done-text="Aceptar" 
   (ionChange)="onInput($event.target.value, 0)"

@@ -9,7 +9,7 @@ export enum Routes {
   CATEGORIES = 'user-config/categories',
   ITEM_TYPES = 'user-config/itemtypes',
   CATEGORIES_ITEM_TYPES = 'user-config/categories-items',
-  ITEMS_USER = 'user-config/items/user/',
+  ITEMS_USER = 'user-config/items/user',
   CREATE_ITEM = 'user-config/items/user/create',
   UPLOAD_AVATAR = 'user-config/user/upload/avatar',
   UPDATE_BASIC_DATE = 'user-config/user/update/basic-data',
@@ -24,4 +24,5 @@ export enum Routes {
   APPROVE_WINK = 'wink/approve-wink',
   DELETE_WINK = 'wink/delete-wink',
   GET_WINKS = 'wink/get-winks',
+  GET_USER = 'wink/get-user'
 }
