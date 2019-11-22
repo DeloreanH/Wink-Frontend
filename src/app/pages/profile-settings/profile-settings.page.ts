@@ -13,6 +13,8 @@ import { Subscription } from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enum';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
+import { Routes } from 'src/app/common/enums/routes/routes.enum';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'profile-settings',
@@ -61,6 +63,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
     private router: Router,
     private menu: MenuController,
     private navController: NavController,
+    private translateService: TranslateService
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -219,11 +222,11 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
 
   async SeleccionSeccion() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Seleccione una sección',
+      header: this.translateService.instant('WINK.PROFILE_SETTINGS.OPTIONS.SECTION'),
       buttons: [
         ...this.CargarSecciones(),
         {
-        text: 'Cancelar',
+        text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
         icon: 'close',
         role: 'cancel',
         handler: () => {
@@ -235,11 +238,11 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
 
   async SeleccionCategoria() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Seleccione una categoria',
+      header: this.translateService.instant('WINK.PROFILE_SETTINGS.OPTIONS.CATEGORY'),
       buttons: [
         ...this.CargarCategorias()
         , {
-        text: 'Cancelar',
+        text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
         icon: 'close',
         role: 'cancel',
         handler: () => {
@@ -267,11 +270,11 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
     return obj;
   }
 
-  CargarSecciones(): [] {
+  CargarSecciones() {
     const obj: any = [];
     for (const seccion of this.sections) {
       obj.push({
-        text: seccion.name,
+        text: this.translateService.instant(seccion.name),
         icon: 'add',
         handler: () => {
           this.item.section = seccion;
@@ -336,5 +339,23 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
 
   ChangeData() {
     this.changeData = true;
+  }
+
+  ErrorImagen() {
+    this.user.avatarUrl = this.avatar;
+  }
+
+  Avatar() {
+    let avatar;
+    if (this.user) {
+      if (this.user.avatarUrl.startsWith('http')) {
+        avatar = this.user.avatarUrl;
+      } else {
+        avatar = Routes.PHOTO + this.user.avatarUrl;
+      }
+    } else {
+      avatar = this.avatar;
+    }
+    return avatar;
   }
 }

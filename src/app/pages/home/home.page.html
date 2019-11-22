@@ -3,9 +3,6 @@
     <ion-title>
       {{'WINK.HOME.TITLE' | translate}}
     </ion-title>
-    <ion-toggle (click)="language()">
-
-    </ion-toggle>
   </ion-toolbar>
 </ion-header>
 
@@ -27,8 +24,11 @@
       [refreshingText]="'WINK.HOME.REFRESHING' | translate">
     </ion-refresher-content>
   </ion-refresher>
+  <ion-button (click)="lAN()">
+    Cambio
+  </ion-button>
   <ion-list>
-    <ion-grid *ngIf="nearbyUsers.length > 0" class="grid-home">
+    <ion-grid *ngIf="nearbyUsers.length > 0  && !load" class="grid-home">
       <ion-row > 
         <ion-col 
         sizeXs="6" 
@@ -40,11 +40,28 @@
         *ngFor="let user of nearbyUsers">
           <card 
           (click)="GoPublicProfile(user)"
-          [user]="user"></card>
+          [user]="user">
+        </card>
         </ion-col>
       </ion-row>
     </ion-grid>
-    <div *ngIf="nearbyUsers.length === 0" class="vacio">
+    <ion-grid *ngIf="load" class="grid-home">
+      <ion-row > 
+        <ion-col 
+        sizeXs="6" 
+        sizeSm="4" 
+        sizeMd="3" 
+        sizeLg="2.4" 
+        sizeXl="2"
+        class="col-home"
+        *ngFor="let item of arrayLoad">
+          <ion-card class="card-list">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngIf="nearbyUsers.length === 0 && !load" class="vacio">
       <p >
         {{'WINK.HOME.NO_NEARBY' | translate}}
       </p>

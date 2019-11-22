@@ -1,18 +1,24 @@
 <ion-menu side="start" contentId="main" >
   <ion-header>
     <ion-toolbar translucent>
-      <ion-title>Menu</ion-title>
+      <ion-title>
+          {{'WINK.PROFILE_SETTINGS.MENU.TITLE' | translate}}
+      </ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
       <ion-item (click)="GoBasicData()">
         <ion-icon name="person" slot="start"></ion-icon>
-        <ion-label>Basic data</ion-label>
+        <ion-label>
+            {{'WINK.PROFILE_SETTINGS.MENU.BASIC_DATA' | translate}}
+        </ion-label>
       </ion-item>
       <ion-item (click)="Logout()">
         <ion-icon name="exit" slot="start"></ion-icon>
-        <ion-label>Logout</ion-label>
+        <ion-label>
+            {{'WINK.PROFILE_SETTINGS.MENU.LOGOUT' | translate}}
+        </ion-label>
       </ion-item>
     </ion-list>
   </ion-content>
@@ -24,7 +30,9 @@
       <ion-buttons slot="start">
         <ion-menu-button ></ion-menu-button>
       </ion-buttons>
-      <ion-title>Profile settings</ion-title>
+      <ion-title>
+          {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
+      </ion-title>
       <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
         <fa-icon 
           [icon]="[ordenar ? 'far' : 'fas',  'list-alt']"
@@ -46,34 +54,38 @@
         </ion-avatar>
       </div>
       <div class="content-center" >
-          <ion-skeleton-text animated style="width: 30%; height: 30px;"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-avatar"></ion-skeleton-text>
       </div>
       <ion-item>
         <ion-thumbnail slot="start">
           <ion-skeleton-text animated></ion-skeleton-text>
         </ion-thumbnail>
         <ion-label>
-            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            <ion-skeleton-text animated style="width: 80%; height: 50px;"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-bio-label"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-bio-content"></ion-skeleton-text>
         </ion-label>
       </ion-item>
         <ion-label>
-            <ion-skeleton-text animated style="width: 100%; height: 45px;"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
         </ion-label>
         <ion-label>
-            <ion-skeleton-text animated style="width: 100%; height: 45px;"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
         </ion-label>
         <ion-label>
-            <ion-skeleton-text animated style="width: 100%; height: 45px;"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
         </ion-label>
         <ion-label>
-            <ion-skeleton-text animated style="width: 100%; height: 45px;"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
         </ion-label>
     </div>
     <div *ngIf="!loading">
       <div class="contenedorAvatar" >
         <ion-avatar class="avatar-profile"> 
-          <ion-img [src]="user ? user.avatarUrl : avatar" class="img-avatar"></ion-img>
+          <ion-img 
+            [src]="Avatar()" 
+            class="img-avatar" 
+            alt="Avatar"
+            (ionError)="ErrorImagen()"></ion-img>
         </ion-avatar>
       </div>
 
@@ -109,7 +121,7 @@
             >
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Publico
+                {{'WINK.SECTIONS.PUBLIC' | translate}}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div
@@ -142,7 +154,7 @@
             >
             <mat-expansion-panel-header>
               <mat-panel-title>
-                General
+                {{'WINK.SECTIONS.GENERAL' | translate}}
               </mat-panel-title>
             </mat-expansion-panel-header>
               <div 
@@ -176,7 +188,7 @@
           >
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Personal
+                {{'WINK.SECTIONS.PERSONAL' | translate}}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div 
@@ -210,7 +222,7 @@
           >
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Profesional
+                {{'WINK.SECTIONS.PROFESSIONAL' | translate}}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div 

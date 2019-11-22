@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { BasicDataPage } from './basic-data.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ReactiveFormsModule,
     FontAwesomeModule,
+    TranslateModule.forChild(),
   ],
   declarations: [BasicDataPage],
   providers: [],

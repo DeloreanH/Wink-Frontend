@@ -1,7 +1,8 @@
 export enum Routes {
-  IP = 'http://192.168.0.107',
-  BASE = 'http://192.168.0.107:3000/api/',
-  SOCKET = 'http://192.168.0.107:3005',
+  IP = 'http://192.168.1.110',
+  PHOTO = 'http://192.168.1.110:3000',
+  BASE = 'http://192.168.1.110:3000/api/',
+  SOCKET = 'http://192.168.1.110:3005',
 
   AUTH = 'auth/authenticate',
   LOGOUT = 'auth/logout',
@@ -24,5 +25,6 @@ export enum Routes {
   APPROVE_WINK = 'wink/approve-wink',
   DELETE_WINK = 'wink/delete-wink',
   GET_WINKS = 'wink/get-winks',
-  GET_USER = 'wink/get-user'
+  GET_USER = 'wink/get-user',
+  WATCHED_WINK = 'wink/watched-wink',
 }

@@ -33,6 +33,7 @@ import { UpdateAvatarService } from './services/update-avatar.service';
 import { UserService } from './services/user.service';
 import { WinkService } from './services/wink.service';
 import { ToolsModule } from '../common/tools/tools.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [],
@@ -47,6 +48,7 @@ import { ToolsModule } from '../common/tools/tools.module';
     MatChipsModule,
     TabsModule,
     ToolsModule,
+    TranslateModule.forChild(),
   ],
   providers: [
     StatusBar,

@@ -12,6 +12,7 @@ import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { ProfilesService } from 'src/app/core/services/profiles.service';
 import { SocketEventsListen, SocketService } from 'src/app/core/services/socket.service';
 import { Subscription } from 'rxjs';
+import { Routes } from 'src/app/common/enums/routes/routes.enum';
 
 @Component({
   selector: 'public-profile',
@@ -30,6 +31,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   wink: Wink;
   load = false;
   origin;
+  avatar: string = Config.AVATAR;
   deletedWinkSubs = new Subscription();
   approvedWinkSubs = new Subscription();
   sendedWinkSubs = new Subscription();
@@ -65,10 +67,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
             this.Back();
           }
           if (this.userWink) {
-            if (this.userWink.newWink) {
-              this.userWink.newWink = false;
-              this.winkService.UpdateUser(this.userWink);
-            }
             this.GetWink();
           }
         }
@@ -135,6 +133,14 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     this.backButtonSubs.unsubscribe();
   }
 
+  WatchWink() {
+    if (this.userWink.newWink) {
+      this.userWink.newWink = false;
+      this.winkService.WatchedWink(this.wink);
+      this.winkService.UpdateUser(this.userWink);
+    }
+  }
+
 
   async GetWink() {
     try {
@@ -146,6 +152,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
           // this.winkService.GetWinkID(response.wink._id).user = this.userWink;
           this.wink = response.wink;
           this.wink.user = this.userWink;
+          this.WatchWink();
         }
         if (this.wink && this.wink.sender_id === this.userWink._id) {
           this.send = false;
@@ -216,6 +223,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   FilterItems(items: Item[], userW: User) {
+    this.publicItems = [];
     if (items && items.length > 0) {
       let contador = 0;
       items = items.filter(
@@ -272,6 +280,24 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     } catch (err) {
       console.log('Error Go', err.message);
     }
+  }
+
+  ErrorImagen() {
+    this.userWink.avatarUrl = this.avatar;
+  }
+
+  Avatar() {
+    let avatar;
+    if (this.userWink) {
+      if (this.userWink.avatarUrl.startsWith('http')) {
+        avatar = this.userWink.avatarUrl;
+      } else {
+        avatar = Routes.PHOTO + this.userWink.avatarUrl;
+      }
+    } else {
+      avatar = this.avatar;
+    }
+    return avatar;
   }
 
 }

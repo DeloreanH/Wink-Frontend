@@ -11,6 +11,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatChipsModule } from '@angular/material/chips';
 import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -27,7 +28,8 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
     FontAwesomeModule,
-    MatChipsModule
+    MatChipsModule,
+    TranslateModule.forChild(),
   ],
   entryComponents: [ItemListComponent],
   declarations: [PrivateProfilesPage]

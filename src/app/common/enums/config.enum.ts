@@ -16,6 +16,6 @@ export enum Config {
   AVATAR = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
   IMAGE_JPEG = 'image/jpeg',
   NO_NEARBY = 'No nearby users.',
-  NO_REQUESTS = 'No pending requests.',
-  NO_HISTORICAL = 'No winks.',
+  NO_REQUESTS = 'WINK.WINKS.EMPTY.REQUESTS',
+  NO_RECORD = 'WINK.WINKS.EMPTY.RECORD',
 }

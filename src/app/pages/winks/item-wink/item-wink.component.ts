@@ -5,6 +5,7 @@ import { Config } from 'src/app/common/enums/config.enum';
 import { WinkService } from 'src/app/core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { NavController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'item-wink',
@@ -20,6 +21,7 @@ export class ItemWinkComponent implements OnInit {
   constructor(
     private winkService: WinkService,
     private navController: NavController,
+    private translateService: TranslateService
   ) {
    }
 
@@ -50,6 +52,7 @@ export class ItemWinkComponent implements OnInit {
     if (!date) {
       return;
     }
+    moment.locale(this.translateService.currentLang);
     return moment(date).fromNow();
   }
 

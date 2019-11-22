@@ -13,6 +13,8 @@ import { SaveContactService } from 'src/app/core/services/save-contact.service';
 import { NameCategories } from 'src/app/common/enums/nameCaterogies.enum';
 import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
 import { Config } from 'src/app/common/enums/config.enum';
+import { Routes } from 'src/app/common/enums/routes/routes.enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-private-profiles',
@@ -32,6 +34,7 @@ export class PrivateProfilesPage implements OnInit {
   sections: Section[] = [];
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
+  avatar: string = Config.AVATAR;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +43,7 @@ export class PrivateProfilesPage implements OnInit {
     public alertController: AlertController,
     private contact: SaveContactService,
     private navController: NavController,
+    private translateService: TranslateService
   ) {
     this.sections = this.profilesService.sections;
     this.items.push(this.generalItems);
@@ -51,7 +55,6 @@ export class PrivateProfilesPage implements OnInit {
     this.route.params
     .subscribe(
       async (params: Params) => {
-        console.log(params);
         try {
           const wink = await this.winkService.GetWinkID(params.idWink);
           if (wink) {
@@ -103,24 +106,22 @@ export class PrivateProfilesPage implements OnInit {
     setTimeout(
       async () => {
         const alert = await this.alertController.create({
-          header: 'Indicate the items you want to save in the contact.',
+          header: this.translateService.instant('WINK.PRIVATE_PROFILES.SAVE_CONTACTS'),
           inputs: [
             ...await this.LoadItemsList()
           ],
           buttons: [
             {
-              text: 'Cancel',
+              text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
               role: 'cancel',
               cssClass: 'secondary',
               handler: () => {
-                console.log('Confirm Cancel');
               }
             }, {
-              text: 'Ok',
+              text: this.translateService.instant('WINK.BUTTONS.OK'),
               handler: (inputs) => {
                 if (inputs.length > 0) {
                   this.SaveContact(inputs);
-                  console.log('Confirm Ok', inputs);
                 }
               }
             }
@@ -136,7 +137,7 @@ export class PrivateProfilesPage implements OnInit {
     obj.push({
       name: 'photo',
       type: 'checkbox',
-      label: 'Photo',
+      label: this.translateService.instant('WINK.ITEM_TYPES.AVATAR'),
       value: 'photo',
       checked: true
     });
@@ -186,7 +187,6 @@ export class PrivateProfilesPage implements OnInit {
       for (const arrays of copyItems) {
         predata.push(...arrays);
       }
-      console.log('predata', predata);
       const data: {item: Item, itemType: ItemType}[] = [];
       let item;
       ids.forEach(
@@ -201,7 +201,6 @@ export class PrivateProfilesPage implements OnInit {
         }
       );
       if (complet) {
-        console.log('data', data);
         this.contact.Create(data.slice(), this.userWink, ids[0] === 'photo');
       }
     } catch (err) {
@@ -221,6 +220,24 @@ export class PrivateProfilesPage implements OnInit {
     } catch (err) {
       console.log('Error Behind', err);
     }
+  }
+
+  ErrorImagen() {
+    this.userWink.avatarUrl = this.avatar;
+  }
+
+  Avatar() {
+    let avatar;
+    if (this.userWink) {
+      if (this.userWink.avatarUrl.startsWith('http')) {
+        avatar = this.userWink.avatarUrl;
+      } else {
+        avatar = Routes.PHOTO + this.userWink.avatarUrl;
+      }
+    } else {
+      avatar = this.avatar;
+    }
+    return avatar;
   }
 
 }

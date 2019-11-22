@@ -30,6 +30,7 @@ export class AppComponent {
     private router: Router
   ) {
     this.translateService.setDefaultLang('en');
+    this.translateService.use('es');
     this.initializeApp();
   }
 
@@ -38,6 +39,11 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+    this.platform.backButton.subscribe(
+      (resp) => {
+      alert('atras');
+      resp.register(0, () => alert('atras'));
     });
   }
 

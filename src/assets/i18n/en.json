@@ -64,8 +64,22 @@
     "PROFILE_TYPE": "Seleccione un tipo de perfil"
   },
   "WINK": {
-    "BASIC-DATA": {
+    "ERROR": {
 
+    },
+    "BASIC_DATA": {
+      "TITLE": "Basic Data",
+      "FORM": {
+        "FIRST_NAME": "First Name",
+        "LAST_NAME": "Last Name",
+        "USERNAME": "Username",
+        "EMAIL": "E-mail",
+        "CODE": "Code",
+        "PHONE_NUMBER": "Phone Number",
+        "BIRTHDAY": "Birthday",
+        "GENDER": "Gender",
+        "AUTOSAVE_CONTACTS": "Autosave contacts"
+      }
     },
     "HOME": {
       "TITLE": "Home",
@@ -75,24 +89,59 @@
       "LOADING_NEARBY": "Loading nearby...",
       "NO_NEARBY": "No nearby users."
     },
-    "PRIVATE-PROFILES": {
-
+    "PRIVATE_PROFILES": {
+      "TITLE": "Private Profiles",
+      "SAVE_CONTACTS": "Select the items you want to save in the contact."
     },
-    "PROFILE-SETTINGS": {
-
+    "PROFILE_SETTINGS": {
+      "TITLE": "Profile settings",
+      "MENU": {
+        "TITLE": "Menu",
+        "BASIC_DATA": "Basic data",
+        "LOGOUT": "Logout"
+      },
+      "OPTIONS": {
+        "SECTION": "Select a section",
+        "CATEGORY": "Select a category"
+      }
     },
-    "PUBLIC-PROFILE": {
+    "PUBLIC_PROFILE": {
 
     },
     "TABS": {
 
     },
     "WINKS": {
-      
+      "TITLE": "Winks",
+      "SEGMENTS": {
+        "REQUESTS": "Requests",
+        "RECORD": "Record"
+      },
+      "EMPTY": {
+        "REQUESTS": "No pending requests.",
+        "RECORD": "No winks."
+      }
     },
     "STATUS": {
       "AVAILABLE": "Available",
       "BUSY": "Busy"
+    },
+    "SECTIONS": {
+      "PUBLIC": "Public",
+      "GENERAL": "General",
+      "PERSONAL": "Personal",
+      "PROFESSIONAL": "Professional"
+    },
+    "BUTTONS": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "WINK": "Wink",
+      "IGNORE": "Ignore",
+      "DELETE": "Delete",
+      "OK": "OK"
+    },
+    "ITEM_TYPES": {
+      "AVATAR": "Avatar"
     }
   }
 }

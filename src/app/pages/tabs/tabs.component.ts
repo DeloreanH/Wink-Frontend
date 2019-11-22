@@ -31,6 +31,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   sendedWinkSubs = new Subscription();
   approvedWinkSubs = new Subscription();
   deletedWinkSubs = new Subscription();
+  watchedWinkSubs = new Subscription();
 
   constructor(
     private router: Router,
@@ -46,7 +47,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit() {
     this.idUser = this.userService.User()._id;
-    this.winkService.Init();
+    // this.winkService.Init();
     this.router.events.subscribe(
       (valor: any) => {
         if (valor instanceof NavigationStart) {
@@ -78,9 +79,24 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   private Listen() {
     this.socketService.Connect();
     this.updatedUserSubs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
-      (user) => {
+      (user: User) => {
         if (user) {
-          this.winkService.UpdateUser(user as User);
+          if (user._id === this.idUser) {
+            this.userService.User(user, true);
+          } else {
+            this.winkService.UpdateUser(user as User);
+          }
+        }
+      }
+    );
+    this.updatedAvatarSubs = this.socketService.Listen(SocketEventsListen.AVATAR_UPLOADED).subscribe(
+      (user: User) => {
+        if (user) {
+          if (user._id === this.idUser) {
+            this.userService.User(user, true);
+          } else {
+            this.winkService.UpdateUser(user as User, true);
+          }
         }
       }
     );
@@ -120,6 +136,17 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.winksTab = false;
           }
           this.winkService.DeleteWinkUser(wink);
+        }
+      }
+    );
+    this.watchedWinkSubs = this.socketService.Listen(SocketEventsListen.WATCHED_WINK).subscribe(
+      (wink: Wink) => {
+        if (wink) {
+          if (this.newWinks.get(wink._id)) {
+            this.newWinks.delete(wink._id);
+            this.winksTab = false;
+          }
+          this.winkService.AddRequests(wink);
         }
       }
     );

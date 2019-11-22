@@ -14,7 +14,6 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 
   declarations: [
   ItemListComponent,
-
   // pipes
   DistancePipe,
   NamesPipe,

@@ -27,13 +27,13 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private socketService: SocketService,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) { }
 
-  User(data?: User, updateStorage?: boolean) {
-    if (data) {
-      this.user = data;
-      this.userChanged.next(this.user);
+  User(user?: User, updateStorage?: boolean) {
+    if (user) {
+      this.user = user;
+      this.userChanged.next(user);
       if (updateStorage) {
         this.UpdateStorage();
       }
@@ -46,6 +46,7 @@ export class UserService {
   UpdateAvatar(link: string) {
     if (link) {
       this.user.avatarUrl = link;
+      this.socketService.AvatarUpload(this.user);
       this.User(this.user, true);
     }
   }
@@ -60,6 +61,7 @@ export class UserService {
           const response: any = await this.http.put(Routes.BASE + Routes.UPDATE_BASIC_DATE, data).toPromise();
           this.User(response.user, true);
           this.toastService.Toast(MessagesServices.SAVE_INFORMATION);
+          this.socketService.UpdateUser(this.user);
           resolve(response);
         } catch (error) {
           this.toastService.Toast(MessagesServices.ERROR_SAVE);

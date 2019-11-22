@@ -30,7 +30,8 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   profesional  = true;
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   private contadorUser = 10;
-  cargo = false;
+  load = false;
+  arrayLoad = [] = [];
   noNearby = Config.NO_NEARBY;
 
   constructor(
@@ -43,12 +44,16 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private translateService: TranslateService,
   ) {
     this.user = this.userService.User();
+    for (let i = 0; i < 15; i++) {
+      this.arrayLoad.push(i);
+    }
   }
 
   ngOnInit() {
     this.platform.backButton.subscribe(
       (resp) => {
-      console.group('Atras');
+      alert('atras');
+      resp.register(0, () => alert('atras'));
     });
     this.router.events.subscribe(
       (valor: any) => {
@@ -77,9 +82,13 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
-  language() {
-    this.translateService.setDefaultLang('es');
-    // this.translateService.setDefaultLang('en');
+
+  lAN() {
+    if (this.translateService.currentLang === 'es') {
+      this.translateService.use('en');
+    } else {
+      this.translateService.use('es');
+    }
   }
 
   ngAfterViewInit() {
@@ -115,10 +124,11 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Change() {
-    this.cargo = !this.cargo;
+    this.load = !this.load;
   }
 
   async GPS(event?) {
+    this.load = true;
     try {
       await this.winkService.GetNearby();
     } catch (err) {
@@ -127,6 +137,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     if (event) {
       event.target.complete();
     }
+    this.load = false;
   }
 
   Logout() {

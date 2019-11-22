@@ -223,7 +223,7 @@
 
 .ripple-toolbar {
   border-radius: 50%;
-  height: auto;
+  height: 40px;
   width: 40px;
   align-items: center;
   text-align: center;
@@ -243,4 +243,11 @@
 
 .newWink {
   border: 2px #3880ff solid;
+}
+
+.card-list {
+  margin: 0px; 
+  max-width: 170px;
+  border-radius: 9%;
+  height: 220px;
 }

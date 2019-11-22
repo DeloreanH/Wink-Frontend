@@ -1,16 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Winks</ion-title>
+    <ion-title>
+      {{'WINK.WINKS.TITLE' | translate}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-segment (ionChange)="TabChanged($event)" [value]="tab">
     <ion-segment-button value="requests">
-      <ion-label>Requests</ion-label>
+      <ion-label>
+        {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
+      </ion-label>
     </ion-segment-button>
     <ion-segment-button value="record">
-      <ion-label>Record</ion-label>
+      <ion-label>
+        {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
+      </ion-label>
     </ion-segment-button>
   </ion-segment>
   <ion-list *ngIf="tab === 'requests'">
@@ -27,13 +33,13 @@
   </ion-list>
   <div *ngIf="record.length === 0 && tab === 'record'" class="vacio">
     <p >
-      {{noHistorical}}
+      {{noHistorical | translate}}
     </p>
     <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
   </div>
   <div *ngIf="requests.length === 0 && tab === 'requests'" class="vacio">
     <p >
-      {{noRequests}}
+      {{noRequests | translate}}
     </p>
     <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
   </div>

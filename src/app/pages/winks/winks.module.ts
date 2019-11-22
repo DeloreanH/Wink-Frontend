@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { WinksPage } from './winks.page';
 import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    FontAwesomeModule
+    FontAwesomeModule,
+    TranslateModule.forChild(),
   ],
   declarations: [WinksPage, ItemWinkComponent]
 })

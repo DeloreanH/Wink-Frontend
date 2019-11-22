@@ -14,8 +14,12 @@
       </div>  
     </div>
     <div  class="date-wink">
-      <ion-button class="button-50 input-relative" (click)="Accept()">Wink</ion-button>
-      <ion-button  class="button-ignore button-50 input-relative" color="light" (click)="Ignore()">Ignore</ion-button>
+      <ion-button class="button-50 input-relative" (click)="Accept()">
+        {{'WINK.BUTTONS.WINK' | translate}}
+      </ion-button>
+      <ion-button  class="button-ignore button-50 input-relative" color="light" (click)="Ignore()">
+        {{'WINK.BUTTONS.IGNORE' | translate}}
+      </ion-button>
     </div>
   </ion-label>
 </ion-item>
@@ -23,7 +27,9 @@
 <ion-item-sliding >
   
   <ion-item-options side="start">
-    <ion-item-option color="danger" expandable="true" (click)="Ignore()">Delete</ion-item-option>
+    <ion-item-option color="danger" expandable="true" (click)="Ignore()">
+      {{'WINK.BUTTONS.DELETE' | translate}}
+    </ion-item-option>
   </ion-item-options>
 
   <ion-item *ngIf="wink && wink.approved" (click)="GoPrivateProfileA()" class="ion-activatable ion-activatable-up">
@@ -33,9 +39,8 @@
     </ion-avatar>
     <ion-label class="label-item">
       <div>
-        <ion-title class="title-wink" (click)="GoPrivateProfile()" [ngClass]="{'title-newWink': wink.user.newWink}">
+        <ion-title class="title-wink" (click)="GoPrivateProfile()" >
           {{wink && wink.user ? wink.user.firstName + ' ' + wink.user.lastName : 'John Doe'}}
-          <ion-badge *ngIf="wink.user.newWink" class="item-win-badge">*</ion-badge>
         </ion-title>
         <div *ngIf="wink" class="date-wink">
           <ion-icon name="time" color="medium"></ion-icon>
@@ -46,6 +51,8 @@
   </ion-item>
   
   <ion-item-options side="end">
-    <ion-item-option color="danger" expandable="true" (click)="Ignore()">Delete</ion-item-option>
+    <ion-item-option color="danger" expandable="true" (click)="Ignore()">
+      {{'WINK.BUTTONS.DELETE' | translate}}
+    </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>

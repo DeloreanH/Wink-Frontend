@@ -71,8 +71,22 @@
     }
   },
   "WINK": {
-    "BASIC-DATA": {
+    "ERROR": {
 
+    },
+    "BASIC_DATA": {
+      "TITLE": "Datos básicos",
+      "FORM": {
+        "FIRST_NAME": "Nombre",
+        "LAST_NAME": "Apellido",
+        "USERNAME": "Nombre de usuario",
+        "EMAIL": "Email",
+        "CODE": "Código",
+        "PHONE_NUMBER": "Número de teléfono",
+        "BIRTHDAY": "Fecha de nacimiento",
+        "GENDER": "Género",
+        "AUTOSAVE_CONTACTS": "Guardar automáticamente contactos"
+      }
     },
     "HOME": {
       "TITLE": "Home",
@@ -82,24 +96,59 @@
       "LOADING_NEARBY": "Cargando cercanos ...",
       "NO_NEARBY": "No hay usuarios cercanos."
     },
-    "PRIVATE-PROFILES": {
-
+    "PRIVATE_PROFILES": {
+      "TITLE": "Perfiles privados",
+      "SAVE_CONTACTS": "Seleccione los elementos que desea guardar en el contacto."
     },
-    "PROFILE-SETTINGS": {
-
+    "PROFILE_SETTINGS": {
+      "TITLE": "Configuración de perfiles",
+      "MENU": {
+        "TITLE": "Menú",
+        "BASIC_DATA": "Datos básicos",
+        "LOGOUT": "Cerrar sesión"
+      },
+      "OPTIONS": {
+        "SECTION": "Seleccione una sección",
+        "CATEGORY": "Seleccione una categoría"
+      }
     },
-    "PUBLIC-PROFILE": {
+    "PUBLIC_PROFILE": {
 
     },
     "TABS": {
 
     },
     "WINKS": {
-      
+      "TITLE": "Winks",
+      "SEGMENTS": {
+        "REQUESTS": "Solicitudes",
+        "RECORD": "Historial"
+      },
+      "EMPTY": {
+        "REQUESTS": "No hay solicitudes pendientes.",
+        "RECORD": "No hay winks."
+      }
     },
     "STATUS": {
       "AVAILABLE": "Disponible",
       "BUSY": "Ocupado"
+    },
+    "SECTIONS": {
+      "PUBLIC": "Público",
+      "GENERAL": "General",
+      "PERSONAL": "Personal",
+      "PROFESSIONAL": "Profesional"
+    },
+    "BUTTONS": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "WINK": "Wink",
+      "IGNORE": "Ignorar",
+      "DELETE": "Borrar",
+      "OK": "Okay"
+    },
+    "ITEM_TYPES": {
+      "AVATAR": "Avatar"
     }
   }
 }

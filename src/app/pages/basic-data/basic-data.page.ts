@@ -10,6 +10,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
 import { MessageError } from 'src/app/common/enums/messageError.enum';
+import { SocketService } from 'src/app/core/services/socket.service';
+import { Routes } from 'src/app/common/enums/routes/routes.enum';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -34,7 +36,6 @@ export class BasicDataPage implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private avatarService: UpdateAvatarService,
-    private router: Router,
     private navController: NavController,
   ) {
     this.user = this.userService.User();
@@ -196,12 +197,25 @@ export class BasicDataPage implements OnInit, OnDestroy {
     return (this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber) ? true : false;
   }
 
+  Avatar() {
+    let avatar;
+    if (this.user) {
+      if (this.user.avatarUrl.startsWith('http')) {
+        avatar = this.user.avatarUrl;
+      } else {
+        avatar = Routes.PHOTO + this.user.avatarUrl;
+      }
+    } else {
+      avatar = this.avatar;
+    }
+    return avatar;
+  }
+
   ErrorImagen() {
     this.user.avatarUrl = this.avatar;
   }
 
   MessageError(input: string) {
-    console.log(this.form.controls[input]);
     if (this.form.controls[input].errors && this.form.controls[input].touched) {
       const obj = this.form.controls[input].errors;
       let prop;

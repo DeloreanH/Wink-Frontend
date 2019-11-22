@@ -9,7 +9,7 @@
       <ion-ripple-effect></ion-ripple-effect>
     </div>
     <ion-title>
-      Basic data
+        {{'WINK.BASIC_DATA.TITLE' | translate}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -32,7 +32,7 @@
           *ngIf="!loadingAvatar"
           alt="Avatar"
           (ionError)="ErrorImagen()"
-          [src]="user.avatarUrl ? user.avatarUrl : avatar" >
+          [src]="Avatar()" >
         </ion-img>
         <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
       </ion-avatar>
@@ -45,7 +45,7 @@
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          First Name
+            {{'WINK.BASIC_DATA.FORM.FIRST_NAME' | translate}}
         </ion-label>
         <ion-input
 
@@ -63,7 +63,7 @@
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          Last Name
+            {{'WINK.BASIC_DATA.FORM.LAST_NAME' | translate}}
         </ion-label>
         <ion-input
           formControlName="lastName"
@@ -75,12 +75,12 @@
       </ion-text>
       <ion-item>
           <fa-icon
-            [icon]="['fas', 'envelope']"
+            [icon]="['fas', 'user']"
             class="icono icon-center"
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          Username
+            {{'WINK.BASIC_DATA.FORM.USERNAME' | translate}}
         </ion-label>
         <ion-input
           formControlName="username"
@@ -99,7 +99,7 @@
             slot="start" >
           </fa-icon>
         <ion-label position="floating" >
-          E-mail
+            {{'WINK.BASIC_DATA.FORM.EMAIL' | translate}}
         </ion-label>
         <ion-input
           formControlName="email"
@@ -119,7 +119,7 @@
               slot="start" >
             </fa-icon>
             <ion-label position="floating" >
-              Code
+              {{'WINK.BASIC_DATA.FORM.CODE' | translate}}
             </ion-label>
             <ion-input
               type="number"
@@ -134,7 +134,7 @@
         <div class="phoneNumber">
           <ion-item >
             <ion-label position="floating" >
-              Phone Number
+                {{'WINK.BASIC_DATA.FORM.PHONE_NUMBER' | translate}}
             </ion-label>
             <ion-input
               type="number"
@@ -154,7 +154,7 @@
           slot="start" >
         </fa-icon>
         <ion-label position="floating" >
-          Birthday
+          {{'WINK.BASIC_DATA.FORM.BIRTHDAY' | translate}}
         </ion-label>
         <ion-datetime
           displayFormat="DD/MM/YYYY"
@@ -174,7 +174,7 @@
         class="icono icon-center"
         slot="start" ></fa-icon>
         <ion-label position="floating" >
-          Gender
+          {{'WINK.BASIC_DATA.FORM.GENDER' | translate}}
         </ion-label>
         <ion-select
           interface="popover"
@@ -193,14 +193,18 @@
       <ion-item>
         <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
         <ion-label  >
-            Autosave contacts
-          </ion-label>
+          {{'WINK.BASIC_DATA.FORM.AUTOSAVE_CONTACTS' | translate}}
+        </ion-label>
       </ion-item>
       <ion-text color="danger">
         {{ MessageError('autosave') }}
       </ion-text>
     </ion-list>
-    <ion-button expand="block" type="submit" [disabled]="FormValid()">Save</ion-button>
-    <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()">Cancel</ion-button>
+    <ion-button expand="block" type="submit" [disabled]="FormValid()">
+        {{'WINK.BUTTONS.SAVE' | translate}}
+    </ion-button>
+    <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()">
+      {{'WINK.BUTTONS.CANCEL' | translate}}
+    </ion-button>
   </form>
 </ion-content>

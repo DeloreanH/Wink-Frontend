@@ -23,10 +23,10 @@ export class ProfilesService {
   itemTypes: ItemType[] = [];
 
   sections: Section[] = [
-    new Section({name: 'Public', key: 0}),
-    new Section({name: 'General', key: 1}),
-    new Section({name: 'Personal', key: 2}),
-    new Section({name: 'Professional', key: 3}),
+    new Section({name: 'WINK.SECTIONS.PUBLIC', key: 0}),
+    new Section({name: 'WINK.SECTIONS.GENERAL', key: 1}),
+    new Section({name: 'WINK.SECTIONS.PERSONAL', key: 2}),
+    new Section({name: 'WINK.SECTIONS.PROFESSIONAL', key: 3}),
   ];
   constructor(
     private http: HttpClient,

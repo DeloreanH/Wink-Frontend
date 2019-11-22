@@ -12,12 +12,16 @@ enum SocketEvents {
   SEND_WINK = 'send-wink',
   APPROVE_WINK = 'approve-wink',
   DELETE_WINK = 'delete-wink',
+  WATCH_WINK = 'watch-wink',
+  AVATAR_UPLOAD = 'avatar-upload',
 }
 export enum SocketEventsListen {
   UPDATED_USER = 'updated-user',
   SENDED_WINK = 'sended-wink',
   APPROVED_WINK = 'approved-wink',
   DELETED_WINK = 'deleted-wink',
+  WATCHED_WINK = 'watched-wink',
+  AVATAR_UPLOADED = 'avatar-uploaded',
 }
 
 @Injectable()
@@ -108,6 +112,22 @@ export class SocketService  {
         winkUser: idUserSend,
         wink: winkValue,
       });
+    } catch (err) {
+      console.log('Error DeleteWink  ', err.message);
+    }
+  }
+
+  WatchWink(winkValue: Wink) {
+    try {
+      this.Emit(SocketEvents.WATCH_WINK, winkValue);
+    } catch (err) {
+      console.log('Error DeleteWink  ', err.message);
+    }
+  }
+
+  AvatarUpload(userValue: User) {
+    try {
+      this.Emit(SocketEvents.AVATAR_UPLOAD, userValue);
     } catch (err) {
       console.log('Error DeleteWink  ', err.message);
     }

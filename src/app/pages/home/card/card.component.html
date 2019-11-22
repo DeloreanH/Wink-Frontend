@@ -1,5 +1,5 @@
 <ion-card 
-  class="contenedor-card card-list dimension ion-activatable ion-activatable-up" 
+  class="contenedor-card card-list ion-activatable ion-activatable-up" 
   [ngClass]="{newWink: user.newWink}">
   <div class="status-card">
     <ion-label  class="text-card text-status size-text-status" >
@@ -10,7 +10,7 @@
     class="imagen-full" 
     alt="Avatar" 
     (ionError)="ErrorImagen()" 
-    [src]="user ? user.avatarUrl : avatar"
+    [src]="Avatar()"
   >
   </ion-img>
   <ion-label class="name-card text-card text-name" >

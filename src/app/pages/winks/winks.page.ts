@@ -18,7 +18,7 @@ export class WinksPage implements OnInit, OnDestroy {
   record: Wink[] = [];
   recordSubscription = new Subscription();
   urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
-  noHistorical = Config.NO_HISTORICAL;
+  noHistorical = Config.NO_RECORD;
   noRequests = Config.NO_REQUESTS;
 
   constructor(
