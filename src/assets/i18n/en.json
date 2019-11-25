@@ -102,7 +102,8 @@
       },
       "OPTIONS": {
         "SECTION": "Select a section",
-        "CATEGORY": "Select a category"
+        "CATEGORY": "Select a category",
+        "SELECT_ITEMS": "Select an option"
       }
     },
     "PUBLIC_PROFILE": {
@@ -138,10 +139,109 @@
       "WINK": "Wink",
       "IGNORE": "Ignore",
       "DELETE": "Delete",
-      "OK": "OK"
+      "OK": "OK",
+      "DISCARD": "Discard",
+      "YES": "Yes",
+      "NO": "No"
+    },
+    "CATEGORY": {
+      "CONTACT":	"Contact",
+      "EDUCATION":	"Education",
+      "LABOR":	"Labor",
+      "MESSENGER_SERVICE":	"Messenger service",
+      "PERSONAL":	"Personal",
+      "SOCIAL_NETWORK":	"Social network",
+      "OTHERS":	"Others"
     },
     "ITEM_TYPES": {
-      "AVATAR": "Avatar"
+      "AVATAR": "Avatar",
+      "MOBILE": "Mobile",
+      "MAIL": "Mail",
+      "WEBSITE": "Website",
+      "PHONE": "Phone",
+      "LEVEL_OF_INSTRUCTION": "Level of instruction",
+      "PROFESSION": "Profession",
+      "COLLEGE": "College",
+      "LINKEDIN": "LinkedIn",
+      "OCCUPATION": "Occupation",
+      "JOB": "Job",
+      "LINE": "Line",
+      "SKYPE": "Skype",
+      "TELEGRAM": "Telegram",
+      "WECHAT": "Wechat",
+      "WHATSAPP": "WhatsApp",
+      "NICKNAME": "Nickname",
+      "DIRECTION": "Direction",
+      "MARITAL_STATUS": "Marital status",
+      "BIRTHDAY": "Birthday",
+      "HOBBIES": "Hobbies",
+      "INTERESTS": "Interests",
+      "FACEBOOK": "Facebook",
+      "INSTAGRAM": "Instagram",
+      "MEDIUM": "Medium",
+      "PINTEREST": "Pinterest",
+      "REDDIT": "Reddit",
+      "SNAPCHAT": "Snapchat",
+      "TUMBLR": "Tumblr",
+      "TWITTER": "Twitter",
+      "YOUTUBE": "YouTube",
+      "PERSONALIZED": "Personalized",
+      "SEX": "Sex",
+      "BIOGRAPHY": "Biography",
+      "AGE": "Age",
+      "YEARS": "years"
+    },
+    "OPTIONS_ITEMS": {
+      "PRIMARY":	"Primary",
+      "HIGH SCHOOL":	"High school",
+      "UPPER-MIDDLE":	"Upper-Middle",
+      "HIGHER":	"Higher",
+
+      "MARRIED":	"Married",
+      "COMMITTED":	"Committed",
+      "DIVORCED":	"Divorced",
+      "IN_RELATION":	"In relation",
+      "ENGAGEMENT":	"Engagement",
+      "SEPARATED":	"Separated",
+      "SINGLE":	"Single",
+      "WIDOWER":	"Widower",  
+
+      "FEMILE":	"Femile",
+      "MALE":	"Male",
+      "OTHER":	"Other",
+      "I_PREFER_NOT_TO_SAY":	"I prefer not to say"
+    },
+    "FORMS": {
+      "ERROR": {
+        "REQUIRED":	"Required field.",
+        "MAXIMUM":	"Exceeds the character limit.",
+        "EMAIL":	"Invalid email.",
+        "URL":	"Invalid URL.",
+        "MINIMUM":	"Does not meet the minimum characters.",
+        "CHARACTER":	"Character not allowed."
+      }
+    },
+    "DIALOGUES": {
+      "TITLES": {
+        "CONFIRM": "Confirm!"
+      },
+      "MESSAGES": {
+        "CANCEL_WINK":	"Do you want to <strong> cancel </strong> the wink?"
+      }
+    },
+    "SERVICES": {
+      "WINK_SENT":	"Wink sent.",
+      "TRY_AGAIN_LATER":	"Try again later.",
+      "CONTACT_SAVE":	"Contact saved!",
+      "WINK_ERROR":	"Unexpected error occurred while turning on the wink.",
+          
+      "SAVE_ITEMS":	"Your settings have been saved successfully.",
+      "SAVE_PHOTO":	"Photo uploaded successfully.",
+      "SAVE_INFORMATION":	"Your information has been saved successfully.",
+          
+      "ERROR_SAVE":	"There was a problem trying to save. try again later.",
+      "ERROR_GET_INFORMATION":	"A problem has occurred trying to get your information. try again later.",
+      "ERROR_PHOTO":	"There was a problem trying to upload your photo."
     }
   }
 }

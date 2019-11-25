@@ -103,6 +103,7 @@ export class WinkService {
           const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
           response.wink.user = this.userService.User();
           this.socketService.SendWink(idUser, response.wink, response.distance);
+          this.toastService.Toast(MessagesServices.WINK_SENT);
           resolve(response);
         } catch (err) {
           this.toastService.Toast(MessagesServices.WINK_ERROR);

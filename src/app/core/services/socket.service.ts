@@ -34,7 +34,7 @@ export class SocketService  {
   constructor( private storageService: StorageService) { }
 
   Create() {
-    const authorization: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
+    const authorization: {token: string, exp: number, user: User} = this.storageService.apiAuthorization;
     this.socket = io(this.url, {
       transports: ['websocket'],
       autoConnect: false,

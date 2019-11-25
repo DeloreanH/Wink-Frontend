@@ -5,6 +5,7 @@ import { Config } from '../../../common/enums/config.enum';
 import { IndexItemType } from '../../../common/enums/indexItemType.emun';
 import { LinkService } from '../../../core/services/link.service';
 import { ProfilesService } from 'src/app/core/services/profiles.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'item-list',
@@ -30,7 +31,8 @@ export class ItemListComponent implements OnInit {
 
   constructor(
     private profilesService: ProfilesService ,
-    private linkService: LinkService
+    private linkService: LinkService,
+    private translateService: TranslateService
   ) {
    }
 
@@ -85,7 +87,7 @@ export class ItemListComponent implements OnInit {
     if (this.itemType.index === IndexItemType.SELECTOR) {
       this.itemType.options.forEach( (option) => {
         if (option._id === this.item.value) {
-          this.item.value = option.name;
+          this.item.value = this.translateService.instant(option.name);
         }
       });
     }

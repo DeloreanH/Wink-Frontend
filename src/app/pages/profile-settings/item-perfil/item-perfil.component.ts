@@ -5,7 +5,7 @@ import { Item } from '../../../common/models/item.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl, Validators } from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-import { MessageError } from '../../../common/enums/messageError.enum';
+import { MessageErrorForms } from '../../../common/enums/messageError.enum';
 
 @Component({
   selector: 'app-item-perfil',
@@ -428,7 +428,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     try {
       if (!this.itemType) {
         return this.form.get('selector').hasError('required') && this.form.get('selector').touched ?
-        MessageError.REQUIRED :  null;
+        MessageErrorForms.REQUIRED :  null;
       } else {
         if (this.form.get('campo1') && this.form.get('campo1').errors && this.form.get('campo1').touched ) {
           return this.ValidError('campo1');
@@ -452,15 +452,15 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (prop) {
       switch (prop) {
         case 'required':
-          return MessageError.REQUIRED;
+          return MessageErrorForms.REQUIRED;
         case 'email':
-          return MessageError.EMAIL;
+          return MessageErrorForms.EMAIL;
         case 'pattern':
-          return MessageError.URL;
+          return MessageErrorForms.URL;
         case 'minlength':
-          return MessageError.MINIMUM;
+          return MessageErrorForms.MINIMUM;
         case 'maxlength':
-          return  MessageError.MAXIMUM;
+          return  MessageErrorForms.MAXIMUM;
       }
     } else {
       return null;

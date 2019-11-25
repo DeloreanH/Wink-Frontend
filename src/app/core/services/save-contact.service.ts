@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { User } from '../../common/models/user.model';
-import { Item } from '../../common/models/item.model';
 import { NameCategories } from '../../common/enums/nameCaterogies.enum';
 import { LinkService } from './link.service';
 import { IndexItemType } from '../../common/enums/indexItemType.emun';
-import { Platform, ToastController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { Config } from '../../common/enums/config.enum';
 import { ToastService } from './toast.service';
+import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 
 
 @Injectable({
@@ -20,7 +20,6 @@ export class SaveContactService {
   private emails: ContactField[] = [];
   private urls: ContactField[] = [];
   private ims: ContactField[] = [];
-  private ready = false;
   private birthday;
   private nickname;
   private address;
@@ -62,11 +61,11 @@ export class SaveContactService {
           }
           contact.save().then(
             () => {
-              this.toastService.Toast('Contact saved!');
+              this.toastService.Toast(MessagesServices.CONTACT_SAVE);
               this.Clear();
             },
             (err: any) => {
-              this.toastService.Toast('Error saving contact.');
+              this.toastService.Toast(MessagesServices.ERROR_CONTACT_SAVE);
               console.error('Error saving contact.', err);
               this.Clear();
             }
@@ -74,7 +73,7 @@ export class SaveContactService {
         }
       }
     } catch (err) {
-      this.toastService.Toast('Error saving contact.');
+      this.toastService.Toast(MessagesServices.ERROR_CONTACT_SAVE);
       console.log('Error Create Save-Contact', err);
     }
   }

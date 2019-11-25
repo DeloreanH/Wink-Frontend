@@ -7,13 +7,12 @@ import { WinkService } from 'src/app/core/services/wink.service';
 import { User } from 'src/app/common/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { Wink } from 'src/app/common/models/wink.model';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss'],
+  styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
 

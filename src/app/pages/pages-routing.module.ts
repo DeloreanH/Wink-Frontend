@@ -14,7 +14,8 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+            loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
+            
           }
         ]
       },
@@ -23,7 +24,8 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('./profile-settings/profile-settings.module').then(m => m.ProfileSettingsPageModule)
+            loadChildren: () => import('./profile-settings/profile-settings.module').then(m => m.ProfileSettingsPageModule),
+            
           }
         ]
       },
@@ -41,7 +43,8 @@ export const routesTab: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('./winks/winks.module').then(m => m.WinksPageModule)
+            loadChildren: () => import('./winks/winks.module').then(m => m.WinksPageModule),
+            
           }
         ]
       },

@@ -1,8 +1,8 @@
-export enum MessageError {
-  REQUIRED = 'Required field.',
-  MAXIMUM = 'Exceeds the character limit.',
-  EMAIL = 'Invalid email.',
-  URL = 'Invalid URL.',
-  MINIMUM = 'Does not meet the minimum characters.',
-  CHARACTER = 'Character not allowed.'
+export enum MessageErrorForms {
+  REQUIRED = 'WINK.FORMS.ERROR.REQUIRED',
+  MAXIMUM = 'WINK.FORMS.ERROR.MAXIMUM',
+  EMAIL = 'WINK.FORMS.ERROR.EMAIL',
+  URL = 'WINK.FORMS.ERROR.URL',
+  MINIMUM = 'WINK.FORMS.ERROR.MINIMUM',
+  CHARACTER = 'WINK.FORMS.ERROR.CHARACTER'
 }

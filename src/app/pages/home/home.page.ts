@@ -10,6 +10,8 @@ import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Platform, NavController, IonInfiniteScroll } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { language } from 'src/app/common/constants/storage.constants';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +34,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   private contadorUser = 10;
   load = false;
   arrayLoad = [] = [];
-  noNearby = Config.NO_NEARBY;
 
   constructor(
     private authService: AuthService,
@@ -84,10 +85,15 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   lAN() {
+    console.log('LAN');
     if (this.translateService.currentLang === 'es') {
       this.translateService.use('en');
+      console.log('es');
+      StorageService.SetItem(language, 'en');
     } else {
+      console.log('en');
       this.translateService.use('es');
+      StorageService.SetItem(language, 'es');
     }
   }
 

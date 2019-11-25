@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { auth, language } from 'src/app/common/constants/storage.constants';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class StorageService {
 
   static Parse(data: string): any {
@@ -35,6 +37,10 @@ export class StorageService {
     }
   }
 
+  static DeleteItem(key: string) {
+    localStorage.removeItem(key);
+  }
+
   static SetItem(key: string, data: any): void {
     if (typeof data === 'object') {
       data = StorageService.Stringify(data);
@@ -49,7 +55,15 @@ export class StorageService {
     }
   }
 
-  public get apiAuthorization(): string {
-    return StorageService.GetItem('userData');
+  public get apiAuthorization() {
+    return StorageService.GetItem(auth, true);
+  }
+
+  public get apiLanguage() {
+    return StorageService.GetItem(language);
+  }
+
+  public DeleteAuthorization() {
+    StorageService.DeleteItem(auth);
   }
 }

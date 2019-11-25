@@ -13,6 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   {

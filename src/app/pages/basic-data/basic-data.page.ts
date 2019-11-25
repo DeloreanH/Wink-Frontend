@@ -9,7 +9,7 @@ import { UpdateAvatarService } from '../../core/services/update-avatar.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
-import { MessageError } from 'src/app/common/enums/messageError.enum';
+import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
 import { SocketService } from 'src/app/core/services/socket.service';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 @Component({
@@ -227,15 +227,15 @@ export class BasicDataPage implements OnInit, OnDestroy {
       if (prop) {
         switch (prop) {
           case 'required':
-            return MessageError.REQUIRED;
+            return MessageErrorForms.REQUIRED;
           case 'email':
-            return MessageError.EMAIL;
+            return MessageErrorForms.EMAIL;
           case 'minlength':
-            return MessageError.MINIMUM;
+            return MessageErrorForms.MINIMUM;
           case 'maxlength':
-            return MessageError.MAXIMUM;
+            return MessageErrorForms.MAXIMUM;
           case 'pattern':
-              return MessageError.CHARACTER;
+              return MessageErrorForms.CHARACTER;
         }
       }
     }

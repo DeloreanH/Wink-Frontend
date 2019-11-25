@@ -13,6 +13,14 @@ import { ProfilesService } from 'src/app/core/services/profiles.service';
 import { SocketEventsListen, SocketService } from 'src/app/core/services/socket.service';
 import { Subscription } from 'rxjs';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 @Component({
   selector: 'public-profile',
@@ -47,6 +55,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     private navController: NavController,
     private socketService: SocketService,
     private platform: Platform,
+    private translateService: TranslateService
   ) {
     // this.user = this.userService.User();
   }
@@ -133,7 +142,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
   async GetWink() {
     try {
       if (this.userWink) {
@@ -194,16 +202,16 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
 
   async CancelWink() {
     const alert = await this.alertController.create({
-      header: 'Confirmar!',
-      message: 'Desea <strong>cancelar</strong> el wink?',
+      header: this.translateService.instant('WINK.DIALOGUES.TITLES.CONFIRM') ,
+      message: this.translateService.instant('WINK.DIALOGUES.MESSAGES.CANCEL_WINK') ,
       buttons: [
         {
-          text: 'Cancelar',
+          text: this.translateService.instant('WINK.BUTTONS.DISCARD'),
           role: 'cancel',
           handler: (blah) => {
           }
         }, {
-          text: 'Okay',
+          text: this.translateService.instant('WINK.BUTTONS.YES'),
           handler: () => {
             this.DeleteWink();
           }
@@ -216,39 +224,44 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
 
   FilterItems(items: Item[], userW: User) {
     this.publicItems = [];
-    if (items && items.length > 0) {
-      let contador = 0;
-      items = items.filter(
-        item => {
-          return item.value && item.value !== '';
+    let contador = 0;
+    if (items) {
+      if (items.length > 0) {
+        items = items.filter(
+          item => {
+            return item.value && item.value !== '';
+          }
+        );
+        if (items[0].position === -1) {
+          contador++;
         }
-      );
-      if (items[0].position === -1) {
-        contador++;
       }
       const age = new Item({
         _id: Config.ICON_AGE,
-        value: (userW.age ? userW.age  : '0') + ' años',
+        value: (userW.age ? userW.age  : '0') + ' ' +  this.translateService.instant(Config.YEARS) ,
         custom: Config.NAME_AGE,
         position: IndexItemType.BIOGARFIA,
         section: null
       });
       items.splice(contador, 0, age);
       contador ++;
-      if (this.userService.genders[3].value !== userW.gender) {
-        const gender = new Item({
-          _id: Config.ICON_GENDER,
-          value: userW.gender,
-          custom: Config.NAME_GENDER,
-          position: IndexItemType.BIOGARFIA,
-          section: null
-        });
-        items.splice(contador, 0, gender);
-        contador ++;
+      if (userW.gender && userW.gender !== '' && this.userService.genders[3].value !== userW.gender) {
+        const genderValue = this.userService.GetGender(userW.gender);
+        if (genderValue) {
+          const gender = new Item({
+            _id: Config.ICON_GENDER,
+            value:  this.translateService.instant(genderValue.description),
+            custom: Config.NAME_GENDER,
+            position: IndexItemType.BIOGARFIA,
+            section: null,
+          });
+          items.splice(contador, 0, gender);
+          contador ++;
+        }
       }
       this.publicItems.push(...items);
+      this.load = false;
     }
-    this.load = false;
   }
 
   async Back() {
@@ -268,18 +281,22 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   async GoPrivateProfile() {
     try {
       await this.navController.navigateForward(
-        [this.urlPrivate, this.userWink._id , this.wink._id, this.origin]
+        [this.urlPrivate, this.userWink._id , this.wink._id, this.origin],
+        {
+          animationDirection: 'forward',
+          animated: true
+        }
       );
     } catch (err) {
       console.log('Error Go', err.message);
     }
   }
 
-  ErrorImagen() {
+ErrorImagen() {
     this.userWink.avatarUrl = this.avatar;
   }
 
-  Avatar() {
+Avatar() {
     let avatar;
     if (this.userWink) {
       if (this.userWink.avatarUrl.startsWith('http')) {

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { DistancePipe } from './pipes/distance.pipe';
 import { NamesPipe } from './pipes/names.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
 
@@ -25,6 +26,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     FontAwesomeModule,
     MatChipsModule,
     FormsModule,
+    TranslateModule.forChild(),
   ],
   exports: [
     ItemListComponent,

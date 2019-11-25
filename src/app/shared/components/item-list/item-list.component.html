@@ -11,12 +11,12 @@
   <ion-label class="label-item">
     <div>
           <ion-label class="padding-left-10 font-size-12" >
-            {{itemType? itemType.description : 'Title'}}
+            {{(itemType? itemType.description : 'Title') | translate}}
           </ion-label>
-      <div >
+      <div class="text-margin">
         <mat-chip-list
           *ngIf="itemType && itemType.index === indexChip" 
-          class="chip-item chip-margin"
+          class="chip-item chip-margin "
           >
           <ion-chip outline color="primary"
           *ngFor="let chip of chips">

@@ -8,13 +8,15 @@ import { SlRouterService } from '@virtwoo/sl-router';
 import { VirtwooAuthPathName } from '@virtwoo/auth';
 import { AuthService } from './auth/services/auth.service';
 import { Subscription } from 'rxjs';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd, RouterOutlet } from '@angular/router';
 import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
+import { StorageService } from './core/services/storage.service';
+import { language } from './common/constants/storage.constants';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
 
@@ -26,11 +28,11 @@ export class AppComponent {
     private statusBar: StatusBar,
     private translateService: TranslateService,
     private slRouterService: SlRouterService,
-    private authServicie: AuthService,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService
   ) {
-    this.translateService.setDefaultLang('en');
-    this.translateService.use('es');
+    // this.translateService.setDefaultLang('en');
+    // this.translateService.use('es');
     this.initializeApp();
   }
 
@@ -39,16 +41,28 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    });
-    this.platform.backButton.subscribe(
-      (resp) => {
-      alert('atras');
-      resp.register(0, () => alert('atras'));
+      this.Language();
     });
   }
 
+  private Language() {
+    const lang = this.storageService.apiLanguage;
+    if (lang) {
+      if (lang === 'es') {
+        this.translateService.setDefaultLang('en');
+      } else {
+        this.translateService.setDefaultLang('es');
+      }
+      this.translateService.use(lang);
+    } else {
+      this.translateService.setDefaultLang('en');
+      this.translateService.use('es');
+      StorageService.SetItem(language, 'es');
+    }
+  }
+
   private checkUser(): void {
-    const token = localStorage.getItem('userData');
+    const token = this.storageService.apiAuthorization;
 
     if (token) {
       // this.slRouterService.setRoot(RoutesName.Home, true);
@@ -60,4 +74,5 @@ export class AppComponent {
       this.router.navigate(['/' + RoutesPrincipal.LOGIN]);
     }
   }
+
 }

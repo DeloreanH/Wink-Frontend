@@ -104,7 +104,9 @@
           [icon]="['fas', 'book-open'] "
           class="icono"
           slot="start"></fa-icon>
-          <ion-label position="floating" class="pad-let-10">Biografia</ion-label>
+          <ion-label position="floating" class="pad-let-10">
+            {{ 'WINK.ITEM_TYPES.BIOGRAPHY' | translate}}
+          </ion-label>
           <ion-textarea maxlength="250"
           formControlName="biografia"
           (ionInput)="ChangeData()"

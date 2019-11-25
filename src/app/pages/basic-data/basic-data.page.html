@@ -138,7 +138,7 @@
           </ion-input>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('firstName') }}
+          {{ MessageError('firstName') | translate }}
         </ion-text>
         <ion-item>
             <fa-icon
@@ -155,7 +155,7 @@
           </ion-input>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('lastName') }}
+          {{ MessageError('lastName') | translate }}
         </ion-text>
         <ion-item>
             <fa-icon
@@ -174,7 +174,7 @@
           </ion-input>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('username') }}
+          {{ MessageError('username') | translate }}
         </ion-text>
         <ion-item>
             <fa-icon
@@ -192,7 +192,7 @@
           </ion-input>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('email') }}
+          {{ MessageError('email') | translate }}
         </ion-text>
         <div class="phone">
           <div class="phoneCode">
@@ -212,7 +212,7 @@
               </ion-input>
             </ion-item>
             <ion-text color="danger">
-              {{ MessageError('phoneCode') }}
+              {{ MessageError('phoneCode') | translate }}
             </ion-text>
           </div>
           <div class="phoneNumber">
@@ -227,7 +227,7 @@
               </ion-input>
             </ion-item>
             <ion-text color="danger">
-              {{ MessageError('phoneNumber') }}
+              {{ MessageError('phoneNumber') | translate }}
             </ion-text>
           </div>
         </div>
@@ -250,7 +250,7 @@
           ></ion-datetime>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('birthday') }}
+          {{ MessageError('birthday') | translate }}
         </ion-text>
         <ion-item>
           <fa-icon
@@ -267,12 +267,12 @@
             placeholder="Seleccione un sexo"
             formControlName="gender">
             <ion-select-option *ngFor="let gender of genders" [value]="gender.value">
-              {{gender.description}}
+              {{gender.description | translate}}
             </ion-select-option>
           </ion-select>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('gender') }}
+          {{ MessageError('gender') | translate }}
         </ion-text>
         <ion-item>
           <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
@@ -281,7 +281,7 @@
           </ion-label>
         </ion-item>
         <ion-text color="danger">
-          {{ MessageError('autosave') }}
+          {{ MessageError('autosave') | translate }}
         </ion-text>
       </ion-list>
       <ion-button expand="block" type="submit" [disabled]="FormValid()">

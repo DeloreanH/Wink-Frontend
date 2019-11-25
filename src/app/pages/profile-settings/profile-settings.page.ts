@@ -259,7 +259,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
     }
     for (const categoria of this.categories) {
       obj.push({
-        text: categoria.description,
+        text: this.translateService.instant(categoria.description),
         icon: 'add',
         handler: () => {
           this.item.category = categoria.name;

@@ -1,14 +1,18 @@
 export enum MessagesServices {
-  WINK_SENT = 'Wink sent.',
-  TRY_AGAIN_LATER = 'Try again later.',
-  WINK_ERROR = 'Unexpected error occurred while turning on the wink.',
 
-  SAVE_ITEMS = 'Your settings have been saved successfully.',
-  SAVE_PHOTO = 'Photo uploaded successfully.',
-  SAVE_INFORMATION = 'Your information has been saved successfully.',
+  WINK_SENT = 'WINK.SERVICES.WINK_SENT',
+  TRY_AGAIN_LATER = 'WINK.SERVICES.TRY_AGAIN_LATER',
+  CONTACT_SAVE = 'WINK.SERVICES.CONTACT_SAVE',
+  ERROR_CONTACT_SAVE = 'WINK.SERVICES.ERROR_CONTACT_SAVE',
 
-  ERROR_SAVE = 'There was a problem trying to save. try again later.',
-  ERROR_GET_INFORMATION = 'A problem has occurred trying to get your information. try again later.',
-  ERROR_PHOTO = 'There was a problem trying to upload your photo.',
+  WINK_ERROR = 'WINK.SERVICES.WINK_ERROR',
+
+  SAVE_ITEMS = 'WINK.SERVICES.SAVE_ITEMS',
+  SAVE_PHOTO = 'WINK.SERVICES.SAVE_PHOTO',
+  SAVE_INFORMATION = 'WINK.SERVICES.SAVE_INFORMATION',
+
+  ERROR_SAVE = 'WINK.SERVICES.ERROR_SAVE',
+  ERROR_GET_INFORMATION = 'WINK.SERVICES.ERROR_GET_INFORMATION',
+  ERROR_PHOTO = 'WINK.SERVICES.ERROR_PHOTO',
 
 }

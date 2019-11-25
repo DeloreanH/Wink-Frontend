@@ -11,6 +11,7 @@ import { NavController } from '@ionic/angular';
 import { RoutesPrincipal } from '../../../app/common/enums/routes/routesPrincipal.enum';
 import { SocketService } from 'src/app/core/services/socket.service';
 import { WinkService } from 'src/app/core/services/wink.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class AuthService {
     private navController: NavController,
     private socketService: SocketService,
     private winkService: WinkService,
+    private storageService: StorageService,
   ) {
    }
 
@@ -41,7 +43,8 @@ export class AuthService {
    }
 
   AutoLogin() {
-    const userData: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
+    const userData: {token: string, exp: number, user: User} = this.storageService.apiAuthorization;
+    // JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
       return;
     }
@@ -60,7 +63,7 @@ export class AuthService {
       // if (respuesta.status === 'logout successfully' ) {
       this.user.next(null);
       this.userService.User(null);
-      localStorage.removeItem('userData');
+      this.storageService.DeleteAuthorization();
       this.socketService.Disconnect();
       this.navController.navigateRoot('/' + RoutesPrincipal.LOGIN);
       this.winkService.Destroy();

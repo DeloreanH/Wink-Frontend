@@ -9,6 +9,7 @@ import { Location } from '../../common/models/location.model';
 import { SocketService } from './socket.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 import { ToastService } from './toast.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +19,22 @@ export class UserService {
   private user: User = null;
   userChanged = new Subject<User>();
   genders: { value: string, description: string}[] = [
-    { value: 'femile', description: 'Mujer' },
-    { value: 'male', description: 'Hombre'},
-    { value: 'other', description: 'Otro'},
-    { value: 'i prefer not to say', description: 'Prefiero no decirlo'}
+    { value: 'femile', description: 'WINK.OPTIONS_ITEMS.FEMILE' },
+    { value: 'male', description: 'WINK.OPTIONS_ITEMS.MALE'},
+    { value: 'other', description: 'WINK.OPTIONS_ITEMS.OTHER'},
+    { value: 'i prefer not to say', description: 'WINK.OPTIONS_ITEMS.I_PREFER_NOT_TO_SAY'}
   ];
 
   constructor(
     private http: HttpClient,
     private socketService: SocketService,
     private toastService: ToastService,
+    private storageService: StorageService,
   ) { }
+
+  GetGender(valueGender: string) {
+    return this.genders.find(gender => gender.value === valueGender);
+  }
 
   User(user?: User, updateStorage?: boolean) {
     if (user) {
@@ -73,10 +79,11 @@ export class UserService {
   }
 
   private UpdateStorage() {
-    const userData: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
+    const userData: {token: string, exp: number, user: User} = this.storageService.apiAuthorization;
     if (userData) {
       const loadedUser = new AuthUser(userData.token, userData.exp, this.user);
-      localStorage.setItem('userData', JSON.stringify(loadedUser));
+      StorageService.SetItem('userData', loadedUser);
+      // localStorage.setItem('userData', JSON.stringify(loadedUser));
     }
   }
 
