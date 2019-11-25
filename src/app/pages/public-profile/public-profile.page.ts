@@ -29,7 +29,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   urlPrivate = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PRIVATE_PROFILES;
   publicItems: Item[] = [];
   wink: Wink;
-  load = false;
+  load = true;
   origin;
   avatar: string = Config.AVATAR;
   deletedWinkSubs = new Subscription();
@@ -52,6 +52,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.load = true;
     this.route.params
     .subscribe(
       async (params: Params) => {
@@ -72,15 +73,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    this.backButtonSubs = this.platform.backButton.subscribe((res) => {
-      alert('Aquiiii');
-      this.Back();
-      res.register(0,
-        () => {
-          this.Back();
-        }
-      );
-    });
   }
 
   ngAfterViewInit(): void {
@@ -159,10 +151,10 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.send = true;
         }
-        this.load = true;
       }
     } catch (err) {
       console.log('Error GetWink', err);
+      this.load = false;
     }
   }
 
@@ -256,6 +248,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       }
       this.publicItems.push(...items);
     }
+    this.load = false;
   }
 
   async Back() {

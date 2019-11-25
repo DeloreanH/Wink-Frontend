@@ -13,198 +13,283 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<div
-  *ngIf="loading"
-  class="spinner">
-</div>
-
-<ion-content
-  *ngIf="!loading"
-  class="ion-padding">
-  <form
-    [formGroup]="form"
-    (ngSubmit)="onSubmit()">
+<ion-content  class="ion-padding">
+  <div *ngIf="loading">
     <div class="contenedorAvatar" >
-      <ion-avatar (click)="SeleccionarImagen()" class="avatar-profile">
-        <ion-img
-          class="img-avatar"
-          *ngIf="!loadingAvatar"
-          alt="Avatar"
-          (ionError)="ErrorImagen()"
-          [src]="Avatar()" >
-        </ion-img>
-        <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
+      <ion-avatar class="avatar-profile"> 
+        <ion-skeleton-text animated></ion-skeleton-text>
       </ion-avatar>
     </div>
-    <ion-list>
-      <ion-item >
-          <fa-icon
-            [icon]="['fas', 'user']"
-            class="icono icon-center"
-            slot="start" >
-          </fa-icon>
-        <ion-label position="floating" >
-            {{'WINK.BASIC_DATA.FORM.FIRST_NAME' | translate}}
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <div class="phone">
+      <div class="phoneCode">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </div>
+      <div class="phoneNumber">
+        <ion-item >
+          <ion-label>
+            <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
         </ion-label>
-        <ion-input
-
-          formControlName="firstName"
-        >
-        </ion-input>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('firstName') }}
-      </ion-text>
-      <ion-item>
-          <fa-icon
-            [icon]="['fas', 'user']"
-            class="icono icon-center"
-            slot="start" >
-          </fa-icon>
-        <ion-label position="floating" >
-            {{'WINK.BASIC_DATA.FORM.LAST_NAME' | translate}}
-        </ion-label>
-        <ion-input
-          formControlName="lastName"
-        >
-        </ion-input>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('lastName') }}
-      </ion-text>
-      <ion-item>
-          <fa-icon
-            [icon]="['fas', 'user']"
-            class="icono icon-center"
-            slot="start" >
-          </fa-icon>
-        <ion-label position="floating" >
-            {{'WINK.BASIC_DATA.FORM.USERNAME' | translate}}
-        </ion-label>
-        <ion-input
-          formControlName="username"
-          maxlength="16"
-          minlength="4"
-        >
-        </ion-input>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('username') }}
-      </ion-text>
-      <ion-item>
-          <fa-icon
-            [icon]="['fas', 'envelope']"
-            class="icono icon-center"
-            slot="start" >
-          </fa-icon>
-        <ion-label position="floating" >
-            {{'WINK.BASIC_DATA.FORM.EMAIL' | translate}}
-        </ion-label>
-        <ion-input
-          formControlName="email"
-          type="email"
-        >
-        </ion-input>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('email') }}
-      </ion-text>
-      <div class="phone">
-        <div class="phoneCode">
-          <ion-item>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-skeleton-text animated class="skeleton-button"></ion-skeleton-text>
+    <ion-skeleton-text animated class="skeleton-button"></ion-skeleton-text>
+    
+     
+  </div>
+  <div *ngIf="!loading">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()">
+      <div class="contenedorAvatar" >
+        <ion-avatar (click)="SeleccionarImagen()" class="avatar-profile">
+          <ion-img
+            class="img-avatar"
+            *ngIf="!loadingAvatar"
+            alt="Avatar"
+            (ionError)="ErrorImagen()"
+            [src]="Avatar()" >
+          </ion-img>
+          <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
+        </ion-avatar>
+      </div>
+      <ion-list>
+        <ion-item >
             <fa-icon
-              [icon]="['fas', 'mobile-alt']"
+              [icon]="['fas', 'user']"
               class="icono icon-center"
               slot="start" >
             </fa-icon>
-            <ion-label position="floating" >
-              {{'WINK.BASIC_DATA.FORM.CODE' | translate}}
-            </ion-label>
-            <ion-input
-              type="number"
-              formControlName="phoneCode"
-            >
-            </ion-input>
-          </ion-item>
-          <ion-text color="danger">
-            {{ MessageError('phoneCode') }}
-          </ion-text>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.FIRST_NAME' | translate}}
+          </ion-label>
+          <ion-input
+
+            formControlName="firstName"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('firstName') }}
+        </ion-text>
+        <ion-item>
+            <fa-icon
+              [icon]="['fas', 'user']"
+              class="icono icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.LAST_NAME' | translate}}
+          </ion-label>
+          <ion-input
+            formControlName="lastName"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('lastName') }}
+        </ion-text>
+        <ion-item>
+            <fa-icon
+              [icon]="['fas', 'user']"
+              class="icono icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.USERNAME' | translate}}
+          </ion-label>
+          <ion-input
+            formControlName="username"
+            maxlength="16"
+            minlength="4"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('username') }}
+        </ion-text>
+        <ion-item>
+            <fa-icon
+              [icon]="['fas', 'envelope']"
+              class="icono icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.EMAIL' | translate}}
+          </ion-label>
+          <ion-input
+            formControlName="email"
+            type="email"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('email') }}
+        </ion-text>
+        <div class="phone">
+          <div class="phoneCode">
+            <ion-item>
+              <fa-icon
+                [icon]="['fas', 'mobile-alt']"
+                class="icono icon-center"
+                slot="start" >
+              </fa-icon>
+              <ion-label position="floating" >
+                {{'WINK.BASIC_DATA.FORM.CODE' | translate}}
+              </ion-label>
+              <ion-input
+                type="number"
+                formControlName="phoneCode"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger">
+              {{ MessageError('phoneCode') }}
+            </ion-text>
+          </div>
+          <div class="phoneNumber">
+            <ion-item >
+              <ion-label position="floating" >
+                  {{'WINK.BASIC_DATA.FORM.PHONE_NUMBER' | translate}}
+              </ion-label>
+              <ion-input
+                type="number"
+                formControlName="phoneNumber"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger">
+              {{ MessageError('phoneNumber') }}
+            </ion-text>
+          </div>
         </div>
-        <div class="phoneNumber">
-          <ion-item >
-            <ion-label position="floating" >
-                {{'WINK.BASIC_DATA.FORM.PHONE_NUMBER' | translate}}
-            </ion-label>
-            <ion-input
-              type="number"
-              formControlName="phoneNumber"
-            >
-            </ion-input>
-          </ion-item>
-          <ion-text color="danger">
-            {{ MessageError('phoneNumber') }}
-          </ion-text>
-        </div>
-      </div>
-      <ion-item>
-        <fa-icon
-          [icon]="['fas', 'calendar-alt']"
+        <ion-item>
+          <fa-icon
+            [icon]="['fas', 'calendar-alt']"
+            class="icono icon-center"
+            slot="start" >
+          </fa-icon>
+          <ion-label position="floating" >
+            {{'WINK.BASIC_DATA.FORM.BIRTHDAY' | translate}}
+          </ion-label>
+          <ion-datetime
+            displayFormat="DD/MM/YYYY"
+            min="1900-01-01"
+            [max]="FechaActual() | date:'yyy-MM-dd'"
+            cancel-text="Cancelar"
+            done-text="Aceptar"
+            formControlName="birthday"
+          ></ion-datetime>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('birthday') }}
+        </ion-text>
+        <ion-item>
+          <fa-icon
+          [icon]="['fas', 'genderless']"
           class="icono icon-center"
-          slot="start" >
-        </fa-icon>
-        <ion-label position="floating" >
-          {{'WINK.BASIC_DATA.FORM.BIRTHDAY' | translate}}
-        </ion-label>
-        <ion-datetime
-          displayFormat="DD/MM/YYYY"
-          min="1900-01-01"
-          [max]="FechaActual() | date:'yyy-MM-dd'"
-          cancel-text="Cancelar"
-          done-text="Aceptar"
-          formControlName="birthday"
-        ></ion-datetime>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('birthday') }}
-      </ion-text>
-      <ion-item>
-        <fa-icon
-        [icon]="['fas', 'genderless']"
-        class="icono icon-center"
-        slot="start" ></fa-icon>
-        <ion-label position="floating" >
-          {{'WINK.BASIC_DATA.FORM.GENDER' | translate}}
-        </ion-label>
-        <ion-select
-          interface="popover"
-          ok-text="Aceptar"
-          cancel-text="Cancelar"
-          placeholder="Seleccione un sexo"
-          formControlName="gender">
-          <ion-select-option *ngFor="let gender of genders" [value]="gender.value">
-            {{gender.description}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('gender') }}
-      </ion-text>
-      <ion-item>
-        <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
-        <ion-label  >
-          {{'WINK.BASIC_DATA.FORM.AUTOSAVE_CONTACTS' | translate}}
-        </ion-label>
-      </ion-item>
-      <ion-text color="danger">
-        {{ MessageError('autosave') }}
-      </ion-text>
-    </ion-list>
-    <ion-button expand="block" type="submit" [disabled]="FormValid()">
-        {{'WINK.BUTTONS.SAVE' | translate}}
-    </ion-button>
-    <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()">
-      {{'WINK.BUTTONS.CANCEL' | translate}}
-    </ion-button>
-  </form>
+          slot="start" ></fa-icon>
+          <ion-label position="floating" >
+            {{'WINK.BASIC_DATA.FORM.GENDER' | translate}}
+          </ion-label>
+          <ion-select
+            interface="popover"
+            ok-text="Aceptar"
+            cancel-text="Cancelar"
+            placeholder="Seleccione un sexo"
+            formControlName="gender">
+            <ion-select-option *ngFor="let gender of genders" [value]="gender.value">
+              {{gender.description}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('gender') }}
+        </ion-text>
+        <ion-item>
+          <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
+          <ion-label  >
+            {{'WINK.BASIC_DATA.FORM.AUTOSAVE_CONTACTS' | translate}}
+          </ion-label>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('autosave') }}
+        </ion-text>
+      </ion-list>
+      <ion-button expand="block" type="submit" [disabled]="FormValid()">
+          {{'WINK.BUTTONS.SAVE' | translate}}
+      </ion-button>
+      <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()">
+        {{'WINK.BUTTONS.CANCEL' | translate}}
+      </ion-button>
+    </form>
+  </div>
 </ion-content>

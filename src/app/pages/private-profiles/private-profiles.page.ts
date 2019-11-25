@@ -35,6 +35,7 @@ export class PrivateProfilesPage implements OnInit {
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
   avatar: string = Config.AVATAR;
+  load = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,6 +53,7 @@ export class PrivateProfilesPage implements OnInit {
   }
 
   ngOnInit() {
+    this.load = true;
     this.route.params
     .subscribe(
       async (params: Params) => {
@@ -100,6 +102,7 @@ export class PrivateProfilesPage implements OnInit {
         );
       }
     );
+    this.load = false;
   }
 
    async Confirm() {
