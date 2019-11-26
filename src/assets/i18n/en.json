@@ -142,7 +142,12 @@
       "OK": "OK",
       "DISCARD": "Discard",
       "YES": "Yes",
-      "NO": "No"
+      "NO": "No",
+      "END": "End",
+      "PREVIOUS": "Previous",
+      "PREV": "Prev",
+      "NEXT": "Next",
+      "NEXT2": "Next"
     },
     "CATEGORY": {
       "CONTACT":	"Contact",

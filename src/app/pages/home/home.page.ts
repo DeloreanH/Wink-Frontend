@@ -11,7 +11,10 @@ import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Platform, NavController, IonInfiniteScroll } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/core/services/storage.service';
-import { language } from 'src/app/common/constants/storage.constants';
+import { language, tours } from 'src/app/common/constants/storage.constants';
+import { TourService } from 'ngx-tour-ngx-popper';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
+import { Tours } from 'src/app/common/interfaces/tours.interface';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +30,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   user: User = null;
   userSubscription = new Subscription();
   maxStatus = Config.MAX_STATUS;
-  placeholderStatus = Config.MESSAGE_PLACEHOLDER_STATUS;
   personal = true;
   profesional  = true;
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
@@ -43,6 +45,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private navController: NavController,
     private translateService: TranslateService,
+    private tourService: TourService,
   ) {
     this.user = this.userService.User();
     for (let i = 0; i < 15; i++) {
@@ -97,8 +100,62 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  ValidateTour() {
+    const tour: Tours = StorageService.GetItem(tours, true);
+    if (tour) {
+      if (tour.home) {
+        this.Tour(tour);
+      }
+    } else {
+      StorageService.SetItem(tours, {
+        home: true,
+        profile: true,
+        public: true,
+        private: true,
+        winks: true
+      });
+      this.Tour(tour);
+    }
+  }
+
+  Tour(tour: Tours) {
+    this.tourService.initialize(
+      [{
+        anchorId: 'status',
+        content: 'Comparte lo que estes haciendo.',
+        title: 'Status',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        }
+      }, {
+        anchorId: 'profiles',
+        // tslint:disable-next-line: max-line-length
+        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
+        title: 'Second',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        },
+        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
+      }]
+    );
+    this.tourService.start();
+    this.tourService.end$.subscribe(
+      () => {
+        tour.home = false;
+        StorageService.SetItem(tours, tour);
+      }
+    );
+  }
+
   ngAfterViewInit() {
     this.VisibilityUser();
+    this.ValidateTour();
   }
 
   VisibilityUser() {

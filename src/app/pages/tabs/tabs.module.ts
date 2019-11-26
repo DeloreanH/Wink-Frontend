@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { PagesRoutingModule } from '../pages-routing.module';
 import { TabsComponent } from './tabs.component';
 import { IonicModule } from '@ionic/angular';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -14,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     CommonModule,
     IonicModule,
-    PagesRoutingModule
+    PagesRoutingModule,
   ],
   exports: [
   ],

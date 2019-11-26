@@ -12,6 +12,7 @@ import { Router, NavigationStart, NavigationEnd, RouterOutlet } from '@angular/r
 import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 import { StorageService } from './core/services/storage.service';
 import { language } from './common/constants/storage.constants';
+import { TourService } from 'ngx-tour-md-menu';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,7 @@ export class AppComponent {
     private translateService: TranslateService,
     private slRouterService: SlRouterService,
     private router: Router,
-    private storageService: StorageService
+    private storageService: StorageService,
   ) {
     // this.translateService.setDefaultLang('en');
     // this.translateService.use('es');

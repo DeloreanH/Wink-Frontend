@@ -5,6 +5,7 @@ import { User } from '../../common/models/user.model';
 import { Wink } from '../../common/models/wink.model';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
+import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 
 
 enum SocketEvents {
@@ -34,7 +35,7 @@ export class SocketService  {
   constructor( private storageService: StorageService) { }
 
   Create() {
-    const authorization: {token: string, exp: number, user: User} = this.storageService.apiAuthorization;
+    const authorization: UserData = this.storageService.apiAuthorization;
     this.socket = io(this.url, {
       transports: ['websocket'],
       autoConnect: false,

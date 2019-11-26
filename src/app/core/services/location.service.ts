@@ -55,7 +55,7 @@ export class LocationService {
             resolve(response);
           } else {
             this.toastService.Toast('Activate the location of your device to continue.');
-            reject(null);
+            reject({message: 'No LocationEnabled'});
           }
         } catch (err) {
           reject(err);
@@ -95,7 +95,7 @@ export class LocationService {
                 resolve(resp);
               } else {
                 this.toastService.Toast('You must activate your location to use the service.');
-                reject(null);
+                reject({message: 'No hasPermission'});
               }
             },
             err => {

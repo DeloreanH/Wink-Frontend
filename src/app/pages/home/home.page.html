@@ -7,6 +7,7 @@
 </ion-header>
 
 <ion-content >
+
   <ion-card>
     <ion-input 
     #status
@@ -16,6 +17,9 @@
     [placeholder]="'WINK.HOME.STATUS' | translate" 
     (ionBlur)="ChangeStatus($event)"></ion-input>
   </ion-card>
+
+  <div tourAnchor="status"></div>
+
   <ion-refresher slot="fixed" (ionRefresh)="GPS($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
@@ -24,9 +28,7 @@
       [refreshingText]="'WINK.HOME.REFRESHING' | translate">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-button (click)="lAN()">
-    Cambio
-  </ion-button>
+    
   <ion-list>
     <ion-grid *ngIf="nearbyUsers.length > 0  && !load" class="grid-home">
       <ion-row > 
@@ -45,6 +47,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
     <ion-grid *ngIf="load" class="grid-home">
       <ion-row > 
         <ion-col 
@@ -61,24 +64,35 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
     <div *ngIf="nearbyUsers.length === 0 && !load" class="vacio">
-      <p >
+      <p>
         {{'WINK.HOME.NO_NEARBY' | translate}}
       </p>
       <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
     </div>
+
   </ion-list>
   
   <ion-infinite-scroll threshold="100px"  (ionInfinite)="LoadUsers($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       [loadingText]="'WINK.HOME.LOADING_NEARBY' | translate"
-      ></ion-infinite-scroll-content>    
+      >
+    </ion-infinite-scroll-content>    
   </ion-infinite-scroll>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed"  >
+
+  <ion-fab 
+    vertical="bottom" 
+    horizontal="end" 
+    slot="fixed"  >
+
+    <div tourAnchor="profiles"></div>
+
     <ion-fab-button size="small">
-        <ion-icon name="eye"></ion-icon>
+      <ion-icon name="eye"></ion-icon>
     </ion-fab-button>
+
     <ion-fab-list side="top">  
       <ion-fab-button 
         (click)="ChangeProfiles(false)" 
@@ -89,6 +103,7 @@
           
           ></fa-icon>
       </ion-fab-button>
+
       <ion-fab-button
         (click)="ChangeProfiles(true)" 
         [ngClass]="{'activo': personal, 'inactivo' : !personal}">
@@ -98,5 +113,9 @@
         ></fa-icon>
       </ion-fab-button>
     </ion-fab-list>
+
   </ion-fab>  
+
 </ion-content>
+
+<tour-step-template></tour-step-template>

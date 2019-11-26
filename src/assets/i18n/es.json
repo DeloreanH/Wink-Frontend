@@ -149,7 +149,12 @@
       "OK": "Okay",
       "DISCARD": "Descartar",
       "YES": "Si",
-      "NO": "No"
+      "NO": "No",
+      "END": "Fin",
+      "PREVIOUS": "Anterior",
+      "PREV": "Previo",
+      "NEXT": "Siguiente",
+      "NEXT2": "Sig"
     },
     "CATEGORY": {
       "CONTACT":	"Contacto",

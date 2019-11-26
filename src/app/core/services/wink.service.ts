@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { ToastService } from './toast.service';
 import { MessagesServices } from '../../common/enums/messagesServices.enum';
 import { SocketService } from './socket.service';
+import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,7 @@ export class WinkService {
 
    async Init() {
     try {
-        const userData: {token: string, exp: number, user: User} = JSON.parse(localStorage.getItem('userData'));
+        const userData: UserData = JSON.parse(localStorage.getItem('userData'));
         this.idUser = userData.user._id;
         await this.GetWinks();
     } catch (err) {
@@ -53,6 +54,9 @@ export class WinkService {
         try {
           const location = await this.locationService.GetPosition();
           if (location) {
+            if (isNaN(location.coords.latitude) || isNaN(location.coords.longitude)) {
+              reject({message: 'isNaN'});
+            }
             const myLocation =  new Location({
               latitude: location.coords.latitude,
               longitude: location.coords.longitude
@@ -63,7 +67,7 @@ export class WinkService {
             // this.Init();
             resolve(response);
           } else {
-            resolve(false);
+            reject({message: 'No Location'});
           }
         } catch (err) {
           reject(err);
@@ -98,7 +102,7 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!idUser) {
-            reject(null);
+            reject({message: 'No idUser'});
           }
           const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
           response.wink.user = this.userService.User();
@@ -119,7 +123,7 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!wink) {
-            reject(null);
+            reject({message: 'No wink'});
           }
           // const delWink = Object.assign({}, wink);
           const response: any = await this.http.post(Routes.BASE + Routes.APPROVE_WINK, { wink_id: wink._id}).toPromise();
@@ -149,7 +153,7 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!wink) {
-            reject(null);
+            reject({message: 'No wink'});
           }
           const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
           this.DeleteWinkUser(wink);
@@ -522,7 +526,7 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           if (!idUser) {
-            reject(null);
+            reject({message: 'No idUser'});
           }
           const response: any = await this.http.post(Routes.BASE + Routes.GET_USER, {winkUserId: idUser}).toPromise();
           resolve(response);

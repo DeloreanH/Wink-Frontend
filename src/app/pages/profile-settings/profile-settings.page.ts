@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -15,13 +15,18 @@ import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enu
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import {TranslateService} from '@ngx-translate/core';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
+import { TourService } from 'ngx-tour-ngx-popper';
+import { Tours } from 'src/app/common/interfaces/tours.interface';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { tours } from 'src/app/common/constants/storage.constants';
 
 @Component({
   selector: 'profile-settings',
   templateUrl: './profile-settings.page.html',
   styleUrls: ['./profile-settings.page.scss'],
 })
-export class ProfileSettingsPage implements OnInit, OnDestroy {
+export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   nombre = 'John Doe';
   avatar = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y';
@@ -63,7 +68,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
     private router: Router,
     private menu: MenuController,
     private navController: NavController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private tourService: TourService
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -180,6 +186,87 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
         this.changeData = true;
       }
     );*/
+    // this.Tour();
+  }
+  ngAfterViewInit(): void {
+    if (!this.loading) {
+      this.ValidateTour();
+    }
+  }
+
+  ValidateTour() {
+    const tour: Tours = StorageService.GetItem(tours, true);
+    if (tour) {
+      if (tour.profile) {
+        this.Tour(tour);
+      }
+    } else {
+      StorageService.SetItem(tours, {
+        home: true,
+        profile: true,
+        public: true,
+        private: true,
+        winks: true
+      });
+      this.Tour(tour);
+    }
+  }
+
+  Tour(tour: Tours) {
+    this.tourService.initialize(
+      [{
+        anchorId: 'sections',
+        content: 'Comparte lo que estes haciendo.',
+        title: 'Sections',
+        placement: 'top',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        }
+      }, {
+        anchorId: 'buttons',
+        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
+        title: 'Buttons',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        },
+        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
+      }, {
+        anchorId: 'order',
+        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
+        title: 'Order',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        },
+        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
+      }, {
+        anchorId: 'menu',
+        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
+        title: 'Menu',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        },
+        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
+      }]
+    );
+    this.tourService.start();
+    this.tourService.end$.subscribe(
+      () => {
+        tour.profile = false;
+        StorageService.SetItem(tours, tour);
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -201,6 +288,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy {
       console.log('Error LoadData', err.message);
     }
     this.loading = false;
+    this.ValidateTour();
   }
 
   Ordenar() {

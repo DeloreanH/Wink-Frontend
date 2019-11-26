@@ -15,6 +15,11 @@ import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
 import { Config } from 'src/app/common/enums/config.enum';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
+import { Tours } from 'src/app/common/interfaces/tours.interface';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { tours } from 'src/app/common/constants/storage.constants';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
+import { TourService } from 'ngx-tour-ngx-popper';
 
 @Component({
   selector: 'app-private-profiles',
@@ -44,7 +49,8 @@ export class PrivateProfilesPage implements OnInit {
     public alertController: AlertController,
     private contact: SaveContactService,
     private navController: NavController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private tourService: TourService,
   ) {
     this.sections = this.profilesService.sections;
     this.items.push(this.generalItems);
@@ -69,6 +75,59 @@ export class PrivateProfilesPage implements OnInit {
         } catch (err) {
           console.log('Error ngOnInit private profiles', err.message);
         }
+      }
+    );
+  }
+
+  ValidateTour() {
+    const tour: Tours = StorageService.GetItem(tours, true);
+    if (tour) {
+      if (tour.private) {
+        this.Tour(tour);
+      }
+    } else {
+      StorageService.SetItem(tours, {
+        home: true,
+        profile: true,
+        public: true,
+        private: true,
+        winks: true
+      });
+      this.Tour(tour);
+    }
+  }
+
+  Tour(tour: Tours) {
+    this.tourService.initialize(
+      [{
+        anchorId: 'status',
+        content: 'Comparte lo que estes haciendo.',
+        title: 'Status',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        }
+      }, {
+        anchorId: 'profiles',
+        // tslint:disable-next-line: max-line-length
+        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
+        title: 'Second',
+        prevBtnTitle: this.translateService.instant(Buttons.PREV),
+        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+        endBtnTitle: this.translateService.instant(Buttons.END),
+        popperSettings: {
+          closeOnClickOutside: false,
+        },
+        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
+      }]
+    );
+    this.tourService.start();
+    this.tourService.end$.subscribe(
+      () => {
+        tour.private = false;
+        StorageService.SetItem(tours, tour);
       }
     );
   }

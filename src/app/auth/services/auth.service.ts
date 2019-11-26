@@ -12,6 +12,7 @@ import { RoutesPrincipal } from '../../../app/common/enums/routes/routesPrincipa
 import { SocketService } from 'src/app/core/services/socket.service';
 import { WinkService } from 'src/app/core/services/wink.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class AuthService {
    }
 
   AutoLogin() {
-    const userData: {token: string, exp: number, user: User} = this.storageService.apiAuthorization;
+    const userData: UserData = this.storageService.apiAuthorization;
     // JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
       return;

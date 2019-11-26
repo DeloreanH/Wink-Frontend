@@ -29,6 +29,7 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button ></ion-menu-button>
+        <div tourAnchor="menu"></div>
       </ion-buttons>
       <ion-title>
           {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
@@ -40,9 +41,8 @@
           (click)="Ordenar()"
         ></fa-icon>
         <ion-ripple-effect></ion-ripple-effect>
+        <div tourAnchor="order"></div>
       </div>
-       
- 
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding" > 
@@ -113,6 +113,7 @@
           ></ion-textarea>
         </ion-item>
         <mat-accordion multi="true" cdkDropListGroup>
+          <div tourAnchor="sections"></div>
           <mat-expansion-panel #pp 
           cdkDropList
             [cdkDropListData]="publicoForm"
@@ -251,8 +252,8 @@
       </ion-list>
       </form>
     </div>
-    
     <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
+      <div tourAnchor="buttons"></div>
       <div *ngIf="!loading">
         <ion-fab-button *ngIf="FormValid()" size="small" color="success" (click)="onSubmit()">
           <ion-icon name="save"></ion-icon>
@@ -269,3 +270,4 @@
 
   </ion-content>
 </div>
+<tour-step-template></tour-step-template>

@@ -14,6 +14,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+import { TourMatMenuModule } from 'ngx-tour-md-menu';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -48,6 +49,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
         deps: [HttpClient]
       }
     }),
+    TourMatMenuModule.forRoot()
   ],
   providers: [
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},

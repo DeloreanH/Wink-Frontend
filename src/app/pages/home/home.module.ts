@@ -10,6 +10,7 @@ import { HomePage } from './home.page';
 import { CardComponent } from './card/card.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FontAwesomeModule,
     TranslateModule.forChild(),
+    TourNgxPopperModule.forRoot()
   ],
   declarations: [HomePage, CardComponent]
 })

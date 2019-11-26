@@ -7,18 +7,27 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  
   <ion-segment (ionChange)="TabChanged($event)" [value]="tab">
     <ion-segment-button value="requests">
       <ion-label>
         {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
       </ion-label>
+      <div tourAnchor="requests"></div>     
     </ion-segment-button>
+    
     <ion-segment-button value="record">
       <ion-label>
         {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
       </ion-label>
+      <div tourAnchor="record"></div>      
     </ion-segment-button>
+    
   </ion-segment>
+
+  
+  
+  <div tourAnchor="intro"></div>
   <ion-list *ngIf="tab === 'requests'">
     <item-wink
       *ngFor="let wink of requests"
@@ -44,3 +53,4 @@
     <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
   </div>
 </ion-content>
+<tour-step-template></tour-step-template>

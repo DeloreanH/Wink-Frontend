@@ -41,7 +41,7 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!nameCategory) {
-            reject(null);
+            reject({message: 'No name Category'});
           }
           if (this.itemTypes.length === 0) {
             const response = await this.LoadTypesItems();
@@ -64,7 +64,7 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!nameItemType) {
-            reject(null);
+            reject({message: 'No name itemType'});
           }
           if (this.itemTypes.length === 0) {
             await this.LoadTypesItems();
@@ -141,7 +141,7 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!data) {
-            reject(null);
+            reject({message: 'No data'});
           }
           const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
           this.toastService.Toast(MessagesServices.SAVE_ITEMS);
@@ -159,7 +159,7 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!idUser) {
-            reject(null);
+            reject({message: 'No idUSer'});
           }
           const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
           resolve(response);
@@ -176,7 +176,7 @@ export class ProfilesService {
       async (resolve, reject) => {
         try {
           if (!idUser || !idWink) {
-            reject(null);
+            reject({message: 'No idUser/idWink'});
           }
           const response = await this.http.post(
             Routes.BASE + Routes.SHOW_PRIVATE_PROFILE,

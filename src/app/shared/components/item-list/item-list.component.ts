@@ -6,6 +6,7 @@ import { IndexItemType } from '../../../common/enums/indexItemType.emun';
 import { LinkService } from '../../../core/services/link.service';
 import { ProfilesService } from 'src/app/core/services/profiles.service';
 import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'item-list',
@@ -19,6 +20,7 @@ export class ItemListComponent implements OnInit {
   preIcono = 'far';
   icon = 'smile-wink';
   chips = [];
+  indexDate = IndexItemType.FECHA;
   indexChip = IndexItemType.CHIP;
   indexBiogarfia = IndexItemType.BIOGARFIA;
   indexEmail = IndexItemType.EMAIL;
@@ -60,6 +62,7 @@ export class ItemListComponent implements OnInit {
         this.LoadChips();
         this.IsSelect();
         this.IsCustom();
+        this.IsDate();
       }
     } catch (err) {
 
@@ -113,6 +116,12 @@ export class ItemListComponent implements OnInit {
     if (this.itemType.index === this.indexCustom || this.itemType.index === this.indexDouble) {
       this.itemType.description = this.item.value;
       this.item.value = this.item.custom;
+    }
+  }
+
+  IsDate() {
+    if (this.itemType.index === this.indexDate ) {
+      this.item.value = moment(this.item.value).format('DD MMM YYYY').toString();
     }
   }
 

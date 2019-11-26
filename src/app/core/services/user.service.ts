@@ -62,7 +62,7 @@ export class UserService {
       async (resolve, reject) => {
         try {
           if (!data) {
-            reject(null);
+            reject({message: 'No data'});
           }
           const response: any = await this.http.put(Routes.BASE + Routes.UPDATE_BASIC_DATE, data).toPromise();
           this.User(response.user, true);
@@ -109,7 +109,7 @@ export class UserService {
       async (resolve, reject) => {
         try {
           if (!value) {
-            reject(null);
+            reject({message: 'No value'});
           }
           const response = await this.http.post(Routes.BASE + Routes.UPDATE_PROFILES, {visibility: value}).toPromise();
           this.user.visibility = value;

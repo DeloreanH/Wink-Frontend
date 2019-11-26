@@ -32,7 +32,7 @@ export class UpdateAvatarService {
             const update = await this.UpdateAvatar();
             resolve(update);
           }
-          reject(null);
+          reject({message: 'Error open Camera'});
       } catch (err) {
         reject(err);
       }
@@ -69,7 +69,7 @@ export class UpdateAvatarService {
       async (resolve, reject) => {
         try {
           if (!this.imageBase64) {
-            reject(null);
+            reject({message: 'No imageBase64'});
           }
           const dataForm = new FormData();
           const imgBlob = this.ToBlob(this.imageBase64);
