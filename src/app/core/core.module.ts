@@ -35,6 +35,7 @@ import { UserService } from './services/user.service';
 import { WinkService } from './services/wink.service';
 import { ToolsModule } from '../common/tools/tools.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToursService } from './services/tours.service';
 
 @NgModule({
   declarations: [],
@@ -74,6 +75,7 @@ import { TranslateModule } from '@ngx-translate/core';
     UpdateAvatarService,
     UserService,
     WinkService,
+    ToursService,
   ]
 })
 export class CoreModule {

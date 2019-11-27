@@ -5,6 +5,7 @@
     <ion-label  class="text-card text-status size-text-status" >
         {{user.status ? user.status : 'WINK.STATUS.AVAILABLE' | translate}}
     </ion-label>
+    <div *ngIf="tour" tourAnchor="see_status"></div>
   </div>
   <ion-img 
     class="imagen-full" 
@@ -18,3 +19,5 @@
   </ion-label>
   <ion-ripple-effect></ion-ripple-effect>
 </ion-card>
+
+<div *ngIf="tour" tourAnchor="card"></div>

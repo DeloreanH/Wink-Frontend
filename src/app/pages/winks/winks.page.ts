@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { WinkService } from 'src/app/core/services/wink.service';
 import { Wink } from 'src/app/common/models/wink.model';
 import { Subscription } from 'rxjs';
@@ -6,10 +6,9 @@ import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { TranslateService } from '@ngx-translate/core';
-import { Buttons } from 'src/app/common/enums/buttons.enum';
-import { Tours } from 'src/app/common/interfaces/tours.interface';
-import { StorageService } from 'src/app/core/services/storage.service';
-import { tours } from 'src/app/common/constants/storage.constants';
+import { PagesName } from 'src/app/common/enums/pagesName.enum';
+import { ToursService } from 'src/app/core/services/tours.service';
+import { ItemWinkComponent } from './item-wink/item-wink.component';
 
 @Component({
   selector: 'app-winks',
@@ -18,21 +17,28 @@ import { tours } from 'src/app/common/constants/storage.constants';
 })
 export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
+  @ViewChild(ItemWinkComponent, {static: false}) winkRecord: ItemWinkComponent;
   tab = 'requests';
+
   requests: Wink[] = [];
   requestsSubscription = new Subscription();
+
   record: Wink[] = [];
   recordSubscription = new Subscription();
+
   urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   noHistorical = Config.NO_RECORD;
   noRequests = Config.NO_REQUESTS;
 
+  tour = true;
+  tourSubscription = new Subscription();
+  stepShowSubs = new Subscription();
+
   constructor(
     private winkService: WinkService,
     private tourService: TourService,
-    private translateService: TranslateService
+    private toursService: ToursService,
   ) {
-    // this.Winks();
     this.record = this.winkService.Record;
     this.requests = this.winkService.Requests;
    }
@@ -55,74 +61,57 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
 
   ValidateTour() {
-    const tour: Tours = StorageService.GetItem(tours, true);
-    if (tour) {
-      if (tour.winks) {
-        this.Tour(tour);
-      }
-    } else {
-      StorageService.SetItem(tours, {
-        home: true,
-        profile: true,
-        public: true,
-        private: true,
-        winks: true
-      });
-      this.Tour(tour);
-    }
-  }
-
-  Tour(tour: Tours) {
-    this.tourService.initialize(
-      [
-        {
-          anchorId: 'intro',
-          content: 'Aqui contraras todo lo relacionado a tus Winks.',
-          title: 'Intro',
-          placement : 'bottom',
-          prevBtnTitle: this.translateService.instant(Buttons.PREV),
-          nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-          endBtnTitle: this.translateService.instant(Buttons.END),
-          popperSettings: {
-            closeOnClickOutside: false,
+    if (this.toursService.ValidateTour(PagesName.WINKS)) {
+      this.tourService.initialize(this.toursService.tourWinks);
+      this.record = [];
+      this.requests = [];
+      this.tourService.start();
+      this.stepShowSubs = this.tourService.stepShow$.subscribe(
+        (step) => {
+          if (step.anchorId === 'requests') {
+            this.tab = 'requests';
           }
-        },
-        {
-        anchorId: 'requests',
-        content: 'Aqui encontraras tus solicitudes pendientes.',
-        title: 'Requests',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
+          if (step.anchorId === 'wink') {
+            this.requests.push(this.toursService.winkRequestsTour);
+            this.tab = 'requests';
+          } else {
+            this.requests = [];
+          }
+          if (step.anchorId === 'record' ) {
+            this.tab = 'record';
+            this.record = [];
+            this.record.push(this.toursService.winkRecordTour);
+            this.winkRecord.Close();
+          } else if (step.anchorId === 'delete') {
+            this.winkRecord.Open();
+          } else {
+            this.record = [];
+          }
         }
-      }, {
-        anchorId: 'record',
-        content: 'Aqui encontraras todas las personas con las que tienes un wink concretado.',
-        title: 'Record',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        },
-        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
-      },
-    ]
-    );
-    this.tourService.start();
-    this.tourService.end$.subscribe(
-      () => {
-        tour.winks = false;
-        StorageService.SetItem(tours, tour);
-      }
-    );
+      );
+      this.tourSubscription = this.tourService.end$.subscribe(
+        () => {
+          this.record = [];
+          this.requests = [];
+          this.tab = 'requests';
+          this.tour = false;
+          this.toursService.EndTour(PagesName.WINKS);
+          this.tourSubscription.unsubscribe();
+          this.stepShowSubs.unsubscribe();
+          this.Winks();
+        }
+      );
+    } else {
+      this.tour = false;
+      this.Winks();
+    }
   }
 
   ngOnDestroy() {
     this.recordSubscription.unsubscribe();
     this.requestsSubscription.unsubscribe();
+    this.tourSubscription.unsubscribe();
+    this.stepShowSubs.unsubscribe();
   }
 
   TabChanged(event) {

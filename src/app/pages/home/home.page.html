@@ -1,121 +1,134 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      {{'WINK.HOME.TITLE' | translate}}
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="ion-page" id="main">
+  <ion-header >
+    <ion-toolbar>
+      <ion-title>
+        {{'WINK.HOME.TITLE' | translate}}
+      </ion-title>
 
-<ion-content >
-
-  <ion-card>
-    <ion-input 
-    #status
-    [maxlength]="maxStatus"
-    [value]="user ? user.status : ''"
-    style="text-align: start;" 
-    [placeholder]="'WINK.HOME.STATUS' | translate" 
-    (ionBlur)="ChangeStatus($event)"></ion-input>
-  </ion-card>
-
-  <div tourAnchor="status"></div>
-
-  <ion-refresher slot="fixed" (ionRefresh)="GPS($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      [pullingText]="'WINK.HOME.REFRESHER' | translate"
-      refreshingSpinner="circles"
-      [refreshingText]="'WINK.HOME.REFRESHING' | translate">
-    </ion-refresher-content>
-  </ion-refresher>
-    
-  <ion-list>
-    <ion-grid *ngIf="nearbyUsers.length > 0  && !load" class="grid-home">
-      <ion-row > 
-        <ion-col 
-        sizeXs="6" 
-        sizeSm="4" 
-        sizeMd="3" 
-        sizeLg="2.4" 
-        sizeXl="2"
-        class="col-home"
-        *ngFor="let user of nearbyUsers">
-          <card 
-          (click)="GoPublicProfile(user)"
-          [user]="user">
-        </card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <ion-grid *ngIf="load" class="grid-home">
-      <ion-row > 
-        <ion-col 
-        sizeXs="6" 
-        sizeSm="4" 
-        sizeMd="3" 
-        sizeLg="2.4" 
-        sizeXl="2"
-        class="col-home"
-        *ngFor="let item of arrayLoad">
-          <ion-card class="card-list">
-            <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <div *ngIf="nearbyUsers.length === 0 && !load" class="vacio">
-      <p>
-        {{'WINK.HOME.NO_NEARBY' | translate}}
-      </p>
-      <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
-    </div>
-
-  </ion-list>
-  
-  <ion-infinite-scroll threshold="100px"  (ionInfinite)="LoadUsers($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      [loadingText]="'WINK.HOME.LOADING_NEARBY' | translate"
-      >
-    </ion-infinite-scroll-content>    
-  </ion-infinite-scroll>
-
-  <ion-fab 
-    vertical="bottom" 
-    horizontal="end" 
-    slot="fixed"  >
-
-    <div tourAnchor="profiles"></div>
-
-    <ion-fab-button size="small">
-      <ion-icon name="eye"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-list side="top">  
-      <ion-fab-button 
-        (click)="ChangeProfiles(false)" 
-        [ngClass]="{'activo': profesional, 'inactivo' : !profesional}">
-          <fa-icon 
-          [icon]="['fas', 'user-tie']" 
-          class="icono-public" 
-          
-          ></fa-icon>
-      </ion-fab-button>
-
-      <ion-fab-button
-        (click)="ChangeProfiles(true)" 
-        [ngClass]="{'activo': personal, 'inactivo' : !personal}">
+      <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
         <fa-icon 
-          [icon]="['fas', 'user']" 
-          class="icono-public" 
+          [icon]="['far',  'comment']"
+          class="icon-bar color-medium"
         ></fa-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+        <div *ngIf="tour" tourAnchor="status"></div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-content >
+
+    <!-- <ion-card>
+      <ion-input 
+      #status
+      [maxlength]="maxStatus"
+      [value]="user ? user.status : ''"
+      style="text-align: start;" 
+      [placeholder]="'WINK.HOME.STATUS' | translate" 
+      (ionBlur)="ChangeStatus($event)"></ion-input>
+    </ion-card> -->
+
+    <ion-refresher slot="fixed" (ionRefresh)="GPS($event)">
+      <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        [pullingText]="'WINK.HOME.REFRESHER' | translate"
+        refreshingSpinner="circles"
+        [refreshingText]="'WINK.HOME.REFRESHING' | translate">
+      </ion-refresher-content>
+    </ion-refresher>
+      
+    <ion-list>
+      <ion-grid *ngIf="nearbyUsers.length > 0  && !load" class="grid-home">
+        <ion-row > 
+          <ion-col 
+          sizeXs="6" 
+          sizeSm="4" 
+          sizeMd="3" 
+          sizeLg="2.4" 
+          sizeXl="2"
+          class="col-home"
+          *ngFor="let user of nearbyUsers">
+            <card 
+            (click)="GoPublicProfile(user)"
+            [user]="user"
+            [tour]="tour">
+          </card>
+          
+          </ion-col>
+          
+        </ion-row>
+        
+      </ion-grid>
+
+      <ion-grid *ngIf="load && !tour" class="grid-home">
+        <ion-row > 
+          <ion-col 
+          sizeXs="6" 
+          sizeSm="4" 
+          sizeMd="3" 
+          sizeLg="2.4" 
+          sizeXl="2"
+          class="col-home"
+          *ngFor="let item of arrayLoad">
+            <ion-card class="card-list">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div *ngIf="nearbyUsers.length === 0 && !load" class="vacio">
+        <p>
+          {{'WINK.HOME.NO_NEARBY' | translate}}
+        </p>
+        <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+      </div>
+
+    </ion-list>
+    
+    <ion-infinite-scroll threshold="100px"  (ionInfinite)="LoadUsers($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        [loadingText]="'WINK.HOME.LOADING_NEARBY' | translate"
+        >
+      </ion-infinite-scroll-content>    
+    </ion-infinite-scroll>
+
+    <ion-fab 
+      vertical="bottom" 
+      horizontal="end" 
+      slot="fixed"  >
+
+      <div *ngIf="tour" tourAnchor="profiles"></div>
+
+      <ion-fab-button size="small">
+        <ion-icon name="eye"></ion-icon>
       </ion-fab-button>
-    </ion-fab-list>
 
-  </ion-fab>  
+      <ion-fab-list side="top" [activated]="OpenFabList">  
+        <ion-fab-button 
+          (click)="ChangeProfiles(false)" 
+          [ngClass]="{'activo': profesional, 'inactivo' : !profesional}">
+            <fa-icon 
+            [icon]="['fas', 'user-tie']" 
+            class="icono-public" 
+            
+            ></fa-icon>
+        </ion-fab-button>
 
-</ion-content>
+        <ion-fab-button
+          (click)="ChangeProfiles(true)" 
+          [ngClass]="{'activo': personal, 'inactivo' : !personal}">
+          <fa-icon 
+            [icon]="['fas', 'user']" 
+            class="icono-public" 
+          ></fa-icon>
+        </ion-fab-button>
+      </ion-fab-list>
 
+    </ion-fab>  
+
+  </ion-content>
+</div>
 <tour-step-template></tour-step-template>

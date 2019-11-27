@@ -254,6 +254,29 @@
       "ERROR_SAVE":	"Hubo un problema al intentar guardar. intente nuevamente más tarde.",
       "ERROR_GET_INFORMATION":	"Se ha producido un problema al intentar obtener su información. intente nuevamente más tarde.",
       "ERROR_PHOTO":	"Hubo un problema al intentar subir tu foto."
+    },
+    "TOUR": {
+      "HOME": {
+        "STATUS": "Aquí puedes cambiar tus estados.",
+        "SEE_STATUS": "Las otras personas ven tu estado reflejado aquí.",
+        "PROFILES": "Aquí estableces que datos deseas enviar en un wink.",
+        "CARD": "Al hacer clic sobre la tarjeta te llevara al perfil publico de la persona."
+      },
+      "WINKS": {
+        "INTRODUCTION": "Aquí encontrarás tus winks.",
+        "REQUESTS": "De este lado puedes encontrar las solicitudes que tienes pendientes.",
+        "WINK": "Desde aquí puedes aceptar o ignorar un wink.",
+        "RECORD": "Por este otro lado lado veras todos los winks aprobados que tienes.",
+        "DELETE": "Si deslizas la tarjeta hacia los lados podras eliminar el wink."
+      },
+      "SETTINGS": {
+        "SECTIONS": "Éstas son tus secciones.",
+        "PUBLIC": "Los items de aquí se mostrarán en tu perfil público.",
+        "PRIVATE": "Los items de estas secciones se mostraran en tu perfil privado.",
+        "ADD": "Aquí puedes agregar nuevos items a tus secciones.",
+        "ORDER": "Al hacer clic en este boton puedes ordenar tus items de la manera que te guste y/o eliminarlos.",
+        "MENU": "Aquí puedes encontrar más opciones de configuración."
+      }
     }
   }
 }

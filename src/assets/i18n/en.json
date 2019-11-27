@@ -247,6 +247,29 @@
       "ERROR_SAVE":	"There was a problem trying to save. try again later.",
       "ERROR_GET_INFORMATION":	"A problem has occurred trying to get your information. try again later.",
       "ERROR_PHOTO":	"There was a problem trying to upload your photo."
+    },
+    "TOUR": {
+      "HOME": {
+        "STATUS": "Here you can change your states.",
+        "SEE_STATUS": "Other people see your status reflected here.",
+        "PROFILES": "Here you establish what data you want to send in a wink.",
+        "CARD": "Clicking on the card will take you to the public profile of the person."
+      },
+      "WINKS": {
+        "INTRODUCTION": "Here you will find your winks.",
+        "REQUESTS": "On this side you can find the pending applications.",
+        "WINK": "From here you can accept or ignore a wink.",
+        "RECORD": "On this other side you will see all the approved winks you have.",
+        "DELETE": "If you swipe the card sideways you can eliminate the wink."
+      },
+      "SETTINGS": {
+        "SECTIONS": "These are your sections.",
+        "PUBLIC": "The items here will be shown in your public profile.",
+        "PRIVATE": "The items in these sections will be shown in your private profile.",
+        "ADD": "Here you can add new items to your sections.",
+        "ORDER": "By clicking on this button you can sort your items the way you like and / or delete them.",
+        "MENU": "Here you can find more configuration options."
+      }
     }
   }
 }

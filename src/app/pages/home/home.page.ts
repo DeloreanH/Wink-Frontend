@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../auth/services/auth.service';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { User } from '../../common/models/user.model';
 import { UserService } from '../../core/services/user.service';
 import { Subscription } from 'rxjs';
@@ -8,13 +7,13 @@ import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { WinkService } from '../../core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
-import { Platform, NavController, IonInfiniteScroll } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { language, tours } from 'src/app/common/constants/storage.constants';
 import { TourService } from 'ngx-tour-ngx-popper';
-import { Buttons } from 'src/app/common/enums/buttons.enum';
-import { Tours } from 'src/app/common/interfaces/tours.interface';
+import { ToursService } from 'src/app/core/services/tours.service';
+import { PagesName } from 'src/app/common/enums/pagesName.enum';
 
 @Component({
   selector: 'app-home',
@@ -23,22 +22,28 @@ import { Tours } from 'src/app/common/interfaces/tours.interface';
 })
 export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
+  OpenFabList = false;
+
   nearbyUsers: User[] = [];
   originNearbyUsers: User[] = [];
   nearbyUsersSubscription = new Subscription();
+  private contadorUser = 10;
+
   user: User = null;
   userSubscription = new Subscription();
-  maxStatus = Config.MAX_STATUS;
   personal = true;
   profesional  = true;
+
+  maxStatus = Config.MAX_STATUS;
+
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
-  private contadorUser = 10;
   load = false;
-  arrayLoad = [] = [];
+  arrayLoad = [];
+
+  tour = true;
+  tourSubscription = new Subscription();
 
   constructor(
-    private authService: AuthService,
     private userService: UserService,
     private winkService: WinkService,
     private router: Router,
@@ -46,6 +51,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private navController: NavController,
     private translateService: TranslateService,
     private tourService: TourService,
+    private toursService: ToursService,
   ) {
     this.user = this.userService.User();
     for (let i = 0; i < 15; i++) {
@@ -88,69 +94,34 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   lAN() {
-    console.log('LAN');
     if (this.translateService.currentLang === 'es') {
       this.translateService.use('en');
-      console.log('es');
       StorageService.SetItem(language, 'en');
     } else {
-      console.log('en');
       this.translateService.use('es');
       StorageService.SetItem(language, 'es');
     }
   }
 
   ValidateTour() {
-    const tour: Tours = StorageService.GetItem(tours, true);
-    if (tour) {
-      if (tour.home) {
-        this.Tour(tour);
-      }
-    } else {
-      StorageService.SetItem(tours, {
-        home: true,
-        profile: true,
-        public: true,
-        private: true,
-        winks: true
-      });
-      this.Tour(tour);
-    }
-  }
-
-  Tour(tour: Tours) {
-    this.tourService.initialize(
-      [{
-        anchorId: 'status',
-        content: 'Comparte lo que estes haciendo.',
-        title: 'Status',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
+    if (this.toursService.ValidateTour(PagesName.HOME)) {
+      this.tourService.initialize(this.toursService.tourHome);
+      this.nearbyUsers = [];
+      this.nearbyUsers.push(this.toursService.userTour);
+      this.tourService.start();
+      this.tourSubscription = this.tourService.end$.subscribe(
+        () => {
+          this.tour = false;
+          this.toursService.EndTour(PagesName.HOME);
+          this.tourSubscription.unsubscribe();
+          this.nearbyUsers = [];
+          this.GPS();
         }
-      }, {
-        anchorId: 'profiles',
-        // tslint:disable-next-line: max-line-length
-        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
-        title: 'Second',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        },
-        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
-      }]
-    );
-    this.tourService.start();
-    this.tourService.end$.subscribe(
-      () => {
-        tour.home = false;
-        StorageService.SetItem(tours, tour);
-      }
-    );
+      );
+    } else {
+      this.tour = false;
+      this.GPS();
+    }
   }
 
   ngAfterViewInit() {
@@ -184,10 +155,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
     this.nearbyUsersSubscription.unsubscribe();
-  }
-
-  Change() {
-    this.load = !this.load;
+    this.tourSubscription.unsubscribe();
   }
 
   async GPS(event?) {
@@ -203,19 +171,17 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     this.load = false;
   }
 
-  Logout() {
-    this.authService.Logout();
-  }
-
   LoadUsers(event?) {
-    if (this.contadorUser < this.originNearbyUsers.length) {
-      this.contadorUser += 10;
-    }
-    this.nearbyUsers = this.originNearbyUsers.slice(0, this.contadorUser);
-    if (event) {
-      event.target.complete();
-      if (this.contadorUser >= this.originNearbyUsers.length) {
-        event.target.disabled = true;
+    if (!this.tour) {
+      if (this.contadorUser < this.originNearbyUsers.length) {
+        this.contadorUser += 10;
+      }
+      this.nearbyUsers = this.originNearbyUsers.slice(0, this.contadorUser);
+      if (event) {
+        event.target.complete();
+        if (this.contadorUser >= this.originNearbyUsers.length) {
+          event.target.disabled = true;
+        }
       }
     }
   }
@@ -283,13 +249,15 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   async GoPublicProfile(user: User) {
     try {
-      setTimeout(
-        async () => {
-          await this.navController.navigateForward(
-            user ? [this.urlPublic, user._id, 0] : []
-          );
-        }
-        , 500);
+      if (!this.tour) {
+        setTimeout(
+          async () => {
+            await this.navController.navigateForward(
+              user ? [this.urlPublic, user._id, 0] : []
+            );
+          }
+          , 500);
+      }
     } catch (err) {
       console.log('Error Go', err.message);
     }

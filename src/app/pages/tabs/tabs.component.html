@@ -1,14 +1,14 @@
 <ion-tabs [ngClass]="{'ocultar': ocultar}" root="home">
   <ion-tab-bar slot="bottom" >
-    <ion-tab-button [tab]="profiles" >
+    <ion-tab-button [tab]="profiles" [disabled]="tour">
       <ion-icon name="person"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button [tab]="home" >
+    <ion-tab-button [tab]="home" [disabled]="tour">
       <ion-icon name="home" ></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button [tab]="winks" >
+    <ion-tab-button [tab]="winks" [disabled]="tour">
       <ion-icon name="happy" ></ion-icon>
       <ion-badge color="primary" *ngIf="winksTab"></ion-badge>
     </ion-tab-button>

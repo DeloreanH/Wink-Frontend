@@ -1,56 +1,64 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      {{'WINK.WINKS.TITLE' | translate}}
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="ion-page" id="main">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        {{'WINK.WINKS.TITLE' | translate}}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content class="ion-padding">
-  
-  <ion-segment (ionChange)="TabChanged($event)" [value]="tab">
-    <ion-segment-button value="requests">
-      <ion-label>
-        {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
-      </ion-label>
-      <div tourAnchor="requests"></div>     
-    </ion-segment-button>
+  <ion-content class="ion-padding">
     
-    <ion-segment-button value="record">
-      <ion-label>
-        {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
-      </ion-label>
-      <div tourAnchor="record"></div>      
-    </ion-segment-button>
-    
-  </ion-segment>
+    <ion-segment (ionChange)="TabChanged($event)" [value]="tab">
+      <ion-segment-button value="requests" [disabled]="tour && tab === 'record'">
+        <ion-label>
+          {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
+        </ion-label>
+        <div *ngIf="tour" tourAnchor="requests"></div>     
+      </ion-segment-button>
+      
+      <ion-segment-button value="record" [disabled]="tour && tab === 'requests'">
+        <ion-label>
+          {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
+        </ion-label>
+        <div *ngIf="tour" tourAnchor="record"></div>      
+      </ion-segment-button>
+      
+    </ion-segment>
 
-  
-  
-  <div tourAnchor="intro"></div>
-  <ion-list *ngIf="tab === 'requests'">
-    <item-wink
-      *ngFor="let wink of requests"
-      [wink]="wink"
-    ></item-wink>
-  </ion-list>
-  <ion-list *ngIf="tab === 'record'">
-    <item-wink
-      *ngFor="let wink of record"
-      [wink]="wink"
-    ></item-wink>
-  </ion-list>
-  <div *ngIf="record.length === 0 && tab === 'record'" class="vacio">
-    <p >
-      {{noHistorical | translate}}
-    </p>
-    <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
-  </div>
-  <div *ngIf="requests.length === 0 && tab === 'requests'" class="vacio">
-    <p >
-      {{noRequests | translate}}
-    </p>
-    <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
-  </div>
-</ion-content>
+    
+    
+    <div *ngIf="tour" tourAnchor="intro"></div>
+    <ion-list *ngIf="tab === 'requests'">
+      <item-wink
+        *ngFor="let wink of requests"
+        [wink]="wink"
+        [tour]="tour"
+      ></item-wink>
+        
+    </ion-list>
+    <div *ngIf="tour" tourAnchor="wink"></div> 
+    <ion-list *ngIf="tab === 'record'">
+      <item-wink
+        *ngFor="let wink of record"
+        [wink]="wink"
+        [tour]="tour"
+      ></item-wink>
+        
+    </ion-list>
+    <div *ngIf="tour" tourAnchor="delete"></div> 
+    <div *ngIf="record.length === 0 && tab === 'record'" class="vacio">
+      <p >
+        {{noHistorical | translate}}
+      </p>
+      <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+    </div>
+    <div *ngIf="requests.length === 0 && tab === 'requests'" class="vacio">
+      <p >
+        {{noRequests | translate}}
+      </p>
+      <fa-icon [icon]="['fas', 'home']" class="icono"></fa-icon>
+    </div>
+  </ion-content>
+</div>
 <tour-step-template></tour-step-template>

@@ -11,6 +11,7 @@ import { Config } from 'src/app/common/enums/config.enum';
 export class CardComponent implements OnInit {
 
   @Input() user: User;
+  @Input() tour: boolean;
   avatar: string = Config.AVATAR;
 
   constructor() {
@@ -35,6 +36,5 @@ export class CardComponent implements OnInit {
     }
     return avatar;
   }
-
 
 }

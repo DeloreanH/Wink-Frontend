@@ -8,6 +8,7 @@ import { User } from 'src/app/common/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { Wink } from 'src/app/common/models/wink.model';
 import { TourService } from 'ngx-tour-core';
+import { ToursService } from 'src/app/core/services/tours.service';
 
 
 @Component({
@@ -26,18 +27,22 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   url: string;
   idUser: string;
 
+  tour = true;
+
   updatedUserSubs = new Subscription();
   updatedAvatarSubs = new Subscription();
   sendedWinkSubs = new Subscription();
   approvedWinkSubs = new Subscription();
   deletedWinkSubs = new Subscription();
   watchedWinkSubs = new Subscription();
+  tourSubs = new Subscription();
 
   constructor(
     private router: Router,
     private socketService: SocketService,
     private winkService: WinkService,
     private userService: UserService,
+    private toursService: ToursService,
   ) {
    }
 
@@ -77,6 +82,12 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private Listen() {
+    this.tour = this.toursService.tour;
+    this.tourSubs = this.toursService.tourChanged.subscribe(
+      (tour) => {
+        this.tour = tour;
+      }
+    );
     this.socketService.Connect();
     this.updatedUserSubs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
       (user: User) => {
