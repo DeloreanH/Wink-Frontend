@@ -9,7 +9,8 @@
         <fa-icon 
           [icon]="['far',  'comment']"
           class="icon-bar color-medium"
-        ></fa-icon>
+          (click)="presentAlertRadio()"
+        ></fa-icon>        
         <ion-ripple-effect></ion-ripple-effect>
         <div *ngIf="tour" tourAnchor="status"></div>
       </div>
@@ -101,11 +102,11 @@
       slot="fixed"  >
 
       <div *ngIf="tour" tourAnchor="profiles"></div>
-
+      <div *ngIf="tour" tourAnchor="profiles_buttons"></div>
       <ion-fab-button size="small">
         <ion-icon name="eye"></ion-icon>
       </ion-fab-button>
-
+      
       <ion-fab-list side="top" [activated]="OpenFabList">  
         <ion-fab-button 
           (click)="ChangeProfiles(false)" 
@@ -116,6 +117,7 @@
             
             ></fa-icon>
         </ion-fab-button>
+        
 
         <ion-fab-button
           (click)="ChangeProfiles(true)" 

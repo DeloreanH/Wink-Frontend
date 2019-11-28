@@ -130,10 +130,10 @@
   <div *ngIf="!load">
     <div class="contenedorAvatar" >
       <ion-avatar class="avatar-profile"> 
-        <ion-img 
+        <img 
         (ionError)="ErrorImagen()" 
-        [src]="Avatar()" 
-        class="img-avatar"></ion-img>
+        [srcPath]="Avatar()" 
+        class="img-avatar">
       </ion-avatar>
     </div>
     

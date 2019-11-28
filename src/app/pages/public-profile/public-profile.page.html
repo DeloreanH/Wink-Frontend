@@ -33,11 +33,10 @@
   </div>
 
   <div class="contenedor-card total" *ngIf="!load">
-    <ion-img 
+    <img 
       class="public-img img-avatar"
       (ionError)="ErrorImagen()" 
-      [src]="Avatar()">
-    </ion-img>
+      [srcPath]="Avatar()">
     <div class="text-bottom">
       <ion-label  class="public-name text-card" >
           {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') }}

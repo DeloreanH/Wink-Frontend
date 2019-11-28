@@ -7,13 +7,11 @@
     </ion-label>
     <div *ngIf="tour" tourAnchor="see_status"></div>
   </div>
-  <ion-img 
+  <img 
     class="imagen-full" 
     alt="Avatar" 
-    (ionError)="ErrorImagen()" 
-    [src]="Avatar()"
+    [srcPath]="Avatar()"
   >
-  </ion-img>
   <ion-label class="name-card text-card text-name" >
       {{(user ? user.firstName + ' ' +  user.lastName : 'John Doe') | names}}
   </ion-label>

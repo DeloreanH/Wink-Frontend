@@ -15,7 +15,6 @@ export const routesTab: Routes = [
           {
             path: '',
             loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
-            
           }
         ]
       },
@@ -25,7 +24,6 @@ export const routesTab: Routes = [
           {
             path: '',
             loadChildren: () => import('./profile-settings/profile-settings.module').then(m => m.ProfileSettingsPageModule),
-            
           }
         ]
       },
@@ -44,7 +42,6 @@ export const routesTab: Routes = [
           {
             path: '',
             loadChildren: () => import('./winks/winks.module').then(m => m.WinksPageModule),
-            
           }
         ]
       },

@@ -15,6 +15,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
+import { ImgLoadModule } from 'src/app/common/directives';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
     MatChipsModule,
     TranslateModule.forChild(),
     TourNgxPopperModule.forRoot(),
+    ImgLoadModule,
   ],
   entryComponents: [ItemListComponent],
   declarations: [PublicProfilePage],

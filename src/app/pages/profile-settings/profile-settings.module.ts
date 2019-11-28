@@ -19,6 +19,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
+import { ImgLoadModule } from 'src/app/common/directives';
 
 
 
@@ -41,7 +42,8 @@ const routes: Routes = [
     FontAwesomeModule,
     MatChipsModule,
     TranslateModule.forChild(),
-    TourNgxPopperModule.forRoot()
+    TourNgxPopperModule.forRoot(),
+    ImgLoadModule,
   ],
   declarations: [ProfileSettingsPage, ItemPerfilComponent]
 })

@@ -10,6 +10,7 @@ import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
+import { ImgLoadModule } from 'src/app/common/directives';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
     FontAwesomeModule,
     TranslateModule.forChild(),
     TourNgxPopperModule.forRoot(),
+    ImgLoadModule,
   ],
   declarations: [WinksPage, ItemWinkComponent]
 })

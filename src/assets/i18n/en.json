@@ -124,6 +124,7 @@
       }
     },
     "STATUS": {
+      "TITLE": "Status",
       "AVAILABLE": "Available",
       "BUSY": "Busy"
     },
@@ -198,15 +199,14 @@
     },
     "OPTIONS_ITEMS": {
       "PRIMARY":	"Primary",
-      "HIGH SCHOOL":	"High school",
-      "UPPER-MIDDLE":	"Upper-Middle",
-      "HIGHER":	"Higher",
+      "HIGH_SCHOOL":	"High school",
+      "JUNIOR_COLLEGE":	"Junior college",
+      "COLLEGE":	"College",
 
       "MARRIED":	"Married",
-      "COMMITTED":	"Committed",
+      "ENGAGED":	"Engaged",
       "DIVORCED":	"Divorced",
-      "IN_RELATION":	"In relation",
-      "ENGAGEMENT":	"Engagement",
+      "IN_RELATIONSHIP":	"In relationship",
       "SEPARATED":	"Separated",
       "SINGLE":	"Single",
       "WIDOWER":	"Widower",  
@@ -253,7 +253,8 @@
         "STATUS": "Here you can change your states.",
         "SEE_STATUS": "Other people see your status reflected here.",
         "PROFILES": "Here you establish what data you want to send in a wink.",
-        "CARD": "Clicking on the card will take you to the public profile of the person."
+        "CARD": "Clicking on the card will take you to the public profile of the person.",
+        "PROFILES_BUTTONS": "The general section will always be sent. With these buttons you choose which other private section you want to send."
       },
       "WINKS": {
         "INTRODUCTION": "Here you will find your winks.",
@@ -268,7 +269,9 @@
         "PRIVATE": "The items in these sections will be shown in your private profile.",
         "ADD": "Here you can add new items to your sections.",
         "ORDER": "By clicking on this button you can sort your items the way you like and / or delete them.",
-        "MENU": "Here you can find more configuration options."
+        "MENU": "Here you can find more configuration options.",
+        "ITEM": "In these items you can write all the information you want to show about yourself.",
+        "ITEM_ICON": "By clicking on the item icon you can change the type of item that will be displayed."
       }
     }
   }

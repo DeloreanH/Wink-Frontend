@@ -1,0 +1,66 @@
+:host {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alert-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-overlay);
+  animation: initOverlay .5s ease;
+}
+.alert-content {
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  background-color: var(--color-background);
+  border-radius: var(--app-border-radius);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+.alert__title {
+  color: var(--color-white);
+  margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+.alert__message {
+  color: var(--color-placeholder);
+}
+.alert__buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  &.confirm {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  ion-button {
+    margin-bottom: 0px;
+  }
+}
+.alert__buttons__tutorial {
+  display: flex;
+  justify-content: space-between;
+}
+.alert__step__points {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.alert__step__point {
+  width: .5rem;
+  height: .5rem;
+  background-color: var(--color-7);
+  margin-right: .4rem;
+  border-radius: 50%;
+  &.active {
+    background-color: var(--color-white);
+  }
+}

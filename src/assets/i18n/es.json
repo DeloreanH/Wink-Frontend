@@ -131,6 +131,7 @@
       }
     },
     "STATUS": {
+      "TITLE": "Estado",
       "AVAILABLE": "Disponible",
       "BUSY": "Ocupado"
     },
@@ -203,17 +204,16 @@
       "AGE": "Edad",
       "YEARS": "años"
     },
-    "OPTIONS_ITEMS": {
+    "OPTIONS_ITEMS": { 
       "PRIMARY":	"Primaria",
-      "HIGH SCHOOL":	"Secundaria",
-      "UPPER-MIDDLE":	"Media-Superior",
-      "HIGHER":	"Superior",
+      "HIGH_SCHOOL":	"Secundaria",
+      "JUNIOR_COLLEGE":	"Media-Superior",
+      "COLLEGE":	"Superior",
 
       "MARRIED":	"Casado/a",
-      "COMMITTED":	"Comprometido/a",
+      "ENGAGED":	"Comprometido/a",
       "DIVORCED":	"Divorciado/a",
-      "IN RELATION":	"En Relación",
-      "ENGAGEMENT":	"Noviazgo",
+      "IN_RELATIONSHIP":	"En Relación",
       "SEPARATED":	"Separado/a",
       "SINGLE":	"Soltero/a",
       "WIDOWER":	"Viudo/a",
@@ -259,23 +259,26 @@
       "HOME": {
         "STATUS": "Aquí puedes cambiar tus estados.",
         "SEE_STATUS": "Las otras personas ven tu estado reflejado aquí.",
-        "PROFILES": "Aquí estableces que datos deseas enviar en un wink.",
-        "CARD": "Al hacer clic sobre la tarjeta te llevara al perfil publico de la persona."
+        "PROFILES": "Aquí estableces qué datos deseas enviar en un wink.",
+        "CARD": "Al hacer clic sobre la tarjeta te llevará al perfil público de la persona.",
+        "PROFILES_BUTTONS": "La sección general siempre sera enviada. Con estos botones tu eliges cual otra sección privada deseas enviar."
       },
       "WINKS": {
         "INTRODUCTION": "Aquí encontrarás tus winks.",
         "REQUESTS": "De este lado puedes encontrar las solicitudes que tienes pendientes.",
         "WINK": "Desde aquí puedes aceptar o ignorar un wink.",
-        "RECORD": "Por este otro lado lado veras todos los winks aprobados que tienes.",
-        "DELETE": "Si deslizas la tarjeta hacia los lados podras eliminar el wink."
+        "RECORD": "Por este otro lado lado verás todos los winks aprobados que tienes.",
+        "DELETE": "Si deslizas la tarjeta hacia los lados podrás eliminar el wink."
       },
       "SETTINGS": {
         "SECTIONS": "Éstas son tus secciones.",
-        "PUBLIC": "Los items de aquí se mostrarán en tu perfil público.",
-        "PRIVATE": "Los items de estas secciones se mostraran en tu perfil privado.",
-        "ADD": "Aquí puedes agregar nuevos items a tus secciones.",
-        "ORDER": "Al hacer clic en este boton puedes ordenar tus items de la manera que te guste y/o eliminarlos.",
-        "MENU": "Aquí puedes encontrar más opciones de configuración."
+        "PUBLIC": "Los ítems de aquí se mostrarán en tu perfil público.",
+        "PRIVATE": "Los ítems de estas secciones se mostrarán en tu perfil privado.",
+        "ADD": "Aquí puedes agregar nuevos ítems a tus secciones.",
+        "ORDER": "Al hacer clic en este botón puedes ordenar tus items de la manera que te guste y/o eliminarlos.",
+        "MENU": "Aquí puedes encontrar más opciones de configuración.",
+        "ITEM": "En estos items podrás escribir toda la informacion que deseas mostrar sobre ti.",
+        "ITEM_ICON": "Haciendo clic sobre el icono del ítem puedes cambiar el tipo item que se mostrará."
       }
     }
   }

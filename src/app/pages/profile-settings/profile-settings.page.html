@@ -28,23 +28,25 @@
   <ion-header translucent>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-menu-button ></ion-menu-button>
-        <div tourAnchor="menu"></div>
+        <ion-menu-button >
+        </ion-menu-button>
+        <div *ngIf="tour" tourAnchor="menu"></div>
       </ion-buttons>
       <ion-title>
           {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
       </ion-title>
       <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
         <fa-icon 
-          [icon]="[ordenar ? 'far' : 'fas',  'list-alt']"
+          [icon]="[order ? 'far' : 'fas',  'list-alt']"
           class="icon-bar color-medium"
           (click)="Ordenar()"
         ></fa-icon>
         <ion-ripple-effect></ion-ripple-effect>
-        <div tourAnchor="order"></div>
+        <div *ngIf="tour" tourAnchor="order"></div>
       </div>
     </ion-toolbar>
   </ion-header>
+
   <ion-content class="ion-padding" > 
       
     <div *ngIf="loading">
@@ -78,14 +80,15 @@
             <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
         </ion-label>
     </div>
+
     <div *ngIf="!loading">
       <div class="contenedorAvatar" >
         <ion-avatar class="avatar-profile"> 
-          <ion-img 
-            [src]="Avatar()" 
+          <img 
+            [srcPath]="Avatar()" 
             class="img-avatar" 
             alt="Avatar"
-            (ionError)="ErrorImagen()"></ion-img>
+            (ionError)="ErrorImagen()">
         </ion-avatar>
       </div>
 
@@ -96,8 +99,6 @@
       </div>
     
       <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()">
-      
-          
       <ion-list >
         <ion-item>
           <fa-icon 
@@ -112,14 +113,16 @@
           (ionInput)="ChangeData()"
           ></ion-textarea>
         </ion-item>
+        <div *ngIf="tour" tourAnchor="sections"></div>
         <mat-accordion multi="true" cdkDropListGroup>
-          <div tourAnchor="sections"></div>
+          
+          
           <mat-expansion-panel #pp 
           cdkDropList
             [cdkDropListData]="publicoForm"
             (cdkDropListDropped)="MoverItem($event)"
-            (cdkDropListEntered)="AbrirPanel(pp)"
-            (cdkDropListExited)="CerrarPanel(pp)"
+            (cdkDropListEntered)="OpenPanel(pp)"
+            (cdkDropListExited)="ClosePanel(pp)"
             formArrayName="0"
             >
             <mat-expansion-panel-header>
@@ -127,32 +130,36 @@
                 {{'WINK.SECTIONS.PUBLIC' | translate}}
               </mat-panel-title>
             </mat-expansion-panel-header>
+            <div *ngIf="tour" tourAnchor="item"></div>
+            <div *ngIf="tour" tourAnchor="item_icon"></div>
             <div
               
               class="acordion width-100"
               *ngFor="let itemPublico of publicoForm.controls; let i = index"
               [formGroupName]="i"
               cdkDrag 
-              [cdkDragDisabled]="ordenar"
-              [ngClass]="{'ordenar': !ordenar}"
+              [cdkDragDisabled]="order"
+              [ngClass]="{'order': !order}"
               (cdkDragStarted)="Drag()"
               (cdkDragEnded)="Drop()">
                 <app-item-perfil  
                   [form]="itemPublico"
                   formControlName="item"
-                  [ordenando]="ordenar" 
-                  (delete)="EliminarElemento(publicoForm, i)"
+                  [ordenando]="order" 
+                  (delete)="DeleteItem(publicoForm, i)"
                   (change)="ChangeData()"
                   >
                 </app-item-perfil>
             </div>
           </mat-expansion-panel>
+          <div *ngIf="tour" tourAnchor="public"></div>
+          <div *ngIf="tour" tourAnchor="private"></div>
           <mat-expansion-panel  #pg  
           cdkDropList
             [cdkDropListData]="generalForm"
             (cdkDropListDropped)="MoverItem($event)"
-            (cdkDropListEntered)="AbrirPanel(pg)"
-            (cdkDropListExited)="CerrarPanel(pg)"
+            (cdkDropListEntered)="OpenPanel(pg)"
+            (cdkDropListExited)="ClosePanel(pg)"
             formArrayName="1"
             >
             <mat-expansion-panel-header>
@@ -165,16 +172,16 @@
               *ngFor="let itemGeneral of generalForm.controls; let i = index"
               [formGroupName]="i"
               cdkDrag 
-              [cdkDragDisabled]="ordenar"
-              [ngClass]="{'ordenar': !ordenar}"
+              [cdkDragDisabled]="order"
+              [ngClass]="{'order': !order}"
               (cdkDragStarted)="Drag()"
               (cdkDragEnded)="Drop()"
               >
                 <app-item-perfil  
                 [form]="itemGeneral"
                 formControlName="item"
-                [ordenando]="ordenar" 
-                (delete)="EliminarElemento(generalForm, i)"
+                [ordenando]="order" 
+                (delete)="DeleteItem(generalForm, i)"
                 (change)="ChangeData()"
                 >
                 </app-item-perfil>
@@ -184,9 +191,9 @@
           <mat-expansion-panel  #pper  
             cdkDropList
             [cdkDropListData]="personalForm"
-            (cdkDropListEntered)="AbrirPanel(pper)"
+            (cdkDropListEntered)="OpenPanel(pper)"
             (cdkDropListDropped)="MoverItem($event)"
-            (cdkDropListExited)="CerrarPanel(pper)"
+            (cdkDropListExited)="ClosePanel(pper)"
             formArrayName="2"
           >
             <mat-expansion-panel-header>
@@ -199,16 +206,16 @@
             *ngFor="let itemPersonal of personalForm.controls; let i = index"
             [formGroupName]="i"
             cdkDrag 
-            [cdkDragDisabled]="ordenar"
-            [ngClass]="{'ordenar': !ordenar}"
+            [cdkDragDisabled]="order"
+            [ngClass]="{'order': !order}"
             (cdkDragStarted)="Drag()"
             (cdkDragEnded)="Drop()"
             >
               <app-item-perfil 
               [form]="itemPersonal"
               formControlName="item"
-              [ordenando]="ordenar" 
-              (delete)="EliminarElemento(personalForm, i)"
+              [ordenando]="order" 
+              (delete)="DeleteItem(personalForm, i)"
               (change)="ChangeData()"
               >
               </app-item-perfil>
@@ -218,9 +225,9 @@
           <mat-expansion-panel  #ppro  
             cdkDropList
             [cdkDropListData]="profesionalForm"
-            (cdkDropListEntered)="AbrirPanel(ppro)"
+            (cdkDropListEntered)="OpenPanel(ppro)"
             (cdkDropListDropped)="MoverItem($event)"
-            (cdkDropListExited)="CerrarPanel(ppro)"
+            (cdkDropListExited)="ClosePanel(ppro)"
             formArrayName="3"
           >
             <mat-expansion-panel-header>
@@ -233,16 +240,16 @@
             *ngFor="let itemProfesional of profesionalForm.controls; let i = index"
             [formGroupName]="i"
             cdkDrag 
-            [cdkDragDisabled]="ordenar"
-            [ngClass]="{'ordenar': !ordenar}"
+            [cdkDragDisabled]="order"
+            [ngClass]="{'order': !order}"
             (cdkDragStarted)="Drag()"
             (cdkDragEnded)="Drop()"
             >
               <app-item-perfil 
               [form]="itemProfesional"
               formControlName="item"
-              [ordenando]="ordenar" 
-              (delete)="EliminarElemento(profesionalForm, i)"
+              [ordenando]="order" 
+              (delete)="DeleteItem(profesionalForm, i)"
               (change)="ChangeData()"
               >
               </app-item-perfil>
@@ -253,12 +260,12 @@
       </form>
     </div>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
-      <div tourAnchor="buttons"></div>
+      <div *ngIf="tour" tourAnchor="add"></div>
       <div *ngIf="!loading">
         <ion-fab-button *ngIf="FormValid()" size="small" color="success" (click)="onSubmit()">
           <ion-icon name="save"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button size="small" (click)="SeleccionSeccion()">
+        <ion-fab-button size="small" (click)="SelectSection()">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </div>

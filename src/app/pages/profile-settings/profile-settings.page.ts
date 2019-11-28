@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
 import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -15,11 +15,10 @@ import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enu
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import {TranslateService} from '@ngx-translate/core';
-import { Buttons } from 'src/app/common/enums/buttons.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
-import { Tours } from 'src/app/common/interfaces/tours.interface';
-import { StorageService } from 'src/app/core/services/storage.service';
-import { tours } from 'src/app/common/constants/storage.constants';
+import { PagesName } from 'src/app/common/enums/pagesName.enum';
+import { ToursService } from 'src/app/core/services/tours.service';
+import { Config } from 'src/app/common/enums/config.enum';
 
 @Component({
   selector: 'profile-settings',
@@ -28,9 +27,9 @@ import { tours } from 'src/app/common/constants/storage.constants';
 })
 export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
-  nombre = 'John Doe';
-  avatar = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y';
-  ordenar = true;
+  @ViewChild('pp', {static: false}) publicPanel: MatExpansionPanel;
+  avatar: string = Config.AVATAR;
+  order = true;
 
   loading = true;
   data: Item[] = [];
@@ -43,10 +42,10 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   profesionalArray = new FormArray([]);
   grupoForm: FormGroup;
 
-  grupoArray: FormArray[] = [];
+  groupArray: FormArray[] = [];
 
-  seleccionSeccion: number;
-  seleccionCategoria: string;
+  selecSection: number;
+  selectCategory: string;
 
   categories: Category[] = [];
   sections: Section[] = [];
@@ -56,8 +55,13 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   item: Item;
   user: User;
-  userSusbcription =  new Subscription();
+  userSubs = new Subscription();
   eventRouter = new Subscription();
+
+  stepShowSubs = new Subscription();
+  tourSubs = new Subscription();
+  tour = true;
+  itemTour: boolean;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -69,14 +73,15 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private menu: MenuController,
     private navController: NavController,
     private translateService: TranslateService,
-    private tourService: TourService
+    private tourService: TourService,
+    private toursService: ToursService,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
-    this.grupoArray.push(this.publicoArray);
-    this.grupoArray.push(this.generalArray);
-    this.grupoArray.push(this.personalArray);
-    this.grupoArray.push(this.profesionalArray);
+    this.groupArray.push(this.publicoArray);
+    this.groupArray.push(this.generalArray);
+    this.groupArray.push(this.personalArray);
+    this.groupArray.push(this.profesionalArray);
     this.grupoForm = this.formBuilder.group({
       biografia: new FormControl( null, Validators.maxLength(250)),
       0: this.publicoArray,
@@ -84,6 +89,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       2: this.personalArray,
       3: this.profesionalArray,
     });
+    this.ValidateTour();
   }
 
   MoverItem(event: any) {
@@ -128,7 +134,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   AddItem(item: Item, user: boolean) {
-    this.grupoArray[item.section.key].push(
+    this.groupArray[item.section.key].push(
       new FormGroup({
       item: new FormControl(item)
     })
@@ -149,20 +155,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.LoadData();
-    this.nombre = this.user.firstName + ' ' + this.user.lastName;
-    this.avatar = this.user.avatarUrl;
-    this.item = new Item({
-      category: null,
-      section: null,
-      value: null,
-      custom: null,
-      position: null,
-      itemType_id: null,
-      user_id: this.user._id,
-      basic: false,
-    });
-    this.userSusbcription = this.userService.userChanged.subscribe(
+    this.userSubs = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
       }
@@ -181,101 +174,80 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    /*this.grupoForm.valueChanges.subscribe(
-      () => {
-        this.changeData = true;
-      }
-    );*/
-    // this.Tour();
   }
+
   ngAfterViewInit(): void {
-    if (!this.loading) {
-      this.ValidateTour();
-    }
   }
 
   ValidateTour() {
-    const tour: Tours = StorageService.GetItem(tours, true);
-    if (tour) {
-      if (tour.profile) {
-        this.Tour(tour);
-      }
+    if (this.toursService.ValidateTour(PagesName.SETTINGS)) {
+      this.loading = false;
+      this.tourService.initialize(this.toursService.tourSettings);
+      this.tourService.start();
+      this.stepShowSubs = this.tourService.stepShow$.subscribe(
+        (step) => {
+          if (step.anchorId === 'item') {
+            if (!this.itemTour) {
+              this.itemTour = true;
+              this.groupArray.forEach(
+                (group) => {
+                  group.clear();
+                }
+              );
+              this.AddItem(this.toursService.itemTourOne, false);
+              this.publicPanel.open();
+            }
+          } else if (step.anchorId !== 'item_icon') {
+            this.itemTour = false;
+            this.publicPanel.close();
+            this.groupArray.forEach(
+              (group) => {
+                group.clear();
+              }
+            );
+          }
+        }
+      );
+      this.tourSubs = this.tourService.end$.subscribe(
+        () => {
+          this.tour = false;
+          this.publicPanel.close();
+          this.groupArray.forEach(
+            (group) => {
+              group.clear();
+            }
+          );
+          this.toursService.EndTour(PagesName.SETTINGS);
+          this.tourSubs.unsubscribe();
+          this.stepShowSubs.unsubscribe();
+          this.LoadData();
+        }
+      );
     } else {
-      StorageService.SetItem(tours, {
-        home: true,
-        profile: true,
-        public: true,
-        private: true,
-        winks: true
-      });
-      this.Tour(tour);
+      this.tour = false;
+      this.LoadData();
     }
   }
 
-  Tour(tour: Tours) {
-    this.tourService.initialize(
-      [{
-        anchorId: 'sections',
-        content: 'Comparte lo que estes haciendo.',
-        title: 'Sections',
-        placement: 'top',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        }
-      }, {
-        anchorId: 'buttons',
-        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
-        title: 'Buttons',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        },
-        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
-      }, {
-        anchorId: 'order',
-        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
-        title: 'Order',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        },
-        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
-      }, {
-        anchorId: 'menu',
-        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
-        title: 'Menu',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        },
-        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
-      }]
-    );
-    this.tourService.start();
-    this.tourService.end$.subscribe(
-      () => {
-        tour.profile = false;
-        StorageService.SetItem(tours, tour);
-      }
-    );
-  }
-
   ngOnDestroy(): void {
-    this.userSusbcription.unsubscribe();
+    this.userSubs.unsubscribe();
     this.eventRouter .unsubscribe();
+    this.tourSubs.unsubscribe();
+    this.stepShowSubs.unsubscribe();
   }
 
   async LoadData() {
     try {
+      this.item = new Item({
+        category: null,
+        section: null,
+        value: null,
+        custom: null,
+        position: null,
+        itemType_id: null,
+        user_id: this.user._id,
+        basic: false,
+      });
       const response = await this.profilesServices.LoadItemsUser();
       for (const dato of response) {
         this.AddItem(dato, false);
@@ -288,31 +260,33 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       console.log('Error LoadData', err.message);
     }
     this.loading = false;
-    this.ValidateTour();
+    // this.ValidateTour();
   }
 
   Ordenar() {
-    this.ordenar = !this.ordenar;
+    this.order = !this.order;
   }
 
-  AbrirPanel(panel: MatExpansionPanel) {
+  OpenPanel(panel: MatExpansionPanel) {
     panel.open();
   }
 
-  CerrarPanel(panel: MatExpansionPanel) {
+  ClosePanel(panel: MatExpansionPanel) {
     panel.close();
   }
 
-  EliminarElemento(arreglo: FormArray, index: number) {
-    this.changeData = true;
-    arreglo.removeAt(index);
+  DeleteItem(arreglo: FormArray, index: number) {
+    if (!this.tour) {
+      this.changeData = true;
+      arreglo.removeAt(index);
+    }
   }
 
-  async SeleccionSeccion() {
+  async SelectSection() {
     const actionSheet = await this.actionSheetController.create({
       header: this.translateService.instant('WINK.PROFILE_SETTINGS.OPTIONS.SECTION'),
       buttons: [
-        ...this.CargarSecciones(),
+        ...this.LoadSection(),
         {
         text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
         icon: 'close',
@@ -324,11 +298,11 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     await actionSheet.present();
   }
 
-  async SeleccionCategoria() {
+  async SelectCategory() {
     const actionSheet = await this.actionSheetController.create({
       header: this.translateService.instant('WINK.PROFILE_SETTINGS.OPTIONS.CATEGORY'),
       buttons: [
-        ...this.CargarCategorias()
+        ...this.LoadCategories()
         , {
         text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
         icon: 'close',
@@ -340,7 +314,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     await actionSheet.present();
   }
 
-  CargarCategorias(): [] {
+  LoadCategories(): [] {
     const obj: any = [];
     if (this.categories.length === 0) {
       this.categories = this.profilesServices.categories;
@@ -358,7 +332,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     return obj;
   }
 
-  CargarSecciones() {
+  LoadSection() {
     const obj: any = [];
     for (const seccion of this.sections) {
       obj.push({
@@ -366,7 +340,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         icon: 'add',
         handler: () => {
           this.item.section = seccion;
-          this.SeleccionCategoria();
+          this.SelectCategory();
         }
       });
     }
@@ -394,9 +368,11 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Logout() {
-    this.authService.Logout();
-    if (this.menu.isOpen) {
-      this.menu.close();
+    if (!this.tour) {
+      this.authService.Logout();
+      if (this.menu.isOpen) {
+        this.menu.close();
+      }
     }
   }
 
@@ -410,10 +386,12 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   async GoBasicData() {
     try {
-      const response = await this.navController.navigateForward(
-                        ['/' + RoutesPrincipal.DATOS_BASICOS]
-                      );
-      this.CloseMenu();
+      if (!this.tour) {
+        await this.navController.navigateForward(
+          ['/' + RoutesPrincipal.DATOS_BASICOS]
+        );
+        this.CloseMenu();
+      }
     } catch (err) {
       console.log('Error Go', err);
     }
@@ -426,7 +404,9 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ChangeData() {
-    this.changeData = true;
+    if (!this.tour) {
+      this.changeData = true;
+    }
   }
 
   ErrorImagen() {

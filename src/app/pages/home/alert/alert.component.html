@@ -1,0 +1,82 @@
+<div class="alert-overlay"
+  (click)="close()"
+>
+</div>
+
+<div class="alert-content fadeInDown">
+  <div class="alert__title"
+  >
+    {{ title | translate }}
+  </div>
+  <div class="alert__message"
+    
+  >
+      <ion-radio-group>
+    
+        <ion-item>
+          <ion-label>
+            {{'WINK.STATUS.AVAILABLE' | translate}}
+          </ion-label>
+          <ion-radio slot="start" value="biff"></ion-radio>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>
+            {{'WINK.STATUS.BUSY' | translate}}
+          </ion-label>
+          <ion-radio slot="start" value="xxx"></ion-radio>
+        </ion-item>
+    
+        <ion-item>
+          <ion-input></ion-input>
+          <ion-radio slot="start" value="griff"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+  </div>
+
+  <div class="alert__message"
+    *ngIf="isTutorial"
+  >
+    {{ step }}
+  </div>
+
+  <div class="alert__buttons"
+    *ngIf="buttons.length > 1"
+    [ngClass]="{
+      confirm: isConfirm
+    }"
+  >
+    <ion-button
+      *ngFor="let button of buttons"
+      [color]="button.type"
+      (click)="close(button)"
+    >
+      {{ button.label }}
+    </ion-button>
+  </div>
+
+  <div class="alert__buttons__tutorial"
+    *ngIf="isTutorial"
+  >
+    <div class="alert__step__points">
+      <div class="alert__step__point"
+        *ngFor="let st of steps; index as i"
+        [ngClass]="{ active: stepIndex === i }"
+      >
+      </div>
+    </div>
+    <div class="alert__buttons confirm">
+      <ion-button class="icon-only" color="dark"
+        (click)="backStep()"
+      >
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-button class="icon-only" color="secondary"
+        (click)="nextStep()"
+      >
+        <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+</div>

@@ -9,6 +9,7 @@ import { MessageTour } from 'src/app/common/enums/messageTour.enum';
 import { User } from 'src/app/common/models/user.model';
 import { Wink } from 'src/app/common/models/wink.model';
 import { Subject } from 'rxjs';
+import { Item } from 'src/app/common/models/item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,22 @@ export class ToursService {
     __v: 0,
     _id: '5dcdada1f0ce941a0073b823',
   });
+  itemTourOne = new Item({
+    basic: false,
+    custom: null,
+    itemtype: 'correo',
+    position: 0,
+    section: { name: '', key: 0},
+    value: 'example@example.com',
+  });
+  itemTourTwo = new Item({
+    basic: false,
+    custom: null,
+    itemtype: 'sitioweb',
+    position: 1,
+    section: { name: '', key: 0},
+    value: 'example.com',
+  });
 
   constructor(
     private translateService: TranslateService
@@ -104,6 +121,16 @@ export class ToursService {
     }, {
       anchorId: 'profiles',
       content: this.translateService.instant(MessageTour.HOME_PROFILES),
+      placement: 'right-end',
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'profiles_buttons',
+      content: this.translateService.instant(MessageTour.HOME_PROFILES_BUTTONS),
       placement: 'right-end',
       prevBtnTitle: this.translateService.instant(Buttons.PREV),
       nextBtnTitle: this.translateService.instant(Buttons.NEXT),
@@ -163,11 +190,85 @@ export class ToursService {
       },
     },
     ];
+    this.tourSettings = [{
+      anchorId: 'sections',
+      content: this.translateService.instant(MessageTour.SETTINGS_SECTIONS),
+      placement: 'top',
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      }
+    }, {
+      anchorId: 'public',
+      content: this.translateService.instant(MessageTour.SETTINGS_PUBLIC),
+      placement: 'bottom',
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'private',
+      content: this.translateService.instant(MessageTour.SETTINGS_PRIVATE),
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'item',
+      content: this.translateService.instant(MessageTour.SETTINGS_ITEM),
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'item_icon',
+      content: this.translateService.instant(MessageTour.SETTINGS_ITEM_ICON),
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'add',
+      content: this.translateService.instant(MessageTour.SETTINGS_ADD),
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'order',
+      content: this.translateService.instant(MessageTour.SETTINGS_ORDER),
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }, {
+      anchorId: 'menu',
+      content: this.translateService.instant(MessageTour.SETTINGS_MENU),
+      prevBtnTitle: this.translateService.instant(Buttons.PREV),
+      nextBtnTitle: this.translateService.instant(Buttons.NEXT),
+      endBtnTitle: this.translateService.instant(Buttons.END),
+      popperSettings: {
+        closeOnClickOutside: false,
+      },
+    }];
   }
 
   ValidateTour(pageName: PagesName) {
     const tourStorage = StorageService.GetItem(tours, true);
-    console.log(tourStorage, pageName);
     let validate = false;
     if (tourStorage) {
       if (tourStorage[pageName]) {

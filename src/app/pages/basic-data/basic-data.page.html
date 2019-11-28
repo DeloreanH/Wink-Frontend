@@ -111,13 +111,11 @@
       (ngSubmit)="onSubmit()">
       <div class="contenedorAvatar" >
         <ion-avatar (click)="SeleccionarImagen()" class="avatar-profile">
-          <ion-img
+          <img
             class="img-avatar"
             *ngIf="!loadingAvatar"
             alt="Avatar"
-            (ionError)="ErrorImagen()"
-            [src]="Avatar()" >
-          </ion-img>
+            [srcPath]="Avatar()" >
           <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
         </ion-avatar>
       </div>
