@@ -8,8 +8,9 @@
       <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
         <fa-icon 
           [icon]="['far',  'comment']"
-          class="icon-bar color-medium"
+          class="icon-bar"
           (click)="presentAlertRadio()"
+          [ngClass]="{'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'), 'icon-red' : (user.status === 'WINK.STATUS.BUSY'), 'icon-blue' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}"
         ></fa-icon>        
         <ion-ripple-effect></ion-ripple-effect>
         <div *ngIf="tour" tourAnchor="status"></div>
@@ -133,4 +134,30 @@
 
   </ion-content>
 </div>
-<tour-step-template></tour-step-template>
+<tour-step-template >
+  <ng-template let-step="step" >
+    <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
+        <ion-card-header *ngIf="step?.title">
+          <ion-card-title>
+            {{step?.title}}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-text class="content-card-tour">
+              {{step?.content}}
+          </ion-text>
+        </ion-card-content>
+        <ion-buttons class="content-end">
+          <ion-button *ngIf="tourService.hasPrev(step)" (click)="tourService.prev()">
+              <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
+              <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+          </ion-button>
+          <ion-button (click)="tourService.end()">
+              {{step?.endBtnTitle}}
+          </ion-button>
+        </ion-buttons>
+    </ion-card>
+  </ng-template>
+</tour-step-template>

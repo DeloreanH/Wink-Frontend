@@ -6,11 +6,9 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { AuthService } from '../../auth/services/auth.service';
 import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
 import { UpdateAvatarService } from '../../core/services/update-avatar.service';
-import { Router, NavigationEnd } from '@angular/router';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
 import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
-import { SocketService } from 'src/app/core/services/socket.service';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 @Component({
   selector: 'basic-data',

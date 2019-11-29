@@ -46,6 +46,10 @@ export class AlertService {
     return this.any(AlertType.Actions, option);
   }
 
+  public showPromptStatus(option: AlertActionsOption): Observable<null | AlertButton> {
+    return this.any(AlertType.PromptStatus, option);
+  }
+
   public showNotification(option: AlertActionsOption): Observable<null> {
     return this.any(AlertType.Actions, option);
   }

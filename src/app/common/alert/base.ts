@@ -3,7 +3,10 @@ export enum AlertType {
   Notification = 'NOTIFICATION',
   Actions = 'ACTIONS',
   Tutorial = 'TUTORIAL',
+  PromptStatus = 'PROMPT_STATUS'
 }
+
+export const maxStatus = 14;
 
 export enum AlertButtonType {
   Primary = 'primary',

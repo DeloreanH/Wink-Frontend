@@ -40,6 +40,18 @@
     --highlight-color-invalid: #f04141;
 }
 
+.icon-red {
+  color: #f04141;
+}
+
+.icon-green {
+  color: #10dc60;
+}
+
+.icon-blue {
+  color: #3880ff;
+}
+
 .icono-white {
   margin-inline-end: 0px !important; 
   align-self:flex-start; 
@@ -278,4 +290,27 @@
 
 .skeleton-button {
   height: 30px;
+}
+
+.padding-0 {
+  padding: 0px !important;
+}
+
+.margin-0 {
+  margin: 0px !important;
+}
+
+.ngxp__container {
+  padding: 0px !important;
+}
+
+.content-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.content-card-tour {
+  text-align: start;
+  display: flex;
+  justify-content: space-between;
 }

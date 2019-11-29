@@ -36,7 +36,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private winkService: WinkService,
-    private tourService: TourService,
+    public tourService: TourService,
     private toursService: ToursService,
   ) {
     this.record = this.winkService.Record;

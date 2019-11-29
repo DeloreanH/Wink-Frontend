@@ -3,7 +3,7 @@
   [ngClass]="{newWink: user.newWink}">
   <div class="status-card">
     <ion-label  class="text-card text-status size-text-status" >
-        {{user.status ? user.status : 'WINK.STATUS.AVAILABLE' | translate}}
+        {{(user.status ? user.status : 'WINK.STATUS.AVAILABLE' ) | translate}}
     </ion-label>
     <div *ngIf="tour" tourAnchor="see_status"></div>
   </div>

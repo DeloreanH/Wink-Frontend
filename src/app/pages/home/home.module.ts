@@ -12,7 +12,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
 import { ImgLoadModule } from 'src/app/common/directives';
-import { AlertModule } from './alert/alert.module';
+import { AlertModule } from '../../common/alert/alert.module';
 
 const routes: Routes = [
   {

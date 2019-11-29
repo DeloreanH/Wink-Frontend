@@ -74,4 +74,30 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+
+  /* GUIDE COLOR */
+  --color-white: #ffffff;
+  --color-primary: #665EFF;
+  --color-secondary: #3acce1;
+  --color-background: #2a2e43;
+  --color-dark: #454F63;
+  --color-danger: #FF4F9A;
+  --color-1: #5773FF;
+  --color-2: #3497FD;
+  --color-3: #C840E9;
+  --color-5: #FF9057;
+  --color-6: #FFB900;
+  --color-7: #78849E;
+  --color-placeholder: #b9bfcc;
+  --color-overlay: rgba(0, 0, 0, .2);
+
+    /* STYLES */
+    --app-border-radius: .6rem;
+
+    --tabs-height: 4.5rem;
+  
+    /* FONT SIZES */
+    --page-title: 1.4rem;
+    --font_size-title: 1.2rem;
 }

@@ -18,14 +18,14 @@
 .alert-content {
   width: calc(100% - 2rem);
   padding: 1rem;
-  background-color: var(--color-background);
+  background-color: var(--color-white);
   border-radius: var(--app-border-radius);
   z-index: 1;
   display: flex;
   flex-direction: column;
 }
 .alert__title {
-  color: var(--color-white);
+  color: var(--color-background);
   margin-bottom: 1rem;
   font-weight: 500;
   font-size: 1.5rem;
@@ -44,6 +44,10 @@
   ion-button {
     margin-bottom: 0px;
   }
+}
+.alert__buttons__row {
+  display: flex;
+  justify-content: flex-end;
 }
 .alert__buttons__tutorial {
   display: flex;

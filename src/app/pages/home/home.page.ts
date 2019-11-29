@@ -14,8 +14,9 @@ import { language, tours } from 'src/app/common/constants/storage.constants';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
-import { AlertService } from './alert/alert.service';
-import { AlertButtonType } from './alert/base';
+import { AlertService } from '../../common/alert/alert.service';
+import { AlertButtonType } from '../../common/alert/base';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
 
 @Component({
   selector: 'app-home',
@@ -53,7 +54,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private navController: NavController,
     private translateService: TranslateService,
-    private tourService: TourService,
+    public tourService: TourService,
     private toursService: ToursService,
     public alertController: AlertController,
     private alertService: AlertService,
@@ -270,22 +271,28 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async presentAlertRadio() {
-    this.alertService.showActions({
+    this.alertService.showPromptStatus({
       title: 'WINK.STATUS.TITLE',
-      description: 'No se pudo crear la la lista',
+      description: this.user.status,
       buttons: [
         {
-          label: 'Save',
-          type: AlertButtonType.Primary,
-          value: 'RETRY'
-        },
-        {
-          label: 'Cancel',
+          label: Buttons.CANCEL,
           type: AlertButtonType.Danger,
           value: null
-        }
+        },
+        {
+          label: Buttons.SAVE,
+          type: AlertButtonType.Primary,
+          value: true
+        },
       ]
-    }).subscribe();
+    }).subscribe(
+      (response) => {
+        if (response) {
+          this.ChangeStatus(response);
+        }
+      }
+    );
     // const alert = await this.alertController.create({
     //   header: 'Status',
     //   inputs: [

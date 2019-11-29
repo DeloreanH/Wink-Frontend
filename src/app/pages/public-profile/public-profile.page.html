@@ -13,7 +13,7 @@
         <div class="end status" slot="end">
           <ion-label *ngIf="!load"
           class="text-card text-status text-small">
-          {{ userWink && userWink.status ? userWink.status : 'WINK.STATUS.AVAILABLE' | translate}}
+          {{ (userWink && userWink.status ? userWink.status : 'WINK.STATUS.AVAILABLE') | translate}}
         </ion-label>
         </div>
       </ion-toolbar>
@@ -63,7 +63,7 @@
       <ion-fab-button *ngIf="wink && wink.approved" (click)="GoPrivateProfile()" size="small" color="light">
         <ion-icon name="document"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light">
+      <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light"[disabled]="userWink.status === 'WINK.STATUS.BUSY'">
           <fa-icon 
           [icon]="['far', 'smile-wink']" 
           class="icono-public" 

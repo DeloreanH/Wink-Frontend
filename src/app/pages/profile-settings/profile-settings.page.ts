@@ -73,7 +73,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private menu: MenuController,
     private navController: NavController,
     private translateService: TranslateService,
-    private tourService: TourService,
+    public tourService: TourService,
     private toursService: ToursService,
     ) {
     this.user = this.userService.User();
