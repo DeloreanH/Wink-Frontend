@@ -24,17 +24,15 @@ export class CardComponent implements OnInit {
   }
 
   Avatar() {
-    let avatar;
-    if (this.user) {
+    if (this.user && this.user.avatarUrl) {
       if (this.user.avatarUrl.startsWith('http')) {
-        avatar = this.user.avatarUrl;
+        return this.user.avatarUrl;
       } else {
-        avatar = Routes.PHOTO + this.user.avatarUrl;
+        return Routes.PHOTO + this.user.avatarUrl;
       }
     } else {
-      avatar = this.avatar;
+      return this.avatar;
     }
-    return avatar;
   }
 
 }

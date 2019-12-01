@@ -32,9 +32,8 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   updatedUserSubs = new Subscription();
   updatedAvatarSubs = new Subscription();
   sendedWinkSubs = new Subscription();
-  approvedWinkSubs = new Subscription();
+  handeledWinkSubs = new Subscription();
   deletedWinkSubs = new Subscription();
-  watchedWinkSubs = new Subscription();
   tourSubs = new Subscription();
 
   constructor(
@@ -120,21 +119,21 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           if (wink.sender_id !== this.idUser) {
             this.newWinks.set(wink._id, wink._id);
-            this.winkService.AddRequests(wink);
+            this.winkService.AddWink(wink);
           }
         }
       }
     );
-    this.approvedWinkSubs = this.socketService.Listen(SocketEventsListen.APPROVED_WINK).subscribe(
+    this.handeledWinkSubs = this.socketService.Listen(SocketEventsListen.HANDLED_WINK).subscribe(
       (data: any) => {
         if (data && data.wink) {
+          console.log(data);
           const wink: Wink = data.wink;
-          wink.user = null;
           if (this.newWinks.get(wink._id)) {
             this.newWinks.delete(wink._id);
             this.winksTab = false;
           }
-          this.winkService.AddRecord(wink);
+          this.winkService.AddWink(wink);
         }
       }
     );
@@ -150,23 +149,12 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     );
-    this.watchedWinkSubs = this.socketService.Listen(SocketEventsListen.WATCHED_WINK).subscribe(
-      (wink: Wink) => {
-        if (wink) {
-          if (this.newWinks.get(wink._id)) {
-            this.newWinks.delete(wink._id);
-            this.winksTab = false;
-          }
-          this.winkService.AddRequests(wink);
-        }
-      }
-    );
   }
 
   ngOnDestroy(): void {
     this.sendedWinkSubs.unsubscribe();
     this.updatedUserSubs.unsubscribe();
-    this.approvedWinkSubs.unsubscribe();
+    this.handeledWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
     this.updatedAvatarSubs.unsubscribe();
   }

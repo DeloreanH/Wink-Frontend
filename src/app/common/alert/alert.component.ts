@@ -5,11 +5,13 @@ import {
   EventEmitter,
   OnDestroy,
   Input,
-  // NgZone,
+  NgZone,
   ViewChild,
   Renderer2,
   AfterViewInit,
   ElementRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { AlertType, AlertButtons, maxStatus } from './base';
 import { Subscription } from 'rxjs';
@@ -24,7 +26,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   @ViewChild(IonRadioGroup, {static: false}) groupRadio: IonRadioGroup;
   @ViewChild(IonInput, {static: false}) custom: IonInput;
-  @ViewChild(IonItem, {static: false}) item: ElementRef<HTMLImageElement>;
+  @ViewChildren(IonItem) items: QueryList<HTMLImageElement>; // ElementRef<HTMLImageElement>;
   maxStatus = maxStatus;
 
   @Output()
@@ -43,22 +45,29 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   public focusInput: boolean;
 
   constructor(
-    // private ngZone: NgZone,
-    // private platform: Platform,
+    private ngZone: NgZone,
+    private platform: Platform,
     private renderer: Renderer2
   ) {}
 
   public ngOnInit(): void {
-    // this.initBack();
+    this.initBack();
     this.focusInput = this.isInput;
   }
 
   ngAfterViewInit(): void {
-    this.removeClassInput();
+    // this.elementIonItemRef();
+
   }
 
   public ngOnDestroy(): void {
     this.sub$.unsubscribe();
+  }
+
+  elementIonItemRef() {
+    const items = this.items.first;
+
+    // console.log(items.classList.remove('item-interactive'));
   }
 
   public close(emit: any = null): void {
@@ -139,20 +148,20 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     }
   }
 
-  // private initBack(): void {
-  //   this.sub$.add(
-  //     this.platform.backButton
-  //     .subscribe(
-  //       (res) => {
-  //         res.register(150, () => {
-  //           this.ngZone.run(() => {
-  //             // TODO: Implementar opciones para  back button
-  //           });
-  //         });
-  //       }
-  //     )
-  //   );
-  // }
+  private initBack(): void {
+    this.sub$.add(
+      this.platform.backButton
+      .subscribe(
+        (res) => {
+          res.register(150, () => {
+            this.ngZone.run(() => {
+              // TODO: Implementar opciones para  back button
+            });
+          });
+        }
+      )
+    );
+  }
 
   Focus(event) {
     this.focusInput = true;
@@ -160,14 +169,6 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   Blur(event) {
     this.focusInput = false;
-  }
-
-
-  private removeClassInput() {
-    if (this.isPromptStatus) {
-      console.log(this.item);
-      
-    }
   }
 
 }

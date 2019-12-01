@@ -1,6 +1,5 @@
 export enum Config {
   MAX_STATUS = '14',
-  MESSAGE_PLACEHOLDER_STATUS = '¿Qué estás pensando?',
   ICON_BIOGRAFIA = 'fas book-open',
   NAME_BIOGRAFIA = 'WINK.ITEM_TYPES.BIOGRAPHY',
   NAME_GENDER = 'WINK.ITEM_TYPES.SEX',

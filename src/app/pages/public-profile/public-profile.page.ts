@@ -14,10 +14,6 @@ import { SocketEventsListen, SocketService } from 'src/app/core/services/socket.
 import { Subscription } from 'rxjs';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
-import { StorageService } from 'src/app/core/services/storage.service';
-import { Tours } from 'src/app/common/interfaces/tours.interface';
-import { tours } from 'src/app/common/constants/storage.constants';
-import { Buttons } from 'src/app/common/enums/buttons.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
 
 @Component({
@@ -28,7 +24,6 @@ import { TourService } from 'ngx-tour-ngx-popper';
 export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
 
   userWink: User;
-  send = false;
   data = false;
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
   urlWinks = '/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS;
@@ -92,23 +87,19 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
             wink.user = this.userWink;
             if (wink.user === this.userWink) {
               this.wink = data.wink;
-              this.send = false;
-            }
-            if (wink.sender_id === this.userService.User()._id) {
-              this.send = true;
             }
           }
         }
       }
     );
-    this.approvedWinkSubs = this.socketService.Listen(SocketEventsListen.APPROVED_WINK).subscribe(
+    this.approvedWinkSubs = this.socketService.Listen(SocketEventsListen.HANDLED_WINK).subscribe(
       (data: any) => {
         if (data && data.wink) {
-          if (this.wink._id === data.wink._id) {
-            data.wink.user = this.userWink;
-            if (data.wink.user === this.userWink) {
-              this.wink = data.wink;
-              this.send = false;
+          const wink: Wink = data.wink;
+          if (this.wink._id === wink._id) {
+            wink.user = this.userWink;
+            if (wink.user === this.userWink) {
+              this.wink = wink;
             }
           }
         }
@@ -119,7 +110,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         if (data && data.wink) {
           if (this.wink._id === data.wink._id) {
             this.wink = null;
-            this.send = false;
           }
         }
       }
@@ -131,59 +121,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     this.approvedWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
     this.backButtonSubs.unsubscribe();
-  }
-
-  ValidateTour() {
-    const tour: Tours = StorageService.GetItem(tours, true);
-    if (tour) {
-      if (tour.public) {
-        this.Tour(tour);
-      }
-    } else {
-      StorageService.SetItem(tours, {
-        home: true,
-        profile: true,
-        public: true,
-        private: true,
-        winks: true
-      });
-      this.Tour(tour);
-    }
-  }
-
-  Tour(tour: Tours) {
-    this.tourService.initialize(
-      [{
-        anchorId: 'status',
-        content: 'Comparte lo que estes haciendo.',
-        title: 'Status',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        }
-      }, {
-        anchorId: 'profiles',
-        // tslint:disable-next-line: max-line-length
-        content: 'Aqui puedes modificar los perfiles que deseas enviar.',
-        title: 'Second',
-        prevBtnTitle: this.translateService.instant(Buttons.PREV),
-        nextBtnTitle: this.translateService.instant(Buttons.NEXT),
-        endBtnTitle: this.translateService.instant(Buttons.END),
-        popperSettings: {
-          closeOnClickOutside: false,
-        },
-        // route: '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL
-      }]
-    );
-    this.tourService.start();
-    this.tourService.end$.subscribe(
-      () => {
-        tour.public = false;
-        StorageService.SetItem(tours, tour);
-      }
-    );
   }
 
   WatchWink() {
@@ -206,11 +143,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
           this.wink.user = this.userWink;
           this.WatchWink();
         }
-        if (this.wink && this.wink.sender_id === this.userWink._id) {
-          this.send = false;
-        } else {
-          this.send = true;
-        }
       }
     } catch (err) {
       console.log('Error GetWink', err);
@@ -221,9 +153,8 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   async AceptWink() {
     try {
       if (this.wink) {
-        const response = await this.winkService.ApproveWink(this.wink);
+        await this.winkService.ApproveWink(this.wink);
         this.wink.approved = true;
-        this.send = false;
       }
     } catch (err) {
       console.log('Error DeleteWink', err);
@@ -235,7 +166,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       if (this.wink) {
         await this.winkService.DeleteWink(this.wink);
         this.wink = null;
-        this.send = false;
       }
     } catch (err) {
       console.log('Error DeleteWink', err);
@@ -246,7 +176,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     try {
       const response = await this.winkService.SendWink(this.userWink._id);
       this.wink = response.wink;
-      this.send = true;
     } catch (err) {
       console.log('Error SendWink', err);
     }
@@ -349,17 +278,23 @@ ErrorImagen() {
   }
 
 Avatar() {
-    let avatar;
     if (this.userWink) {
       if (this.userWink.avatarUrl.startsWith('http')) {
-        avatar = this.userWink.avatarUrl;
+        return this.userWink.avatarUrl;
       } else {
-        avatar = Routes.PHOTO + this.userWink.avatarUrl;
+        return Routes.PHOTO + this.userWink.avatarUrl;
       }
     } else {
-      avatar = this.avatar;
+      return this.avatar;
     }
-    return avatar;
+  }
+
+  Sended(): boolean {
+    if (this.wink) {
+      return this.wink.sender_id === this.userWink._id ? false : true;
+    } else {
+      return false;
+    }
   }
 
 }

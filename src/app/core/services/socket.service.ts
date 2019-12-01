@@ -11,17 +11,15 @@ import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 enum SocketEvents {
   UPDATE_USER = 'update-user',
   SEND_WINK = 'send-wink',
-  APPROVE_WINK = 'approve-wink',
+  HANDLE_WINK = 'handle-wink',
   DELETE_WINK = 'delete-wink',
-  WATCH_WINK = 'watch-wink',
   AVATAR_UPLOAD = 'avatar-upload',
 }
 export enum SocketEventsListen {
   UPDATED_USER = 'updated-user',
   SENDED_WINK = 'sended-wink',
-  APPROVED_WINK = 'approved-wink',
+  HANDLED_WINK = 'handled-wink',
   DELETED_WINK = 'deleted-wink',
-  WATCHED_WINK = 'watched-wink',
   AVATAR_UPLOADED = 'avatar-uploaded',
 }
 
@@ -96,9 +94,9 @@ export class SocketService  {
     }
   }
 
-  ApproveWink(idUserSend: string, winkValue: Wink) {
+  HandleWink(idUserSend: string, winkValue: Wink) {
     try {
-      this.Emit(SocketEvents.APPROVE_WINK,  {
+      this.Emit(SocketEvents.HANDLE_WINK,  {
         winkUser: idUserSend,
         wink: winkValue,
       });
@@ -113,14 +111,6 @@ export class SocketService  {
         winkUser: idUserSend,
         wink: winkValue,
       });
-    } catch (err) {
-      console.log('Error DeleteWink  ', err.message);
-    }
-  }
-
-  WatchWink(winkValue: Wink) {
-    try {
-      this.Emit(SocketEvents.WATCH_WINK, winkValue);
     } catch (err) {
       console.log('Error DeleteWink  ', err.message);
     }

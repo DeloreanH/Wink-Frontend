@@ -196,17 +196,15 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
   Avatar() {
-    let avatar;
     if (this.user) {
       if (this.user.avatarUrl.startsWith('http')) {
-        avatar = this.user.avatarUrl;
+        return this.user.avatarUrl;
       } else {
-        avatar = Routes.PHOTO + this.user.avatarUrl;
+        return Routes.PHOTO + this.user.avatarUrl;
       }
     } else {
-      avatar = this.avatar;
+      return this.avatar;
     }
-    return avatar;
   }
 
   ErrorImagen() {

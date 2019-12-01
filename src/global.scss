@@ -54,15 +54,11 @@
 
 .icono-white {
   margin-inline-end: 0px !important; 
-  align-self:flex-start; 
-  margin-top: 10px;
   color: #fff;
   font-size: 1.6em;
-  padding-inline-start: 3%;
 }
 
 .icono-arrow {
-  margin-top: 10px;
   color: var(--ion-color-medium, #989aa2) !important;
   font-size: 1.6em;
 }
@@ -238,8 +234,9 @@
   border-radius: 50%;
   height: 40px;
   width: 40px;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
 .ripple-toolbar-mis{

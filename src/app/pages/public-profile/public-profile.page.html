@@ -47,13 +47,13 @@
     </div>    
     <ion-fab *ngIf="!load" class="button-wink end">
       <div *ngIf="wink" class="end">
-          <ion-fab-button *ngIf="!send && !wink.approved" (click)="AceptWink()" size="small" color="primary">
+          <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="AceptWink()" size="small" color="primary">
               <ion-icon name="checkmark"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="!send && !wink.approved" (click)="DeleteWink()" size="small" color="light">
+          <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="DeleteWink()" size="small" color="light">
               <ion-icon name="close"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button *ngIf="send && !wink.approved" (click)="CancelWink()" size="small" color="primary">
+          <ion-fab-button *ngIf="Sended() && !wink.approved" (click)="CancelWink()" size="small" color="primary">
               <fa-icon 
               [icon]="['far', 'smile-wink']" 
               class="icono-public" 

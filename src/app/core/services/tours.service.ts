@@ -25,7 +25,7 @@ export class ToursService {
 
   userTour = new User({
     autosave: true,
-    avatarUrl: '/public/uploads/avatar/4d42cdf3-f40d-4917-ba5b-4643136bcdbd.jpg',
+    avatarUrl: '/public/tour/tour_avatar.jpg',
     birthday: '2008-11-06T16:33:06.088Z',
     email: 'john@doe.com',
     firstName: 'John',

@@ -289,17 +289,15 @@ export class PrivateProfilesPage implements OnInit {
   }
 
   Avatar() {
-    let avatar;
     if (this.userWink) {
       if (this.userWink.avatarUrl.startsWith('http')) {
-        avatar = this.userWink.avatarUrl;
+        return this.userWink.avatarUrl;
       } else {
-        avatar = Routes.PHOTO + this.userWink.avatarUrl;
+        return Routes.PHOTO + this.userWink.avatarUrl;
       }
     } else {
-      avatar = this.avatar;
+      return this.avatar;
     }
-    return avatar;
   }
 
 }

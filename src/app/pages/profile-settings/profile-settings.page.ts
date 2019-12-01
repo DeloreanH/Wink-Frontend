@@ -115,6 +115,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
           position: -1,
           section: new Section({name: 'Biografia', key: -1}),
           basic: false,
+          itemtype: 'personalizado',
           user_id: this.user._id,
           })
       );
@@ -127,6 +128,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
           this.data.push(new Item(valor.item));
         });
       }
+      console.log(this.data);
       this.profilesServices.SaveItems(this.data);
       this.loading = false;
       this.changeData = false;
@@ -147,7 +149,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         value: null,
         custom: null,
         position: null,
-        itemType: null,
+        itemtype: null,
         user_id: this.user._id,
         basic: false,
       });
@@ -244,7 +246,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         value: null,
         custom: null,
         position: null,
-        itemType_id: null,
+        itemtype_id: null,
         user_id: this.user._id,
         basic: false,
       });
@@ -260,7 +262,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       console.log('Error LoadData', err.message);
     }
     this.loading = false;
-    // this.ValidateTour();
   }
 
   Ordenar() {
@@ -320,14 +321,16 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       this.categories = this.profilesServices.categories;
     }
     for (const categoria of this.categories) {
-      obj.push({
-        text: this.translateService.instant(categoria.description),
-        icon: 'add',
-        handler: () => {
-          this.item.category = categoria.name;
-          this.AddItem(this.item, true);
-        }
-      });
+      if (categoria.name !== 'sistema') {
+        obj.push({
+          text: this.translateService.instant(categoria.description),
+          icon: 'add',
+          handler: () => {
+            this.item.category = categoria.name;
+            this.AddItem(this.item, true);
+          }
+        });
+      }
     }
     return obj;
   }
@@ -414,16 +417,14 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Avatar() {
-    let avatar;
     if (this.user) {
       if (this.user.avatarUrl.startsWith('http')) {
-        avatar = this.user.avatarUrl;
+        return this.user.avatarUrl;
       } else {
-        avatar = Routes.PHOTO + this.user.avatarUrl;
+        return Routes.PHOTO + this.user.avatarUrl;
       }
     } else {
-      avatar = this.avatar;
+      return this.avatar;
     }
-    return avatar;
   }
 }

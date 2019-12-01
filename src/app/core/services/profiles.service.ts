@@ -4,10 +4,7 @@ import { ItemType } from '../../common/models/itemType.model';
 import { Section } from '../../common/models/section.model';
 import { HttpClient } from '@angular/common/http';
 import { Routes } from '../../common/enums/routes/routes.enum';
-import { AuthService } from '../../auth/services/auth.service';
-import { take, exhaustMap } from 'rxjs/operators';
 import { Item } from '../../common/models/item.model';
-import { UserService } from './user.service';
 import { ToastService } from './toast.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 
@@ -44,7 +41,7 @@ export class ProfilesService {
             reject({message: 'No name Category'});
           }
           if (this.itemTypes.length === 0) {
-            const response = await this.LoadTypesItems();
+            await this.LoadTypesItems();
           }
           const resultado = this.itemTypes.filter(
             (item: ItemType) => {
@@ -143,10 +140,11 @@ export class ProfilesService {
           if (!data) {
             reject({message: 'No data'});
           }
-          const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, data).toPromise();
+          const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
           this.toastService.Toast(MessagesServices.SAVE_ITEMS);
           resolve(response);
         } catch (err) {
+          console.log(err);
           this.toastService.Toast(MessagesServices.ERROR_SAVE);
           reject(err);
         }

@@ -92,17 +92,15 @@ export class ItemWinkComponent implements OnInit {
   }
 
   Avatar() {
-    let avatar;
     if (this.wink.user) {
       if (this.wink.user.avatarUrl.startsWith('http')) {
-        avatar = this.wink.user.avatarUrl;
+        return this.wink.user.avatarUrl;
       } else {
-        avatar = Routes.PHOTO + this.wink.user.avatarUrl;
+        return Routes.PHOTO + this.wink.user.avatarUrl;
       }
     } else {
-      avatar = this.avatar;
+      return this.avatar;
     }
-    return avatar;
   }
 
   Open() {
