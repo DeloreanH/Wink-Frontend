@@ -321,7 +321,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       this.categories = this.profilesServices.categories;
     }
     for (const categoria of this.categories) {
-      if (categoria.name !== 'sistema') {
+      if (categoria.name !== 'biografia') {
         obj.push({
           text: this.translateService.instant(categoria.description),
           icon: 'add',
