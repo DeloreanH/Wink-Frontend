@@ -16,8 +16,11 @@ import {
   AlertActionsOption,
   AlertTutorialOption,
   AlertButton,
+  AlertButtons,
+  AlertButtonType,
 } from './base';
 import { AlertComponent } from './alert.component';
+import { Buttons } from '../enums/buttons.enum';
 
 @Injectable()
 export class AlertService {
@@ -54,12 +57,12 @@ export class AlertService {
     return this.any(AlertType.Actions, option);
   }
 
-  public Show() {
-    return this.any(null, null);
-  }
-
   public any(alertType: AlertType, option: AlertOption | AlertActionsOption | AlertTutorialOption): Observable<null | any> {
+    if (alertType === AlertType.Comfirm) {
+      const buttons = this.confirmBT;
 
+      (option as any).buttons = buttons;
+    }
     return new Observable<any>((observer) => {
       const factory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
       let unsu = true;
@@ -110,6 +113,16 @@ export class AlertService {
     }
 
     this.removeClass = true;
+  }
+
+  private get confirmBT(): AlertButtons {
+    const A = Buttons.YES;
+    const B = Buttons.NO;
+
+    return [
+      { type: AlertButtonType.Danger, label: B, value: false },
+      { type: AlertButtonType.Secondary, label: A, value: true }
+    ] as AlertButtons;
   }
 
 }

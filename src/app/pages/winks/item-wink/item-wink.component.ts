@@ -7,6 +7,7 @@ import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { NavController, IonItemSliding } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
+import { AlertService } from 'src/app/common/alert/alert.service';
 
 @Component({
   selector: 'item-wink',
@@ -23,7 +24,8 @@ export class ItemWinkComponent implements OnInit {
   constructor(
     private winkService: WinkService,
     private navController: NavController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private alertService: AlertService,
   ) {
    }
 
@@ -42,12 +44,25 @@ export class ItemWinkComponent implements OnInit {
   async Ignore() {
     try {
       if (!this.tour) {
-        await this.winkService.DeleteWink(this.wink);
+        if (this.wink.approved) {
+          this.alertService.showConfirm({
+            title: 'WINK.DIALOGUES.TITLES.DELETE_WINK',
+            description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
+          }).subscribe(
+            async (resp: any) => {
+              if (resp.value) {
+                await this.winkService.DeleteWink(this.wink);
+                this.Close();
+              }
+            }
+          );
+        } else {
+          await this.winkService.DeleteWink(this.wink);
+        }
       }
     } catch (err) {
       console.log('Error Ignore', err.message);
     }
-    this.Close();
   }
 
   Time(date: string) {

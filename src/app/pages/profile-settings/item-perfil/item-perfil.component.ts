@@ -6,6 +6,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormControl, Valida
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MessageErrorForms } from '../../../common/enums/messageError.enum';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-item-perfil',
@@ -49,6 +50,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
   constructor(
     private profilesServices: ProfilesService,
+    private toastService: ToastService,
   ) {
     this.unique = this.profilesServices.unique;
     // this.form.setControl('campo1', new FormControl());
@@ -90,12 +92,14 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   AddChip(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-    if ((value || '').trim() && value.length > 2 && this.value.value.length < 31) {
+    if ((value || '').trim() && value.length > 2 && value.length < 13 && this.value.value.length < 31) {
       this.chipArray.push(value.trim());
       this.value.value = this.chipArray.join(',');
       if (input) {
         input.value = '';
       }
+    } else if (value !== '' && value.length <= 2 || value.length >= 13) {
+      this.toastService.Toast('WINK.PROFILE_SETTINGS.CHIP');
     }
     if (value && value !== '') {
       this.Change();

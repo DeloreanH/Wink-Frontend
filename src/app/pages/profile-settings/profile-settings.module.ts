@@ -20,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
 import { ImgLoadModule } from 'src/app/common/directives';
+import { AlertModule } from 'src/app/common/alert/alert.module';
 
 
 
@@ -44,6 +45,7 @@ const routes: Routes = [
     TranslateModule.forChild(),
     TourNgxPopperModule.forRoot(),
     ImgLoadModule,
+    AlertModule,
   ],
   declarations: [ProfileSettingsPage, ItemPerfilComponent]
 })

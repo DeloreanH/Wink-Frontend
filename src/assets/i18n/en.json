@@ -104,7 +104,8 @@
         "SECTION": "Select a section",
         "CATEGORY": "Select a category",
         "SELECT_ITEMS": "Select an option"
-      }
+      },
+      "CHIP": "You can only add between 3 to 12 characters per word."
     },
     "PUBLIC_PROFILE": {
 
@@ -228,10 +229,12 @@
     },
     "DIALOGUES": {
       "TITLES": {
-        "CONFIRM": "Confirm!"
+        "CONFIRM": "Confirm!",
+        "DELETE_WINK": "Delete Wink"
       },
       "MESSAGES": {
-        "CANCEL_WINK":	"Do you want to <strong> cancel </strong> the wink?"
+        "CANCEL_WINK":	"Do you want to <strong> cancel </strong> the wink?",
+        "DELETE_WINK": "Are you sure?"
       }
     },
     "SERVICES": {
@@ -272,6 +275,12 @@
         "MENU": "Here you can find more configuration options.",
         "ITEM": "In these items you can write all the information you want to show about yourself.",
         "ITEM_ICON": "By clicking on the item icon you can change the type of item that will be displayed."
+      }
+    },
+    "AUTH": {
+      "LOGOUT": {
+        "TITLE": "Logout",
+        "MESSAGE": "Are you sure?"
       }
     }
   }

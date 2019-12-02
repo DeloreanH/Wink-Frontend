@@ -10,6 +10,7 @@ import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
 import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
+import { AlertService } from 'src/app/common/alert/alert.service';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -35,6 +36,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private avatarService: UpdateAvatarService,
     private navController: NavController,
+    private alertService: AlertService,
   ) {
     this.user = this.userService.User();
     this.form = this.formBuilder.group({
@@ -119,7 +121,16 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
   Logout() {
-    this.authService.Logout();
+    this.alertService.showConfirm({
+      title: 'WINK.AUTH.LOGOUT.TITLE',
+      description: 'WINK.AUTH.LOGOUT.MESSAGE',
+    }).subscribe(
+      (resp: any) => {
+        if (resp.value) {
+          this.authService.Logout();
+        }
+      }
+    );
   }
 
   async SeleccionarImagen() {

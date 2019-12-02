@@ -19,6 +19,9 @@ import { TourService } from 'ngx-tour-ngx-popper';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { Config } from 'src/app/common/enums/config.enum';
+import { AlertService } from 'src/app/common/alert/alert.service';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
+import { AlertButtonType } from 'src/app/common/alert/base';
 
 @Component({
   selector: 'profile-settings',
@@ -75,6 +78,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private translateService: TranslateService,
     public tourService: TourService,
     private toursService: ToursService,
+    private alertService: AlertService,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -372,10 +376,19 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   Logout() {
     if (!this.tour) {
-      this.authService.Logout();
-      if (this.menu.isOpen) {
-        this.menu.close();
-      }
+      this.alertService.showConfirm({
+        title: 'WINK.AUTH.LOGOUT.TITLE',
+        description: 'WINK.AUTH.LOGOUT.MESSAGE',
+      }).subscribe(
+        (resp: any) => {
+          if (resp.value) {
+            this.authService.Logout();
+            if (this.menu.isOpen) {
+              this.menu.close();
+            }
+          }
+        }
+      );
     }
   }
 

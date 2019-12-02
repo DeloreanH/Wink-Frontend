@@ -26,12 +26,14 @@
 }
 .alert__title {
   color: var(--color-background);
+  font-family: var(--ion-font-family,inherit);
   margin-bottom: 1rem;
   font-weight: 500;
   font-size: 1.5rem;
 }
 .alert__message {
   color: var(--color-placeholder);
+  font-family: var(--ion-font-family,inherit);
 }
 .alert__buttons {
   display: flex;
