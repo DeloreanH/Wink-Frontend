@@ -19,6 +19,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { Globalization } from '@ionic-native/globalization/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 
 import { AuthModule } from '../auth/auth.module';
@@ -63,6 +64,7 @@ import { ToursService } from './services/tours.service';
     Diagnostic,
     Contacts,
     Globalization,
+    Vibration,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
 

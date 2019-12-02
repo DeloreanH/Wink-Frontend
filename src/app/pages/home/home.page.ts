@@ -262,8 +262,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
                 break;
             }
           }
-          console.log(this.personal);
-          console.log(this.profesional);
           await this.userService.UpdateProfiles(this.user.visibility);
         }
       } catch (err) {
@@ -290,7 +288,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       ]
     }).subscribe(
       (response) => {
-        if (response) {
+        if (response && !this.tour) {
           this.ChangeStatus(response);
         }
       }

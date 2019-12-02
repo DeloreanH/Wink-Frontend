@@ -139,10 +139,13 @@ export class WinkService {
             wink.user.newWink = false;
             this.UpdateUser(wink.user);
           }
-          this.socketService.HandleWink(
-            wink.sender_id,
-            wink
-          );
+          wink.watched = true;
+          if (wink.watched) {
+            this.socketService.HandleWink(
+              wink.sender_id,
+              wink
+            );
+          }
           resolve(response);
         } catch (err) {
           console.log('Error ApproveWink: ' + err.message);

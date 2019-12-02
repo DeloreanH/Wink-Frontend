@@ -7,8 +7,8 @@ import { WinkService } from 'src/app/core/services/wink.service';
 import { User } from 'src/app/common/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { Wink } from 'src/app/common/models/wink.model';
-import { TourService } from 'ngx-tour-core';
 import { ToursService } from 'src/app/core/services/tours.service';
+import { SongsService } from 'src/app/core/services/songs.service';
 
 
 @Component({
@@ -42,6 +42,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private winkService: WinkService,
     private userService: UserService,
     private toursService: ToursService,
+    private songsService: SongsService,
   ) {
    }
 
@@ -114,12 +115,13 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       (data: any) => {
         if (data && data.wink) {
           const wink: Wink = data.wink;
-          if (this.url !== RoutesAPP.WINKS) {
-            this.winksTab = true;
-          }
-          if (wink.sender_id !== this.idUser) {
+          if (wink.receiver_id === this.idUser) {
+            if (this.url !== RoutesAPP.WINKS) {
+              this.winksTab = true;
+            }
             this.newWinks.set(wink._id, wink._id);
             this.winkService.AddWink(wink);
+            this.songsService.Vibrate();
           }
         }
       }
