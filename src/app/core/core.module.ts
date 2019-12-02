@@ -18,6 +18,7 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
+import { Globalization } from '@ionic-native/globalization/ngx';
 
 
 import { AuthModule } from '../auth/auth.module';
@@ -61,6 +62,7 @@ import { ToursService } from './services/tours.service';
     LocationAccuracy,
     Diagnostic,
     Contacts,
+    Globalization,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
 

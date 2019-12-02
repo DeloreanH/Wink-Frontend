@@ -1,6 +1,6 @@
 {
   "VIRTWOO_AUTH": {
-    "APP_NAME": "Handshake",
+    "APP_NAME": "WINK",
     "ERROR": {
       "FACEBOOK": {
         "PLUGIN": "Plugin Facebook no instalado"
@@ -37,8 +37,8 @@
     },
     "FORM": {
       "PLACEHOLDER": {
-        "USERNAME": "Usuario",
-        "EMAIL": "Correo",
+        "USERNAME": "Username",
+        "EMAIL": "Email",
         "PASSWORD": "Password"
       },
       "BUTTON": {

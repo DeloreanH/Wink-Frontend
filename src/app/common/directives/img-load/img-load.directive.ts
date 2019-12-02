@@ -36,7 +36,7 @@ export class ImgLoadDirective implements
   public imgError = '/assets/img/no-img.jpg';
 
   // tslint:disable-next-line: variable-name
-  private _srcPath: string = null;
+  private _srcPath: string = '';
   private imageElement: HTMLImageElement = null;
   private load = false;
   private sub$ = new Subscription();

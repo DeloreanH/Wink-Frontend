@@ -1,6 +1,6 @@
 {
   "VIRTWOO_AUTH": {
-    "APP_NAME": "Handshake",
+    "APP_NAME": "WINK",
     "ERROR": {
       "FACEBOOK": {
         "PLUGIN": "Plugin Facebook no instalado"
@@ -16,7 +16,7 @@
       "SENDING_SMS": "Enviado SMS...",
       "EMAIL_SENT": "Te hemos enviado un correo para restablecer tu contraseña",
       "FORGOT_PASSWORD": {
-        "TITLE": "¿Olvidaste tu password?",
+        "TITLE": "¿Olvidaste tu contraseña?",
         "SUB_TITLE": "Por favor ingresa tu dirección de correo, te enviaremos un email para resetear tu password."
       },
       "SEND_SMS": {
@@ -67,7 +67,7 @@
     "BUTTONS": {
       "CLIENT": "Cliente",
       "PROFESSIONAL": "Ofrecer Servicios",
-      "STARTED": "Get Started"
+      "STARTED": "Empezar"
     }
   },
   "WINK": {

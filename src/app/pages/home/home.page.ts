@@ -163,7 +163,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
           this.personal = false;
           break;
         case VisibilityOption.PERSONAL:
-          this.profesional = true;
+          this.profesional = false;
           this.personal = true;
           break;
         case VisibilityOption.ALL:
@@ -220,10 +220,10 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     // }
   }
 
-  async ChangeProfiles(profile: boolean) {
+  async ChangeProfiles(profile: string) {
       try {
         if (this.user && !this.tour) {
-          if (profile) {
+          if (profile === '1') {
             switch (this.user.visibility) {
               case VisibilityOption.GENERAL:
                 this.user.visibility = VisibilityOption.PERSONAL;
@@ -262,8 +262,10 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
                 break;
             }
           }
+          console.log(this.personal);
+          console.log(this.profesional);
+          await this.userService.UpdateProfiles(this.user.visibility);
         }
-        await this.userService.UpdateProfiles(this.user.visibility);
       } catch (err) {
         this.user = this.userService.User();
         console.log('Error ChangeProfiles', err.message);
@@ -322,6 +324,14 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     // });
 
     // await alert.present();
+  }
+
+  get isPersonal() {
+    return this.personal;
+  }
+
+  get isProfessional() {
+    return this.profesional;
   }
 
 

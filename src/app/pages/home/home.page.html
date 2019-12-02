@@ -110,19 +110,17 @@
       
       <ion-fab-list side="top" [activated]="OpenFabList">  
         <ion-fab-button 
-          (click)="ChangeProfiles(false)" 
-          [ngClass]="{'activo': profesional, 'inactivo' : !profesional}">
+          (click)="ChangeProfiles('2')" 
+          [ngClass]="{'activo': isProfessional, 'inactivo' : !isProfessional}">
             <fa-icon 
             [icon]="['fas', 'user-tie']" 
             class="icono-public" 
-            
             ></fa-icon>
         </ion-fab-button>
-        
 
         <ion-fab-button
-          (click)="ChangeProfiles(true)" 
-          [ngClass]="{'activo': personal, 'inactivo' : !personal}">
+          (click)="ChangeProfiles('1')" 
+          [ngClass]="{'activo': isPersonal, 'inactivo' : !isPersonal}">
           <fa-icon 
             [icon]="['fas', 'user']" 
             class="icono-public" 

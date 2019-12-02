@@ -12,7 +12,7 @@ import { Router, NavigationStart, NavigationEnd, RouterOutlet } from '@angular/r
 import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 import { StorageService } from './core/services/storage.service';
 import { language } from './common/constants/storage.constants';
-import { TourService } from 'ngx-tour-md-menu';
+import { LanguageService, Language } from './core/services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +31,7 @@ export class AppComponent {
     private slRouterService: SlRouterService,
     private router: Router,
     private storageService: StorageService,
+    private languageService: LanguageService,
   ) {
     // this.translateService.setDefaultLang('en');
     // this.translateService.use('es');
@@ -49,16 +50,18 @@ export class AppComponent {
   private Language() {
     const lang = this.storageService.apiLanguage;
     if (lang) {
-      if (lang === 'es') {
-        this.translateService.setDefaultLang('en');
-      } else {
-        this.translateService.setDefaultLang('es');
-      }
-      this.translateService.use(lang);
+      this.languageService.DefaultLanguage(lang);
+      // if (lang === 'es') {
+      //   this.translateService.setDefaultLang('en');
+      // } else {
+      //   this.translateService.setDefaultLang('es');
+      // }
+      // this.translateService.use(lang);
     } else {
-      this.translateService.setDefaultLang('en');
-      this.translateService.use('es');
-      StorageService.SetItem(language, 'es');
+      this.languageService.DefaultLanguage(Language.EN);
+      // this.translateService.setDefaultLang('en');
+      // this.translateService.use('es');
+      // StorageService.SetItem(language, 'es');
     }
   }
 
