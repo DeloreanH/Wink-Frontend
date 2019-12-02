@@ -114,6 +114,7 @@ export class UserService {
           const response = await this.http.post(Routes.BASE + Routes.UPDATE_PROFILES, {visibility: value}).toPromise();
           this.user.visibility = value;
           this.User(this.user, true);
+          this.socketService.UpdateUser(this.user);
           resolve(response);
         } catch (err) {
           reject(err);

@@ -97,8 +97,10 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         input.value = '';
       }
     }
+    if (value && value !== '') {
+      this.Change();
+    }
     (this.form.controls.campo1 as FormControl).markAsTouched();
-    this.Change();
   }
 
   DeleteChip(fruit: any): void {
