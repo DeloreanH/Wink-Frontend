@@ -120,14 +120,20 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-appavailability": {},
-      "cordova-plugin-camera": {},
+      "cordova-plugin-camera": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
       "cordova-plugin-crop": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-request-location-accuracy": {},
+      "cordova-plugin-request-location-accuracy": {
+        "PLAY_SERVICES_LOCATION_VERSION": "16.+"
+      },
       "cordova-open-native-settings": {},
       "cordova-plugin-contacts": {},
       "cordova-plugin-android-permissions": {},

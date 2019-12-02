@@ -11,6 +11,6 @@ export class SongsService {
   ) { }
 
   Vibrate() {
-    this.vibration.vibrate([2000, 1000, 2000]);
+    this.vibration.vibrate([1000, 500, 1000]);
   }
 }

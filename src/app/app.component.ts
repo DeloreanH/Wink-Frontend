@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild, OnDestroy } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { SlRouterService } from '@virtwoo/sl-router';
 import { VirtwooAuthPathName } from '@virtwoo/auth';
 import { AuthService } from './auth/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 import { Router, NavigationStart, NavigationEnd, RouterOutlet } from '@angular/router';
 import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 import { StorageService } from './core/services/storage.service';
@@ -20,7 +20,6 @@ import { LanguageService, Language } from './core/services/language.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-
   eventRouter = new Subscription();
   login = false;
   constructor(

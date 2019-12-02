@@ -9,6 +9,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { Wink } from 'src/app/common/models/wink.model';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { SongsService } from 'src/app/core/services/songs.service';
+import { Platform } from '@ionic/angular';
 
 
 @Component({
@@ -49,7 +50,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.Listen();
   }
-
   public ngOnInit() {
     this.idUser = this.userService.User()._id;
     // this.winkService.Init();
@@ -160,6 +160,4 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.deletedWinkSubs.unsubscribe();
     this.updatedAvatarSubs.unsubscribe();
   }
-
-
 }

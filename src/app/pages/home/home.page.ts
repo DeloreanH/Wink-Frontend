@@ -67,16 +67,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.platform.backButton.subscribe(
-      (backButton) => {
-        backButton.register(9999, () => {
-          alert('BACK CLICK');
-        });
-      },
-      (error) => {
-        alert('error back');
-      }
-    );
     this.router.events.subscribe(
       (valor: any) => {
         if (valor instanceof NavigationEnd) {
