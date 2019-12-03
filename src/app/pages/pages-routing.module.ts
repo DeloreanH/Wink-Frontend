@@ -46,6 +46,15 @@ export const routesTab: Routes = [
         ]
       },
       {
+        path: 'winks/:request',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./winks/winks.module').then(m => m.WinksPageModule),
+          }
+        ]
+      },
+      {
         path: 'private-profiles/:idUser/:idWink/:origin',
         children: [
           {

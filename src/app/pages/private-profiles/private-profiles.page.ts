@@ -41,6 +41,7 @@ export class PrivateProfilesPage implements OnInit {
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
   avatar: string = Config.AVATAR;
   load = true;
+  noItems = Config.NO_ITEMS;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,8 +66,9 @@ export class PrivateProfilesPage implements OnInit {
       async (params: Params) => {
         try {
           const wink = await this.winkService.GetWinkID(params.idWink);
-          if (wink) {
-            this.userWink = wink.user;
+          const idUser = params.idUser;
+          if (wink && idUser) {
+            this.userWink = await this.winkService.GetUserID(idUser);
             this.idWink = params.idWink;
             this.origin = params.origin;
             const response: Item[] = await this.profilesService.GetPrivateItems(this.userWink._id, this.idWink);

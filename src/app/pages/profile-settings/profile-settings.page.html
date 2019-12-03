@@ -151,6 +151,9 @@
                   >
                 </app-item-perfil>
             </div>
+            <div *ngIf="publicoForm.length === 0" class="vacio">
+              <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
+            </div>
           </mat-expansion-panel>
           <div *ngIf="tour" tourAnchor="public"></div>
           <div *ngIf="tour" tourAnchor="private"></div>
@@ -186,6 +189,9 @@
                 >
                 </app-item-perfil>
               </div>
+              <div *ngIf="generalForm.length === 0" class="vacio">
+                <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
+              </div>
           </mat-expansion-panel>
           
           <mat-expansion-panel  #pper  
@@ -220,6 +226,9 @@
               >
               </app-item-perfil>
             </div>
+            <div *ngIf="personalForm.length === 0" class="vacio">
+              <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
+            </div>
           </mat-expansion-panel>
           
           <mat-expansion-panel  #ppro  
@@ -253,6 +262,9 @@
               (change)="ChangeData()"
               >
               </app-item-perfil>
+            </div>
+            <div *ngIf="profesionalForm.controls.length === 0" class="vacio">
+              <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
             </div>
           </mat-expansion-panel>
         </mat-accordion>

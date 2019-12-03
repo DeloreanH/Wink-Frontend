@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';
 import { ToastButton } from '@ionic/core/dist/types/components/toast/toast-interface';
 import { TranslateService } from '@ngx-translate/core';
+import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 
 export enum PositionToast {
   TOP = 'top',
@@ -17,12 +18,13 @@ export class ToastService {
 
   constructor(
     private toastController: ToastController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) { }
 
   async Toast(
     messageText: string,
     headerText?: string,
+    buttonsValue?: ToastButton[],
     positionValue?: PositionToast,
     durationValue?: number,
     colorValue?: string
@@ -36,7 +38,9 @@ export class ToastService {
         position: positionValue ? positionValue : PositionToast.TOP,
         duration: durationValue ? durationValue : 3000,
         color: colorValue ? colorValue : null,
+        buttons: buttonsValue ? buttonsValue : [],
       });
       toast.present();
   }
+
 }

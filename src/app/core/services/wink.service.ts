@@ -27,6 +27,7 @@ export class WinkService {
   private indexWink: number = null;
   private indexUser: number = null;
   idUser: string;
+  deleteWink = new Subject<Wink>();
 
   constructor(
     private locationService: LocationService,
@@ -64,8 +65,6 @@ export class WinkService {
             const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
             this.SetNearbyUsers((response as User[]));
             this.userService.UpdateLocation(myLocation);
-            console.log(response);
-            // this.Init();
             resolve(response);
           } else {
             reject({message: 'No Location'});
@@ -134,13 +133,10 @@ export class WinkService {
           // this.DeleteRequests(wink);
           wink.approved = true;
           wink.updatedAt = new Date().toString();
-          this.AddRecord(wink);
-          if (wink.user.newWink) {
-            wink.user.newWink = false;
-            this.UpdateUser(wink.user);
-          }
+          wink.user.newWink = false;
           wink.watched = true;
-          if (wink.watched) {
+          if (wink.watched  && !wink.user.newWink && wink.approved) {
+            this.AddRecord(wink);
             this.socketService.HandleWink(
               wink.sender_id,
               wink
@@ -164,10 +160,14 @@ export class WinkService {
           }
           const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
           this.DeleteWinkUser(wink);
-          this.socketService.DeleteWink(
-            wink.receiver_id === this.idUser ? wink.sender_id : wink.receiver_id,
-            wink
-          );
+          wink.watched = true;
+          if (wink.watched) {
+            this.socketService.DeleteWink(
+              wink.receiver_id === this.idUser ? wink.sender_id : wink.receiver_id,
+              wink
+            );
+          }
+          this.deleteWink.next(wink);
           resolve(response);
         } catch (err) {
           console.log('Error DeleteWink: ' + err.message);
@@ -277,8 +277,8 @@ export class WinkService {
               wink.sender_id,
               wink
             );
+            this.AddRequests(wink);
           }
-          console.log('WatchedWink', wink);
           resolve(response);
         } catch (err) {
           console.log('Error WatchedWink: ' + err.message);
@@ -324,14 +324,22 @@ export class WinkService {
 
   AddWink(wink: Wink) {
     wink.user = null;
-    if (wink.approved) {
+    if (wink.approved && !wink.user) {
       this.AddRecord(wink);
-    } else if (wink.receiver_id === this.idUser) {
+    } else if (wink.receiver_id === this.idUser && !wink.user) {
       this.AddRequests(wink);
     }
   }
 
-  async AddUserWink(idUserWink) {
+  async GetUserWink(wink: Wink) {
+    if (!wink) {
+      return;
+    }
+    return this.GetUserID(wink.sender_id ===  this.idUser ? wink.receiver_id : wink.sender_id);
+
+  }
+
+  async GetUserID(idUserWink) {
     if (!idUserWink) {
       return;
     }
@@ -355,35 +363,31 @@ export class WinkService {
       if (!wink || !wink.approved) {
         return;
       }
-      if (!wink.user) {
-        const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
-        wink.user = await this.AddUserWink(idUserWink);
-      }
       this.DeleteRequests(wink);
-      wink.user.newWink = !wink.watched;
-      const user = this.GetNearbyUser(wink.user._id);
-      if (user && this.indexUser >= 0) {
-        user.newWink = !wink.watched;
-        this.nearbyUsers[this.indexUser] = user;
-      }
-      const winkExist = this.GetWinkRecordID(wink._id);
-      if (winkExist  && this.indexWink >= 0) {
-        this.record[this.indexWink] = wink;
-      } else {
-        this.record.push(wink);
-      }
-      this.record = this.record.sort(
-        (a: Wink, b: Wink) => {
-          if (new Date(a.updatedAt).getTime() > new Date(b.updatedAt).getTime()) {
-            return -1;
-          } else if (new Date(a.updatedAt).getTime() < new Date(b.updatedAt).getTime()) {
-            return 1;
-          } else {
-            return 0;
-          }
+      const user = await this.GetUserWink(wink);
+      wink.user = user;
+      if (wink.user) {
+        wink.user.newWink = !wink.watched;
+        this.WatchWink(wink);
+        const winkExist = this.GetWinkRecordID(wink._id);
+        if (winkExist  && this.indexWink >= 0) {
+          this.record[this.indexWink] = wink;
+        } else {
+          this.record.push(wink);
         }
-      );
-      this.recordChanged.next(this.record);
+        this.record = this.record.sort(
+          (a: Wink, b: Wink) => {
+            if (new Date(a.updatedAt).getTime() > new Date(b.updatedAt).getTime()) {
+              return -1;
+            } else if (new Date(a.updatedAt).getTime() < new Date(b.updatedAt).getTime()) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        );
+        this.recordChanged.next(this.record);
+      }
     } catch (err) {
       console.log('Error AddRecord', err.message);
     }
@@ -395,44 +399,63 @@ export class WinkService {
         return;
       }
       this.DeleteRecord(wink);
+      const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
       const winkExist = this.GetWinkRequestsID(wink._id);
-      if (!wink.user) {
-        wink.user = await this.AddUserWink(wink.sender_id);
-      }
-      wink.user.newWink = !wink.watched;
-      const user = this.GetNearbyUser(wink.user._id);
-      if (user && this.indexUser >= 0) {
-        user.newWink = !wink.watched;
-        this.nearbyUsers[this.indexUser] = user;
-      }
-      if (winkExist && this.indexWink >= 0) {
-        this.requests[this.indexWink] = wink;
-      } else {
-        this.requests.push(wink);
-      }
-      this.requests = this.requests.sort(
-        (a: Wink, b: Wink) => {
-          if (new Date(a.createdAt).getTime() > new Date(b.createdAt).getTime()) {
-            return -1;
-          } else if (new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime()) {
-            return 1;
-          } else {
-            return 0;
-          }
+      wink.user = await this.GetUserID(idUserWink);
+      if (wink.user ) {
+        wink.user.newWink = !wink.watched;
+        this.WatchWink(wink);
+        if (winkExist && this.indexWink >= 0) {
+          this.requests[this.indexWink] = wink;
+        } else {
+          this.requests.push(wink);
         }
-      );
-      this.requestsChanged.next(this.requests);
+        this.requests = this.requests.sort(
+          (a: Wink, b: Wink) => {
+            if (new Date(a.createdAt).getTime() > new Date(b.createdAt).getTime()) {
+              return -1;
+            } else if (new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime()) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        );
+        this.requestsChanged.next(this.requests);
+      }
     } catch (err) {
       console.log('Error AddRequests', err.message);
     }
   }
 
+
+  WatchWink(wink: Wink) {
+    const user = this.GetNearbyUser(wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id);
+    if (user && this.indexUser >= 0) {
+      user.newWink = !wink.watched;
+      this.nearbyUsers[this.indexUser] = user;
+    }
+  }
+
   DeleteWinkUser(wink: Wink) {
+    if (!wink) {
+      return;
+    }
+    wink.user = null;
     this.DeleteRecord(wink);
     this.DeleteRequests(wink);
   }
 
-  DeleteRecord(wink: Wink) {
+  async DeleteRecord(wink: Wink) {
+    if (!wink) {
+      return;
+    }
+    const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
+    wink.user = await this.GetUserID(idUserWink);
+    if (wink.user) {
+      wink.user.newWink = !wink.watched;
+      this.WatchWink(wink);
+    }
     const winkX = this.GetWinkRecordID(wink._id);
     if (winkX && this.indexWink  >= 0) {
       this.record.splice(this.indexWink, 1);
@@ -440,29 +463,32 @@ export class WinkService {
     }
   }
 
-  DeleteRequests(wink: Wink) {
+  async DeleteRequests(wink: Wink) {
+    if (!wink) {
+      return;
+    }
+    wink.user = await this.GetUserID(wink.sender_id);
+    if (wink.user) {
+      wink.user.newWink = !wink.watched;
+      this.WatchWink(wink);
+    }
     const winkX = this.GetWinkRequestsID(wink._id);
     if (winkX && this.indexWink >= 0) {
-      const user = this.GetNearbyUser(wink.user._id);
-      if (user && this.indexUser) {
-        user.newWink = false;
-        this.nearbyUsers[this.indexUser] = user;
-      }
       this.requests.splice(this.indexWink, 1);
       this.requestsChanged.next(this.requests);
     }
   }
 
   get Record() {
-    return this.record;
+    return this.record.slice();
   }
 
   get Requests() {
-    return this.requests;
+    return this.requests.slice();
   }
 
   get NearbyUsers() {
-    return this.nearbyUsers;
+    return this.nearbyUsers.slice();
   }
 
   async UpdateUser(newUser: User, updateAvatar?: boolean) {
@@ -504,6 +530,7 @@ export class WinkService {
           }
         );
       }
+      console.log('aqui');
       this.nearbyUsersChanged.next(this.nearbyUsers);
     }
   }

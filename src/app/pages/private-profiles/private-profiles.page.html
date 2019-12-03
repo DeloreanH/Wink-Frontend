@@ -144,12 +144,22 @@
     </div>
     <ion-list *ngFor="let section of items; let i = index;" >
       <ion-list-header *ngIf="section.length > 0">
-        <ion-label>{{sections[i + 1].name | translate}}</ion-label>
+        <ion-label>
+          <strong>
+            {{sections[i + 1].name | translate}}
+          </strong>
+        </ion-label>
       </ion-list-header>
       <item-list 
         *ngFor="let item of section"
         [item]="item.item">
       </item-list>
     </ion-list>
+    <div *ngIf="generalItems.length === 0 && personalItems.length  === 0 && professionalItems.length === 0" class="vacio">
+      <p >
+        {{ noItems | translate}}
+      </p>
+      <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
+    </div>
   </div>  
 </ion-content>

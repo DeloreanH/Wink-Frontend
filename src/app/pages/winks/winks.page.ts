@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { ItemWinkComponent } from './item-wink/item-wink.component';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-winks',
@@ -38,12 +39,21 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     private winkService: WinkService,
     public tourService: TourService,
     private toursService: ToursService,
+    private route: ActivatedRoute,
   ) {
     this.record = this.winkService.Record;
     this.requests = this.winkService.Requests;
    }
 
   ngOnInit() {
+    this.route.params
+    .subscribe(
+      async (params: Params) => {
+        if (params.requests) {
+          this.tab = 'requests';
+        }
+      }
+    );
     this.recordSubscription = this.winkService.recordChanged.subscribe(
       (record: Wink[]) => {
         this.record = record;

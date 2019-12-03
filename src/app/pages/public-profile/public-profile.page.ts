@@ -34,6 +34,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   origin;
   avatar: string = Config.AVATAR;
   deletedWinkSubs = new Subscription();
+  deleteWinkSubs = new Subscription();
   approvedWinkSubs = new Subscription();
   sendedWinkSubs = new Subscription();
   backButtonSubs = new Subscription();
@@ -85,8 +86,10 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
           const wink: Wink = data.wink;
           if (wink.receiver_id === this.userWink._id || wink.sender_id === this.userWink._id ) {
             wink.user = this.userWink;
+            this.userWink.newWink = !wink.watched;
             if (wink.user === this.userWink) {
               this.wink = data.wink;
+              this.WatchWink();
             }
           }
         }
@@ -96,7 +99,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       (data: any) => {
         if (data && data.wink) {
           const wink: Wink = data.wink;
-          if (this.wink._id === wink._id) {
+          if (this.wink && this.wink._id === wink._id) {
             wink.user = this.userWink;
             if (wink.user === this.userWink) {
               this.wink = wink;
@@ -108,9 +111,16 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     this.deletedWinkSubs = this.socketService.Listen(SocketEventsListen.DELETED_WINK).subscribe(
       (data: any) => {
         if (data && data.wink) {
-          if (this.wink._id === data.wink._id) {
+          if (this.wink && this.wink._id === data.wink._id) {
             this.wink = null;
           }
+        }
+      }
+    );
+    this.deleteWinkSubs = this.winkService.deleteWink.subscribe(
+      (wink: Wink) => {
+        if (this.wink && this.wink._id === wink._id) {
+          this.wink = null;
         }
       }
     );
@@ -127,7 +137,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     if (this.userWink.newWink) {
       this.userWink.newWink = false;
       this.winkService.WatchedWink(this.wink);
-      this.winkService.UpdateUser(this.userWink);
     }
   }
 
@@ -205,44 +214,51 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
 
   FilterItems(items: Item[], userW: User) {
     this.publicItems = [];
-    let contador = 0;
-    if (items) {
-      if (items.length > 0) {
+    try {
+      let contador = 0;
+      if (items) {
         items = items.filter(
           item => {
             return item.value && item.value !== '';
           }
         );
-        if (items[0].position === -1) {
-          contador++;
+        if (items.length > 0) {
+          console.log(items);
+          if (items[0].position === -1) {
+            contador++;
+          }
         }
-      }
-      const age = new Item({
-        _id: Config.ICON_AGE,
-        value: (userW.age ? userW.age  : '0') + ' ' +  this.translateService.instant(Config.YEARS) ,
-        custom: Config.NAME_AGE,
-        position: IndexItemType.BIOGARFIA,
-        section: null
-      });
-      items.splice(contador, 0, age);
-      contador ++;
-      if (userW.gender && userW.gender !== '' && this.userService.genders[3].value !== userW.gender) {
-        const genderValue = this.userService.GetGender(userW.gender);
-        if (genderValue) {
-          const gender = new Item({
-            _id: Config.ICON_GENDER,
-            value:  this.translateService.instant(genderValue.description),
-            custom: Config.NAME_GENDER,
+        if (userW.age ) {
+          const age = new Item({
+            _id: Config.ICON_AGE,
+            value: (userW.age ? userW.age  : '0') + ' ' +  this.translateService.instant(Config.YEARS) ,
+            custom: Config.NAME_AGE,
             position: IndexItemType.BIOGARFIA,
-            section: null,
+            section: null
           });
-          items.splice(contador, 0, gender);
+          items.splice(contador, 0, age);
           contador ++;
         }
+        if (userW.gender && userW.gender !== '' && this.userService.genders[3].value !== userW.gender) {
+          const genderValue = this.userService.GetGender(userW.gender);
+          if (genderValue) {
+            const gender = new Item({
+              _id: Config.ICON_GENDER,
+              value:  this.translateService.instant(genderValue.description),
+              custom: Config.NAME_GENDER,
+              position: IndexItemType.BIOGARFIA,
+              section: null,
+            });
+            items.splice(contador, 0, gender);
+            contador ++;
+          }
+        }
+        this.publicItems.push(...items);
       }
-      this.publicItems.push(...items);
-      this.load = false;
+    } catch (err) {
+      console.log('Error Filtre', err);
     }
+    this.load = false;
   }
 
   async Back() {

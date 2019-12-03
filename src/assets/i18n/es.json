@@ -98,7 +98,8 @@
     },
     "PRIVATE_PROFILES": {
       "TITLE": "Perfiles privados",
-      "SAVE_CONTACTS": "Seleccione los elementos que desea guardar en el contacto."
+      "SAVE_CONTACTS": "Seleccione los elementos que desea guardar en el contacto.",
+      "ITEMS_EMPTY": "No hay ítems para mostrar."
     },
     "PROFILE_SETTINGS": {
       "TITLE": "Configuración de perfiles",
@@ -156,7 +157,8 @@
       "PREVIOUS": "Anterior",
       "PREV": "Previo",
       "NEXT": "Siguiente",
-      "NEXT2": "Sig"
+      "NEXT2": "Sig",
+      "SEE": "Ver"
     },
     "CATEGORY": {
       "CONTACT":	"Contacto",
@@ -241,7 +243,8 @@
       },
       "MESSAGES": {
         "CANCEL_WINK":	"¿Desea <strong>cancelar</strong> el wink?",
-        "DELETE_WINK": "¿Estás seguro?"
+        "DELETE_WINK": "¿Estás seguro?",
+        "NEW_WINK": "Tienes una nueva solicitud."
       }
     },
     "SERVICES": {

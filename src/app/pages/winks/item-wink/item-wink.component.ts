@@ -8,6 +8,7 @@ import { NavController, IonItemSliding } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
+import { User } from 'src/app/common/models/user.model';
 
 @Component({
   selector: 'item-wink',
@@ -19,6 +20,7 @@ export class ItemWinkComponent implements OnInit {
   @Input() wink: Wink;
   @Input() tour: boolean;
   avatar: string = Config.AVATAR;
+  userWink: User;
   urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
 
   constructor(
@@ -29,7 +31,20 @@ export class ItemWinkComponent implements OnInit {
   ) {
    }
 
-  ngOnInit() {}
+  async Init() {
+    try {
+      if (this.wink) {
+        this.userWink = await this.winkService.GetUserWink(this.wink);
+        // this.userWink.newWink = !this.wink.watched;
+      }
+    } catch (err) {
+      console.log('Error Init item-wink', err);
+    }
+  }
+
+  ngOnInit() {
+    this.Init();
+  }
 
   async Accept() {
     try {
@@ -103,15 +118,15 @@ export class ItemWinkComponent implements OnInit {
   }
 
   ErrorImagen() {
-    this.wink.user.avatarUrl = this.avatar;
+    this.userWink.avatarUrl = this.avatar;
   }
 
   Avatar() {
-    if (this.wink.user) {
-      if (this.wink.user.avatarUrl.startsWith('http')) {
-        return this.wink.user.avatarUrl;
+    if (this.userWink) {
+      if (this.userWink.avatarUrl.startsWith('http')) {
+        return this.userWink.avatarUrl;
       } else {
-        return Routes.PHOTO + this.wink.user.avatarUrl;
+        return Routes.PHOTO + this.userWink.avatarUrl;
       }
     } else {
       return this.avatar;

@@ -9,7 +9,9 @@ import { UserService } from 'src/app/core/services/user.service';
 import { Wink } from 'src/app/common/models/wink.model';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { SongsService } from 'src/app/core/services/songs.service';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -27,6 +29,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   newWinks = new Map();
   url: string;
   idUser: string;
+  idUserProfile: string;
 
   tour = true;
 
@@ -44,6 +47,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService,
     private toursService: ToursService,
     private songsService: SongsService,
+    private toastService: ToastService,
+    private navController: NavController,
+    private translateService: TranslateService,
   ) {
    }
 
@@ -57,6 +63,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       (valor: any) => {
         if (valor instanceof NavigationStart) {
           this.url =  valor.url.split('/')[2];
+          this.idUserProfile = valor.url.split('/')[3] ? valor.url.split('/')[3] : null;
           if (this.url === RoutesAPP.PERFIL_PUBLICO || this.url === RoutesAPP.PRIVATE_PROFILES) {
             this.ocultar = true;
           } else {
@@ -65,6 +72,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         if (valor instanceof NavigationEnd) {
           this.url =  valor.url.split('/')[2];
+          this.idUserProfile = valor.url.split('/')[3] ? valor.url.split('/')[3] : null;
           if (this.url === RoutesAPP.PERFIL_PUBLICO || this.url === RoutesAPP.PRIVATE_PROFILES) {
             this.ocultar = true;
           } else {
@@ -72,7 +80,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
               if (this.winksTab) {
                 this.winksTab = false;
               }
-              // this.winkService.Init();
             }
             this.ocultar = false;
           }
@@ -115,9 +122,27 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       (data: any) => {
         if (data && data.wink) {
           const wink: Wink = data.wink;
+          wink.user = null;
           if (wink.receiver_id === this.idUser) {
             if (this.url !== RoutesAPP.WINKS) {
               this.winksTab = true;
+              if (this.idUserProfile && this.url === RoutesAPP.PERFIL_PUBLICO && wink.sender_id === this.idUserProfile) {
+                this.winksTab = false;
+              } else {
+                this.toastService.Toast('WINK.DIALOGUES.MESSAGES.NEW_WINK', null, [{
+                  text: this.translateService.instant('WINK.BUTTONS.SEE'),
+                  side: 'end',
+                  handler: () => {
+                    setTimeout(
+                      async () => {
+                        await this.navController.navigateBack(
+                          ['/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS, true]
+                        );
+                      }
+                      , 250);
+                  },
+                }]);
+              }
             }
             this.newWinks.set(wink._id, wink._id);
             this.winkService.AddWink(wink);
@@ -129,8 +154,8 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.handeledWinkSubs = this.socketService.Listen(SocketEventsListen.HANDLED_WINK).subscribe(
       (data: any) => {
         if (data && data.wink) {
-          console.log(data);
           const wink: Wink = data.wink;
+          wink.user = null;
           if (this.newWinks.get(wink._id)) {
             this.newWinks.delete(wink._id);
             this.winksTab = false;
@@ -143,6 +168,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       (data: any) => {
         if (data && data.wink) {
           const wink: Wink = data.wink;
+          wink.user = null;
           if (this.newWinks.get(wink._id)) {
             this.newWinks.delete(wink._id);
             this.winksTab = false;
@@ -160,4 +186,5 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.deletedWinkSubs.unsubscribe();
     this.updatedAvatarSubs.unsubscribe();
   }
+
 }
