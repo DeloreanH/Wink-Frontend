@@ -58,7 +58,10 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   public ngOnInit() {
     this.idUser = this.userService.User()._id;
-    // this.winkService.Init();
+    this.RouterController();
+  }
+
+  RouterController() {
     this.router.events.subscribe(
       (valor: any) => {
         if (valor instanceof NavigationStart) {

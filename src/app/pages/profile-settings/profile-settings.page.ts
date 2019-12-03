@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
-import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
+import { ActionSheetController, MenuController, NavController, Platform } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../common/models/category.model';
 import { Item } from '../../common/models/item.model';
@@ -65,6 +65,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   tourSubs = new Subscription();
   tour = true;
   itemTour: boolean;
+  backButtonSubs = new Subscription();
+  urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -79,6 +81,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     public tourService: TourService,
     private toursService: ToursService,
     private alertService: AlertService,
+    private platform: Platform,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -180,6 +183,17 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        // resp.register(150,
+        //   async () => {
+        //     await this.navController.navigateBack(
+        //       [ this.urlHome]
+        //     );
+        //   }
+        // );
+      }
+    );
   }
 
   ngAfterViewInit(): void {
@@ -240,6 +254,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     this.eventRouter .unsubscribe();
     this.tourSubs.unsubscribe();
     this.stepShowSubs.unsubscribe();
+    this.backButtonSubs.unsubscribe();
   }
 
   async LoadData() {

@@ -7,9 +7,7 @@ import {
   Input,
   NgZone,
   ViewChild,
-  Renderer2,
   AfterViewInit,
-  ElementRef,
   ViewChildren,
   QueryList,
 } from '@angular/core';
@@ -47,7 +45,6 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   constructor(
     private ngZone: NgZone,
     private platform: Platform,
-    private renderer: Renderer2
   ) {}
 
   public ngOnInit(): void {
@@ -153,8 +150,9 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
       this.platform.backButton
       .subscribe(
         (res) => {
-          res.register(150, () => {
+          res.register(200, () => {
             this.ngZone.run(() => {
+              this.close(null);
               // TODO: Implementar opciones para  back button
             });
           });

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, NgZone } from '@angular/core';
 import { User } from '../../common/models/user.model';
 import { UserService } from '../../core/services/user.service';
 import { Subscription } from 'rxjs';
@@ -8,9 +8,6 @@ import { WinkService } from '../../core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Platform, NavController, AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { StorageService } from 'src/app/core/services/storage.service';
-import { language, tours } from 'src/app/common/constants/storage.constants';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
@@ -35,7 +32,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   user: User = null;
   userSubs = new Subscription();
   personal = true;
-  profesional  = true;
+  professional  = true;
 
   maxStatus = Config.MAX_STATUS;
 
@@ -46,6 +43,9 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   tour = true;
   tourSubs = new Subscription();
   stepShowSubs = new Subscription();
+  backButtonSubs = new Subscription();
+  exit = 'app';
+  countExit = 0;
 
   constructor(
     private userService: UserService,
@@ -53,11 +53,11 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private platform: Platform,
     private navController: NavController,
-    private translateService: TranslateService,
     public tourService: TourService,
     private toursService: ToursService,
     public alertController: AlertController,
     private alertService: AlertService,
+    private ngZone: NgZone,
   ) {
     this.user = this.userService.User();
     for (let i = 0; i < 15; i++) {
@@ -79,7 +79,17 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    // this.GPS();
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          () => {
+            this.ngZone.run(() => {
+              this.ExitApp();
+            });
+          }
+        );
+      }
+    );
     this.originNearbyUsers = this.winkService.NearbyUsers;
     this.nearbyUsersSubs = this.winkService.nearbyUsersChanged.subscribe(
       (nearbyUsers) => {
@@ -93,16 +103,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         this.VisibilityUser();
       }
     );
-  }
-
-  lAN() {
-    if (this.translateService.currentLang === 'es') {
-      this.translateService.use('en');
-      StorageService.SetItem(language, 'en');
-    } else {
-      this.translateService.use('es');
-      StorageService.SetItem(language, 'es');
-    }
   }
 
   ValidateTour() {
@@ -138,26 +138,25 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.VisibilityUser();
-    // this.ValidateTour();
   }
 
   VisibilityUser() {
     if (this.user) {
       switch (this.user.visibility) {
         case VisibilityOption.GENERAL:
-          this.profesional = false;
+          this.professional = false;
           this.personal = false;
           break;
         case VisibilityOption.PROFESIONAL:
-          this.profesional = true;
+          this.professional = true;
           this.personal = false;
           break;
         case VisibilityOption.PERSONAL:
-          this.profesional = false;
+          this.professional = false;
           this.personal = true;
           break;
         case VisibilityOption.ALL:
-          this.profesional = true;
+          this.professional = true;
           this.personal = true;
           break;
       }
@@ -169,10 +168,12 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     this.nearbyUsersSubs.unsubscribe();
     this.tourSubs.unsubscribe();
     this.stepShowSubs.unsubscribe();
+    this.backButtonSubs.unsubscribe();
   }
 
   async GPS(event?) {
     this.load = true;
+    this.ChangeExit();
     try {
       await this.winkService.GetNearby();
     } catch (err) {
@@ -185,6 +186,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   LoadUsers(event?) {
+    this.ChangeExit();
     if (!this.tour) {
       if (this.contadorUser < this.originNearbyUsers.length) {
         this.contadorUser += 10;
@@ -200,67 +202,67 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async ChangeStatus(value) {
-    // if (event.target.value !== this.user.status) {
-      try {
-        await this.userService.UpdateStatus(value);
-      } catch (err) {
-        // event.target.value = this.user.status;
-        console.log('Error ChangeStatus', err.message);
-      }
-    // }
+    try {
+      await this.userService.UpdateStatus(value);
+    } catch (err) {
+      this.user = this.userService.User();
+      console.log('Error ChangeStatus', err.message);
+    }
   }
 
   async ChangeProfiles(profile: string) {
-      try {
-        if (this.user && !this.tour) {
-          if (profile === '1') {
-            switch (this.user.visibility) {
-              case VisibilityOption.GENERAL:
-                this.user.visibility = VisibilityOption.PERSONAL;
-                this.personal = true;
-                break;
-              case VisibilityOption.PERSONAL:
-                this.user.visibility = VisibilityOption.GENERAL;
-                this.personal = false;
-                break;
-              case VisibilityOption.PROFESIONAL:
-                this.user.visibility = VisibilityOption.ALL;
-                this.personal = true;
-                break;
-              case VisibilityOption.ALL:
-                this.user.visibility = VisibilityOption.PROFESIONAL;
-                this.personal = false;
-                break;
-            }
-          } else {
-            switch (this.user.visibility) {
-              case VisibilityOption.GENERAL:
-                this.user.visibility = VisibilityOption.PROFESIONAL;
-                this.profesional = true;
-                break;
-              case VisibilityOption.PROFESIONAL:
-                this.user.visibility = VisibilityOption.GENERAL;
-                this.profesional = false;
-                break;
-              case VisibilityOption.PERSONAL:
-                this.user.visibility = VisibilityOption.ALL;
-                this.profesional = true;
-                break;
-              case VisibilityOption.ALL:
-                this.user.visibility = VisibilityOption.PERSONAL;
-                this.profesional = false;
-                break;
-            }
+    try {
+      this.ChangeExit();
+      if (this.user && !this.tour) {
+        if (profile === '1') {
+          switch (this.user.visibility) {
+            case VisibilityOption.GENERAL:
+              this.user.visibility = VisibilityOption.PERSONAL;
+              this.personal = true;
+              break;
+            case VisibilityOption.PERSONAL:
+              this.user.visibility = VisibilityOption.GENERAL;
+              this.personal = false;
+              break;
+            case VisibilityOption.PROFESIONAL:
+              this.user.visibility = VisibilityOption.ALL;
+              this.personal = true;
+              break;
+            case VisibilityOption.ALL:
+              this.user.visibility = VisibilityOption.PROFESIONAL;
+              this.personal = false;
+              break;
           }
-          await this.userService.UpdateProfiles(this.user.visibility);
+        } else {
+          switch (this.user.visibility) {
+            case VisibilityOption.GENERAL:
+              this.user.visibility = VisibilityOption.PROFESIONAL;
+              this.professional = true;
+              break;
+            case VisibilityOption.PROFESIONAL:
+              this.user.visibility = VisibilityOption.GENERAL;
+              this.professional = false;
+              break;
+            case VisibilityOption.PERSONAL:
+              this.user.visibility = VisibilityOption.ALL;
+              this.professional = true;
+              break;
+            case VisibilityOption.ALL:
+              this.user.visibility = VisibilityOption.PERSONAL;
+              this.professional = false;
+              break;
+          }
         }
-      } catch (err) {
-        this.user = this.userService.User();
-        console.log('Error ChangeProfiles', err.message);
+        await this.userService.UpdateProfiles(this.user.visibility);
       }
+    } catch (err) {
+      this.user = this.userService.User();
+      console.log('Error ChangeProfiles', err.message);
+    }
   }
 
-  async presentAlertRadio() {
+  async PromptStatus() {
+    this.ChangeExit();
     this.alertService.showPromptStatus({
       title: 'WINK.STATUS.TITLE',
       description: this.user.status,
@@ -283,35 +285,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    // const alert = await this.alertController.create({
-    //   header: 'Status',
-    //   inputs: [
-    //     {
-    //       name: 'status',
-    //       type: 'text',
-    //       placeholder: 'Status',
-    //       value: this.user.status
-    //     },
-    //   ],
-    //   buttons: [
-    //     {
-    //       text: 'Cancel',
-    //       role: 'cancel',
-    //       cssClass: 'secondary',
-    //       handler: () => {
-    //         console.log('Confirm Cancel');
-    //       }
-    //     }, {
-    //       text: 'Ok',
-    //       handler: (value) => {
-    //         console.log(value);
-    //         this.ChangeStatus(value.status);
-    //       }
-    //     }
-    //   ]
-    // });
-
-    // await alert.present();
   }
 
   get isPersonal() {
@@ -319,12 +292,12 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get isProfessional() {
-    return this.profesional;
+    return this.professional;
   }
-
 
   async GoPublicProfile(user: User) {
     try {
+      this.ChangeExit();
       if (!this.tour) {
         setTimeout(
           async () => {
@@ -337,6 +310,19 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     } catch (err) {
       console.log('Error Go', err.message);
     }
+  }
+
+  ExitApp() {
+    console.log(this.countExit);
+    this.countExit++;
+    if (this.countExit === 2) {
+      this.countExit = 0;
+      navigator[this.exit].exitApp();
+    }
+  }
+
+  ChangeExit() {
+    this.countExit = 0;
   }
 
 }

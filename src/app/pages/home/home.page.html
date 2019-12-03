@@ -9,7 +9,7 @@
         <fa-icon 
           [icon]="['far',  'comment']"
           class="icon-bar"
-          (click)="presentAlertRadio()"
+          (click)="PromptStatus()"
           [ngClass]="{'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'), 'icon-red' : (user.status === 'WINK.STATUS.BUSY'), 'icon-blue' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}"
         ></fa-icon>        
         <ion-ripple-effect></ion-ripple-effect>
@@ -20,17 +20,6 @@
 
 
   <ion-content >
-
-    <!-- <ion-card>
-      <ion-input 
-      #status
-      [maxlength]="maxStatus"
-      [value]="user ? user.status : ''"
-      style="text-align: start;" 
-      [placeholder]="'WINK.HOME.STATUS' | translate" 
-      (ionBlur)="ChangeStatus($event)"></ion-input>
-    </ion-card> -->
-
     <ion-refresher slot="fixed" (ionRefresh)="GPS($event)">
       <ion-refresher-content
         pullingIcon="arrow-dropdown"

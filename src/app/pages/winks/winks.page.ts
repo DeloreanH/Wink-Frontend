@@ -10,6 +10,7 @@ import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Platform, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-winks',
@@ -35,17 +36,26 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   tourSubscription = new Subscription();
   stepShowSubs = new Subscription();
 
+  backButtonSubs = new Subscription();
+  urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
+
   constructor(
     private winkService: WinkService,
     public tourService: TourService,
     private toursService: ToursService,
     private route: ActivatedRoute,
+    private platform: Platform,
+    private navController: NavController,
   ) {
     this.record = this.winkService.Record;
     this.requests = this.winkService.Requests;
    }
 
   ngOnInit() {
+    this.Subscriptions();
+  }
+
+  private Subscriptions() {
     this.route.params
     .subscribe(
       async (params: Params) => {
@@ -64,7 +74,19 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
         this.requests = requests;
       }
     );
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        // resp.register(150,
+        //   async () => {
+        //     await this.navController.navigateBack(
+        //       [ this.urlHome]
+        //     );
+        //   }
+        // );
+      }
+    );
   }
+
   ngAfterViewInit(): void {
     this.ValidateTour();
   }
@@ -122,6 +144,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     this.requestsSubscription.unsubscribe();
     this.tourSubscription.unsubscribe();
     this.stepShowSubs.unsubscribe();
+    this.backButtonSubs.unsubscribe();
   }
 
   TabChanged(event) {

@@ -8,17 +8,19 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <ion-item (click)="GoBasicData()">
+      <ion-item (click)="GoBasicData()" class="ion-activatable ion-activatable-up">
         <ion-icon name="person" slot="start"></ion-icon>
         <ion-label>
             {{'WINK.PROFILE_SETTINGS.MENU.BASIC_DATA' | translate}}
         </ion-label>
+        <ion-ripple-effect></ion-ripple-effect>
       </ion-item>
-      <ion-item (click)="Logout()">
+      <ion-item (click)="Logout()" class="ion-activatable ion-activatable-up">
         <ion-icon name="exit" slot="start"></ion-icon>
         <ion-label>
             {{'WINK.PROFILE_SETTINGS.MENU.LOGOUT' | translate}}
         </ion-label>
+        <ion-ripple-effect></ion-ripple-effect>
       </ion-item>
     </ion-list>
   </ion-content>

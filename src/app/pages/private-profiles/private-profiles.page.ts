@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/common/models/user.model';
 import { Wink } from 'src/app/common/models/wink.model';
@@ -7,7 +7,7 @@ import { Item } from 'src/app/common/models/item.model';
 import { ProfilesService } from 'src/app/core/services/profiles.service';
 import { Section } from 'src/app/common/models/section.model';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, Platform } from '@ionic/angular';
 import { ItemType } from 'src/app/common/models/itemType.model';
 import { SaveContactService } from 'src/app/core/services/save-contact.service';
 import { NameCategories } from 'src/app/common/enums/nameCaterogies.enum';
@@ -20,13 +20,14 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { tours } from 'src/app/common/constants/storage.constants';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-private-profiles',
   templateUrl: './private-profiles.page.html',
   styleUrls: ['./private-profiles.page.scss'],
 })
-export class PrivateProfilesPage implements OnInit {
+export class PrivateProfilesPage implements OnInit, OnDestroy {
 
   userWink: User;
   origin: string;
@@ -42,6 +43,7 @@ export class PrivateProfilesPage implements OnInit {
   avatar: string = Config.AVATAR;
   load = true;
   noItems = Config.NO_ITEMS;
+  backButtonSubs = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -52,6 +54,7 @@ export class PrivateProfilesPage implements OnInit {
     private navController: NavController,
     private translateService: TranslateService,
     private tourService: TourService,
+    private platform: Platform,
   ) {
     this.sections = this.profilesService.sections;
     this.items.push(this.generalItems);
@@ -61,6 +64,13 @@ export class PrivateProfilesPage implements OnInit {
 
   ngOnInit() {
     this.load = true;
+    this.Subscriptions();
+  }
+
+  ngOnDestroy(): void {
+    this.backButtonSubs.unsubscribe();
+  }
+  private Subscriptions() {
     this.route.params
     .subscribe(
       async (params: Params) => {
@@ -77,6 +87,15 @@ export class PrivateProfilesPage implements OnInit {
         } catch (err) {
           console.log('Error ngOnInit private profiles', err.message);
         }
+      }
+    );
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        // resp.register(300,
+        //   () => {
+        //     this.Back();
+        //   }
+        // );
       }
     );
   }

@@ -77,6 +77,15 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        // resp.register(200,
+        //   () => {
+        //     this.Back();
+        //   }
+        // );
+      }
+    );
   }
 
   ngAfterViewInit(): void {

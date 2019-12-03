@@ -4,7 +4,7 @@ import { User } from '../../common/models/user.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/services/auth.service';
-import { ActionSheetController, MenuController, NavController } from '@ionic/angular';
+import { ActionSheetController, MenuController, NavController, Platform } from '@ionic/angular';
 import { UpdateAvatarService } from '../../core/services/update-avatar.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
@@ -21,13 +21,13 @@ export class BasicDataPage implements OnInit, OnDestroy {
   avatar: string = Config.AVATAR;
   user: User;
   userSusbcription = new Subscription();
-  formSusbcription = new Subscription();
   form: FormGroup;
   loading = false;
   loadingAvatar = false;
   uploadAvatar = false;
   edit = false;
   genders: { value: string, description: string}[] = [];
+  backButtonSubs = new Subscription();
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -37,6 +37,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
     private avatarService: UpdateAvatarService,
     private navController: NavController,
     private alertService: AlertService,
+    private platform: Platform,
   ) {
     this.user = this.userService.User();
     this.form = this.formBuilder.group({
@@ -73,6 +74,10 @@ export class BasicDataPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+    this.Subscriptions();
+  }
+
+  private Subscriptions() {
     this.userSusbcription = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
@@ -83,10 +88,24 @@ export class BasicDataPage implements OnInit, OnDestroy {
         this.edit = true;
       }
     );
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        // resp.register(200,
+        //   () => {
+        //     if (this.user.emptyProfile) {
+        //       this.Logout();
+        //     } else {
+        //       this.Back();
+        //     }
+        //   }
+        // );
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.userSusbcription.unsubscribe();
+    this.backButtonSubs.unsubscribe();
   }
 
   async onSubmit() {
