@@ -89,15 +89,6 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
         }
       }
     );
-    this.backButtonSubs = this.platform.backButton.subscribe(
-      (resp) => {
-        // resp.register(300,
-        //   () => {
-        //     this.Back();
-        //   }
-        // );
-      }
-    );
   }
 
   ValidateTour() {
@@ -319,6 +310,32 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
     } else {
       return this.avatar;
     }
+  }
+
+  ionViewWillEnter() {
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          () => {
+            this.Back();
+          }
+        );
+      }
+    );
+    // alert('3 - Acabamos de entrar en la página.');
+  }
+
+  ionViewDidEnter() {
+    // alert('4 - Página completamente cargada y activa.');
+  }
+
+  ionViewWillLeave() {
+    // alert('6 - ¿Estás seguro que quieres dejar la página?.');
+  }
+
+  ionViewDidLeave() {
+    // alert('7 - La página Home2 ha dejado de estar activa.');
+    this.backButtonSubs.unsubscribe();
   }
 
 }

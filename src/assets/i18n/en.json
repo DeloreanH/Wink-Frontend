@@ -235,7 +235,7 @@
         "DELETE_WINK": "Delete Wink"
       },
       "MESSAGES": {
-        "CANCEL_WINK":	"Do you want to <strong> cancel </strong> the wink?",
+        "CANCEL_WINK":	"Do you want to cancel the wink?",
         "DELETE_WINK": "Are you sure?",
         "NEW_WINK": "You have a new request."
       }

@@ -36,7 +36,7 @@ export class ToastService {
         header: headerText ? this.translateService.instant(headerText) : null,
         message: this.translateService.instant(messageText),
         position: positionValue ? positionValue : PositionToast.TOP,
-        duration: durationValue ? durationValue : 3000,
+        duration: durationValue ? durationValue : 1000,
         color: colorValue ? colorValue : null,
         buttons: buttonsValue ? buttonsValue : [],
       });

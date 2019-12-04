@@ -144,7 +144,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
                       }
                       , 250);
                   },
-                }]);
+                }], null, 2000);
               }
             }
             this.newWinks.set(wink._id, wink._id);

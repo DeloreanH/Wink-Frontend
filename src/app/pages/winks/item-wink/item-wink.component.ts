@@ -34,7 +34,7 @@ export class ItemWinkComponent implements OnInit {
   async Init() {
     try {
       if (this.wink) {
-        this.userWink = await this.winkService.GetUserWink(this.wink);
+        // this.userWink = await this.winkService.GetUserWink(this.wink);
         // this.userWink.newWink = !this.wink.watched;
       }
     } catch (err) {
@@ -43,7 +43,7 @@ export class ItemWinkComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.Init();
+    // this.Init();
   }
 
   async Accept() {
@@ -118,15 +118,15 @@ export class ItemWinkComponent implements OnInit {
   }
 
   ErrorImagen() {
-    this.userWink.avatarUrl = this.avatar;
+    this.wink.user.avatarUrl = this.avatar;
   }
 
   Avatar() {
-    if (this.userWink) {
-      if (this.userWink.avatarUrl.startsWith('http')) {
-        return this.userWink.avatarUrl;
+    if (this.wink.user) {
+      if (this.wink.user.avatarUrl.startsWith('http')) {
+        return this.wink.user.avatarUrl;
       } else {
-        return Routes.PHOTO + this.userWink.avatarUrl;
+        return Routes.PHOTO + this.wink.user.avatarUrl;
       }
     } else {
       return this.avatar;

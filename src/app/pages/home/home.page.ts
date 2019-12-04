@@ -79,17 +79,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    this.backButtonSubs = this.platform.backButton.subscribe(
-      (resp) => {
-        resp.register(100,
-          () => {
-            this.ngZone.run(() => {
-              this.ExitApp();
-            });
-          }
-        );
-      }
-    );
     this.originNearbyUsers = this.winkService.NearbyUsers;
     this.nearbyUsersSubs = this.winkService.nearbyUsersChanged.subscribe(
       (nearbyUsers) => {
@@ -323,6 +312,34 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   ChangeExit() {
     this.countExit = 0;
+  }
+
+  ionViewWillEnter() {
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          () => {
+            this.ngZone.run(() => {
+              this.ExitApp();
+            });
+          }
+        );
+      }
+    );
+    // alert('3 - Acabamos de entrar en la página.');
+  }
+
+  ionViewDidEnter() {
+    // alert('4 - Página completamente cargada y activa.');
+  }
+
+  ionViewWillLeave() {
+    // alert('6 - ¿Estás seguro que quieres dejar la página?.');
+  }
+
+  ionViewDidLeave() {
+    // alert('7 - La página Home2 ha dejado de estar activa.');
+    this.backButtonSubs.unsubscribe();
   }
 
 }

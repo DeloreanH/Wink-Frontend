@@ -74,17 +74,6 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
         this.requests = requests;
       }
     );
-    this.backButtonSubs = this.platform.backButton.subscribe(
-      (resp) => {
-        // resp.register(150,
-        //   async () => {
-        //     await this.navController.navigateBack(
-        //       [ this.urlHome]
-        //     );
-        //   }
-        // );
-      }
-    );
   }
 
   ngAfterViewInit(): void {
@@ -158,6 +147,34 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  ionViewWillEnter() {
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          async () => {
+            await this.navController.navigateBack(
+              [ this.urlHome]
+            );
+          }
+        );
+      }
+    );
+    // alert('3 - Acabamos de entrar en la página.');
+  }
+
+  ionViewDidEnter() {
+    // alert('4 - Página completamente cargada y activa.');
+  }
+
+  ionViewWillLeave() {
+    // alert('6 - ¿Estás seguro que quieres dejar la página?.');
+  }
+
+  ionViewDidLeave() {
+    // alert('7 - La página Home2 ha dejado de estar activa.');
+    this.backButtonSubs.unsubscribe();
   }
 
 }

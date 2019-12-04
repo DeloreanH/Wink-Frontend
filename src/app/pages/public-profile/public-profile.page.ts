@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { TourService } from 'ngx-tour-ngx-popper';
+import { AlertService } from 'src/app/common/alert/alert.service';
+import { AlertButtonType } from 'src/app/common/alert/base';
 
 @Component({
   selector: 'public-profile',
@@ -50,7 +52,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     private socketService: SocketService,
     private platform: Platform,
     private translateService: TranslateService,
-    private tourService: TourService,
+    private alertService: AlertService,
   ) {
     // this.user = this.userService.User();
   }
@@ -75,15 +77,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
             this.GetWink();
           }
         }
-      }
-    );
-    this.backButtonSubs = this.platform.backButton.subscribe(
-      (resp) => {
-        // resp.register(200,
-        //   () => {
-        //     this.Back();
-        //   }
-        // );
       }
     );
   }
@@ -200,25 +193,46 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async CancelWink() {
-    const alert = await this.alertController.create({
-      header: this.translateService.instant('WINK.DIALOGUES.TITLES.CONFIRM') ,
-      message: this.translateService.instant('WINK.DIALOGUES.MESSAGES.CANCEL_WINK') ,
+    this.alertService.showActions({
+      title: 'WINK.DIALOGUES.TITLES.CONFIRM',
+      description: 'WINK.DIALOGUES.MESSAGES.CANCEL_WINK',
       buttons: [
         {
-          text: this.translateService.instant('WINK.BUTTONS.DISCARD'),
-          role: 'cancel',
-          handler: (blah) => {
-          }
+          label: this.translateService.instant('WINK.BUTTONS.DISCARD'),
+          value: null,
+          type: AlertButtonType.Danger
         }, {
-          text: this.translateService.instant('WINK.BUTTONS.YES'),
-          handler: () => {
-            this.DeleteWink();
-          }
+          label: this.translateService.instant('WINK.BUTTONS.YES'),
+          value: true,
+          type: AlertButtonType.Secondary
         }
       ]
-    });
+    }).subscribe(
+      (resp: any) => {
+        if (resp.value) {
+          this.DeleteWink();
+        }
+      }
+    );
+    // const alert = await this.alertController.create({
+    //   header: this.translateService.instant('WINK.DIALOGUES.TITLES.CONFIRM') ,
+    //   message: this.translateService.instant('WINK.DIALOGUES.MESSAGES.CANCEL_WINK') ,
+    //   buttons: [
+    //     {
+    //       text: this.translateService.instant('WINK.BUTTONS.DISCARD'),
+    //       role: 'cancel',
+    //       handler: (blah) => {
+    //       }
+    //     }, {
+    //       text: this.translateService.instant('WINK.BUTTONS.YES'),
+    //       handler: () => {
+    //         this.DeleteWink();
+    //       }
+    //     }
+    //   ]
+    // });
 
-    await alert.present();
+    // await alert.present();
   }
 
   FilterItems(items: Item[], userW: User) {
@@ -320,6 +334,48 @@ Avatar() {
     } else {
       return false;
     }
+  }
+
+  ionViewCanEnter() {
+    alert('1 - Toc, Toc!!! ¿Puedo pasar? Se lanza antes de que la vista pueda entrar.');
+  }
+
+  ionViewDidLoad() {
+    alert('2 - En este momento la página ha terminado de cargar.');
+  }
+
+  ionViewWillEnter() {
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          () => {
+            this.Back();
+          }
+        );
+      }
+    );
+    // alert('3 - Acabamos de entrar en la página.');
+  }
+
+  ionViewDidEnter() {
+    // alert('4 - Página completamente cargada y activa.');
+  }
+
+  ionViewCanLeave() {
+    // alert('5 - Toc, Toc!!! ¿Puedo salir? Se lanza antes de que la vista pueda salir.');
+  }
+
+  ionViewWillLeave() {
+    // alert('6 - ¿Estás seguro que quieres dejar la página?.');
+  }
+
+  ionViewDidLeave() {
+    // alert('7 - La página Home2 ha dejado de estar activa.');
+    this.backButtonSubs.unsubscribe();
+  }
+
+  ionViewWillUnload() {
+    alert('8 - Página y eventos destruidos (Este evento no debería saltar.).');
   }
 
 }

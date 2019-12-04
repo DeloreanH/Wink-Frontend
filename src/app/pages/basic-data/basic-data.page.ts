@@ -88,19 +88,6 @@ export class BasicDataPage implements OnInit, OnDestroy {
         this.edit = true;
       }
     );
-    this.backButtonSubs = this.platform.backButton.subscribe(
-      (resp) => {
-        // resp.register(200,
-        //   () => {
-        //     if (this.user.emptyProfile) {
-        //       this.Logout();
-        //     } else {
-        //       this.Back();
-        //     }
-        //   }
-        // );
-      }
-    );
   }
 
   ngOnDestroy(): void {
@@ -265,6 +252,36 @@ export class BasicDataPage implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  ionViewWillEnter() {
+    this.backButtonSubs = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          () => {
+            if (this.user.emptyProfile) {
+              this.Logout();
+            } else {
+              this.Back();
+            }
+          }
+        );
+      }
+    );
+    // alert('3 - Acabamos de entrar en la página.');
+  }
+
+  ionViewDidEnter() {
+    // alert('4 - Página completamente cargada y activa.');
+  }
+
+  ionViewWillLeave() {
+    // alert('6 - ¿Estás seguro que quieres dejar la página?.');
+  }
+
+  ionViewDidLeave() {
+    // alert('7 - La página Home2 ha dejado de estar activa.');
+    this.backButtonSubs.unsubscribe();
   }
 
 }

@@ -242,7 +242,7 @@
         "DELETE_WINK": "Borrar Wink"
       },
       "MESSAGES": {
-        "CANCEL_WINK":	"¿Desea <strong>cancelar</strong> el wink?",
+        "CANCEL_WINK":	"¿Desea cancelar el wink?",
         "DELETE_WINK": "¿Estás seguro?",
         "NEW_WINK": "Tienes una nueva solicitud."
       }

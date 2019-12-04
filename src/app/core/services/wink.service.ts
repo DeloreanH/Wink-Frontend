@@ -49,7 +49,7 @@ export class WinkService {
     }
    }
 
-   async GetNearby() {
+  async GetNearby() {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -105,8 +105,11 @@ export class WinkService {
             reject({message: 'No idUser'});
           }
           const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
-          response.wink.user = this.userService.User();
-          this.socketService.SendWink(idUser, response.wink, response.distance);
+          // response.wink.user = this.userService.User();
+          response.wink.user = null;
+          if (!response.wink.user) {
+            this.socketService.SendWink(idUser, response.wink, response.distance);
+          }
           this.toastService.Toast(MessagesServices.WINK_SENT);
           resolve(response);
         } catch (err) {
@@ -133,9 +136,9 @@ export class WinkService {
           // this.DeleteRequests(wink);
           wink.approved = true;
           wink.updatedAt = new Date().toString();
-          wink.user.newWink = false;
+          wink.user = null;
           wink.watched = true;
-          if (wink.watched  && !wink.user.newWink && wink.approved) {
+          if (wink.watched  && !wink.user && wink.approved) {
             this.AddRecord(wink);
             this.socketService.HandleWink(
               wink.sender_id,
@@ -226,7 +229,7 @@ export class WinkService {
     this.indexWink = null;
     let wink = this.record.find(
       (winkValue, index: number, obj) => {
-        if (winkValue.user._id === idUser) {
+        if (winkValue.user && winkValue.user._id === idUser) {
           this.winkType = false;
           this.indexWink =  index;
           return true;
@@ -235,7 +238,7 @@ export class WinkService {
     if (!wink) {
       wink = this.requests.find(
         (winkValue, index: number, obj) => {
-          if (winkValue.user._id === idUser) {
+          if (winkValue.user && winkValue.user._id === idUser) {
             this.winkType = true;
             this.indexWink =  index;
             return true;
@@ -272,7 +275,8 @@ export class WinkService {
             watch: true
           }).toPromise();
           wink.watched = true;
-          if (wink.watched) {
+          wink.user = null;
+          if (wink.watched && !wink.user) {
             this.socketService.HandleWink(
               wink.sender_id,
               wink
@@ -399,10 +403,10 @@ export class WinkService {
         return;
       }
       this.DeleteRecord(wink);
-      const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
+      // const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
       const winkExist = this.GetWinkRequestsID(wink._id);
-      wink.user = await this.GetUserID(idUserWink);
-      if (wink.user ) {
+      wink.user = await this.GetUserWink(wink);
+      if (wink.user) {
         wink.user.newWink = !wink.watched;
         this.WatchWink(wink);
         if (winkExist && this.indexWink >= 0) {
@@ -430,6 +434,9 @@ export class WinkService {
 
 
   WatchWink(wink: Wink) {
+    if (!wink) {
+      return;
+    }
     const user = this.GetNearbyUser(wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id);
     if (user && this.indexUser >= 0) {
       user.newWink = !wink.watched;
@@ -450,8 +457,8 @@ export class WinkService {
     if (!wink) {
       return;
     }
-    const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
-    wink.user = await this.GetUserID(idUserWink);
+    // const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
+    wink.user = await this.GetUserWink(wink);
     if (wink.user) {
       wink.user.newWink = !wink.watched;
       this.WatchWink(wink);
@@ -467,7 +474,7 @@ export class WinkService {
     if (!wink) {
       return;
     }
-    wink.user = await this.GetUserID(wink.sender_id);
+    wink.user = await this.GetUserWink(wink);
     if (wink.user) {
       wink.user.newWink = !wink.watched;
       this.WatchWink(wink);
