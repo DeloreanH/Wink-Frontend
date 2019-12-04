@@ -35,6 +35,19 @@
   // color: var(--color-placeholder);
   font-family: var(--ion-font-family,inherit);
 }
+
+.alert__list__inputs{
+  max-height: 11em;
+}
+.one__input{
+  height: 4em;
+}
+.two__input{
+  height: 8em;
+}
+.three__input{
+  height: 11em;
+}
 .alert__buttons {
   display: flex;
   flex-direction: column;

@@ -47,20 +47,24 @@ export class AppComponent {
   }
 
   private Language() {
-    const lang = this.storageService.apiLanguage;
-    if (lang) {
-      this.languageService.DefaultLanguage(lang);
-      // if (lang === 'es') {
-      //   this.translateService.setDefaultLang('en');
-      // } else {
-      //   this.translateService.setDefaultLang('es');
-      // }
-      // this.translateService.use(lang);
+    if (this.platform.is('mobile')) {
+      this.languageService.Init();
     } else {
-      this.languageService.DefaultLanguage(Language.EN);
-      // this.translateService.setDefaultLang('en');
-      // this.translateService.use('es');
-      // StorageService.SetItem(language, 'es');
+      const lang = this.storageService.apiLanguage;
+      if (lang) {
+        this.languageService.DefaultLanguage(lang);
+        // if (lang === 'es') {
+        //   this.translateService.setDefaultLang('en');
+        // } else {
+        //   this.translateService.setDefaultLang('es');
+        // }
+        // this.translateService.use(lang);
+      } else {
+        this.languageService.DefaultLanguage(Language.EN);
+        // this.translateService.setDefaultLang('en');
+        // this.translateService.use('es');
+        // StorageService.SetItem(language, 'es');
+      }
     }
   }
 

@@ -11,6 +11,7 @@ import { Config } from 'src/app/common/enums/config.enum';
 import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -38,6 +39,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
     private navController: NavController,
     private alertService: AlertService,
     private platform: Platform,
+    private translateService: TranslateService,
   ) {
     this.user = this.userService.User();
     this.form = this.formBuilder.group({
@@ -139,23 +141,23 @@ export class BasicDataPage implements OnInit, OnDestroy {
     );
   }
 
-  async SeleccionarImagen() {
+  async SelectImage() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Seleccione una opcion',
+      header: this.translateService.instant('WINK.PROFILE_SETTINGS.SELECT_AVATAR'),
       buttons: [{
-        text: 'Camera',
+        text: this.translateService.instant('WINK.BUTTONS.CAMERA'),
         icon: 'camera',
         handler:  async () => {
           this.RequestImage(true);
         }
       }, {
-        text: 'Gallery',
+        text: this.translateService.instant('WINK.BUTTONS.GALLERY'),
         icon: 'image',
         handler:   () => {
           this.RequestImage(false);
         }
       }, {
-        text: 'Cancel',
+        text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
         icon: 'close',
         role: 'cancel',
         handler: () => {
@@ -201,15 +203,17 @@ export class BasicDataPage implements OnInit, OnDestroy {
 
 
   private DisabledEmail(): boolean {
-    return (this.user.emptyProfile && this.user.email !== '') ? true : false;
+    return (this.user.emptyProfile && this.user.email !== '' || !this.user.emptyProfile) ? true : false;
   }
 
   private DisabledUsername(): boolean {
-    return (this.user.emptyProfile && this.user.username !== '') ? true : false;
+    return (this.user.emptyProfile && this.user.username !== '' || !this.user.emptyProfile) ? true : false;
   }
 
   private DisabledPhone(): boolean {
-    return (this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber) ? true : false;
+    return (
+      this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber || !this.user.emptyProfile)
+      ? true : false;
   }
 
   Avatar() {

@@ -11,9 +11,9 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { AlertType, AlertButtons, maxStatus } from './base';
+import { AlertType, AlertButtons, maxStatus, AlertInputs } from './base';
 import { Subscription } from 'rxjs';
-import { Platform, IonRadioGroup, IonInput, IonItem } from '@ionic/angular';
+import { Platform, IonRadioGroup, IonInput, IonItem, IonCheckbox } from '@ionic/angular';
 
 @Component({
   selector: 'alert',
@@ -25,6 +25,8 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(IonRadioGroup, {static: false}) groupRadio: IonRadioGroup;
   @ViewChild(IonInput, {static: false}) custom: IonInput;
   @ViewChildren(IonItem) items: QueryList<HTMLImageElement>; // ElementRef<HTMLImageElement>;
+  @ViewChildren(IonCheckbox) checkboxs: QueryList<HTMLImageElement>;
+  listInputs: any[] = [];
   maxStatus = maxStatus;
 
   @Output()
@@ -68,8 +70,13 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public close(emit: any = null): void {
+    // console.log(this.checkboxs._results[0].el.checked);
+    // this.listInputs.push(...(this.checkboxs as any)._results);
+    // console.log(this.listInputs);
     if (this.alertType === AlertType.PromptStatus) {
       this.closed.emit(this.ValuePrompt(emit));
+    } else if (this.alertType === AlertType.Input) {
+      this.closed.emit(this.ValueInputs(emit));
     } else if (this.alertType !== AlertType.Tutorial) {
       this.closed.emit(emit);
     } else if (this.stepIndex === this.steps.length - 1) {
@@ -89,6 +96,34 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     return value;
   }
 
+  ValueInputs(emit: any) {
+    const value: string[] = [];
+    let ready = false;
+    if (emit && emit.value) {
+      this.listInputs.push(...(this.checkboxs as any)._results);
+      if (this.listInputs.length > 0) {
+        this.listInputs.forEach(
+          (input: any, index: number) => {
+            if (input.checked) {
+              value.push(input.value);
+            }
+            if (index === (this.listInputs.length - 1)) {
+              ready = true;
+            }
+          }
+        );
+      } else {
+        return null;
+      }
+      if (ready) {
+        console.log(value);
+        return value;
+      }
+    } else {
+      return emit;
+    }
+  }
+
   public get title(): string {
     return this.option('title');
   }
@@ -101,6 +136,10 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     return this.option<AlertButtons>('buttons', []);
   }
 
+  public get inputs() {
+    return this.option<AlertInputs>('inputs', []);
+  }
+
   public option<T>(key: string, DEFAULT = null): T {
     return this.options && this.options[key]
       ? this.options[key]
@@ -108,11 +147,15 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public get isConfirm(): boolean {
-    return this.alertType === AlertType.Comfirm;
+    return this.alertType === AlertType.Confirm;
   }
 
   public get isTutorial(): boolean {
     return this.alertType === AlertType.Tutorial;
+  }
+
+  public get isInputs(): boolean {
+    return this.alertType === AlertType.Input;
   }
 
   public get isPromptStatus(): boolean {

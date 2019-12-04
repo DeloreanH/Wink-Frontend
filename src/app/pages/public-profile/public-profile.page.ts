@@ -14,9 +14,9 @@ import { SocketEventsListen, SocketService } from 'src/app/core/services/socket.
 import { Subscription } from 'rxjs';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
-import { TourService } from 'ngx-tour-ngx-popper';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { AlertButtonType } from 'src/app/common/alert/base';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
 
 @Component({
   selector: 'public-profile',
@@ -39,6 +39,8 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   deleteWinkSubs = new Subscription();
   approvedWinkSubs = new Subscription();
   sendedWinkSubs = new Subscription();
+  updatedUserSubs = new Subscription();
+  updatedAvatarSubs = new Subscription();
   backButtonSubs = new Subscription();
 
   constructor(
@@ -126,12 +128,32 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
+    this.updatedUserSubs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
+      (user: User) => {
+        if (user) {
+          if (user._id === this.userWink._id) {
+            this.userWink = user;
+          }
+        }
+      }
+    );
+    this.updatedAvatarSubs = this.socketService.Listen(SocketEventsListen.AVATAR_UPLOADED).subscribe(
+      (user: User) => {
+        if (user) {
+          if (user._id === this.userWink._id) {
+            this.userWink = user;
+          }
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.sendedWinkSubs.unsubscribe();
     this.approvedWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
+    this.updatedUserSubs.unsubscribe();
+    this.updatedAvatarSubs.unsubscribe();
     this.backButtonSubs.unsubscribe();
   }
 
@@ -198,11 +220,11 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       description: 'WINK.DIALOGUES.MESSAGES.CANCEL_WINK',
       buttons: [
         {
-          label: this.translateService.instant('WINK.BUTTONS.DISCARD'),
+          label: Buttons.DISCARD,
           value: null,
           type: AlertButtonType.Danger
         }, {
-          label: this.translateService.instant('WINK.BUTTONS.YES'),
+          label: Buttons.YES,
           value: true,
           type: AlertButtonType.Secondary
         }
@@ -246,7 +268,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
           }
         );
         if (items.length > 0) {
-          console.log(items);
           if (items[0].position === -1) {
             contador++;
           }

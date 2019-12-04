@@ -58,6 +58,21 @@
   >
     {{ description | translate }}
   </div>
+  <div class="alert__message alert__list__inputs" 
+    *ngIf="isInputs && inputs.length > 0"
+  >
+  <ion-content [scrollEvents]="true" 
+  [ngClass]="{'one__input': inputs.length === 1, 'two__input': inputs.length === 2, 'three__input': inputs.length >= 3}">
+    <ion-list >
+      <ion-item *ngFor="let input of inputs">
+        <ion-label>
+          {{ input.label | translate}}
+        </ion-label>
+        <ion-checkbox slot="end" [checked]="input.checked" [value]="input.value" [name]="input.name"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  </div>
 
   <div class="alert__message"
     *ngIf="isTutorial"

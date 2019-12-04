@@ -20,8 +20,7 @@ import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { Config } from 'src/app/common/enums/config.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
-import { Buttons } from 'src/app/common/enums/buttons.enum';
-import { AlertButtonType } from 'src/app/common/alert/base';
+import { UpdateAvatarService } from 'src/app/core/services/update-avatar.service';
 
 @Component({
   selector: 'profile-settings',
@@ -55,6 +54,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   changeData = false;
 
+  loadingAvatar = false;
 
   item: Item;
   user: User;
@@ -82,6 +82,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private toursService: ToursService,
     private alertService: AlertService,
     private platform: Platform,
+    private avatarService: UpdateAvatarService,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -472,4 +473,42 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
   }
+
+  async SelectImage() {
+    const actionSheet = await this.actionSheetController.create({
+      header: this.translateService.instant('WINK.PROFILE_SETTINGS.SELECT_AVATAR'),
+      buttons: [{
+        text: this.translateService.instant('WINK.BUTTONS.CAMERA'),
+        icon: 'camera',
+        handler:  async () => {
+          this.RequestImage(true);
+        }
+      }, {
+        text: this.translateService.instant('WINK.BUTTONS.GALLERY'),
+        icon: 'image',
+        handler:   () => {
+          this.RequestImage(false);
+        }
+      }, {
+        text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  private async RequestImage(camera: boolean) {
+    try {
+      this.loadingAvatar = true;
+      const respuesta: any = await this.avatarService.OpenUpdate(camera);
+      this.userService.UpdateAvatar(respuesta.link);
+    } catch (err) {
+      console.log('Error RequestImage', err);
+    }
+    this.loadingAvatar = false;
+  }
+
 }

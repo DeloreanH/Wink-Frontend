@@ -53,7 +53,7 @@
       
     <div *ngIf="loading">
       <div class="contenedorAvatar" >
-        <ion-avatar class="avatar-profile"> 
+        <ion-avatar  class="avatar-profile"> 
           <ion-skeleton-text animated></ion-skeleton-text>
         </ion-avatar>
       </div>
@@ -85,12 +85,14 @@
 
     <div *ngIf="!loading">
       <div class="contenedorAvatar" >
-        <ion-avatar class="avatar-profile"> 
+        <ion-avatar class="avatar-profile" (click)="SelectImage()"> 
           <img 
             [srcPath]="Avatar()" 
+            *ngIf="!loadingAvatar"
             class="img-avatar" 
             alt="Avatar"
             (ionError)="ErrorImagen()">
+          <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
         </ion-avatar>
       </div>
 
@@ -141,11 +143,11 @@
               [formGroupName]="i"
               cdkDrag 
               [cdkDragDisabled]="order"
-              [ngClass]="{'order': !order}"
               (cdkDragStarted)="Drag()"
               (cdkDragEnded)="Drop()">
                 <app-item-perfil  
                   [form]="itemPublico"
+                  [ngClass]="{'order': !order}"
                   formControlName="item"
                   [ordenando]="order" 
                   (delete)="DeleteItem(publicoForm, i)"
@@ -178,11 +180,11 @@
               [formGroupName]="i"
               cdkDrag 
               [cdkDragDisabled]="order"
-              [ngClass]="{'order': !order}"
               (cdkDragStarted)="Drag()"
               (cdkDragEnded)="Drop()"
               >
                 <app-item-perfil  
+                [ngClass]="{'order': !order}"
                 [form]="itemGeneral"
                 formControlName="item"
                 [ordenando]="order" 
@@ -215,11 +217,11 @@
             [formGroupName]="i"
             cdkDrag 
             [cdkDragDisabled]="order"
-            [ngClass]="{'order': !order}"
             (cdkDragStarted)="Drag()"
             (cdkDragEnded)="Drop()"
             >
               <app-item-perfil 
+              [ngClass]="{'order': !order}"
               [form]="itemPersonal"
               formControlName="item"
               [ordenando]="order" 
@@ -252,11 +254,11 @@
             [formGroupName]="i"
             cdkDrag 
             [cdkDragDisabled]="order"
-            [ngClass]="{'order': !order}"
             (cdkDragStarted)="Drag()"
             (cdkDragEnded)="Drop()"
             >
               <app-item-perfil 
+              [ngClass]="{'order': !order}"
               [form]="itemProfesional"
               formControlName="item"
               [ordenando]="order" 

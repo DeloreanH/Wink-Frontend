@@ -11,7 +11,7 @@
     <ion-title>
       {{'WINK.PRIVATE_PROFILES.TITLE' | translate}}
     </ion-title>
-    <div *ngIf="!load" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
+    <div *ngIf="!load && Empty" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
       <fa-icon 
         [icon]="['far', 'save']" 
         class="icono-arrow"
@@ -155,7 +155,7 @@
         [item]="item.item">
       </item-list>
     </ion-list>
-    <div *ngIf="generalItems.length === 0 && personalItems.length  === 0 && professionalItems.length === 0" class="vacio">
+    <div *ngIf="Empty" class="vacio">
       <p >
         {{ noItems | translate}}
       </p>

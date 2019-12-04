@@ -21,6 +21,8 @@ import { tours } from 'src/app/common/constants/storage.constants';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/common/alert/alert.service';
+import { SocketService, SocketEventsListen } from 'src/app/core/services/socket.service';
 
 @Component({
   selector: 'app-private-profiles',
@@ -44,6 +46,8 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
   load = true;
   noItems = Config.NO_ITEMS;
   backButtonSubs = new Subscription();
+  updatedUserSubs = new Subscription();
+  updatedAvatarSubs = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +59,8 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private tourService: TourService,
     private platform: Platform,
+    private alerService: AlertService,
+    private socketService: SocketService,
   ) {
     this.sections = this.profilesService.sections;
     this.items.push(this.generalItems);
@@ -69,6 +75,8 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.backButtonSubs.unsubscribe();
+    this.updatedUserSubs.unsubscribe();
+    this.updatedAvatarSubs.unsubscribe();
   }
   private Subscriptions() {
     this.route.params
@@ -86,6 +94,24 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
           }
         } catch (err) {
           console.log('Error ngOnInit private profiles', err.message);
+        }
+      }
+    );
+    this.updatedUserSubs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
+      (user: User) => {
+        if (user) {
+          if (user._id === this.userWink._id) {
+            this.userWink = user;
+          }
+        }
+      }
+    );
+    this.updatedAvatarSubs = this.socketService.Listen(SocketEventsListen.AVATAR_UPLOADED).subscribe(
+      (user: User) => {
+        if (user) {
+          if (user._id === this.userWink._id) {
+            this.userWink = user;
+          }
         }
       }
     );
@@ -179,29 +205,43 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
    async Confirm() {
     setTimeout(
       async () => {
-        const alert = await this.alertController.create({
-          header: this.translateService.instant('WINK.PRIVATE_PROFILES.SAVE_CONTACTS'),
+        this.alerService.showInput({
+          title: 'WINK.DIALOGUES.TITLES.SAVE_CONTACTS',
+          description: 'WINK.DIALOGUES.MESSAGES.SAVE_CONTACTS',
           inputs: [
             ...await this.LoadItemsList()
-          ],
-          buttons: [
-            {
-              text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: () => {
-              }
-            }, {
-              text: this.translateService.instant('WINK.BUTTONS.OK'),
-              handler: (inputs) => {
-                if (inputs.length > 0) {
-                  this.SaveContact(inputs);
-                }
-              }
-            }
           ]
-        });
-        await alert.present();
+        }).subscribe(
+          (data: any) => {
+            if (data && data.length > 0) {
+              console.log(data);
+              this.SaveContact(data);
+            }
+          }
+        );
+        // const alert = await this.alertController.create({
+        //   header: this.translateService.instant('WINK.PRIVATE_PROFILES.SAVE_CONTACTS'),
+        //   inputs: [
+        //     ...await this.LoadItemsList()
+        //   ],
+        //   buttons: [
+        //     {
+        //       text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
+        //       role: 'cancel',
+        //       cssClass: 'secondary',
+        //       handler: () => {
+        //       }
+        //     }, {
+        //       text: this.translateService.instant('WINK.BUTTONS.OK'),
+        //       handler: (inputs) => {
+        //         if (inputs.length > 0) {
+        //           this.SaveContact(inputs);
+        //         }
+        //       }
+        //     }
+        //   ]
+        // });
+        // await alert.present();
       }
       , 500);
   }
@@ -336,6 +376,10 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
+  }
+
+  public get Empty() {
+    return this.generalItems.length === 0 && this.personalItems.length  === 0 && this.professionalItems.length === 0;
   }
 
 }

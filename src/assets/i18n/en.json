@@ -91,7 +91,6 @@
     },
     "PRIVATE_PROFILES": {
       "TITLE": "Private Profiles",
-      "SAVE_CONTACTS": "Select the items you want to save in the contact.",
       "ITEMS_EMPTY": "There are no items to display."
     },
     "PROFILE_SETTINGS": {
@@ -106,7 +105,8 @@
         "CATEGORY": "Select a category",
         "SELECT_ITEMS": "Select an option"
       },
-      "CHIP": "You can only add between 3 to 12 characters per word."
+      "CHIP": "You can only add between 3 to 12 characters per word.",
+      "SELECT_AVATAR": "Select an option."
     },
     "PUBLIC_PROFILE": {
 
@@ -151,7 +151,9 @@
       "PREV": "Prev",
       "NEXT": "Next",
       "NEXT2": "Next",
-      "SEE": "See"
+      "SEE": "See",
+      "CAMERA": "Camera",
+      "GALLERY": "Gallery"
     },
     "CATEGORY": {
       "CONTACT":	"Contact",
@@ -232,12 +234,14 @@
     "DIALOGUES": {
       "TITLES": {
         "CONFIRM": "Confirm!",
-        "DELETE_WINK": "Delete Wink"
+        "DELETE_WINK": "Delete Wink",
+        "SAVE_CONTACTS": "Save contact."
       },
       "MESSAGES": {
         "CANCEL_WINK":	"Do you want to cancel the wink?",
         "DELETE_WINK": "Are you sure?",
-        "NEW_WINK": "You have a new request."
+        "NEW_WINK": "You have a new request.",
+        "SAVE_CONTACTS": "Select the items you want to save in the contact."
       }
     },
     "SERVICES": {
@@ -250,7 +254,7 @@
       "SAVE_PHOTO":	"Photo uploaded successfully.",
       "SAVE_INFORMATION":	"Your information has been saved successfully.",
           
-      "ERROR_SAVE":	"There was a problem trying to save. try again later.",
+      "ERROR_CONTACT_SAVE":	"There was a problem trying to save. try again later.",
       "ERROR_GET_INFORMATION":	"A problem has occurred trying to get your information. try again later.",
       "ERROR_PHOTO":	"There was a problem trying to upload your photo."
     },

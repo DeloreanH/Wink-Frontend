@@ -340,6 +340,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
+    this.OpenFabList = false;
   }
 
 }

@@ -18,6 +18,7 @@ import {
   AlertButton,
   AlertButtons,
   AlertButtonType,
+  AlertInputsOption,
 } from './base';
 import { AlertComponent } from './alert.component';
 import { Buttons } from '../enums/buttons.enum';
@@ -41,8 +42,12 @@ export class AlertService {
     return this.any(AlertType.Tutorial, option);
   }
 
+  public showInput(option: AlertInputsOption): Observable<null> {
+    return this.any(AlertType.Input, option);
+  }
+
   public showConfirm(option: AlertOption): Observable<null | boolean> {
-    return this.any(AlertType.Comfirm, option);
+    return this.any(AlertType.Confirm, option);
   }
 
   public showActions(option: AlertActionsOption): Observable<null | AlertButton> {
@@ -57,9 +62,17 @@ export class AlertService {
     return this.any(AlertType.Actions, option);
   }
 
-  public any(alertType: AlertType, option: AlertOption | AlertActionsOption | AlertTutorialOption): Observable<null | any> {
-    if (alertType === AlertType.Comfirm) {
+  public any(
+    alertType: AlertType,
+    option: AlertOption | AlertActionsOption | AlertTutorialOption | AlertInputsOption
+    ): Observable<null | any> {
+    if (alertType === AlertType.Confirm) {
       const buttons = this.confirmBT;
+
+      (option as any).buttons = buttons;
+    }
+    if (alertType === AlertType.Input) {
+      const buttons = this.InputBT;
 
       (option as any).buttons = buttons;
     }
@@ -118,6 +131,16 @@ export class AlertService {
   private get confirmBT(): AlertButtons {
     const A = Buttons.YES;
     const B = Buttons.NO;
+
+    return [
+      { type: AlertButtonType.Danger, label: B, value: false },
+      { type: AlertButtonType.Secondary, label: A, value: true }
+    ] as AlertButtons;
+  }
+
+  private get InputBT(): AlertButtons {
+    const A = Buttons.SAVE;
+    const B = Buttons.CANCEL;
 
     return [
       { type: AlertButtonType.Danger, label: B, value: false },

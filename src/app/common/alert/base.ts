@@ -1,9 +1,10 @@
 export enum AlertType {
-  Comfirm = 'CONFIRM',
+  Confirm = 'CONFIRM',
   Notification = 'NOTIFICATION',
   Actions = 'ACTIONS',
   Tutorial = 'TUTORIAL',
-  PromptStatus = 'PROMPT_STATUS'
+  PromptStatus = 'PROMPT_STATUS',
+  Input = 'INPUT',
 }
 
 export const maxStatus = 14;
@@ -23,6 +24,7 @@ export interface AlertButton {
 }
 
 export type AlertButtons = AlertButton[];
+export type AlertInputs = AlertInput[];
 
 export interface AlertOption {
   title: string;
@@ -36,4 +38,16 @@ export interface AlertActionsOption extends AlertOption {
 export interface AlertTutorialOption extends AlertOption {
   title: string;
   steps: string[];
+}
+
+export interface AlertInputsOption extends AlertOption {
+  inputs: AlertInputs;
+}
+
+export interface AlertInput  {
+  name: string;
+  type: 'checkbox' | 'radio';
+  label: string;
+  value: any;
+  checked: boolean;
 }

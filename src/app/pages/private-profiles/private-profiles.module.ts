@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
 import { ImgLoadModule } from 'src/app/common/directives';
+import { AlertModule } from 'src/app/common/alert/alert.module';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
     TranslateModule.forChild(),
     TourNgxPopperModule.forRoot(),
     ImgLoadModule,
+    AlertModule,
   ],
   entryComponents: [ItemListComponent],
   declarations: [PrivateProfilesPage]
