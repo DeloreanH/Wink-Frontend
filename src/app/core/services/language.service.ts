@@ -31,7 +31,7 @@ export class LanguageService {
       const preLang = await this.globalization.getPreferredLanguage();
       console.log('this.preLang', preLang);
       if (preLang && preLang.value) {
-        this.DefaultLanguage(preLang.value);
+        this.DefaultLanguage(preLang.value.split('-')[0]);
       } else {
         this.DefaultLanguage(Language.EN);
       }
