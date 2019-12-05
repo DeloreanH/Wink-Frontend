@@ -106,16 +106,18 @@ export class BasicDataPage implements OnInit, OnDestroy {
           phoneNumber: this.form.value.phoneNumber
         };
         const response = await this.userService.UpdateDate(this.form.value);
-        if (response.status === 'user updated successfully') {
+        response.user.emptyProfile = false;
+        console.log(response);
+        if (response.status === 'user updated successfully' && !response.user.emptyProfile) {
           this.userService.User(response.user, true);
           this.edit = false;
-          setTimeout(
-            async () => {
-              await this.navController.navigateRoot(
-                '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
-              );
-            }
-            , 500);
+          await this.navController.navigateRoot(
+            '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
+          );
+          // setTimeout(
+          //   async () => {
+          //   }
+          //   , 500);
         }
       } catch (err) {
         console.log('Error submit', err);
