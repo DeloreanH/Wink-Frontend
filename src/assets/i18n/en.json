@@ -235,13 +235,15 @@
       "TITLES": {
         "CONFIRM": "Confirm!",
         "DELETE_WINK": "Delete Wink",
-        "SAVE_CONTACTS": "Save contact."
+        "SAVE_CONTACTS": "Save contact",
+        "RANGE": "Search range"
       },
       "MESSAGES": {
         "CANCEL_WINK":	"Do you want to cancel the wink?",
         "DELETE_WINK": "Are you sure?",
         "NEW_WINK": "You have a new request.",
-        "SAVE_CONTACTS": "Select the items you want to save in the contact."
+        "SAVE_CONTACTS": "Select the items you want to save in the contact.",
+        "RANGE": "Current value: "
       }
     },
     "SERVICES": {

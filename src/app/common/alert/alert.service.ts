@@ -19,6 +19,7 @@ import {
   AlertButtons,
   AlertButtonType,
   AlertInputsOption,
+  AlertRangeOption,
 } from './base';
 import { AlertComponent } from './alert.component';
 import { Buttons } from '../enums/buttons.enum';
@@ -46,6 +47,10 @@ export class AlertService {
     return this.any(AlertType.Input, option);
   }
 
+  public showRange(option: AlertRangeOption): Observable<null> {
+    return this.any(AlertType.Range, option);
+  }
+
   public showConfirm(option: AlertOption): Observable<null | boolean> {
     return this.any(AlertType.Confirm, option);
   }
@@ -71,7 +76,7 @@ export class AlertService {
 
       (option as any).buttons = buttons;
     }
-    if (alertType === AlertType.Input) {
+    if (alertType === AlertType.Input || alertType === AlertType.Range) {
       const buttons = this.InputBT;
 
       (option as any).buttons = buttons;

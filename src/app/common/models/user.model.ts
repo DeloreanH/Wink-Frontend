@@ -23,6 +23,7 @@ export class User {
   public distance: number;
   public age: number;
   public newWink: boolean;
+  public searchRange: number;
 
   constructor(data: any) {
     Object.assign(this, data);

@@ -11,9 +11,9 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { AlertType, AlertButtons, maxStatus, AlertInputs } from './base';
+import { AlertType, AlertButtons, maxStatus, AlertInputs, AlertRangeOption } from './base';
 import { Subscription } from 'rxjs';
-import { Platform, IonRadioGroup, IonInput, IonItem, IonCheckbox } from '@ionic/angular';
+import { Platform, IonRadioGroup, IonInput, IonItem, IonCheckbox, IonRange } from '@ionic/angular';
 
 @Component({
   selector: 'alert',
@@ -26,8 +26,10 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(IonInput, {static: false}) custom: IonInput;
   @ViewChildren(IonItem) items: QueryList<HTMLImageElement>; // ElementRef<HTMLImageElement>;
   @ViewChildren(IonCheckbox) checkboxs: QueryList<HTMLImageElement>;
+  @ViewChild(IonRange, {static: false}) range: IonRange;
   listInputs: any[] = [];
   maxStatus = maxStatus;
+  valueRange = 1;
 
   @Output()
   public closed = new EventEmitter<any>();
@@ -52,6 +54,9 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.initBack();
     this.focusInput = this.isInput;
+    if (this.isRange) {
+      this.valueRange = this.value as number;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -70,13 +75,12 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public close(emit: any = null): void {
-    // console.log(this.checkboxs._results[0].el.checked);
-    // this.listInputs.push(...(this.checkboxs as any)._results);
-    // console.log(this.listInputs);
     if (this.alertType === AlertType.PromptStatus) {
       this.closed.emit(this.ValuePrompt(emit));
     } else if (this.alertType === AlertType.Input) {
       this.closed.emit(this.ValueInputs(emit));
+    } else if (this.alertType === AlertType.Range) {
+      this.closed.emit(this.ValueRange(emit));
     } else if (this.alertType !== AlertType.Tutorial) {
       this.closed.emit(emit);
     } else if (this.stepIndex === this.steps.length - 1) {
@@ -94,6 +98,17 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
       }
     }
     return value;
+  }
+
+  ValueRange(emit: any) {
+    if (emit && emit.value) {
+        return this.range.value;
+    }
+    return null;
+  }
+
+  changeRange() {
+    this.valueRange = this.range.value as number;
   }
 
   ValueInputs(emit: any) {
@@ -140,6 +155,18 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     return this.option<AlertInputs>('inputs', []);
   }
 
+  public get max() {
+    return this.option('max');
+  }
+
+  public get min() {
+    return this.option('min');
+  }
+
+  public get value() {
+    return this.option('value');
+  }
+
   public option<T>(key: string, DEFAULT = null): T {
     return this.options && this.options[key]
       ? this.options[key]
@@ -156,6 +183,10 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   public get isInputs(): boolean {
     return this.alertType === AlertType.Input;
+  }
+
+  public get isRange(): boolean {
+    return this.alertType === AlertType.Range;
   }
 
   public get isPromptStatus(): boolean {

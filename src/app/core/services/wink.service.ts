@@ -97,6 +97,24 @@ export class WinkService {
       });
   }
 
+  async Range(rangeValue: number) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!rangeValue  || isNaN(rangeValue)) {
+            reject({message: 'No range'});
+          }
+          const response: any = await this.http.post(Routes.BASE + Routes.SET_SEARCH_RANGE, { range: (rangeValue * 1000)}).toPromise();
+          resolve(response);
+        } catch (err) {
+          this.toastService.Toast(MessagesServices.WINK_ERROR);
+          console.log('Error Range: ' + err.message);
+          reject(err);
+        }
+      }
+    );
+  }
+
   async SendWink(idUser: string) {
     return new Promise<any>(
       async (resolve, reject) => {

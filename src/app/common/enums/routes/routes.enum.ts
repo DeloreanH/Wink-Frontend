@@ -17,6 +17,7 @@ export enum Routes {
   UPDATE_BASIC_DATE = 'user-config/update-basic-data',
 
   NEARBY_USER = 'wink/nearby-users',
+  SET_SEARCH_RANGE = 'wink/set-search-range',
 
   UPDATE_PROFILES = 'wink/update-visibility',
   UPDATE_STATUS = 'wink/user-status',

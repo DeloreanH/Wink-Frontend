@@ -277,6 +277,30 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  async AlertRange() {
+    try {
+      this.alertService.showRange({
+        title: 'WINK.DIALOGUES.TITLES.RANGE',
+        description: 'WINK.DIALOGUES.MESSAGES.RANGE',
+        max: 8000,
+        min: 1,
+        value: (this.user.searchRange / 1000)
+      }).subscribe(
+        async (response) => {
+          if (response && !this.tour) {
+            console.log(response);
+            await this.winkService.Range(response);
+            this.user.searchRange = (response as number * 1000);
+            this.userService.User(this.user, true);
+            this.GPS();
+          }
+        }
+      );
+    } catch (err) {
+      console.log();
+    }
+  }
+
   get isPersonal() {
     return this.personal;
   }

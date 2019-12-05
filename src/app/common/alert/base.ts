@@ -5,6 +5,7 @@ export enum AlertType {
   Tutorial = 'TUTORIAL',
   PromptStatus = 'PROMPT_STATUS',
   Input = 'INPUT',
+  Range = 'RANGE'
 }
 
 export const maxStatus = 14;
@@ -42,6 +43,12 @@ export interface AlertTutorialOption extends AlertOption {
 
 export interface AlertInputsOption extends AlertOption {
   inputs: AlertInputs;
+}
+
+export interface AlertRangeOption extends AlertOption {
+  max: number;
+  min: number;
+  value: number;
 }
 
 export interface AlertInput  {
