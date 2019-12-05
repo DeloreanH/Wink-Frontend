@@ -266,7 +266,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
         resp.register(100,
           () => {
             if (this.user.emptyProfile) {
-              this.Logout();
+              // this.Logout();
             } else {
               this.Back();
             }

@@ -13,7 +13,7 @@ export enum Config {
   NICKNAME = 'apodo',
   ADDRESS = 'direccion',
   CUSTOM = 'personalizado',
-  AVATAR = 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
+  AVATAR = '/assets/img/no-img.jpg',
   IMAGE_JPEG = 'image/jpeg',
   NO_REQUESTS = 'WINK.WINKS.EMPTY.REQUESTS',
   NO_RECORD = 'WINK.WINKS.EMPTY.RECORD',

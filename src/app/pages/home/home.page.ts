@@ -112,6 +112,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.tourSubs = this.tourService.end$.subscribe(
         () => {
           this.tour = false;
+          this.OpenFabList = false;
           this.toursService.EndTour(PagesName.HOME);
           this.tourSubs.unsubscribe();
           this.stepShowSubs.unsubscribe();

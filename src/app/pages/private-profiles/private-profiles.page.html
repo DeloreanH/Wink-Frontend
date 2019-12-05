@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
-      <fa-icon 
-        [icon]="['fas', 'arrow-left']" 
+      <fa-icon
+        [icon]="['fas', 'arrow-left']"
         class="icono-arrow"
         (click)="Back()"
       ></fa-icon>
@@ -11,22 +11,22 @@
     <ion-title>
       {{'WINK.PRIVATE_PROFILES.TITLE' | translate}}
     </ion-title>
-    <div *ngIf="!load && Empty" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
-      <fa-icon 
-        [icon]="['far', 'save']" 
+    <div *ngIf="!load && !Empty" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
+      <fa-icon
+        [icon]="['far', 'save']"
         class="icono-arrow"
         (click)="Confirm()"
       ></fa-icon>
       <ion-ripple-effect></ion-ripple-effect>
     </div>
-    
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <div *ngIf="load">
     <div class="contenedorAvatar" >
-      <ion-avatar class="avatar-profile"> 
+      <ion-avatar class="avatar-profile">
         <ion-skeleton-text animated></ion-skeleton-text>
       </ion-avatar>
     </div>
@@ -125,18 +125,18 @@
         </ion-label>
       </ion-item>
     </ion-list>
-    
+
   </div>
   <div *ngIf="!load">
     <div class="contenedorAvatar" >
-      <ion-avatar class="avatar-profile"> 
-        <img 
-        (ionError)="ErrorImagen()" 
-        [srcPath]="Avatar()" 
+      <ion-avatar class="avatar-profile">
+        <img
+        (ionError)="ErrorImagen()"
+        [srcPath]="Avatar()"
         class="img-avatar">
       </ion-avatar>
     </div>
-    
+
     <div class="contenedor" >
       <ion-title class="title-name">
         {{userWink ? userWink.firstName + ' ' + userWink.lastName : 'John Doe'}}
@@ -150,7 +150,7 @@
           </strong>
         </ion-label>
       </ion-list-header>
-      <item-list 
+      <item-list
         *ngFor="let item of section"
         [item]="item.item">
       </item-list>
@@ -161,5 +161,5 @@
       </p>
       <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
     </div>
-  </div>  
+  </div>
 </ion-content>

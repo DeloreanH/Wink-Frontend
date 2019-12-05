@@ -121,9 +121,9 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         new Item({
           value: this.grupoForm.value.biografia,
           position: -1,
-          section: new Section({name: 'Biografia', key: -1}),
+          section: new Section({name: 'biografia', key: -1}),
           basic: false,
-          itemtype: 'personalizado',
+          itemtype: 'biografia',
           user_id: this.user._id,
           })
       );

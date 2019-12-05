@@ -93,9 +93,10 @@ export class UserService {
         try {
           const response = await this.http.post(Routes.BASE + Routes.UPDATE_STATUS, { status: statusValue }).toPromise();
           this.user.status = statusValue;
-          this.socketService.UpdateUser(this.user);
-          // this.socketService.emit('update-user', this.user);
-          this.User(this.user, true);
+          if (this.user.status === statusValue) {
+            this.socketService.UpdateUser(this.user);
+            this.User(this.user, true);
+          }
           resolve(response);
         } catch (err) {
           reject(err);

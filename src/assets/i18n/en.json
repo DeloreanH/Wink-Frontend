@@ -202,7 +202,7 @@
       "AGE": "Age",
       "YEARS": "years"
     },
-    "OPTIONS_ITEMS": {
+    "OPTIONS_ITEMS": {WINK.OPTIONS_ITEMS.COLLEGE
       "PRIMARY":	"Primary",
       "HIGH_SCHOOL":	"High school",
       "JUNIOR_COLLEGE":	"Junior college",
@@ -214,7 +214,7 @@
       "IN_RELATIONSHIP":	"In relationship",
       "SEPARATED":	"Separated",
       "SINGLE":	"Single",
-      "WIDOWER":	"Widower",  
+      "WIDOWER":	"Widower",
 
       "FEMILE":	"Femile",
       "MALE":	"Male",
@@ -249,11 +249,11 @@
       "TRY_AGAIN_LATER":	"Try again later.",
       "CONTACT_SAVE":	"Contact saved!",
       "WINK_ERROR":	"Unexpected error occurred while turning on the wink.",
-          
+
       "SAVE_ITEMS":	"Your settings have been saved successfully.",
       "SAVE_PHOTO":	"Photo uploaded successfully.",
       "SAVE_INFORMATION":	"Your information has been saved successfully.",
-          
+
       "ERROR_CONTACT_SAVE":	"There was a problem trying to save. try again later.",
       "ERROR_GET_INFORMATION":	"A problem has occurred trying to get your information. try again later.",
       "ERROR_PHOTO":	"There was a problem trying to upload your photo."
