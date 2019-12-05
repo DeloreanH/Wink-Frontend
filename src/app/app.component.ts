@@ -41,7 +41,10 @@ export class AppComponent {
     this.checkUser();
     this.platform.ready().then(() => {
       this.statusBar.styleLightContent();
-      this.splashScreen.hide();
+      setTimeout( () => {
+        this.splashScreen.hide();
+    }, 600);
+
       this.Language();
     });
   }
