@@ -25,7 +25,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
   form: FormGroup;
   loading = false;
   loadingAvatar = false;
-  uploadAvatar = false;
+  uploadAvatar = true;
   edit = false;
   genders: { value: string, description: string}[] = [];
   backButtonSubs = new Subscription();
@@ -62,15 +62,15 @@ export class BasicDataPage implements OnInit, OnDestroy {
       gender: new FormControl( this.user.gender, [Validators.required]),
       autosave: new FormControl( this.user.autosave  ? this.user.autosave : true),
       phone: new FormControl(''),
-      username: new FormControl({
-          value: this.user.username ?  this.user.username : null,
-          disabled: this.DisabledUsername(),
-        }, [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(16),
-          Validators.pattern(/^[a-zA-Z0-9_s]+$/)
-        ]),
+      // username: new FormControl({
+      //     value: this.user.username ?  this.user.username : null,
+      //     disabled: this.DisabledUsername(),
+      //   }, [
+      //     Validators.required,
+      //     Validators.minLength(8),
+      //     Validators.maxLength(16),
+      //     Validators.pattern(/^[a-zA-Z0-9_s]+$/)
+      //   ]),
     });
     this.genders = this.userService.genders;
    }

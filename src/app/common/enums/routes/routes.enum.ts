@@ -1,4 +1,5 @@
 export enum Routes {
+  // IP = 'http://190.9.32.117',
   IP = 'http://190.9.32.117',
   PHOTO = 'http://190.9.32.117:3014',
   BASE = 'http://190.9.32.117:3014/api/',
