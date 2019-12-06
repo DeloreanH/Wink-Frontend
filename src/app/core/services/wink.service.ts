@@ -165,7 +165,8 @@ export class WinkService {
           }
           resolve(response);
         } catch (err) {
-          if (err.statusCode && err.statusCode === 404) {
+          if (err.error.statusCode && err.error.statusCode === 404) {
+            alert('404');
             this.DeleteWinkUser(wink);
           }
           console.log('Error ApproveWink: ' + err.message);
@@ -194,7 +195,8 @@ export class WinkService {
           this.deleteWink.next(wink);
           resolve(response);
         } catch (err) {
-          if (err.statusCode && err.statusCode === 404) {
+          console.log('Del wink', err);
+          if (err.error.statusCode && err.error.statusCode === 404) {
             alert('404');
             this.DeleteWinkUser(wink);
           }
@@ -292,7 +294,7 @@ export class WinkService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          if (!wink) {
+          if (!wink || wink.sender_id === this.idUser) {
             reject({message: 'wink null'});
           }
           const response = await this.http.post(Routes.BASE + Routes.HANDLE_WINK, {
@@ -310,7 +312,8 @@ export class WinkService {
           }
           resolve(response);
         } catch (err) {
-          if (err.statusCode && err.statusCode === 404) {
+          if (err.error.statusCode && err.error.statusCode === 404) {
+            alert('404');
             this.DeleteWinkUser(wink);
           }
           console.log('Error WatchedWink: ' + err.message);
