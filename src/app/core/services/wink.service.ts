@@ -165,6 +165,9 @@ export class WinkService {
           }
           resolve(response);
         } catch (err) {
+          if (err.statusCode && err.statusCode === 404) {
+            this.DeleteWinkUser(wink);
+          }
           console.log('Error ApproveWink: ' + err.message);
           reject(err);
         }
@@ -191,6 +194,10 @@ export class WinkService {
           this.deleteWink.next(wink);
           resolve(response);
         } catch (err) {
+          if (err.statusCode && err.statusCode === 404) {
+            alert('404');
+            this.DeleteWinkUser(wink);
+          }
           console.log('Error DeleteWink: ' + err.message);
           reject(err);
         }
@@ -303,6 +310,9 @@ export class WinkService {
           }
           resolve(response);
         } catch (err) {
+          if (err.statusCode && err.statusCode === 404) {
+            this.DeleteWinkUser(wink);
+          }
           console.log('Error WatchedWink: ' + err.message);
           reject(err);
         }
@@ -450,7 +460,6 @@ export class WinkService {
     }
   }
 
-
   WatchWink(wink: Wink) {
     if (!wink) {
       return;
@@ -475,9 +484,8 @@ export class WinkService {
     if (!wink) {
       return;
     }
-    // const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
     wink.user = await this.GetUserWink(wink);
-    if (wink.user) {
+    if (wink.user && !wink.watched) {
       wink.user.newWink = !wink.watched;
       this.WatchWink(wink);
     }
@@ -493,7 +501,7 @@ export class WinkService {
       return;
     }
     wink.user = await this.GetUserWink(wink);
-    if (wink.user) {
+    if (wink.user && !wink.watched) {
       wink.user.newWink = !wink.watched;
       this.WatchWink(wink);
     }

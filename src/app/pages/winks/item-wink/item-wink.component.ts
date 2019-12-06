@@ -22,6 +22,7 @@ export class ItemWinkComponent implements OnInit {
   avatar: string = Config.AVATAR;
   userWink: User;
   urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
+  requestHttp = true;
 
   constructor(
     private winkService: WinkService,
@@ -47,37 +48,45 @@ export class ItemWinkComponent implements OnInit {
   }
 
   async Accept() {
-    try {
-      if (!this.tour) {
-        await this.winkService.ApproveWink(this.wink);
+    if (this.requestHttp) {
+      this.requestHttp = false;
+      try {
+        if (!this.tour) {
+          await this.winkService.ApproveWink(this.wink);
+        }
+      } catch (err) {
+        console.log('Error Accept', err.message);
       }
-    } catch (err) {
-      console.log('Error Accept', err.message);
+      this.requestHttp = true;
     }
   }
 
   async Ignore() {
-    try {
-      if (!this.tour) {
-        if (this.wink.approved) {
-          this.alertService.showConfirm({
-            title: 'WINK.DIALOGUES.TITLES.DELETE_WINK',
-            description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
-          }).subscribe(
-            async (resp: any) => {
-              if (resp.value) {
-                await this.winkService.DeleteWink(this.wink);
-                this.Close();
+    if (this.requestHttp) {
+      this.requestHttp = false;
+      try {
+        if (!this.tour) {
+          if (this.wink.approved) {
+            this.alertService.showConfirm({
+              title: 'WINK.DIALOGUES.TITLES.DELETE_WINK',
+              description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
+            }).subscribe(
+              async (resp: any) => {
+                if (resp.value) {
+                  await this.winkService.DeleteWink(this.wink);
+                  this.Close();
+                }
               }
-            }
-          );
-        } else {
-          await this.winkService.DeleteWink(this.wink);
+            );
+          } else {
+            await this.winkService.DeleteWink(this.wink);
+          }
         }
+      } catch (err) {
+        console.log('Error Ignore', err.message);
       }
-    } catch (err) {
-      console.log('Error Ignore', err.message);
-    }
+      this.requestHttp = true;
+  }
   }
 
   Time(date: string) {
