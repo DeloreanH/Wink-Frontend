@@ -10,6 +10,7 @@ import { SocketService } from './socket.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 import { ToastService } from './toast.service';
 import { StorageService } from './storage.service';
+import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -79,7 +80,7 @@ export class UserService {
   }
 
   private UpdateStorage() {
-    const userData: {token: string, exp: number, user: User} = this.storageService.apiAuthorization;
+    const userData: UserData = this.storageService.apiAuthorization;
     if (userData) {
       const loadedUser = new AuthUser(userData.token, userData.exp, this.user);
       StorageService.SetItem('userData', loadedUser);

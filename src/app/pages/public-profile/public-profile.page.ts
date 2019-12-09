@@ -11,7 +11,7 @@ import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { ProfilesService } from 'src/app/core/services/profiles.service';
 import { SocketEventsListen, SocketService } from 'src/app/core/services/socket.service';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/common/alert/alert.service';
@@ -42,6 +42,8 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   updatedUserSubs = new Subscription();
   updatedAvatarSubs = new Subscription();
   backButtonSubs = new Subscription();
+  private loadB = new BehaviorSubject(false);
+  load$ = this.loadB.asObservable();
 
   constructor(
     private route: ActivatedRoute,
@@ -186,31 +188,40 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   async AceptWink() {
     try {
       if (this.wink) {
+        this.loadB.next(true);
         await this.winkService.ApproveWink(this.wink);
         this.wink.approved = true;
       }
     } catch (err) {
       console.log('Error DeleteWink', err);
+    } finally {
+      this.loadB.next(false);
     }
   }
 
   async DeleteWink() {
     try {
       if (this.wink) {
+        this.loadB.next(true);
         await this.winkService.DeleteWink(this.wink);
         this.wink = null;
       }
     } catch (err) {
       console.log('Error DeleteWink', err);
+    } finally {
+      this.loadB.next(false);
     }
   }
 
   async SendWink() {
     try {
+      this.loadB.next(false);
       const response = await this.winkService.SendWink(this.userWink._id);
       this.wink = response.wink;
     } catch (err) {
       console.log('Error SendWink', err);
+    } finally {
+      this.loadB.next(false);
     }
   }
 
@@ -236,25 +247,6 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-    // const alert = await this.alertController.create({
-    //   header: this.translateService.instant('WINK.DIALOGUES.TITLES.CONFIRM') ,
-    //   message: this.translateService.instant('WINK.DIALOGUES.MESSAGES.CANCEL_WINK') ,
-    //   buttons: [
-    //     {
-    //       text: this.translateService.instant('WINK.BUTTONS.DISCARD'),
-    //       role: 'cancel',
-    //       handler: (blah) => {
-    //       }
-    //     }, {
-    //       text: this.translateService.instant('WINK.BUTTONS.YES'),
-    //       handler: () => {
-    //         this.DeleteWink();
-    //       }
-    //     }
-    //   ]
-    // });
-
-    // await alert.present();
   }
 
   FilterItems(items: Item[], userW: User) {
@@ -357,14 +349,6 @@ Avatar() {
     }
   }
 
-  ionViewCanEnter() {
-    alert('1 - Toc, Toc!!! ¿Puedo pasar? Se lanza antes de que la vista pueda entrar.');
-  }
-
-  ionViewDidLoad() {
-    alert('2 - En este momento la página ha terminado de cargar.');
-  }
-
   ionViewWillEnter() {
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
@@ -382,10 +366,6 @@ Avatar() {
     // alert('4 - Página completamente cargada y activa.');
   }
 
-  ionViewCanLeave() {
-    // alert('5 - Toc, Toc!!! ¿Puedo salir? Se lanza antes de que la vista pueda salir.');
-  }
-
   ionViewWillLeave() {
     // alert('6 - ¿Estás seguro que quieres dejar la página?.');
   }
@@ -393,10 +373,6 @@ Avatar() {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
-  }
-
-  ionViewWillUnload() {
-    alert('8 - Página y eventos destruidos (Este evento no debería saltar.).');
   }
 
 }

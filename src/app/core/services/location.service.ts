@@ -5,13 +5,12 @@ import { Platform, ToastController } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { ToastService } from './toast.service';
+import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
-
-  private position: Geoposition = null;
 
   constructor(
     private geolocation: Geolocation,
@@ -54,7 +53,7 @@ export class LocationService {
             const response = await this.getLocationCoordinates();
             resolve(response);
           } else {
-            this.toastService.Toast('Activate the location of your device to continue.');
+            this.toastService.Toast(MessagesServices.ACTIVATE_LOCATION);
             reject({message: 'No LocationEnabled'});
           }
         } catch (err) {
@@ -87,14 +86,14 @@ export class LocationService {
     return new Promise<any> (
       async (resolve, reject) => {
         try {
-          await this.locationAccuracy.canRequest();
+          // await this.locationAccuracy.canRequest();
           this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
             async (response) => {
               if (response.hasPermission) {
                 const resp = await this.askToTurnOnGPS();
                 resolve(resp);
               } else {
-                this.toastService.Toast('You must activate your location to use the service.');
+                this.toastService.Toast(MessagesServices.ACTIVATE_LOCATION);
                 reject({message: 'No hasPermission'});
               }
             },
@@ -113,6 +112,7 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
+          await this.locationAccuracy.canRequest();
           this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
             async (value) => {
               const resp = await this.getLocationCoordinates();

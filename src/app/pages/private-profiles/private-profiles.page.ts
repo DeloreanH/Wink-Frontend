@@ -214,7 +214,6 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
         }).subscribe(
           (data: any) => {
             if (data && data.length > 0) {
-              console.log(data);
               this.SaveContact(data);
             }
           }

@@ -16,8 +16,8 @@ export class ProfilesService {
   unique: string[] = [];
   categories: Category[] = [];
   biography: Item = null;
-
   itemTypes: ItemType[] = [];
+  private itemsUser: Item[] = [];
 
   sections: Section[] = [
     new Section({name: 'WINK.SECTIONS.PUBLIC', key: 0}),
@@ -124,6 +124,7 @@ export class ProfilesService {
               }
             }
           );
+          this.itemsUser = response;
           resolve(response);
         } catch (err) {
           this.toastService.Toast(MessagesServices.ERROR_GET_INFORMATION);
@@ -190,5 +191,9 @@ export class ProfilesService {
         }
       }
     );
+  }
+
+  get ItemsUser() {
+    return this.itemsUser.slice();
   }
 }

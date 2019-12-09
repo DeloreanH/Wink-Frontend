@@ -136,7 +136,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
           this.data.push(new Item(valor.item));
         });
       }
-      console.log(this.data);
       this.profilesServices.SaveItems(this.data);
       this.loading = false;
       this.changeData = false;
@@ -260,17 +259,34 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         basic: false,
       });
       const response = await this.profilesServices.LoadItemsUser();
-      for (const dato of response) {
-        this.AddItem(dato, false);
+      if (response) {
+        this.AddItemsData();
+      }
+      // for (const dato of response) {
+      //   this.AddItem(dato, false);
+      // }
+      // const valor = this.profilesServices.biography;
+      // if (valor) {
+      //   this.grupoForm.controls.biografia.setValue(valor.value);
+      // }
+    } catch (err) {
+      console.log('Error LoadData', err.message);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  AddItemsData() {
+    const data: Item[] = JSON.parse(JSON.stringify(this.profilesServices.ItemsUser));
+    if (data) {
+      for (const item of data) {
+        this.AddItem(item, false);
       }
       const valor = this.profilesServices.biography;
       if (valor) {
         this.grupoForm.controls.biografia.setValue(valor.value);
       }
-    } catch (err) {
-      console.log('Error LoadData', err.message);
     }
-    this.loading = false;
   }
 
   Ordenar() {
@@ -509,6 +525,24 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       console.log('Error RequestImage', err);
     }
     this.loadingAvatar = false;
+  }
+
+  Cancel() {
+    let ready = false;
+    this.loading = true;
+    this.groupArray.forEach(
+      (arrayData: FormArray, index) => {
+        arrayData.clear();
+        if (index === (this.groupArray.length - 1)) {
+          ready = true;
+        }
+      }
+    );
+    if (ready) {
+      this.AddItemsData();
+      this.loading = false;
+      this.changeData = false;
+    }
   }
 
 }

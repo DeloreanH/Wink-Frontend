@@ -11,6 +11,7 @@ import { ToastService } from './toast.service';
 import { MessagesServices } from '../../common/enums/messagesServices.enum';
 import { SocketService } from './socket.service';
 import { UserData } from 'src/app/common/interfaces/userData.interfaces';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +35,16 @@ export class WinkService {
     private http: HttpClient,
     private userService: UserService,
     private toastService: ToastService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private storageService: StorageService,
   ) {
     // this.Init();
    }
 
    async Init() {
     try {
-        const userData: UserData = JSON.parse(localStorage.getItem('userData'));
-        this.idUser = userData.user._id;
+        const userData: UserData = this.storageService.apiAuthorization;
+        this.idUser = userData.user._id ? userData.user._id : null;
         await this.GetWinks();
     } catch (err) {
       console.log('Error Init', err.message);
@@ -107,7 +109,7 @@ export class WinkService {
           const response: any = await this.http.post(Routes.BASE + Routes.SET_SEARCH_RANGE, { range: (rangeValue * 1000)}).toPromise();
           resolve(response);
         } catch (err) {
-          this.toastService.Toast(MessagesServices.WINK_ERROR);
+          this.toastService.Toast(MessagesServices.UNEXPECTED_ERROR);
           console.log('Error Range: ' + err.message);
           reject(err);
         }
@@ -166,8 +168,9 @@ export class WinkService {
           resolve(response);
         } catch (err) {
           if (err.error.statusCode && err.error.statusCode === 404) {
-            alert('404');
             this.DeleteWinkUser(wink);
+          } else {
+            this.toastService.Toast(MessagesServices.UNEXPECTED_ERROR);
           }
           console.log('Error ApproveWink: ' + err.message);
           reject(err);
@@ -197,8 +200,9 @@ export class WinkService {
         } catch (err) {
           console.log('Del wink', err);
           if (err.error.statusCode && err.error.statusCode === 404) {
-            alert('404');
             this.DeleteWinkUser(wink);
+          } else {
+            this.toastService.Toast(MessagesServices.UNEXPECTED_ERROR);
           }
           console.log('Error DeleteWink: ' + err.message);
           reject(err);
@@ -313,7 +317,6 @@ export class WinkService {
           resolve(response);
         } catch (err) {
           if (err.error.statusCode && err.error.statusCode === 404) {
-            alert('404');
             this.DeleteWinkUser(wink);
           }
           console.log('Error WatchedWink: ' + err.message);
@@ -346,18 +349,27 @@ export class WinkService {
   }
 
   SetRecord(data: Wink[]) {
+    if (!data) {
+      return;
+    }
     this.record = [];
     this.record.push(...data);
     this.recordChanged.next(this.record);
   }
 
   SetRequests(data: Wink[]) {
+    if (!data) {
+      return;
+    }
     this.requests = [];
     this.requests.push(...data);
     this.requestsChanged.next(this.requests);
   }
 
   AddWink(wink: Wink) {
+    if (!wink) {
+      return;
+    }
     wink.user = null;
     if (wink.approved && !wink.user) {
       this.AddRecord(wink);
@@ -371,10 +383,9 @@ export class WinkService {
       return;
     }
     return this.GetUserID(wink.sender_id ===  this.idUser ? wink.receiver_id : wink.sender_id);
-
   }
 
-  async GetUserID(idUserWink) {
+  async GetUserID(idUserWink: string) {
     if (!idUserWink) {
       return;
     }
@@ -394,10 +405,10 @@ export class WinkService {
   }
 
   private async AddRecord(wink: Wink) {
+    if (!wink || !wink.approved) {
+      return;
+    }
     try {
-      if (!wink || !wink.approved) {
-        return;
-      }
       this.DeleteRequests(wink);
       const user = await this.GetUserWink(wink);
       wink.user = user;
@@ -429,11 +440,11 @@ export class WinkService {
   }
 
   private async AddRequests(wink: Wink) {
+    if (!wink || wink.approved || wink.sender_id === this.idUser ) {
+      return;
+    }
     try {
-      if (!wink || wink.approved || wink.sender_id === this.idUser ) {
-        return;
-      }
-      this.DeleteRecord(wink);
+      // this.DeleteRecord(wink);
       // const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
       const winkExist = this.GetWinkRequestsID(wink._id);
       wink.user = await this.GetUserWink(wink);
@@ -566,7 +577,6 @@ export class WinkService {
           }
         );
       }
-      console.log('aqui');
       this.nearbyUsersChanged.next(this.nearbyUsers);
     }
   }
@@ -618,7 +628,7 @@ export class WinkService {
     this.idUser = null;
   }
 
-  async GetUser(idUser) {
+  async GetUser(idUser: string) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {

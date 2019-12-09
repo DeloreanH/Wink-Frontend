@@ -33,11 +33,11 @@ export class ToursService {
     lastName: 'Doe',
     location: {type: 'Point', coordinates: [-63.2033696, 9.8001396], latitude: 9.8000937, longitude: -63.2033488},
     phone: {phoneCode: 424, phoneNumber: 5529897},
-    status: 'De paseo',
+    status: '',
     username: 'johndoe123',
     visibility: 'all',
     __v: 0,
-    _id: '5dbc6ce7c6245c02c02c29c2',
+    _id: 'tour',
   });
   winkRecordTour = new Wink({
     approved: true,

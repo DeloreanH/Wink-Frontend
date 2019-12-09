@@ -24,7 +24,6 @@ export class LanguageService {
 
   async Init() {
     this.lang = this.storageService.apiLanguage;
-    console.log('this.lang', this.lang);
     if (this.lang) {
       this.DefaultLanguage(this.lang);
     } else {

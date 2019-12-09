@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { User } from 'src/app/common/models/user.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'item-wink',
@@ -19,10 +20,13 @@ export class ItemWinkComponent implements OnInit {
   @ViewChild(IonItemSliding, {static: false}) itemSliding: IonItemSliding;
   @Input() wink: Wink;
   @Input() tour: boolean;
+
   avatar: string = Config.AVATAR;
   userWink: User;
   urlPublic: string = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
   requestHttp = true;
+  private load$ = new BehaviorSubject(false);
+  load = this.load$.asObservable();
 
   constructor(
     private winkService: WinkService,
@@ -32,61 +36,47 @@ export class ItemWinkComponent implements OnInit {
   ) {
    }
 
-  async Init() {
-    try {
-      if (this.wink) {
-        // this.userWink = await this.winkService.GetUserWink(this.wink);
-        // this.userWink.newWink = !this.wink.watched;
-      }
-    } catch (err) {
-      console.log('Error Init item-wink', err);
-    }
-  }
-
   ngOnInit() {
-    // this.Init();
   }
 
   async Accept() {
-    if (this.requestHttp) {
-      this.requestHttp = false;
-      try {
-        if (!this.tour) {
-          await this.winkService.ApproveWink(this.wink);
-        }
-      } catch (err) {
-        console.log('Error Accept', err.message);
+    try {
+      if (!this.tour) {
+        this.load$.next(true);
+        await this.winkService.ApproveWink(this.wink);
       }
-      this.requestHttp = true;
+    } catch (err) {
+      console.log('Error Accept', err.message);
+    } finally {
+      this.load$.next(false);
     }
   }
 
   async Ignore() {
-    if (this.requestHttp) {
-      this.requestHttp = false;
-      try {
-        if (!this.tour) {
-          if (this.wink.approved) {
-            this.alertService.showConfirm({
-              title: 'WINK.DIALOGUES.TITLES.DELETE_WINK',
-              description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
-            }).subscribe(
-              async (resp: any) => {
-                if (resp.value) {
-                  await this.winkService.DeleteWink(this.wink);
-                  this.Close();
-                }
+    try {
+      if (!this.tour) {
+        this.load$.next(true);
+        if (this.wink.approved) {
+          this.alertService.showConfirm({
+            title: 'WINK.DIALOGUES.TITLES.DELETE_WINK',
+            description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
+          }).subscribe(
+            async (resp: any) => {
+              if (resp.value) {
+                await this.winkService.DeleteWink(this.wink);
+                this.Close();
               }
-            );
-          } else {
-            await this.winkService.DeleteWink(this.wink);
-          }
+            }
+          );
+        } else {
+          await this.winkService.DeleteWink(this.wink);
         }
-      } catch (err) {
-        console.log('Error Ignore', err.message);
       }
-      this.requestHttp = true;
-  }
+    } catch (err) {
+      console.log('Error Ignore', err.message);
+    } finally {
+      this.load$.next(false);
+    }
   }
 
   Time(date: string) {
@@ -143,11 +133,15 @@ export class ItemWinkComponent implements OnInit {
   }
 
   Open() {
-    this.itemSliding.open('start');
+    if (this.wink.approved) {
+      this.itemSliding.open('start');
+    }
   }
 
   Close() {
-    this.itemSliding.close();
+    if (this.wink.approved) {
+      this.itemSliding.close();
+    }
   }
 
 }

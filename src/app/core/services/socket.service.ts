@@ -1,4 +1,4 @@
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Routes } from '../../common/enums/routes/routes.enum';
 import { User } from '../../common/models/user.model';
@@ -21,6 +21,7 @@ export enum SocketEventsListen {
   HANDLED_WINK = 'handled-wink',
   DELETED_WINK = 'deleted-wink',
   AVATAR_UPLOADED = 'avatar-uploaded',
+  ERROR = 'end',
 }
 
 @Injectable()
@@ -34,13 +35,20 @@ export class SocketService  {
 
   Create() {
     const authorization: UserData = this.storageService.apiAuthorization;
-    this.socket = io(this.url, {
-      transports: ['websocket'],
-      autoConnect: false,
-      query: {
-        auth: authorization.token,
-      }
-    });
+    if (authorization && authorization.token) {
+      this.socket = io(this.url, {
+        transports: ['websocket'],
+        autoConnect: false,
+        query: {
+          auth: authorization.token,
+        },
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax : 5000,
+        reconnectionAttempts: Infinity
+      });
+      console.log(this.socket);
+    }
   }
 
   Connect() {
@@ -57,7 +65,7 @@ export class SocketService  {
 
   Disconnect() {
     try {
-      if (!this.connect) {
+      if (this.connect) {
         this.socket.close();
         this.connect = false;
         this.socket = null;
@@ -77,8 +85,12 @@ export class SocketService  {
 
   Error() {
     try {
+      this.socket.on('connect_error',
+        (data) => {
+          console.log('Socket end', data);
+        });
     } catch (err) {
-      console.log('Error SocketService  ', err.message);
+      console.log('SocketService Listen Error', err.message);
     }
   }
 

@@ -45,7 +45,7 @@
           {{userWink ? (userWink.distance | distance) : ''}}
       </ion-label>
     </div>    
-    <ion-fab *ngIf="!load" class="button-wink end">
+    <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
       <div *ngIf="wink" class="end">
           <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="AceptWink()" size="small" color="primary">
               <ion-icon name="checkmark"></ion-icon>
@@ -70,7 +70,28 @@
           ></fa-icon>
       </ion-fab-button>
     </ion-fab>
+    <ion-fab *ngIf="!load && (load$ | async)"  class="button-wink end" >
+      <div *ngIf="wink" class="end">
+          <ion-fab-button *ngIf="!Sended() && !wink.approved"  size="small" color="primary">
+            <ion-spinner name="bubbles" color="dark"></ion-spinner>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="!Sended() && !wink.approved" size="small" color="light">
+            <ion-spinner name="bubbles" color="dark"></ion-spinner>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="Sended() && !wink.approved" size="small" color="primary">
+            <ion-spinner name="bubbles" color="dark"></ion-spinner>
+          </ion-fab-button>
+      </div>
+      <ion-fab-button *ngIf="wink && wink.approved" size="small" color="light">
+        <ion-spinner name="bubbles" color="dark"></ion-spinner>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="!wink"  size="small" color="light">
+        <ion-spinner name="bubbles" color="dark"></ion-spinner>
+      </ion-fab-button>
+    </ion-fab>
   </div>
+
+
   <ion-list *ngIf="load">
       <ion-item>
         <ion-thumbnail slot="start">

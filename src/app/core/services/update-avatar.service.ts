@@ -25,42 +25,6 @@ export class UpdateAvatarService {
    * @description Inicializa la camara(true) o la galeria(false) del movil segun el valor enviado.
    */
 
-  private async SelectImage() {
-    let link = null;
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Seleccione una opcion',
-      buttons: [{
-        text: 'Camera',
-        icon: 'camera',
-        handler:  async () => {
-          link = this.RequestImage(true);
-        }
-      }, {
-        text: 'Gallery',
-        icon: 'image',
-        handler:   () => {
-          link = this.RequestImage(false);
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-        }
-      }]
-    });
-    await actionSheet.present();
-  }
-
-  private async RequestImage(camera: boolean) {
-    try {
-      const respuesta: any = await this.OpenUpdate(camera);
-      return respuesta.link;
-    } catch (err) {
-      console.log('Error RequestImage', err);
-      return null;
-    }
-  }
   async OpenUpdate(camera: boolean) {
     return new Promise<any>(
       async (resolve, reject) => {

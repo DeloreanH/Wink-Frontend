@@ -20,7 +20,7 @@ import { Platform, NavController } from '@ionic/angular';
 export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(ItemWinkComponent, {static: false}) winkRecord: ItemWinkComponent;
-  tab = 'requests';
+  tab: 'record' | 'requests' = 'requests';
 
   requests: Wink[] = [];
   requestsSubscription = new Subscription();

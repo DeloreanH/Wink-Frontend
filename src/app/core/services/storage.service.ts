@@ -19,7 +19,6 @@ export class StorageService {
   static Stringify(data: any): string {
     try {
       const parseData = JSON.stringify(data);
-
       return parseData;
     } catch (error) {
       return null;

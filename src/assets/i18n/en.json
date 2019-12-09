@@ -251,6 +251,7 @@
       "TRY_AGAIN_LATER":	"Try again later.",
       "CONTACT_SAVE":	"Contact saved!",
       "WINK_ERROR":	"Unexpected error occurred while turning on the wink.",
+      "ACTIVATE_LOCATION": "Activate the location of your device to continue.",
 
       "SAVE_ITEMS":	"Your settings have been saved successfully.",
       "SAVE_PHOTO":	"Photo uploaded successfully.",
@@ -258,7 +259,8 @@
 
       "ERROR_CONTACT_SAVE":	"There was a problem trying to save. try again later.",
       "ERROR_GET_INFORMATION":	"A problem has occurred trying to get your information. try again later.",
-      "ERROR_PHOTO":	"There was a problem trying to upload your photo."
+      "ERROR_PHOTO":	"There was a problem trying to upload your photo.",
+      "UNEXPECTED_ERROR": "An unexpected error occurred while trying to perform this action."
     },
     "TOUR": {
       "HOME": {

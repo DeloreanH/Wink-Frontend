@@ -25,6 +25,7 @@
     </ion-list>
   </ion-content>
 </ion-menu>
+
 <div class="ion-page" id="main">
 
   <ion-header translucent>
@@ -278,6 +279,9 @@
     <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
       <div *ngIf="tour" tourAnchor="add"></div>
       <div *ngIf="!loading">
+        <ion-fab-button *ngIf="FormValid()" size="small" color="danger" (click)="Cancel()">
+          <ion-icon name="close"></ion-icon>
+        </ion-fab-button>
         <ion-fab-button *ngIf="FormValid()" size="small" color="success" (click)="onSubmit()">
           <ion-icon name="save"></ion-icon>
         </ion-fab-button>
@@ -293,30 +297,32 @@
 
   </ion-content>
 </div>
+
+
 <tour-step-template>
-    <ng-template let-step="step" >
-        <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
-            <ion-card-header *ngIf="step?.title">
-              <ion-card-title>
-                {{step?.title}}
-              </ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-text class="content-card-tour">
-                    {{step?.content}}
-                </ion-text>
-            </ion-card-content>
-            <ion-buttons class="content-end">
-              <ion-button *ngIf="tourService.hasPrev(step)" (click)="tourService.prev()">
-                  <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
-              </ion-button>
-              <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
-                  <ion-icon name="arrow-dropright" slot="end"></ion-icon>
-              </ion-button>
-              <ion-button (click)="tourService.end()">
-                  {{step?.endBtnTitle}}
-              </ion-button>
-            </ion-buttons>
-        </ion-card>
-      </ng-template>
+  <ng-template let-step="step" >
+    <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
+      <ion-card-header *ngIf="step?.title">
+        <ion-card-title>
+          {{step?.title}}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text class="content-card-tour">
+          {{step?.content}}
+        </ion-text>
+      </ion-card-content>
+      <ion-buttons class="content-end">
+        <ion-button *ngIf="tourService.hasPrev(step)" (click)="tourService.prev()">
+          <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
+          <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+        </ion-button>
+        <ion-button (click)="tourService.end()">
+          {{step?.endBtnTitle}}
+        </ion-button>
+      </ion-buttons>
+    </ion-card>
+  </ng-template>
 </tour-step-template>
