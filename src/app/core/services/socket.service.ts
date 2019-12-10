@@ -140,10 +140,12 @@ export class SocketService  {
     return new Observable(
       (subscriber) => {
         try {
-          this.socket.on(eventName,
-            (data) => {
-              subscriber.next(data);
-            });
+          if (this.socket  &&  this.socket.connected) {
+            this.socket.on(eventName,
+              (data) => {
+                subscriber.next(data);
+              });
+          }
         } catch (err) {
           console.log('SocketService Listen Error', err.message);
         }
@@ -153,7 +155,9 @@ export class SocketService  {
 
   private Emit(eventName: SocketEvents, data: any) {
     try {
-      this.socket.emit(eventName, data);
+      if (this.socket  && this.socket.connected) {
+        this.socket.emit(eventName, data);
+      }
     } catch (err) {
       console.log('SocketService Emit Error', err.message);
     }

@@ -66,9 +66,10 @@ export class UserService {
             reject({message: 'No data'});
           }
           const response: any = await this.http.put(Routes.BASE + Routes.UPDATE_BASIC_DATE, data).toPromise();
+          console.log(response);
           this.User(response.user, true);
           this.toastService.Toast(MessagesServices.SAVE_INFORMATION);
-          this.socketService.UpdateUser(this.user);
+          this.socketService.UpdateUser(response.user);
           resolve(response);
         } catch (error) {
           this.toastService.Toast(MessagesServices.ERROR_SAVE);
@@ -129,8 +130,12 @@ export class UserService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          this.user.location.latitude = location.latitude;
-          this.user.location.longitude = location.longitude;
+          this.user.location = {
+            latitude: location.latitude,
+            longitude: location.longitude
+          };
+          // this.user.location.latitude = location.latitude;
+          // this.user.location.longitude = location.longitude;
           this.User(this.user, true);
           resolve(true);
         } catch (err) {

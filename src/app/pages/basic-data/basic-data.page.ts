@@ -25,7 +25,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
   form: FormGroup;
   loading = false;
   loadingAvatar = false;
-  uploadAvatar = false;
+  uploadAvatar = true;
   edit = false;
   genders: { value: string, description: string}[] = [];
   backButtonSubs = new Subscription();
@@ -105,19 +105,14 @@ export class BasicDataPage implements OnInit, OnDestroy {
           phoneCode: this.form.value.phoneCode,
           phoneNumber: this.form.value.phoneNumber
         };
+        console.log(this.form.value);
         const response = await this.userService.UpdateDate(this.form.value);
-        response.user.emptyProfile = false;
         console.log(response);
-        if (response.status === 'user updated successfully' && !response.user.emptyProfile) {
-          this.userService.User(response.user, true);
+        if (response.status === 'user updated successfully' /*&& !response.user.emptyProfile*/) {
           this.edit = false;
           await this.navController.navigateRoot(
             '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
           );
-          // setTimeout(
-          //   async () => {
-          //   }
-          //   , 500);
         }
       } catch (err) {
         console.log('Error submit', err);
@@ -219,7 +214,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
   Avatar() {
-    if (this.user) {
+    if (this.user && this.user.avatarUrl) {
       if (this.user.avatarUrl.startsWith('http')) {
         return this.user.avatarUrl;
       } else {

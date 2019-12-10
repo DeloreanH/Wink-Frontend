@@ -47,15 +47,6 @@
           <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
       </ion-label>
     </ion-item>
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <ion-skeleton-text animated></ion-skeleton-text>
-      </ion-thumbnail>
-      <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-      </ion-label>
-    </ion-item>
     <div class="phone">
       <div class="phoneCode">
         <ion-item>
@@ -118,6 +109,11 @@
             [srcPath]="Avatar()" >
           <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
         </ion-avatar>
+      </div>
+      <div *ngIf="user.emptyProfile && !uploadAvatar" class="contenedorAvatar" >
+        <ion-text color="danger">
+          {{'WINK.BASIC_DATA.FORM.AVATAR' | translate}}
+        </ion-text>
       </div>
       <ion-list>
         <ion-item >

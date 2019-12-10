@@ -44,6 +44,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   backButtonSubs = new Subscription();
   private loadB = new BehaviorSubject(false);
   load$ = this.loadB.asObservable();
+  activateView: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +87,10 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.EventSocket();
+  }
+
+  EventSocket() {
     this.sendedWinkSubs = this.socketService.Listen(SocketEventsListen.SENDED_WINK).subscribe(
       (data: any) => {
         if (data && data.wink) {
@@ -151,6 +156,10 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.DestroySubs();
+  }
+
+  DestroySubs() {
     this.sendedWinkSubs.unsubscribe();
     this.approvedWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
@@ -160,7 +169,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   WatchWink() {
-    if (this.userWink.newWink) {
+    if (this.userWink.newWink && this.activateView) {
       this.userWink.newWink = false;
       this.winkService.WatchedWink(this.wink);
     }
@@ -330,7 +339,7 @@ ErrorImagen() {
   }
 
 Avatar() {
-    if (this.userWink) {
+    if (this.userWink && this.userWink.avatarUrl) {
       if (this.userWink.avatarUrl.startsWith('http')) {
         return this.userWink.avatarUrl;
       } else {
@@ -350,6 +359,7 @@ Avatar() {
   }
 
   ionViewWillEnter() {
+    this.activateView = true;
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
@@ -372,7 +382,9 @@ Avatar() {
 
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
+    this.activateView = false;
     this.backButtonSubs.unsubscribe();
+    // this.DestroySubs();
   }
 
 }

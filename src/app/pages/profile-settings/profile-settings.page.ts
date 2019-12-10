@@ -270,18 +270,22 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       //   this.grupoForm.controls.biografia.setValue(valor.value);
       // }
     } catch (err) {
-      console.log('Error LoadData', err.message);
-    } finally {
       this.loading = false;
+      console.log('Error LoadData', err.message);
     }
   }
 
   AddItemsData() {
     const data: Item[] = JSON.parse(JSON.stringify(this.profilesServices.ItemsUser));
     if (data) {
-      for (const item of data) {
-        this.AddItem(item, false);
-      }
+      data.forEach(
+        (item: Item, index) => {
+          this.AddItem(item, false);
+          if (index === (data.length - 1) ) {
+            this.loading = false;
+          }
+        }
+      );
       const valor = this.profilesServices.biography;
       if (valor) {
         this.grupoForm.controls.biografia.setValue(valor.value);
@@ -402,7 +406,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         description: 'WINK.AUTH.LOGOUT.MESSAGE',
       }).subscribe(
         (resp: any) => {
-          if (resp.value) {
+          if (resp && resp.value) {
             this.authService.Logout();
             if (this.menu.isOpen) {
               this.menu.close();
@@ -451,7 +455,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Avatar() {
-    if (this.user) {
+    if (this.user && this.user.avatarUrl) {
       if (this.user.avatarUrl.startsWith('http')) {
         return this.user.avatarUrl;
       } else {
@@ -467,9 +471,13 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       (resp) => {
         resp.register(100,
           async () => {
-            await this.navController.navigateBack(
-              [ this.urlHome]
-            );
+            if (this.menu.isOpen) {
+              this.menu.close();
+            } else {
+              await this.navController.navigateBack(
+                [ this.urlHome]
+              );
+            }
           }
         );
       }
@@ -540,7 +548,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     );
     if (ready) {
       this.AddItemsData();
-      this.loading = false;
       this.changeData = false;
     }
   }

@@ -85,7 +85,8 @@
         "PHONE_NUMBER": "Número de teléfono",
         "BIRTHDAY": "Fecha de nacimiento",
         "GENDER": "Género",
-        "AUTOSAVE_CONTACTS": "Guardar automáticamente contactos"
+        "AUTOSAVE_CONTACTS": "Guardar automáticamente contactos",
+        "AVATAR": "Selecciona una imagen para continuar."
       }
     },
     "HOME": {

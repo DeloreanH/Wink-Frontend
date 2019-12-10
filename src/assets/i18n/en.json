@@ -78,7 +78,8 @@
         "PHONE_NUMBER": "Phone Number",
         "BIRTHDAY": "Birthday",
         "GENDER": "Gender",
-        "AUTOSAVE_CONTACTS": "Autosave contacts"
+        "AUTOSAVE_CONTACTS": "Autosave contacts",
+        "AVATAR": "Select an image to continue."
       }
     },
     "HOME": {

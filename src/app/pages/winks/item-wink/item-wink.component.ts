@@ -121,7 +121,7 @@ export class ItemWinkComponent implements OnInit {
   }
 
   Avatar() {
-    if (this.wink.user) {
+    if (this.wink.user && this.wink.user.avatarUrl) {
       if (this.wink.user.avatarUrl.startsWith('http')) {
         return this.wink.user.avatarUrl;
       } else {

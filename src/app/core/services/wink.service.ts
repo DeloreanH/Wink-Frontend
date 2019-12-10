@@ -44,8 +44,10 @@ export class WinkService {
    async Init() {
     try {
         const userData: UserData = this.storageService.apiAuthorization;
-        this.idUser = userData.user._id ? userData.user._id : null;
-        await this.GetWinks();
+        if (userData && userData.user) {
+          this.idUser = userData.user._id ? userData.user._id : null;
+          await this.GetWinks();
+        }
     } catch (err) {
       console.log('Error Init', err.message);
     }
@@ -527,15 +529,15 @@ export class WinkService {
   }
 
   get Record() {
-    return this.record.slice();
+    return this.record;
   }
 
   get Requests() {
-    return this.requests.slice();
+    return this.requests;
   }
 
   get NearbyUsers() {
-    return this.nearbyUsers.slice();
+    return this.nearbyUsers;
   }
 
   async UpdateUser(newUser: User, updateAvatar?: boolean) {

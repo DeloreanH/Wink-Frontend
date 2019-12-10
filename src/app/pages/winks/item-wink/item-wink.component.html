@@ -4,9 +4,9 @@
   </ion-avatar>
   <ion-label class="label-item">
     <div>
-      <ion-title class="title-wink" (click)="GoPrivateProfile()" [ngClass]="{'title-newWink': wink.watched}">
+      <ion-title class="title-wink" (click)="GoPrivateProfile()" [ngClass]="{'title-newWink': wink.user.newWink}">
         {{wink && wink.user ? wink.user.firstName + ' ' + wink.user.lastName : 'John Doe'}}
-        <ion-badge *ngIf="wink.watched" class="item-win-badge">*</ion-badge>
+        <ion-badge *ngIf="wink.user.newWink" class="item-win-badge">*</ion-badge>
       </ion-title>
       <div *ngIf="wink" class="date-wink">
         <ion-icon name="time" color="medium"></ion-icon>
