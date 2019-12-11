@@ -101,6 +101,7 @@
       *ngFor="let button of buttons"
       [color]="button.type"
       (click)="close(button)"
+      [disabled]="disabledButton(button)"
     >
       {{ button.label | translate }}
     </ion-button>

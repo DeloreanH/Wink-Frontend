@@ -25,7 +25,7 @@ export class BasicDataPage implements OnInit, OnDestroy {
   form: FormGroup;
   loading = false;
   loadingAvatar = false;
-  uploadAvatar = true;
+  uploadAvatar = false;
   edit = false;
   genders: { value: string, description: string}[] = [];
   backButtonSubs = new Subscription();

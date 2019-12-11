@@ -100,6 +100,32 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     return value;
   }
 
+  get SelectRadioInput() {
+    let select = false;
+    if (
+      this.groupRadio &&
+      this.groupRadio.value === 'input' &&
+      this.custom && !this.custom.value
+      ) {
+        select = true;
+    } else {
+      if (this.custom && this.custom.value) {
+        if (this.custom.value.trim() === '') {
+          select = true;
+        }
+      }
+    }
+    return select;
+  }
+
+  disabledButton(button: any) {
+    let disabled = false;
+    if (button && button.value && this.isPromptStatus && this.SelectRadioInput) {
+      disabled = true;
+    }
+    return disabled;
+  }
+
   ValueRange(emit: any) {
     if (emit && emit.value) {
         return this.range.value;

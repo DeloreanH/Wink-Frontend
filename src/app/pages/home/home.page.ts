@@ -6,7 +6,7 @@ import { Config } from '../../common/enums/config.enum';
 import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { WinkService } from '../../core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Platform, NavController, AlertController } from '@ionic/angular';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { ToursService } from 'src/app/core/services/tours.service';
@@ -162,17 +162,19 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async GPS(event?) {
-    this.load = true;
-    this.ChangeExit();
-    try {
-      await this.winkService.GetNearby();
-    } catch (err) {
-      console.log('GPS error', err.message);
+    if (!this.tour) {
+      this.load = true;
+      this.ChangeExit();
+      try {
+        await this.winkService.GetNearby();
+      } catch (err) {
+        console.log('GPS error', err.message);
+      }
+      if (event) {
+        event.target.complete();
+      }
+      this.load = false;
     }
-    if (event) {
-      event.target.complete();
-    }
-    this.load = false;
   }
 
   LoadUsers(event?) {
@@ -260,7 +262,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         {
           label: Buttons.CANCEL,
           type: AlertButtonType.Danger,
-          value: null
+          value: false
         },
         {
           label: Buttons.SAVE,
