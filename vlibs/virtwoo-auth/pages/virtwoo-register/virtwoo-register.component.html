@@ -1,0 +1,37 @@
+<sl-base-page class="auth">
+
+  <div class="auth__content">
+    <div class="auth__content__wrapper">
+
+      <div class="auth__content__top column">
+        <div class="auth__add-avatar"
+          [ngClass]="{
+            loading: loading
+          }"
+        >
+          <mat-icon>face</mat-icon>
+        </div>
+      </div>
+
+      <div class="auth__content__bottom">
+
+        <virtwoo-auth-form
+          [fields]="['email', 'password']"
+          [submitText]="'VIRTWOO_AUTH.FORM.BUTTON.REGISTER' | translate"
+          [submitIconUrl]="'/assets/icon/handshake.svg'"
+          [disabled]="loading"
+          (submitted)="submit($event)"
+        >
+        </virtwoo-auth-form>
+
+        <div class="register-message">
+          {{ 'VIRTWOO_AUTH.MESSAGE.ALREADY_ACCOUNT' | translate }}
+          <b><a class="register" (click)="goToLogin()">&nbsp; {{ 'VIRTWOO_AUTH.FORM.BUTTON.LOGIN' | translate }}</a></b>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</sl-base-page>

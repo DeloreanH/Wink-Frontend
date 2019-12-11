@@ -1,0 +1,25 @@
+<div class="auth-buttons">
+  <div class="auth-buttons-social">
+    <button class="bt-facebook"
+      *ngIf="isField('facebook')"
+      mat-stroked-button
+      (click)="launch('FACEBOOK')"
+    >
+      <img src="/assets/icon/facebook.png"/>
+    </button>
+    <button class="bt-google"
+      *ngIf="isField('google')"
+      mat-stroked-button
+      (click)="launch('GOOGLE')"
+    >
+      <img src="/assets/icon/google.png"/>
+    </button>
+    <button class="bt-google"
+      *ngIf="isField('sms')"
+      mat-stroked-button
+      (click)="launch('SMS')"
+    >
+      <img src="/assets/icon/smartphone-sms.png"/>
+    </button>
+  </div>
+</div>
