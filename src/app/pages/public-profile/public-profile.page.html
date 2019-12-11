@@ -39,7 +39,7 @@
       [srcPath]="Avatar()">
     <div class="text-bottom">
       <ion-label  class="public-name text-card" >
-          {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') }}
+          {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') | names:30 }}
       </ion-label>
       <ion-label class="text-card text-small">
           {{userWink ? (userWink.distance | distance) : ''}}

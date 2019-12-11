@@ -182,6 +182,7 @@
           <ion-input
             formControlName="email"
             type="email"
+            [disabled]="DisabledEmail()"
           >
           </ion-input>
         </ion-item>
@@ -202,6 +203,7 @@
               <ion-input
                 type="number"
                 formControlName="phoneCode"
+                [disabled]="DisabledPhone()"
               >
               </ion-input>
             </ion-item>
@@ -217,6 +219,7 @@
               <ion-input
                 type="number"
                 formControlName="phoneNumber"
+                [disabled]="DisabledPhone()"
               >
               </ion-input>
             </ion-item>

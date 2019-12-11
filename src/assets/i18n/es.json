@@ -24,14 +24,14 @@
         "SUB_TITLE": "Por favor ingresa tu número de teléfono"
       },
       "HTTP_RESPONSE": {
-        "CODE_NOT_VALID": "Código inválido",
-        "COULD_NOT_SEND_MAIL": "No pudimos enviar el correo",
-        "NOT_NETWORK_CON": "Revisa tu conexión a internet",
-        "PASSWORD_NOT_VALID": "Usuario o contraseña incorrectos",
-        "REGISTERED_USER": "Usuario registrado",
-        "SERVER_ERROR": "Tuvimos un problema, intente más tarde",
-        "SERVER_UNREACHABLE": "Tuvimos problemas para conectar",
-        "USER_NOT_EXIST": "Usuario o contraseña incorrectos"
+        "CODE_NOT_VALID": "Código inválido.",
+        "COULD_NOT_SEND_MAIL": "No pudimos enviar el correo.",
+        "NOT_NETWORK_CON": "Revisa tu conexión a internet.",
+        "PASSWORD_NOT_VALID": "Usuario o contraseña incorrectos.",
+        "REGISTERED_USER": "Este usuario ya se encuentra registrado.",
+        "SERVER_ERROR": "Tuvimos un problema, intente más tarde.",
+        "SERVER_UNREACHABLE": "Tuvimos problemas para conectar.",
+        "USER_NOT_EXIST": "Usuario o contraseña incorrectos."
       }
     },
     "FORM": {

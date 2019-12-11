@@ -30,8 +30,9 @@
         "CODE_NOT_VALID": "Invalid code",
         "NOT_NETWORK_CON": "Not network connection",
         "PASSWORD_NOT_VALID": "Invalid user or password",
-        "REGISTERED_USER": "Usuario registrado",
-        "SERVER_ERROR": "",
+        "REGISTERED_USER": "This user is already registered.",
+        "SERVER_ERROR": "We had a problem, try later.",
+        "SERVER_UNREACHABLE": "We had trouble connecting.",
         "USER_NOT_EXIST": "Invalid user or password"
       }
     },

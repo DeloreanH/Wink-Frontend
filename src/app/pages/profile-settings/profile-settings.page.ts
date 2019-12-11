@@ -91,7 +91,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     this.groupArray.push(this.personalArray);
     this.groupArray.push(this.profesionalArray);
     this.grupoForm = this.formBuilder.group({
-      biografia: new FormControl( null, Validators.maxLength(250)),
+      biografia: new FormControl( null, Validators.maxLength(50)),
       0: this.publicoArray,
       1: this.generalArray,
       2: this.personalArray,

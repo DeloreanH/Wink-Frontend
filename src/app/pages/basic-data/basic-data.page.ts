@@ -12,6 +12,7 @@ import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
 import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Phone } from 'src/app/common/models/phone.model';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -43,25 +44,36 @@ export class BasicDataPage implements OnInit, OnDestroy {
   ) {
     this.user = this.userService.User();
     this.form = this.formBuilder.group({
-      firstName: new FormControl( this.user.firstName,  [Validators.required]),
+      firstName: new FormControl( this.user.firstName,  [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(30)
+      ]),
       lastName: new FormControl( this.user.lastName,  [Validators.required]),
-      email: new FormControl({
-          value: this.user.email,
-          disabled: this.DisabledEmail()
-        }, [
+      email: new FormControl(
+        this.user.email
+        , [
           Validators.required,
-          Validators.email
+          Validators.email,
+          Validators.minLength(2),
+          Validators.maxLength(30)
         ]),
-      phoneCode: new FormControl( {
-        value: this.user.phone ? this.user.phone.phoneCode : null,
-        disabled: this.DisabledPhone() },  [Validators.required]),
-      phoneNumber: new FormControl({
-        value: this.user.phone ? this.user.phone.phoneNumber : null,
-        disabled: this.DisabledPhone()}, [Validators.required]),
+      phoneCode: new FormControl(
+          this.user.phone ? this.user.phone.phoneCode : null,  [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(5)
+        ]),
+      phoneNumber: new FormControl(
+        this.user.phone ? this.user.phone.phoneNumber : null, [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(20)
+        ]),
       birthday: new FormControl( this.user.birthday, [Validators.required]),
       gender: new FormControl( this.user.gender, [Validators.required]),
       autosave: new FormControl( this.user.autosave  ? this.user.autosave : true),
-      phone: new FormControl(''),
+      phone: new FormControl(new Phone({})),
       // username: new FormControl({
       //     value: this.user.username ?  this.user.username : null,
       //     disabled: this.DisabledUsername(),
@@ -101,18 +113,21 @@ export class BasicDataPage implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.loading = true;
       try {
-        this.form.value.phone = {
-          phoneCode: this.form.value.phoneCode,
-          phoneNumber: this.form.value.phoneNumber
-        };
         console.log(this.form.value);
-        const response = await this.userService.UpdateDate(this.form.value);
-        console.log(response);
-        if (response.status === 'user updated successfully' /*&& !response.user.emptyProfile*/) {
-          this.edit = false;
-          await this.navController.navigateRoot(
-            '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
-          );
+        console.log(this.form.value.phone);
+        this.form.value.phone.phoneCode = this.form.value.phoneCode;
+        this.form.value.phone.phoneNumber = this.form.value.phoneNumber;
+        console.log(this.form.value.phone);
+        if (this.form.value.phone.phoneNumber) {
+          console.log(this.form.value);
+          const response = await this.userService.UpdateDate(this.form.value);
+          console.log(response);
+          if (response.status === 'user updated successfully' /*&& !response.user.emptyProfile*/) {
+            this.edit = false;
+            await this.navController.navigateRoot(
+              '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
+            );
+          }
         }
       } catch (err) {
         console.log('Error submit', err);

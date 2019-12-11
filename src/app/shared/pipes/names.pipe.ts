@@ -5,9 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NamesPipe implements PipeTransform {
 
-  transform(value: string, ...args: any[]): any {
+  transform(value: string, limitValue?: number): any {
+    const limit = limitValue && limitValue > 0 ? limitValue : 10;
     if (value && value.length > 0) {
-      if (value.length <= 10) {
+      if (value.length <= limit) {
         return value;
       } else {
         const values = value.split(' ');
@@ -17,13 +18,13 @@ export class NamesPipe implements PipeTransform {
           let text;
           for (text of values) {
             resp = resp + (resp.length === 0  ? '' : ' ' ) + text ;
-            if (resp.length >= 10) {
+            if (resp.length >= limit) {
               ready = true;
               break;
             }
           }
           if (ready) {
-            if (resp.length === 10) {
+            if (resp.length === limit) {
               return resp;
             } else {
               return resp.indexOf(' ') === -1 ? resp.substr(0, 9) + '...' :  resp.replace(text, '');

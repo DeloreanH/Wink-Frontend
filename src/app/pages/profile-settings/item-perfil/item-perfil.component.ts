@@ -150,12 +150,12 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             'campo1', new FormControl(this.Valor(0),
             this.value.basic ? [
               Validators.minLength(2),
-              Validators.maxLength(150),
+              Validators.maxLength(50),
             ]
             : [
               Validators.required,
               Validators.minLength(2),
-              Validators.maxLength(150)
+              Validators.maxLength(50)
             ]),
           );
           break;
@@ -164,11 +164,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             this.form.setControl(
               'campo1', new FormControl(this.Valor(0),
               this.value.basic ? [
-                Validators.email
+                Validators.email,
+                Validators.maxLength(50)
               ]
               : [
                 Validators.required,
-                Validators.email
+                Validators.email,
+                Validators.maxLength(50)
               ]),
             );
             break;
@@ -178,24 +180,24 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               'campo1', new FormControl(this.Valor(0),
               this.value.basic ? [
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]),
             );
             this.form.setControl(
               'campo2', new FormControl(this.Valor(1),
               this.value.basic ? [
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]),
             );
             break;
@@ -251,24 +253,24 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               'campo1', new FormControl(this.Valor(0),
               this.value.basic ? [
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]),
             );
             this.form.setControl(
               'campo2', new FormControl(this.Valor(1),
               this.value.basic ? [
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
-                Validators.maxLength(150),
+                Validators.maxLength(50),
               ]),
             );
             break;
@@ -401,9 +403,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  ValorChip(valor) {
+  ValorChip(value) {
     this.value.value = this.chipArray.join(',');
-    this.value.value = this.value.value + valor;
+    this.value.value = this.value.value + ',' + value;
     (this.form.controls.campo1 as FormControl).markAsTouched();
   }
 
@@ -467,6 +469,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
           return MessageErrorForms.MINIMUM;
         case 'maxlength':
           return  MessageErrorForms.MAXIMUM;
+        case 'limit' :
+          return 'limite';
       }
     } else {
       return null;

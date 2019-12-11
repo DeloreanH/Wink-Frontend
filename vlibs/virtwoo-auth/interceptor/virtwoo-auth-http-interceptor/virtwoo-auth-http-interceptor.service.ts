@@ -47,7 +47,7 @@ export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
       errorCode = error.error.error;
     }
     const message = this.getMessage(errorCode);
-    if (!message.startsWith('VIRTWOO_AUTH.MESSAGE.HTTP_RESPONSE.')) {
+    if (!message.startsWith('VIRTWOO_AUTH')) {
       this.matSnackBar.open(this.getMessage(errorCode), null, {duration: 3000, verticalPosition: 'top'});
     }
 
