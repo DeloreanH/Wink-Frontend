@@ -80,6 +80,24 @@ export class AuthService {
     }
   }
 
+  tokenException() {
+    try {
+
+      this.user.next(null);
+      this.userService.User(null);
+      this.storageService.DeleteAuthorization();
+      this.socketService.Disconnect();
+      this.navController.navigateRoot('/' + RoutesPrincipal.LOGIN);
+      this.winkService.Destroy();
+      if (this.tokenExpiration) {
+        clearTimeout(this.tokenExpiration);
+      }
+      this.tokenExpiration = null;
+    } catch (error) {
+
+    }
+  }
+
   AutoLogout(expDuration: number) {
     this.tokenExpiration = setTimeout( () => {
       this.Logout();

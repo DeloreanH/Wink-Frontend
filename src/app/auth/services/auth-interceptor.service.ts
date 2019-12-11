@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { take, exhaustMap } from 'rxjs/operators';
+import { take, exhaustMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,19 @@ export class AuthInterceptorService implements HttpInterceptor {
           const modifReq = req.clone({
             headers: new HttpHeaders().set('Authorization', 'Bearer ' + user.Token)
           });
-          return next.handle(modifReq);
+          return next.handle(modifReq).pipe(
+            catchError(errorBag => {
+                console.log(errorBag.error);
+                if (errorBag.error.error &&
+                  errorBag.error.error === 'token not found' ||
+                  errorBag.error.error === 'token is blacklisted' ||
+                  errorBag.error.error.message === 'user not found' ||
+                  errorBag.error.error.message === 'invalid token' ) {
+                  this.authService.tokenException();
+              }
+                return throwError(errorBag);
+            })
+          );
         }
       )
       );

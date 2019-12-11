@@ -38,6 +38,7 @@ import { WinkService } from './services/wink.service';
 import { ToolsModule } from '../common/tools/tools.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToursService } from './services/tours.service';
+import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 
 @NgModule({
   declarations: [],
@@ -67,7 +68,6 @@ import { ToursService } from './services/tours.service';
     Vibration,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
-
     // my providers
     LinkService,
     LocationService,
