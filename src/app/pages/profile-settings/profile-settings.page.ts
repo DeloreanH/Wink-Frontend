@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
-import { ActionSheetController, MenuController, NavController, Platform } from '@ionic/angular';
+import { ActionSheetController, MenuController, NavController, Platform, IonMenu } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../common/models/category.model';
 import { Item } from '../../common/models/item.model';
@@ -438,9 +438,9 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  CloseMenu() {
-    if (this.menu.isOpen) {
-      this.menu.close();
+  async CloseMenu() {
+    if (await this.menu.isOpen('menuSettings')) {
+      this.menu.close('menuSettings');
     }
   }
 
@@ -471,12 +471,15 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       (resp) => {
         resp.register(100,
           async () => {
-            if (this.menu.isOpen) {
+            const isOpen = await this.menu.isOpen('menuSettings');
+            if (isOpen) {
               this.menu.close();
             } else {
-              await this.navController.navigateBack(
-                [ this.urlHome]
-              );
+              if (!this.tour) {
+                await this.navController.navigateBack(
+                  [ this.urlHome]
+                );
+              }
             }
           }
         );

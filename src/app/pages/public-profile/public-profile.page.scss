@@ -16,7 +16,7 @@
 }
 
 .public-name{
-  font-size: 25px; 
+  font-size: 1.5rem;
   text-transform: capitalize;
   text-align: start;
 }
@@ -34,13 +34,13 @@
 }
 
 .text-small {
-  font-size: 15px;
+  font-size: 1rem;
   text-align: start;
 }
 
 .opt-top {
-  display: flex; 
-  justify-content: flex-end; 
+  display: flex;
+  justify-content: flex-end;
   width: 100%;
   background-color: rgba(0,0,0,0.1);
 }

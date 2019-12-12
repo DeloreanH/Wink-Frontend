@@ -1,4 +1,12 @@
 <sl-base-page class="auth">
+  <div class="ion-activatable ion-activatable-up ripple-toolbar" slot="start">
+      <fa-icon
+      [icon]="['fas', 'arrow-left']"
+      class="icono-arrow"
+      (click)="Back()"
+    ></fa-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+  </div>
   <div class="auth__content">
     <div class="auth__content__wrapper">
 
@@ -31,8 +39,11 @@
           <div class="forgot-password">
             <span
               (click)="goToLoginNormal()"
+              class="register"
             >
-            {{ 'VIRTWOO_AUTH.MESSAGE.OTHER_METHODS' | translate }}
+            <b>
+              {{ 'VIRTWOO_AUTH.MESSAGE.OTHER_METHODS' | translate }}
+            </b>
             </span>
           </div>
         </virtwoo-auth-form>

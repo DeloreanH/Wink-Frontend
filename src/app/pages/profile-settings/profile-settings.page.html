@@ -1,4 +1,4 @@
-<ion-menu side="start" contentId="main" >
+<ion-menu side="start" contentId="main" menuId="menuSettings" >
   <ion-header>
     <ion-toolbar translucent>
       <ion-title>
@@ -103,7 +103,7 @@
         </ion-title>
       </div>
 
-      <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()">
+      <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()" class="end-list">
       <ion-list >
         <ion-item>
           <fa-icon

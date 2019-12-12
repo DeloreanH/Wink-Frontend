@@ -190,6 +190,9 @@ sl-base-page.auth {
     justify-content: flex-end;
     margin-bottom: 2rem;
     color: var(--auth-color-text-secondary);
+    .register {
+      color: var(--auth-color-primary);
+    }
   }
   .register-message {
     display: flex;

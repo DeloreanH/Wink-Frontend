@@ -340,7 +340,7 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
   }
 
   Avatar() {
-    if (this.userWink && this.wink.user.avatarUrl) {
+    if (this.userWink && this.userWink.avatarUrl) {
       if (this.userWink.avatarUrl.startsWith('http')) {
         return this.userWink.avatarUrl;
       } else {

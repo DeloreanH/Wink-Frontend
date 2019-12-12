@@ -1,7 +1,8 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -11,6 +12,8 @@ import {
 import { VirtwooAuthSmsService } from '../../services';
 import { finalize } from 'rxjs/operators';
 import { VirtwooAuthPathName } from '../../virtwoo-auth-config.data';
+import { Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -19,19 +22,47 @@ import { VirtwooAuthPathName } from '../../virtwoo-auth-config.data';
   styleUrls: ['./virtwoo-phone-sms.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VirtwooPhoneSmsComponent {
+export class VirtwooPhoneSmsComponent implements OnDestroy {
 
   public step = 1;
   public loading = false;
+  private backButtonSub: Subscription;
 
   constructor(
     private slRouterService: SlRouterService,
     private virtwooAuthSmsService: VirtwooAuthSmsService,
     private changeDetectorRef: ChangeDetectorRef,
+    private platform: Platform
   ) { }
 
   public goToLoginNormal(): void {
     this.slRouterService.push(VirtwooAuthPathName.Login);
+  }
+  ionViewWillEnter() {
+    this.backButtonSub = this.platform.backButton.subscribe(
+      (resp) => {
+        resp.register(100,
+          () => {
+            this.Back();
+          }
+        );
+      }
+    );
+  }
+
+  Back() {
+    setTimeout(() => {
+      this.slRouterService.push(VirtwooAuthPathName.Login);
+    }, 500);
+  }
+
+
+  ionViewDidLeave() {
+    this.backButtonSub.unsubscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.backButtonSub.unsubscribe();
   }
 
   public sendPhoneNumber($event: { phone: string, prefix: number }): void {

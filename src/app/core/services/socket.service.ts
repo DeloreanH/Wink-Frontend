@@ -140,7 +140,7 @@ export class SocketService  {
     return new Observable(
       (subscriber) => {
         try {
-          if (this.socket  &&  this.socket.connected) {
+          if (this.socket) {
             this.socket.on(eventName,
               (data) => {
                 subscriber.next(data);
@@ -155,7 +155,7 @@ export class SocketService  {
 
   private Emit(eventName: SocketEvents, data: any) {
     try {
-      if (this.socket  && this.socket.connected) {
+      if (this.socket) {
         this.socket.emit(eventName, data);
       }
     } catch (err) {

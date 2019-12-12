@@ -329,11 +329,12 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ExitApp() {
-    console.log(this.countExit);
-    this.countExit++;
-    if (this.countExit === 2) {
-      this.countExit = 0;
-      navigator[this.exit].exitApp();
+    if (!this.tour) {
+      this.countExit++;
+      if (this.countExit === 2) {
+        this.countExit = 0;
+        navigator[this.exit].exitApp();
+      }
     }
   }
 

@@ -3,12 +3,12 @@
 }
 
 .note-wink {
-  margin-left: 4px;
+  margin-left: 0.25rem;
   padding-left: 0%;
-  padding-bottom: 3px;
+  padding-bottom: 0.2rem;
 }
 .date-wink {
-  display: flex; 
+  display: flex;
   align-items: center;
 }
 
@@ -22,21 +22,21 @@
 }
 
 .avatar-wink {
-  width: 70px; 
-  height: 70px;
-  margin-inline-start: 5px;
+  width: 4.4rem;
+  height: 4.4rem;
+  margin-inline-start: 0.3rem;
 }
 
 .label-item {
-  width: auto; 
-  margin-inline-start: 3%;
+  width: auto;
+  margin-inline-start: 1rem;
 }
 
 .item-win-badge {
   margin: 0%;
   padding: 0%;
-  width: 10px;
-  height: 10px;
+  width: 0.6rem;
+  height: 0.6rem;
   border-radius: 50%;
 }
 

@@ -154,9 +154,11 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
       (resp) => {
         resp.register(100,
           async () => {
-            await this.navController.navigateBack(
-              [ this.urlHome]
-            );
+            if (!this.tour) {
+              await this.navController.navigateBack(
+                [ this.urlHome]
+              );
+            }
           }
         );
       }

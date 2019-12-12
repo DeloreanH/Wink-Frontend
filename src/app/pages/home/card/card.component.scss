@@ -1,9 +1,40 @@
+
+@media (max-width: 400px) {
+  :host {
+    height: 14rem;
+    width: 11rem;
+  }
+}
+@media (min-width: 401px) and (max-width: 500px) {
+  :host {
+    height: 16rem;
+    width: 13rem;
+  }
+}
+@media (min-width: 501px) and (max-width: 767px) {
+  :host {
+    height: 20rem;
+    width: 15rem;
+  }
+}
+@media (min-width: 768px) and (max-width: 849px) {
+  :host {
+    height: 17rem;
+    width: 15rem;
+  }
+}
+@media (min-width: 850px) {
+  :host {
+    height: 21rem;
+    width: 15rem;
+  }
+}
 .text-name {
-  font-size: 17px; 
+  font-size: 1.1rem;
   text-transform: capitalize;
 }
 
 .size-text-status {
-  font-size: 12px;
+  font-size: 0.8rem;
 }
 

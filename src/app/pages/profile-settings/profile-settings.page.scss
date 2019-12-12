@@ -1,5 +1,5 @@
 .acordion{
-  min-height: 10px;
+  min-height: 0.6rem;
 }
 
 .item-name {
@@ -15,7 +15,7 @@
 .acordion {
   margin-top: 1%;
   margin-bottom: 1%;
-  min-height: 50px;
+  min-height: 4rem;
 }
 
 button {
@@ -24,16 +24,16 @@ button {
 
 .order {
   border: 0.9px solid rgb(192, 189, 189);
-  border-radius: 3px;
+  border-radius: 0.25rem;
 }
 
 .pad-let-10 {
-  padding-left: 10px;
+  padding-left: 0.6rem;
 }
 
 .skeleton-section {
   width: 100%;
-  height: 45px;
+  height: 3rem;
 }
 .skeleton-bio-label {
   width: 50%;
@@ -44,7 +44,8 @@ button {
   height: 50px;
 }
 
-.mat-accordion>.mat-expansion-panel-spacing:last-child {
-  margin-bottom: 3em;
+
+.end-list {
+  margin-bottom: 3rem;
 }
 

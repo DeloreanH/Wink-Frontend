@@ -3,34 +3,34 @@
   class="ion-activatable ion-activatable-up">
   <!--Icono del item-->
   <div class="icon-item-list">
-    <fa-icon 
+    <fa-icon
     *ngIf="item"
-    [icon]="[preIcono, icon]"  
+    [icon]="[preIcono, icon]"
     class="icono"></fa-icon>
   </div>
   <ion-label class="label-item">
     <div>
-          <ion-label class="padding-left-10 font-size-12" >
-            {{(itemType? itemType.description : 'Title') | translate}}
-          </ion-label>
+      <ion-label class="padding-left-10 font-size-12" >
+        {{(itemType? itemType.description : 'Title') | translate}}
+      </ion-label>
       <div class="text-margin">
         <mat-chip-list
-          *ngIf="itemType && itemType.index === indexChip" 
+          *ngIf="itemType && itemType.index === indexChip"
           class="chip-item chip-margin "
           >
           <ion-chip outline color="primary"
           *ngFor="let chip of chips">
           {{chip}}
           </ion-chip>
-          
+
         </mat-chip-list>
-    
+
         <ion-text *ngIf="itemType &&  itemType.index !== indexChip "
           class="text-margin">
           {{item? item.value : ''}}
         </ion-text>
-      </div>  
+      </div>
     </div>
-  </ion-label>  
+  </ion-label>
   <ion-ripple-effect></ion-ripple-effect>
 </ion-item>

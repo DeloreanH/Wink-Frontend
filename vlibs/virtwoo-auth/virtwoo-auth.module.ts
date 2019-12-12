@@ -46,6 +46,7 @@ import {
   VirtwooAuthFormComponent
 } from './components';
 import { IonicModule } from '@ionic/angular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const DECLARATIONS = [
   VirtwooAuthLoginComponent,
@@ -81,6 +82,7 @@ const IMPORT_MATERIAL = [
     VirtwooAuthRoutingModule,
     FindCountriesModule,
     IonicModule,
+    FontAwesomeModule,
   ],
   exports: [
     ...IMPORT_MATERIAL,

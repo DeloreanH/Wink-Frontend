@@ -69,6 +69,7 @@ export class WinkService {
             const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
             this.SetNearbyUsers((response as User[]));
             this.userService.UpdateLocation(myLocation);
+            this.Init();
             resolve(response);
           } else {
             reject({message: 'No Location'});
@@ -76,7 +77,6 @@ export class WinkService {
         } catch (err) {
           reject(err);
         }
-        this.Init();
       }
     );
   }

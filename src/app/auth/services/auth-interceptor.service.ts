@@ -26,11 +26,13 @@ export class AuthInterceptorService implements HttpInterceptor {
           return next.handle(modifReq).pipe(
             catchError(errorBag => {
                 console.log(errorBag.error);
-                if (errorBag.error.error &&
+                if (
+                  (errorBag.error.error &&
                   errorBag.error.error === 'token not found' ||
-                  errorBag.error.error === 'token is blacklisted' ||
+                  errorBag.error.error === 'token is blacklisted') ||
+                  (errorBag.error.error.message &&
                   errorBag.error.error.message === 'user not found' ||
-                  errorBag.error.error.message === 'invalid token' ) {
+                  errorBag.error.error.message === 'invalid token') ) {
                   this.authService.tokenException();
               }
                 return throwError(errorBag);

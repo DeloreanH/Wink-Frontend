@@ -1,18 +1,13 @@
-import { Component, OnInit, ViewChildren, QueryList, ViewChild, OnDestroy } from '@angular/core';
-
-import { Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { TranslateService } from '@ngx-translate/core';
-import { SlRouterService } from '@virtwoo/sl-router';
-import { VirtwooAuthPathName } from '@virtwoo/auth';
-import { AuthService } from './auth/services/auth.service';
-import { Subscription, fromEvent } from 'rxjs';
-import { Router, NavigationStart, NavigationEnd, RouterOutlet } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 import { StorageService } from './core/services/storage.service';
-import { language } from './common/constants/storage.constants';
 import { LanguageService, Language } from './core/services/language.service';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: 'app-root',
@@ -26,8 +21,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private translateService: TranslateService,
-    private slRouterService: SlRouterService,
+    private screenOrientation: ScreenOrientation,
     private router: Router,
     private storageService: StorageService,
     private languageService: LanguageService,
@@ -44,7 +38,7 @@ export class AppComponent {
       setTimeout( () => {
         this.splashScreen.hide();
     }, 600);
-
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
       this.Language();
     });
   }
