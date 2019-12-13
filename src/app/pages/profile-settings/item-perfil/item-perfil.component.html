@@ -104,6 +104,7 @@
     </ion-chip>
       
     <input 
+    
     class="native-input sc-ion-input-md sc-ion-input-ios placeholder"
     [placeholder]="MarcaAgua(0)  | translate"
     (focus)="Focus(true)"
@@ -115,6 +116,7 @@
     [matChipInputAddOnBlur]="addOnBlur"
     (matChipInputTokenEnd)="AddChip($event, chipControl)"
     (input)="ValorChip($event.target.value, chipControl)"
+    (keydown)="keydown($event)"
     >
   </mat-chip-list>
 

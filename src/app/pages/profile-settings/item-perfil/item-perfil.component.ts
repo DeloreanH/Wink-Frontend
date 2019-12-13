@@ -25,7 +25,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   @Input() ordenando;
   @Input() form: FormGroup;
   @Output() delete = new EventEmitter();
-  @Output() change = new EventEmitter();
+  @Output() changeData = new EventEmitter();
   @Input() chipInput: any;
 
 
@@ -95,26 +95,39 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if ((value || '').trim() && value.length > 2 && value.length < 13 && this.value.value.length < 31) {
       this.chipArray.push(value.trim());
       this.value.value = this.chipArray.join(',');
-      if (input) {
-        input.value = '';
-      }
+      this.Change();
     } else if (value !== '' && value.length <= 2 || value.length >= 13) {
+      this.value.value = this.chipArray.join(',');
       this.toastService.Toast('WINK.PROFILE_SETTINGS.CHIP');
     }
-    if (value && value !== '') {
-      this.Change();
+    if (input) {
+      input.value = '';
     }
+    // if (value && value !== '') {
+    //   this.Change();
+    // }
     (this.form.controls.campo1 as FormControl).markAsTouched();
   }
 
-  DeleteChip(fruit: any): void {
-    const index = this.chipArray.indexOf(fruit);
+  DeleteChip(chip: any): void {
+    const index = this.chipArray.indexOf(chip);
     if (index >= 0) {
       this.chipArray.splice(index, 1);
       this.value.value = this.chipArray.join(',');
       this.focus = true;
     }
     this.Change();
+  }
+
+  keydown(event: any) {
+    console.log(event);
+    // Allow the user's focus to escape when they're tabbing forward. Note that we don't
+    // want to do this when going backwards, because focus should go back to the first chip.
+    // if (event && event.keyCode === TAB && !hasModifierKey(event, 'shiftKey')) {
+    //   this._chipList._allowFocusEscape();
+    // }
+
+    // this._emitChipEnd(event);
   }
 
   CargarItem() {
@@ -478,7 +491,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   private Change() {
-    this.change.emit(true);
+    console.log('Change');
+    this.changeData.emit(true);
   }
 
 }
