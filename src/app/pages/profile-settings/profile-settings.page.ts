@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material';
-import { ActionSheetController, MenuController, NavController, Platform, IonMenu } from '@ionic/angular';
+import { ActionSheetController, MenuController, NavController, Platform } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../common/models/category.model';
 import { Item } from '../../common/models/item.model';
@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { RoutesPrincipal } from 'src/app/common/enums/routes/routesPrincipal.enum';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
-import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import {TranslateService} from '@ngx-translate/core';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
@@ -21,6 +20,9 @@ import { ToursService } from 'src/app/core/services/tours.service';
 import { Config } from 'src/app/common/enums/config.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { UpdateAvatarService } from 'src/app/core/services/update-avatar.service';
+import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
+import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
+import { Photo } from 'src/app/common/class/photo.class';
 
 @Component({
   selector: 'profile-settings',
@@ -67,6 +69,9 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   itemTour: boolean;
   backButtonSubs = new Subscription();
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
+  noWhiteSpace =  new NoWhiteSpace();
+
+  photo = new Photo();
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -91,7 +96,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     this.groupArray.push(this.personalArray);
     this.groupArray.push(this.profesionalArray);
     this.grupoForm = this.formBuilder.group({
-      biografia: new FormControl( null, Validators.maxLength(50)),
+      biografia: new FormControl( null, [Validators.maxLength(50), this.noWhiteSpace.noWhitespaceValidator]),
       0: this.publicoArray,
       1: this.generalArray,
       2: this.personalArray,
@@ -455,15 +460,16 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Avatar() {
-    if (this.user && this.user.avatarUrl) {
-      if (this.user.avatarUrl.startsWith('http')) {
-        return this.user.avatarUrl;
-      } else {
-        return Routes.PHOTO + this.user.avatarUrl;
-      }
-    } else {
-      return this.avatar;
-    }
+    return this.photo.URLAvatar(this.user);
+    // if (this.user && this.user.avatarUrl) {
+    //   if (this.user.avatarUrl.startsWith('http')) {
+    //     return this.user.avatarUrl;
+    //   } else {
+    //     return Routes.PHOTO + this.user.avatarUrl;
+    //   }
+    // } else {
+    //   return this.avatar;
+    // }
   }
 
   ionViewWillEnter() {
@@ -552,6 +558,34 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     if (ready) {
       this.AddItemsData();
       this.changeData = false;
+    }
+  }
+
+  MessageError(input: string) {
+    if (this.grupoForm.controls[input].errors && this.grupoForm.controls[input].touched) {
+      const obj = this.grupoForm.controls[input].errors;
+      let prop;
+      Object.keys(obj).forEach(
+        (key) => {
+          prop = key;
+        }
+      );
+      if (prop) {
+        switch (prop) {
+          case 'required':
+            return MessageErrorForms.REQUIRED;
+          case 'email':
+            return MessageErrorForms.EMAIL;
+          case 'minlength':
+            return MessageErrorForms.MINIMUM;
+          case 'maxlength':
+            return MessageErrorForms.MAXIMUM;
+          case 'pattern':
+            return MessageErrorForms.CHARACTER;
+          case 'whitespace':
+            return MessageErrorForms.WHITE_SPACE;
+        }
+      }
     }
   }
 

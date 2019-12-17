@@ -13,6 +13,8 @@ import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Phone } from 'src/app/common/models/phone.model';
+import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
+import { Photo } from 'src/app/common/class/photo.class';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -30,6 +32,8 @@ export class BasicDataPage implements OnInit, OnDestroy {
   edit = false;
   genders: { value: string, description: string}[] = [];
   backButtonSubs = new Subscription();
+  noWhiteSpace =  new NoWhiteSpace();
+  photo =  new Photo();
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -47,28 +51,37 @@ export class BasicDataPage implements OnInit, OnDestroy {
       firstName: new FormControl( this.user.firstName,  [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(30)
+        Validators.maxLength(30),
+        this.noWhiteSpace.noWhitespaceValidator
       ]),
-      lastName: new FormControl( this.user.lastName,  [Validators.required]),
+      lastName: new FormControl( this.user.lastName,  [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(30),
+        this.noWhiteSpace.noWhitespaceValidator
+      ]),
       email: new FormControl(
         this.user.email
         , [
           Validators.required,
           Validators.email,
           Validators.minLength(2),
-          Validators.maxLength(30)
+          Validators.maxLength(30),
+          this.noWhiteSpace.noWhitespaceValidator
         ]),
       phoneCode: new FormControl(
           this.user.phone ? this.user.phone.phoneCode : null,  [
           Validators.required,
           Validators.minLength(1),
-          Validators.maxLength(5)
+          Validators.maxLength(5),
+          this.noWhiteSpace.noWhitespaceValidator
         ]),
       phoneNumber: new FormControl(
         this.user.phone ? this.user.phone.phoneNumber : null, [
           Validators.required,
           Validators.minLength(1),
-          Validators.maxLength(20)
+          Validators.maxLength(20),
+          this.noWhiteSpace.noWhitespaceValidator
         ]),
       birthday: new FormControl( this.user.birthday, [Validators.required]),
       gender: new FormControl( this.user.gender, [Validators.required]),
@@ -229,15 +242,16 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
   Avatar() {
-    if (this.user && this.user.avatarUrl) {
-      if (this.user.avatarUrl.startsWith('http')) {
-        return this.user.avatarUrl;
-      } else {
-        return Routes.PHOTO + this.user.avatarUrl;
-      }
-    } else {
-      return this.avatar;
-    }
+    return this.photo.URLAvatar(this.user);
+    // if (this.user && this.user.avatarUrl) {
+    //   if (this.user.avatarUrl.startsWith('http')) {
+    //     return this.user.avatarUrl;
+    //   } else {
+    //     return Routes.PHOTO + this.user.avatarUrl;
+    //   }
+    // } else {
+    //   return this.avatar;
+    // }
   }
 
   ErrorImagen() {
@@ -264,7 +278,9 @@ export class BasicDataPage implements OnInit, OnDestroy {
           case 'maxlength':
             return MessageErrorForms.MAXIMUM;
           case 'pattern':
-              return MessageErrorForms.CHARACTER;
+            return MessageErrorForms.CHARACTER;
+          case 'whitespace':
+            return MessageErrorForms.WHITE_SPACE;
         }
       }
     }

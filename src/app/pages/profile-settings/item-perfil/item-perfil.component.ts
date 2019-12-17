@@ -7,6 +7,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MessageErrorForms } from '../../../common/enums/messageError.enum';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 
 @Component({
   selector: 'app-item-perfil',
@@ -47,6 +48,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  noWhiteSpace =  new NoWhiteSpace();
 
   constructor(
     private profilesServices: ProfilesService,
@@ -164,11 +167,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             this.value.basic ? [
               Validators.minLength(2),
               Validators.maxLength(50),
+              this.noWhiteSpace.noWhitespaceValidator
             ]
             : [
               Validators.required,
               Validators.minLength(2),
-              Validators.maxLength(50)
+              Validators.maxLength(50),
+              this.noWhiteSpace.noWhitespaceValidator
             ]),
           );
           break;
@@ -178,12 +183,14 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               'campo1', new FormControl(this.Valor(0),
               this.value.basic ? [
                 Validators.email,
-                Validators.maxLength(50)
+                Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
                 Validators.email,
-                Validators.maxLength(50)
+                Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -194,11 +201,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             this.form.setControl(
@@ -206,11 +215,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -219,11 +230,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             this.form.setControl(
               'campo1', new FormControl(this.Valor(0),
               this.value.basic ? [
-                Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/)
+                Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
-                Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/)
+                Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -231,9 +244,12 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             this.type = 'text';
             this.form.setControl(
               'campo1', new FormControl(this.Valor(0),
-              this.value.basic ? [] :
+              this.value.basic ? [
+                this.noWhiteSpace.noWhitespaceValidator
+              ] :
               [
                 Validators.required,
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -241,9 +257,12 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             this.type = 'text';
             this.form.setControl(
               'campo1', new FormControl(this.Valor(0),
-              this.value.basic ? [] :
+              this.value.basic ? [
+                this.noWhiteSpace.noWhitespaceValidator
+              ] :
               [
                 Validators.required,
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -252,11 +271,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
             this.form.setControl(
               'campo1', new FormControl(this.Valor(0),
               this.value.basic ? [
-                Validators.minLength(3)
+                Validators.minLength(3),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
-                Validators.minLength(3)
+                Validators.minLength(3),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -267,11 +288,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             this.form.setControl(
@@ -279,11 +302,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -294,11 +319,13 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
               this.value.basic ? [
                 Validators.minLength(3),
                 Validators.maxLength(30),
+                this.noWhiteSpace.noWhitespaceValidator
               ]
               : [
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(30),
+                this.noWhiteSpace.noWhitespaceValidator
               ]),
             );
             break;
@@ -482,8 +509,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
           return MessageErrorForms.MINIMUM;
         case 'maxlength':
           return  MessageErrorForms.MAXIMUM;
-        case 'limit' :
-          return 'limite';
+        case 'whitespace':
+          return MessageErrorForms.WHITE_SPACE;
       }
     } else {
       return null;

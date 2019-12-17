@@ -113,10 +113,13 @@
           <ion-label position="floating" class="pad-let-10">
             {{ 'WINK.ITEM_TYPES.BIOGRAPHY' | translate}}
           </ion-label>
-          <ion-textarea maxlength="250"
+          <ion-textarea maxlength="50"
           formControlName="biografia"
           (ionInput)="ChangeData()"
           ></ion-textarea>
+          <ion-text color="danger">
+            {{MessageError('biografia') | translate}}
+          </ion-text>
         </ion-item>
         <div *ngIf="tour" tourAnchor="sections"></div>
         <mat-accordion multi="true" cdkDropListGroup

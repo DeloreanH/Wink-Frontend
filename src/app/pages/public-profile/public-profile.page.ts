@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { AlertButtonType } from 'src/app/common/alert/base';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
+import { Photo } from 'src/app/common/class/photo.class';
 
 @Component({
   selector: 'public-profile',
@@ -45,6 +46,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   private loadB = new BehaviorSubject(false);
   load$ = this.loadB.asObservable();
   activateView: boolean;
+  photo = new Photo();
 
   constructor(
     private route: ActivatedRoute,
@@ -338,16 +340,17 @@ ErrorImagen() {
     this.userWink.avatarUrl = this.avatar;
   }
 
-Avatar() {
-    if (this.userWink && this.userWink.avatarUrl) {
-      if (this.userWink.avatarUrl.startsWith('http')) {
-        return this.userWink.avatarUrl;
-      } else {
-        return Routes.PHOTO + this.userWink.avatarUrl;
-      }
-    } else {
-      return this.avatar;
-    }
+  Avatar() {
+    return this.photo.URLAvatar(this.userWink);
+    // if (this.userWink && this.userWink.avatarUrl) {
+    //   if (this.userWink.avatarUrl.startsWith('http')) {
+    //     return this.userWink.avatarUrl;
+    //   } else {
+    //     return Routes.PHOTO + this.userWink.avatarUrl;
+    //   }
+    // } else {
+    //   return this.avatar;
+    // }
   }
 
   Sended(): boolean {

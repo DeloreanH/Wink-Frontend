@@ -230,7 +230,8 @@
         "EMAIL":	"Invalid email.",
         "URL":	"Invalid URL.",
         "MINIMUM":	"Does not meet the minimum characters.",
-        "CHARACTER":	"Character not allowed."
+        "CHARACTER":	"Character not allowed.",
+        "WHITE_SPACE": "Please enter valid data."
       }
     },
     "DIALOGUES": {

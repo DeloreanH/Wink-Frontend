@@ -23,6 +23,7 @@ import { TourService } from 'ngx-tour-ngx-popper';
 import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { SocketService, SocketEventsListen } from 'src/app/core/services/socket.service';
+import { Photo } from 'src/app/common/class/photo.class';
 
 @Component({
   selector: 'app-private-profiles',
@@ -48,6 +49,8 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
   backButtonSubs = new Subscription();
   updatedUserSubs = new Subscription();
   updatedAvatarSubs = new Subscription();
+
+  photo = new Photo();
 
   constructor(
     private route: ActivatedRoute,
@@ -340,15 +343,16 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
   }
 
   Avatar() {
-    if (this.userWink && this.userWink.avatarUrl) {
-      if (this.userWink.avatarUrl.startsWith('http')) {
-        return this.userWink.avatarUrl;
-      } else {
-        return Routes.PHOTO + this.userWink.avatarUrl;
-      }
-    } else {
-      return this.avatar;
-    }
+    return this.photo.URLAvatar(this.userWink);
+    // if (this.userWink && this.userWink.avatarUrl) {
+    //   if (this.userWink.avatarUrl.startsWith('http')) {
+    //     return this.userWink.avatarUrl;
+    //   } else {
+    //     return Routes.PHOTO + this.userWink.avatarUrl;
+    //   }
+    // } else {
+    //   return this.avatar;
+    // }
   }
 
   ionViewWillEnter() {

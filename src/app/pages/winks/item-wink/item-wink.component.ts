@@ -10,6 +10,7 @@ import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { User } from 'src/app/common/models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Photo } from 'src/app/common/class/photo.class';
 
 @Component({
   selector: 'item-wink',
@@ -27,6 +28,7 @@ export class ItemWinkComponent implements OnInit {
   requestHttp = true;
   private load$ = new BehaviorSubject(false);
   load = this.load$.asObservable();
+  photo = new Photo();
 
   constructor(
     private winkService: WinkService,
@@ -121,15 +123,16 @@ export class ItemWinkComponent implements OnInit {
   }
 
   Avatar() {
-    if (this.wink.user && this.wink.user.avatarUrl) {
-      if (this.wink.user.avatarUrl.startsWith('http')) {
-        return this.wink.user.avatarUrl;
-      } else {
-        return Routes.PHOTO + this.wink.user.avatarUrl;
-      }
-    } else {
-      return this.avatar;
-    }
+    return this.photo.URLAvatar(this.wink.user);
+    // if (this.wink.user && this.wink.user.avatarUrl) {
+    //   if (this.wink.user.avatarUrl.startsWith('http')) {
+    //     return this.wink.user.avatarUrl;
+    //   } else {
+    //     return Routes.PHOTO + this.wink.user.avatarUrl;
+    //   }
+    // } else {
+    //   return this.avatar;
+    // }
   }
 
   Open() {
