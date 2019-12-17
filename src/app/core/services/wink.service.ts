@@ -189,9 +189,9 @@ export class WinkService {
             reject({message: 'No wink'});
           }
           const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
-          this.DeleteWinkUser(wink);
           wink.watched = true;
           if (wink.watched) {
+            this.DeleteWinkUser(wink);
             this.socketService.DeleteWink(
               wink.receiver_id === this.idUser ? wink.sender_id : wink.receiver_id,
               wink
@@ -517,7 +517,7 @@ export class WinkService {
       return;
     }
     wink.user = await this.GetUserWink(wink);
-    if (wink.user && !wink.watched) {
+    if (wink.user) {
       wink.user.newWink = !wink.watched;
       this.WatchWink(wink);
     }
