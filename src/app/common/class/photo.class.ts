@@ -4,6 +4,7 @@ import { Config } from '../enums/config.enum';
 
 export class Photo {
 
+  imgError = '/assets/img/no-img.jpg';
   URLAvatar(user: User): string {
     if (user && user.avatarUrl) {
       if (user.avatarUrl.startsWith('http')) {
@@ -12,7 +13,7 @@ export class Photo {
         return Routes.PHOTO + user.avatarUrl;
       }
     } else {
-      return Config.AVATAR;
+      return this.imgError;
     }
   }
 }
