@@ -8,6 +8,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { MessageErrorForms } from '../../../common/enums/messageError.enum';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
+import { Buttons } from 'src/app/common/enums/buttons.enum';
 
 @Component({
   selector: 'app-item-perfil',
@@ -23,14 +24,14 @@ import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 })
 export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
 
-  @Input() ordenando;
+  @Input() order;
   @Input() form: FormGroup;
   @Output() delete = new EventEmitter();
   @Output() changeData = new EventEmitter();
   @Input() chipInput: any;
 
 
-  preIcono: string;
+  preIcon: string;
   icon: string;
   value: Item;
   itemType: ItemType = null;
@@ -39,17 +40,20 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   focus = false;
   dataLoad = false;
 
-  tiposItems: ItemType[] = [];
+  itemsType: ItemType[] = [];
   unique: string[] = [];
   chipArray: string[] = [];
 
-  visible = true;
+  visibility = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   noWhiteSpace =  new NoWhiteSpace();
+
+  buttonConfirm: string = Buttons.CONFIRM;
+  buttonCancel: string = Buttons.CANCEL;
 
   constructor(
     private profilesServices: ProfilesService,
@@ -74,7 +78,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
       this.form.setControl(
         'selector', new FormControl(null, Validators.required),
       );
-      this.CargarItem();
+      this.LoadItem();
     } else {
       this.value = null;
     }
@@ -96,7 +100,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     const input = event.input;
     const value = event.value;
     if ((value || '').trim() && value.length > 2 && value.length < 13 && this.value.value.length < 31) {
-      this.chipArray.push(value.trim());
+      this.chipArray.push(this.noWhiteSpace.RemoveWhiteSpace(value));
       this.value.value = this.chipArray.join(',');
       this.Change();
     } else if (value !== '' && value.length <= 2 || value.length >= 13) {
@@ -106,9 +110,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     if (input) {
       input.value = '';
     }
-    // if (value && value !== '') {
-    //   this.Change();
-    // }
     (this.form.controls.campo1 as FormControl).markAsTouched();
   }
 
@@ -122,29 +123,31 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.Change();
   }
 
-  keydown(event: any) {
-    console.log(event);
-    // Allow the user's focus to escape when they're tabbing forward. Note that we don't
-    // want to do this when going backwards, because focus should go back to the first chip.
-    // if (event && event.keyCode === TAB && !hasModifierKey(event, 'shiftKey')) {
-    //   this._chipList._allowFocusEscape();
-    // }
-
-    // this._emitChipEnd(event);
-  }
-
-  CargarItem() {
-    if (this.value.value === '' || this.value.value) {
-      this.BuscarTItem();
-      if (this.itemType && !this.itemType.repeat) {
-        this.AggUnico();
+  KeyDown(event: any, inputValue: any) {
+    if (event && event.keyCode === COMMA) {
+      // this._chipList._allowFocusEscape();
+      inputValue.value = inputValue.value.replace(',', '', 'gi');
+      if (inputValue.value.indexOf(',') === -1) {
+        this.AddChip({
+          input: inputValue,
+          value: inputValue.value,
+        });
       }
-    } else {
-      this.BuscarTItems(this.value.category);
     }
   }
 
-  CargarChips() {
+  LoadItem() {
+    if (this.value.value === '' || this.value.value) {
+      this.SearchItemType();
+      if (this.itemType && !this.itemType.repeat) {
+        this.AddUnique();
+      }
+    } else {
+      this.SearchItemsType(this.value.category);
+    }
+  }
+
+  LoadChips() {
     if (this.itemType && this.itemType.index === 8 && this.value.value !== '') {
       const valores = this.value.value.split(',');
       for (const valor of valores) {
@@ -154,7 +157,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  AggCampoForm() {
+  AddInputForm() {
     this.form.removeControl('selector');
     this.form.removeControl('campo1');
     this.form.removeControl('campo2');
@@ -163,169 +166,169 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
         case 0:
           this.type = 'text';
           this.form.setControl(
-            'campo1', new FormControl(this.Valor(0),
+            'campo1', new FormControl(this.Value(0),
             this.value.basic ? [
               Validators.minLength(2),
               Validators.maxLength(50),
-              this.noWhiteSpace.noWhitespaceValidator
+              this.noWhiteSpace.Validator
             ]
             : [
               Validators.required,
               Validators.minLength(2),
               Validators.maxLength(50),
-              this.noWhiteSpace.noWhitespaceValidator
+              this.noWhiteSpace.Validator
             ]),
           );
           break;
         case 1:
             this.type = 'email';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
                 Validators.email,
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.email,
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
         case 2:
             this.type = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             this.form.setControl(
-              'campo2', new FormControl(this.Valor(1),
+              'campo2', new FormControl(this.Value(1),
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
         case 3:
             this.type = 'url';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
                 Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.pattern(/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
         case 4:
             this.type = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ] :
               [
                 Validators.required,
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
         case 5:
             this.type = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ] :
               [
                 Validators.required,
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
         case 6:
             this.type = 'number';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
                 Validators.minLength(3),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.minLength(3),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
         case 7:
             this.type = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             this.form.setControl(
-              'campo2', new FormControl(this.Valor(1),
+              'campo2', new FormControl(this.Value(1),
               this.value.basic ? [
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.minLength(2),
                 Validators.maxLength(50),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
           case 8:
             this.type = 'text';
             this.form.setControl(
-              'campo1', new FormControl(this.Valor(0),
+              'campo1', new FormControl(this.Value(0),
               this.value.basic ? [
                 Validators.minLength(3),
                 Validators.maxLength(30),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]
               : [
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(30),
-                this.noWhiteSpace.noWhitespaceValidator
+                this.noWhiteSpace.Validator
               ]),
             );
             break;
@@ -338,78 +341,78 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     this.dataLoad = true;
   }
 
-  async BuscarTItem() {
+  async SearchItemType() {
     try {
       if (this.value) {
         this.itemType = await this.profilesServices.SearchItemType(this.value.itemtype);
         if (this.itemType) {
-          this.AggCampoForm();
-          this.BuscarTItems(this.itemType.category);
-          this.CargarChips();
+          this.AddInputForm();
+          this.SearchItemsType(this.itemType.category);
+          this.LoadChips();
         }
       }
-      this.CargarIcono();
+      this.LoadIcon();
     } catch (err) {
-      console.log('Error BuscarTItem', err.message);
+      console.log('Error SearchItemType', err.message);
     }
   }
 
-  async BuscarTItems(idCategoria: string) {
+  async SearchItemsType(idCategory: string) {
     try {
-      if (idCategoria) {
-        this.tiposItems = await this.profilesServices.SearchItemTypeCategoryName(idCategoria);
+      if (idCategory) {
+        this.itemsType = await this.profilesServices.SearchItemTypeCategoryName(idCategory);
       }
     } catch (err) {
-      console.log('Error BuscarTItems', err.message);
+      console.log('Error SearchItemsType', err.message);
     }
   }
 
-  SelecionarTipoItem(event: ItemType) {
+  SelectItemType(event: ItemType) {
     this.itemType = event;
     if (!event.repeat) {
-      this.AggUnico();
+      this.AddUnique();
     }
     this.value.itemtype =  event.name;
     this.value.value  = '';
-    this.CargarIcono();
-    this.AggCampoForm();
+    this.LoadIcon();
+    this.AddInputForm();
     this.Change();
   }
 
-  CargarIcono() {
+  LoadIcon() {
     if (this.itemType) {
-      const valores = this.itemType.icon.split(' ');
-      this.preIcono = valores[0];
-      this.icon = valores[1];
+      const values = this.itemType.icon.split(' ');
+      this.preIcon = values[0];
+      this.icon = values[1];
     } else {
-      this.preIcono = 'far';
+      this.preIcon = 'far';
       this.icon = 'smile-wink';
     }
   }
 
-  Eliminar() {
+  Delete() {
     this.Change();
-    this.EliminarUnico();
+    this.DeleteUnique();
     this.delete.emit(this.value);
   }
 
-  FechaActual() {
+  CurrentDate() {
     return new Date();
   }
 
-  MarcaAgua(campo: number) {
+  Watermark(input: number) {
     switch (this.itemType.index) {
       case 2:
-        return campo === 0 ? 'Puesto' : 'Empresa';
+        return input === 0 ? 'WINK.PROFILE_SETTINGS.OPTIONS.POSITION' : 'WINK.PROFILE_SETTINGS.OPTIONS.COMPANY';
       case 7:
-        return campo === 0 ? 'Título' : 'Valor';
+        return input === 0 ? 'WINK.PROFILE_SETTINGS.OPTIONS.TITLE' : 'WINK.PROFILE_SETTINGS.OPTIONS.VALUE';
       default:
         return this.itemType.description;
     }
   }
 
-  Valor(campo: number): string {
-    switch (campo) {
+  Value(input: number): string {
+    switch (input) {
       case 0:
         return this.value.value;
       case 1:
@@ -417,17 +420,17 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  MostrarSelector() {
+  ShowSelector() {
     if (!this.value.basic) {
-      this.EliminarUnico();
+      this.DeleteUnique();
       this.itemType = null;
       this.onChange(this.value);
-      this.AggCampoForm();
+      this.AddInputForm();
       this.Change();
     }
   }
 
-  onInput(value: string, campo: number) {
+  OnInput(value: string, campo: number) {
     switch (campo) {
       case 0:
         this.value.value = value;
@@ -443,23 +446,23 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  ValorChip(value) {
+  ValueChip(value) {
     this.value.value = this.chipArray.join(',');
     this.value.value = this.value.value + ',' + value;
     (this.form.controls.campo1 as FormControl).markAsTouched();
   }
 
-  Unicos(tipoItem: ItemType): boolean {
+  Unique(tipoItem: ItemType): boolean {
     return this.unique.indexOf(tipoItem._id) === -1 ? false : true;
   }
 
-  AggUnico() {
+  AddUnique() {
     if (this.unique.indexOf(this.itemType._id) === -1) {
       this.unique.push(this.itemType._id);
     }
   }
 
-  EliminarUnico() {
+  DeleteUnique() {
     if (this.itemType) {
       const index = this.unique.indexOf(this.itemType._id);
       if (index !== -1) {
@@ -468,8 +471,8 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  Focus(valor: boolean) {
-    this.focus = valor;
+  Focus(value: boolean) {
+    this.focus = value;
   }
 
   ErrorMessage() {
@@ -518,7 +521,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   }
 
   private Change() {
-    console.log('Change');
     this.changeData.emit(true);
   }
 

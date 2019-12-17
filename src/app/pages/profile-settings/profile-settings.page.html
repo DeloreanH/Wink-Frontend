@@ -153,7 +153,7 @@
                 <app-item-perfil
                   [form]="itemPublico"
                   formControlName="item"
-                  [ordenando]="order"
+                  [order]="order"
                   (delete)="DeleteItem(publicoForm, i)"
                   (changeData)="ChangeData()"
                   >
@@ -191,7 +191,7 @@
                 <app-item-perfil
                 [form]="itemGeneral"
                 formControlName="item"
-                [ordenando]="order"
+                [order]="order"
                 (delete)="DeleteItem(generalForm, i)"
                 (changeData)="ChangeData()"
                 >
@@ -228,7 +228,7 @@
               <app-item-perfil
               [form]="itemPersonal"
               formControlName="item"
-              [ordenando]="order"
+              [order]="order"
               (delete)="DeleteItem(personalForm, i)"
               (changeData)="ChangeData()"
               >
@@ -265,7 +265,7 @@
               <app-item-perfil
               [form]="itemProfesional"
               formControlName="item"
-              [ordenando]="order"
+              [order]="order"
               (delete)="DeleteItem(profesionalForm, i)"
               (changeData)="ChangeData()"
               >

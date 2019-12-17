@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
-import { TranslateService } from '@ngx-translate/core';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { ItemWinkComponent } from './item-wink/item-wink.component';
@@ -32,7 +31,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   noHistorical = Config.NO_RECORD;
   noRequests = Config.NO_REQUESTS;
 
-  tour = true;
+  tour = false;
   tourSubscription = new Subscription();
   stepShowSubs = new Subscription();
 
@@ -83,6 +82,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   ValidateTour() {
     if (this.toursService.ValidateTour(PagesName.WINKS)) {
+      this.tour = true;
       this.tourService.initialize(this.toursService.tourWinks);
       this.record = [];
       this.requests = [];

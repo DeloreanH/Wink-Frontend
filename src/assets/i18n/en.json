@@ -105,7 +105,12 @@
       "OPTIONS": {
         "SECTION": "Select a section",
         "CATEGORY": "Select a category",
-        "SELECT_ITEMS": "Select an option"
+        "SELECT_ITEMS": "Select an option",
+        "COMPANY": "Company",
+        "POSITION": "Position",
+        "TITLE": "Title",
+        "VALUE": "Value"
+
       },
       "CHIP": "You can only add between 3 to 12 characters per word.",
       "SELECT_AVATAR": "Select an option."
@@ -155,7 +160,8 @@
       "NEXT2": "Next",
       "SEE": "See",
       "CAMERA": "Camera",
-      "GALLERY": "Gallery"
+      "GALLERY": "Gallery",
+      "CONFIRM": "Confirm"
     },
     "CATEGORY": {
       "CONTACT":	"Contact",
@@ -295,6 +301,16 @@
       "LOGOUT": {
         "TITLE": "Logout",
         "MESSAGE": "Are you sure?"
+      }
+    },
+    "NOTIFICATION":{
+      "TITLE": {
+        "NEW": "New Request",
+        "MULTIPLE": "New Request"
+      },
+      "MESSAGE": {
+        "NEW": "{{ userName}} send you a wink.",
+        "MULTIPLE": "You have {{ count }} wink request."
       }
     }
   }

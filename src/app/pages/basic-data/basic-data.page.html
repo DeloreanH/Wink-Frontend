@@ -16,7 +16,7 @@
 <ion-content  class="ion-padding">
   <div *ngIf="loading">
     <div class="contenedorAvatar" >
-      <ion-avatar class="avatar-profile"> 
+      <ion-avatar class="avatar-profile">
         <ion-skeleton-text animated></ion-skeleton-text>
       </ion-avatar>
     </div>
@@ -93,8 +93,8 @@
     </ion-item>
     <ion-skeleton-text animated class="skeleton-button"></ion-skeleton-text>
     <ion-skeleton-text animated class="skeleton-button"></ion-skeleton-text>
-    
-     
+
+
   </div>
   <div *ngIf="!loading">
     <form
@@ -182,7 +182,6 @@
           <ion-input
             formControlName="email"
             type="email"
-            [disabled]="DisabledEmail()"
           >
           </ion-input>
         </ion-item>
@@ -203,7 +202,6 @@
               <ion-input
                 type="number"
                 formControlName="phoneCode"
-                [disabled]="DisabledPhone()"
               >
               </ion-input>
             </ion-item>
@@ -219,7 +217,6 @@
               <ion-input
                 type="number"
                 formControlName="phoneNumber"
-                [disabled]="DisabledPhone()"
               >
               </ion-input>
             </ion-item>

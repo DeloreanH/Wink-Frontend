@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../common/models/user.model';
 import { Subscription, BehaviorSubject } from 'rxjs';
@@ -20,7 +20,7 @@ import { Photo } from 'src/app/common/class/photo.class';
   templateUrl: './basic-data.page.html',
   styleUrls: ['./basic-data.page.scss'],
 })
-export class BasicDataPage implements OnInit, OnDestroy {
+export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
 
   avatar: string = Config.AVATAR;
   user: User;
@@ -47,18 +47,33 @@ export class BasicDataPage implements OnInit, OnDestroy {
     private translateService: TranslateService,
   ) {
     this.user = this.userService.User();
+    this.LoadForm();
+    this.genders = this.userService.genders;
+   }
+
+  ngOnInit() {
+    this.Subscriptions();
+    this.RemoveWhiteSpace();
+  }
+
+  ngAfterViewInit(): void {
+    this.DisabledEmail();
+    this.DisabledPhone();
+  }
+
+  private LoadForm() {
     this.form = this.formBuilder.group({
       firstName: new FormControl( this.user.firstName,  [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(30),
-        this.noWhiteSpace.noWhitespaceValidator
+        this.noWhiteSpace.Validator
       ]),
       lastName: new FormControl( this.user.lastName,  [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(30),
-        this.noWhiteSpace.noWhitespaceValidator
+        this.noWhiteSpace.Validator
       ]),
       email: new FormControl(
         this.user.email
@@ -67,21 +82,21 @@ export class BasicDataPage implements OnInit, OnDestroy {
           Validators.email,
           Validators.minLength(2),
           Validators.maxLength(30),
-          this.noWhiteSpace.noWhitespaceValidator
+          this.noWhiteSpace.Validator
         ]),
       phoneCode: new FormControl(
           this.user.phone ? this.user.phone.phoneCode : null,  [
           Validators.required,
           Validators.minLength(1),
           Validators.maxLength(5),
-          this.noWhiteSpace.noWhitespaceValidator
+          this.noWhiteSpace.Validator
         ]),
       phoneNumber: new FormControl(
         this.user.phone ? this.user.phone.phoneNumber : null, [
           Validators.required,
           Validators.minLength(1),
           Validators.maxLength(20),
-          this.noWhiteSpace.noWhitespaceValidator
+          this.noWhiteSpace.Validator
         ]),
       birthday: new FormControl( this.user.birthday, [Validators.required]),
       gender: new FormControl( this.user.gender, [Validators.required]),
@@ -97,11 +112,6 @@ export class BasicDataPage implements OnInit, OnDestroy {
       //     Validators.pattern(/^[a-zA-Z0-9_s]+$/)
       //   ]),
     });
-    this.genders = this.userService.genders;
-   }
-
-  ngOnInit() {
-    this.Subscriptions();
   }
 
   private Subscriptions() {
@@ -123,18 +133,21 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
+    console.log(this.form);
     if (this.form.valid) {
       this.loading = true;
       try {
-        console.log(this.form.value);
-        console.log(this.form.value.phone);
-        this.form.value.phone.phoneCode = this.form.value.phoneCode;
-        this.form.value.phone.phoneNumber = this.form.value.phoneNumber;
-        console.log(this.form.value.phone);
-        if (this.form.value.phone.phoneNumber) {
-          console.log(this.form.value);
+        await this.RemoveWhiteSpace();
+        console.log('ENTROOO', this.form.get('phoneCode').disabled);
+        if (this.form.get('phoneCode').disabled) {
+          this.form.removeControl('phone');
+        } else {
+          this.form.value.phone.phoneCode = this.form.value.phoneCode;
+          this.form.value.phone.phoneNumber = this.form.value.phoneNumber;
+        }
+        if (this.form.value.phone || this.form.get('phoneCode').disabled) {
+          console.log(this.form);
           const response = await this.userService.UpdateDate(this.form.value);
-          console.log(response);
           if (response.status === 'user updated successfully' /*&& !response.user.emptyProfile*/) {
             this.edit = false;
             await this.navController.navigateRoot(
@@ -227,31 +240,27 @@ export class BasicDataPage implements OnInit, OnDestroy {
   }
 
 
-  private DisabledEmail(): boolean {
-    return (this.user.emptyProfile && this.user.email !== '' || !this.user.emptyProfile) ? true : false;
+  private DisabledEmail() {
+    if (this.user.emptyProfile && this.user.email !== '' || !this.user.emptyProfile) {
+      this.form.get('email').disable({onlySelf: true});
+    }
   }
 
-  private DisabledUsername(): boolean {
-    return (this.user.emptyProfile && this.user.username !== '' || !this.user.emptyProfile) ? true : false;
+  private DisabledUsername() {
+    if (this.user.emptyProfile && this.user.username !== '' || !this.user.emptyProfile) {
+      this.form.get('username').disable();
+    }
   }
 
-  private DisabledPhone(): boolean {
-    return (
-      this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber || !this.user.emptyProfile)
-      ? true : false;
+  private DisabledPhone() {
+    if (this.user.emptyProfile && this.user.phone && this.user.phone.phoneCode && this.user.phone.phoneNumber || !this.user.emptyProfile) {
+      this.form.get('phoneCode').disable({onlySelf: true});
+      this.form.get('phoneNumber').disable({onlySelf: true});
+    }
   }
 
   Avatar() {
     return this.photo.URLAvatar(this.user);
-    // if (this.user && this.user.avatarUrl) {
-    //   if (this.user.avatarUrl.startsWith('http')) {
-    //     return this.user.avatarUrl;
-    //   } else {
-    //     return Routes.PHOTO + this.user.avatarUrl;
-    //   }
-    // } else {
-    //   return this.avatar;
-    // }
   }
 
   ErrorImagen() {
@@ -284,6 +293,15 @@ export class BasicDataPage implements OnInit, OnDestroy {
         }
       }
     }
+  }
+  async RemoveWhiteSpace() {
+    Object.keys(this.form.value).forEach(
+      (key) => {
+        if (key !== 'autosave' && key !== 'phoneCode' && key !== 'phoneNumber' && key !== 'phone') {
+          this.form.value[key] = this.noWhiteSpace.RemoveWhiteSpace(this.form.value[key]);
+        }
+      }
+    );
   }
 
   ionViewWillEnter() {

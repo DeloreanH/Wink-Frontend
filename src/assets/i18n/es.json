@@ -111,7 +111,11 @@
       "OPTIONS": {
         "SECTION": "Seleccione una sección",
         "CATEGORY": "Seleccione una categoría",
-        "SELECT_ITEMS": "Seleccione una opción"
+        "SELECT_ITEMS": "Seleccione una opción",
+        "COMPANY": "Empresa",
+        "POSITION": "Cargo",
+        "TITLE": "Título",
+        "VALUE": "Valor"
       },
       "CHIP": "Solo puedes agregar entre 3 a 12 caracteres por palabra.",
       "SELECT_AVATAR": "Seleccione una opción."
@@ -161,7 +165,8 @@
       "NEXT2": "Sig",
       "SEE": "Ver",
       "CAMERA": "Cámara",
-      "GALLERY": "Galería"
+      "GALLERY": "Galería",
+      "CONFIRM": "Confirmar"
     },
     "CATEGORY": {
       "CONTACT":	"Contacto",
@@ -301,6 +306,16 @@
       "LOGOUT": {
         "TITLE": "Cerrar sesión",
         "MESSAGE": "¿Estás seguro?"
+      }
+    },
+    "NOTIFICATION":{
+      "TITLE": {
+        "NEW": "Nueva solicitud",
+        "MULTIPLE": "Nuevas solicitudes"
+      },
+      "MESSAGE": {
+        "NEW": "{{ userName }} te envio un wink.",
+        "MULTIPLE": "Tienes {{ count }} solicitudes wink pendientes."
       }
     }
   }

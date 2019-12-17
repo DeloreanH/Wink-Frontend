@@ -21,7 +21,8 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { Globalization } from '@ionic-native/globalization/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 
 import { AuthModule } from '../auth/auth.module';
 import { AuthInterceptorService } from '../auth/services/auth-interceptor.service';
@@ -65,6 +66,8 @@ import { ToursService } from './services/tours.service';
     Contacts,
     Globalization,
     ScreenOrientation,
+    LocalNotifications,
+    BackgroundMode,
     Vibration,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

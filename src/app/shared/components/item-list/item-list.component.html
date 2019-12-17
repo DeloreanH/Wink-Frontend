@@ -8,7 +8,7 @@
     [icon]="[preIcono, icon]"
     class="icono"></fa-icon>
   </div>
-  <ion-label class="label-item">
+  <ion-label class="label-item" >
     <div>
       <ion-label class="padding-left-10 font-size-12" >
         {{(itemType? itemType.description : 'Title') | translate}}
@@ -26,7 +26,7 @@
         </mat-chip-list>
 
         <ion-text *ngIf="itemType &&  itemType.index !== indexChip "
-          class="text-margin">
+          class="text-margin ion-text-wrap">
           {{item? item.value : ''}}
         </ion-text>
       </div>

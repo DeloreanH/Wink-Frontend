@@ -26,8 +26,6 @@ export class AppComponent {
     private storageService: StorageService,
     private languageService: LanguageService,
   ) {
-    // this.translateService.setDefaultLang('en');
-    // this.translateService.use('es');
     this.initializeApp();
   }
 
@@ -38,7 +36,6 @@ export class AppComponent {
       setTimeout( () => {
         this.splashScreen.hide();
     }, 600);
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
       this.Language();
     });
   }
@@ -46,35 +43,22 @@ export class AppComponent {
   private Language() {
     if (this.platform.is('mobile')) {
       this.languageService.Init();
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
     } else {
       const lang = this.storageService.apiLanguage;
       if (lang) {
         this.languageService.DefaultLanguage(lang);
-        // if (lang === 'es') {
-        //   this.translateService.setDefaultLang('en');
-        // } else {
-        //   this.translateService.setDefaultLang('es');
-        // }
-        // this.translateService.use(lang);
       } else {
         this.languageService.DefaultLanguage(Language.EN);
-        // this.translateService.setDefaultLang('en');
-        // this.translateService.use('es');
-        // StorageService.SetItem(language, 'es');
       }
     }
   }
 
   private checkUser(): void {
     const token = this.storageService.apiAuthorization;
-
     if (token) {
-      // this.slRouterService.setRoot(RoutesName.Home, true);
-      // this.slRouterService.setRoot(RoutesPrincipal.APP, true);
       this.router.navigate(['/' + RoutesPrincipal.APP]);
     } else {
-      // this.slRouterService.setRoot(RoutesName.ConfigurarPerfil, true);
-      // this.slRouterService.setRoot(VirtwooAuthPathName.Login, true);
       this.router.navigate(['/' + RoutesPrincipal.LOGIN]);
     }
   }

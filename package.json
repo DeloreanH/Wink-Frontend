@@ -30,6 +30,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@ionic-native/android-permissions": "^5.16.0",
+    "@ionic-native/background-mode": "^5.18.0",
     "@ionic-native/camera": "^5.15.1",
     "@ionic-native/contacts": "^5.16.0",
     "@ionic-native/core": "^5.0.0",
@@ -39,6 +40,7 @@
     "@ionic-native/globalization": "^5.17.1",
     "@ionic-native/in-app-browser": "^5.15.0",
     "@ionic-native/ionic-webview": "^5.15.1",
+    "@ionic-native/local-notifications": "^5.18.0",
     "@ionic-native/location-accuracy": "^5.16.0",
     "@ionic-native/open-native-settings": "^5.15.1",
     "@ionic-native/screen-orientation": "^5.18.0",
@@ -145,7 +147,9 @@
       },
       "cordova-plugin-globalization": {},
       "cordova-plugin-vibration": {},
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "cordova-plugin-background-mode": {},
+      "cordova-plugin-local-notification": {}
     },
     "platforms": [
       "android"

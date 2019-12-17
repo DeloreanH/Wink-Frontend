@@ -12,6 +12,8 @@ import { SongsService } from 'src/app/core/services/songs.service';
 import { Platform, NavController } from '@ionic/angular';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 @Component({
@@ -30,6 +32,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   url: string;
   idUser: string;
   idUserProfile: string;
+  notificationSubs: Subscription;
 
   tour = true;
 
@@ -50,6 +53,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: ToastService,
     private navController: NavController,
     private translateService: TranslateService,
+    private backgroundMode: BackgroundMode,
+    private localNotifications: LocalNotifications,
+    private platform: Platform
   ) {
    }
 
@@ -59,6 +65,10 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnInit() {
     this.idUser = this.userService.User()._id;
     this.RouterController();
+    if (this.platform.is('mobile')) {
+      this.backgroundMode.enable();
+      this.backgroundMode.setDefaults({silent: true});
+    }
   }
 
   RouterController() {
@@ -82,6 +92,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.url === RoutesAPP.WINKS) {
               if (this.winksTab) {
                 this.winksTab = false;
+                this.newWinks.clear();
               }
             }
             this.ocultar = false;
@@ -90,6 +101,39 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
   }
+  async Background(wink: Wink) {
+    if (this.backgroundMode.isActive()) {
+      console.log('this.newWinks.size', this.newWinks.size);
+      if (this.newWinks.size === 1) {
+        const user = await this.winkService.GetUserWink(wink);
+        this.localNotifications.schedule({
+          id: 1,
+          title: this.translateService.instant('WINK.NOTIFICATION.TITLE.NEW'),
+          text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NEW', {userName: user.firstName}),
+          icon: 'https://www.iconsdb.com/icons/preview/tropical-blue/wink-xxl.png'
+        });
+      } else {
+        this.localNotifications.schedule({
+          id: 1,
+          title: this.translateService.instant('WINK.NOTIFICATION.TITLE.MULTIPLE'),
+          text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.MULTIPLE', {count: this.newWinks.size}),
+          icon: 'https://www.iconsdb.com/icons/preview/tropical-blue/wink-xxl.png'
+        });
+      }
+      this.notificationSubs = this.localNotifications.on('click').subscribe( event => {
+        this.goToWinks();
+        this.notificationSubs.unsubscribe();
+      });
+    }
+  }
+
+  async goToWinks() {
+    await this.navController.navigateBack(
+      ['/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS, true]
+    );
+  }
+
+
 
   private Listen() {
     this.tour = this.toursService.tour;
@@ -127,27 +171,28 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
           const wink: Wink = data.wink;
           wink.user = null;
           if (wink.receiver_id === this.idUser) {
+            this.newWinks.set(wink._id, wink._id);
+            this.Background(wink);
             if (this.url !== RoutesAPP.WINKS) {
               this.winksTab = true;
               if (this.idUserProfile && this.url === RoutesAPP.PERFIL_PUBLICO && wink.sender_id === this.idUserProfile) {
                 this.winksTab = false;
               } else {
-                this.toastService.Toast('WINK.DIALOGUES.MESSAGES.NEW_WINK', null, [{
-                  text: this.translateService.instant('WINK.BUTTONS.SEE'),
-                  side: 'end',
-                  handler: () => {
-                    setTimeout(
-                      async () => {
-                        await this.navController.navigateBack(
-                          ['/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS, true]
-                        );
-                      }
-                      , 250);
-                  },
-                }], null, 2000);
+                if (!this.backgroundMode.isActive()) {
+                  this.toastService.Toast('WINK.DIALOGUES.MESSAGES.NEW_WINK', null, [{
+                    text: this.translateService.instant('WINK.BUTTONS.SEE'),
+                    side: 'end',
+                    handler: () => {
+                      setTimeout(
+                        async () => {
+                          this.goToWinks();
+                        }
+                        , 250);
+                    },
+                  }], null, 2000);
+                }
               }
             }
-            this.newWinks.set(wink._id, wink._id);
             this.winkService.AddWink(wink);
             this.songsService.Vibrate();
           }
