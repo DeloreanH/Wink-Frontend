@@ -17,7 +17,7 @@
       "EMAIL_SENT": "Te hemos enviado un correo para restablecer tu contraseña",
       "FORGOT_PASSWORD": {
         "TITLE": "¿Olvidaste tu contraseña?",
-        "SUB_TITLE": "Por favor ingresa tu dirección de correo, te enviaremos un email para resetear tu password."
+        "SUB_TITLE": "Por favor ingresa tu dirección de correo, te enviaremos un email para resetear tu contraseña."
       },
       "SEND_SMS": {
         "TITLE": "Iniciar con SMS",

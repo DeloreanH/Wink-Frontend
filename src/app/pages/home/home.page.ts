@@ -37,6 +37,8 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   maxStatus = Config.MAX_STATUS;
 
   urlPublic = '/' + RoutesAPP.BASE + '/' + RoutesAPP.PERFIL_PUBLICO;
+  urlSettigns = '/' + RoutesAPP.BASE + '/' + RoutesAPP.CONFIGURAR_PERFIL;
+  urlWinks = '/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS;
   load = false;
   arrayLoad = [];
 
@@ -168,7 +170,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       try {
         await this.winkService.GetNearby();
       } catch (err) {
-        console.log('GPS error', err.message);
+        console.log('GPS error', err);
       }
       if (event) {
         event.target.complete();
@@ -328,6 +330,22 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  async GoProfilesSettings() {
+    if (!this.tour) {
+      await this.navController.navigateForward(
+        this.urlSettigns
+      );
+    }
+  }
+
+  async GoWinks() {
+    if (!this.tour) {
+      await this.navController.navigateForward(
+        this.urlWinks
+      );
+    }
+  }
+
   ExitApp() {
     if (!this.tour) {
       this.countExit++;
@@ -369,6 +387,19 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
     this.OpenFabList = false;
+  }
+
+  Swipe(event) {
+    switch (event.offsetDirection) {
+      case 2:
+        this.GoWinks();
+        break;
+      case 4:
+        this.GoProfilesSettings();
+        break;
+      default:
+        break;
+    }
   }
 
 }

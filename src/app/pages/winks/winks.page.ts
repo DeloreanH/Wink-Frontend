@@ -46,6 +46,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private navController: NavController,
   ) {
+    this.ValidateTour();
     this.record = this.winkService.Record;
     this.requests = this.winkService.Requests;
    }
@@ -65,18 +66,22 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.recordSubscription = this.winkService.recordChanged.subscribe(
       (record: Wink[]) => {
-        this.record = record;
+        if (!this.tour) {
+          this.record = record;
+        }
       }
     );
     this.requestsSubscription = this.winkService.requestsChanged.subscribe(
       (requests: Wink[]) => {
-        this.requests = requests;
+        if (!this.tour) {
+          this.requests = requests;
+        }
       }
     );
   }
 
   ngAfterViewInit(): void {
-    this.ValidateTour();
+    // this.ValidateTour();
   }
 
 
@@ -149,16 +154,20 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  async GoHome() {
+    if (!this.tour) {
+      await this.navController.navigateBack(
+        [ this.urlHome]
+      );
+    }
+  }
+
   ionViewWillEnter() {
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
           async () => {
-            if (!this.tour) {
-              await this.navController.navigateBack(
-                [ this.urlHome]
-              );
-            }
+            this.GoHome();
           }
         );
       }
@@ -177,6 +186,18 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
+  }
+
+  Swipe(event) {
+    switch (event.offsetDirection) {
+      case 2:
+        break;
+      case 4:
+        this.GoHome();
+        break;
+      default:
+        break;
+    }
   }
 
 }

@@ -18,6 +18,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
@@ -25,6 +26,7 @@ export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
   constructor(
     private matSnackBar: MatSnackBar,
     private translateService: TranslateService,
+    private router: Router,
   ) { }
 
   public intercept(
@@ -47,7 +49,8 @@ export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
       errorCode = error.error.error;
     }
     const message = this.getMessage(errorCode);
-    if (!message.startsWith('VIRTWOO_AUTH')) {
+    const urlAct = this.router.url.split('/');
+    if (!message.startsWith('VIRTWOO_AUTH') && urlAct[1] !== 'app' && urlAct[1] !== 'perfil') {
       this.matSnackBar.open(this.getMessage(errorCode), null, {duration: 3000, verticalPosition: 'top'});
     }
 

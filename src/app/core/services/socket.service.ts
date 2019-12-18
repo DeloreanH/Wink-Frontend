@@ -47,7 +47,6 @@ export class SocketService  {
         reconnectionDelayMax : 5000,
         reconnectionAttempts: Infinity
       });
-      console.log(this.socket);
     }
   }
 

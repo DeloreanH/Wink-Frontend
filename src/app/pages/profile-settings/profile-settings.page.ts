@@ -177,14 +177,10 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     this.eventRouter = this.router.events.subscribe(
       (valor: any) => {
         if (valor instanceof NavigationStart) {
-          if (valor.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL) {
             this.CloseMenu();
-          }
         }
         if (valor instanceof NavigationEnd) {
-          if (valor.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL) {
             this.CloseMenu();
-          }
         }
       }
     );
@@ -473,6 +469,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    this.CloseMenu();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
@@ -505,6 +502,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
+    this.CloseMenu();
   }
 
   async SelectImage() {
@@ -586,6 +584,26 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
             return MessageErrorForms.WHITE_SPACE;
         }
       }
+    }
+  }
+
+  async GoHome() {
+    if (!this.tour) {
+      await this.navController.navigateBack(
+        [ this.urlHome]
+      );
+    }
+  }
+
+  Swipe(event) {
+    switch (event.offsetDirection) {
+      case 2:
+        this.GoHome();
+        break;
+      case 4:
+        break;
+      default:
+        break;
     }
   }
 

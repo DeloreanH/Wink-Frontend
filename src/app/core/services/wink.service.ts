@@ -75,6 +75,7 @@ export class WinkService {
             reject({message: 'No Location'});
           }
         } catch (err) {
+          this.toastService.Toast(MessagesServices.TRY_AGAIN_LATER);
           reject(err);
         }
       }

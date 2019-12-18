@@ -433,10 +433,10 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   OnInput(value: string, campo: number) {
     switch (campo) {
       case 0:
-        this.value.value = value;
+        this.value.value = this.noWhiteSpace.RemoveWhiteSpace(value);
         break;
       case 1:
-        this.value.custom = value;
+        this.value.custom = this.noWhiteSpace.RemoveWhiteSpace(value);
         break;
     }
     this.onTouch(this.value);
