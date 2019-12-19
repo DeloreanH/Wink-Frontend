@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, NgZone } from '@angular/core';
 import { User } from '../../common/models/user.model';
 import { UserService } from '../../core/services/user.service';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { Config } from '../../common/enums/config.enum';
 import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { WinkService } from '../../core/services/wink.service';
@@ -48,6 +48,9 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   backButtonSubs = new Subscription();
   exit = 'app';
   countExit = 0;
+
+  private goPage = new BehaviorSubject<boolean>(false);
+  private goPage$ = this.goPage.asObservable();
 
   constructor(
     private userService: UserService,
@@ -332,17 +335,23 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   async GoProfilesSettings() {
     if (!this.tour) {
-      await this.navController.navigateForward(
-        this.urlSettigns
-      );
+      try {
+        await this.navController.navigateForward(
+          this.urlSettigns
+        );
+      } catch (error) {
+      }
     }
   }
 
   async GoWinks() {
     if (!this.tour) {
-      await this.navController.navigateForward(
-        this.urlWinks
-      );
+      try {
+        await this.navController.navigateForward(
+          this.urlWinks
+        );
+      } catch (error) {
+      }
     }
   }
 

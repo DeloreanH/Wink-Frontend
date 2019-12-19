@@ -84,7 +84,7 @@
       }
     },
     "HOME": {
-      "TITLE": "Home",
+      "TITLE": "Wink",
       "STATUS": "What are you thinking?",
       "REFRESHER": "Pull to update",
       "REFRESHING": "Refreshing...",
@@ -122,7 +122,7 @@
 
     },
     "WINKS": {
-      "TITLE": "Winks",
+      "TITLE": "Notifications",
       "SEGMENTS": {
         "REQUESTS": "Requests",
         "RECORD": "Record"

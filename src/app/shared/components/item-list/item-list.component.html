@@ -18,7 +18,7 @@
           *ngIf="itemType && itemType.index === indexChip"
           class="chip-item chip-margin "
           >
-          <ion-chip outline color="primary"
+          <ion-chip outline color="dark"
           *ngFor="let chip of chips">
           {{chip}}
           </ion-chip>
@@ -26,7 +26,7 @@
         </mat-chip-list>
 
         <ion-text *ngIf="itemType &&  itemType.index !== indexChip "
-          class="text-margin ion-text-wrap">
+          class="text-margin ion-text-wrap" [ngClass]="{'text-link': isLink}">
           {{item? item.value : ''}}
         </ion-text>
       </div>

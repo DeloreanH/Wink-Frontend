@@ -125,4 +125,16 @@ export class ItemListComponent implements OnInit {
     }
   }
 
+  get isLink() {
+    if (
+      this.itemType.index === this.indexEmail ||
+      this.itemType.index === this.indexURL ||
+      this.itemType.category === this.socialNetwork ||
+      this.itemType.index === this.indexTel
+      ) {
+      return true;
+    }
+    return false;
+  }
+
 }

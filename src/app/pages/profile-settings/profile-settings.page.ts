@@ -72,6 +72,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   noWhiteSpace =  new NoWhiteSpace();
 
   photo = new Photo();
+  openMenu = false;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -492,6 +493,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewDidEnter() {
+    this.openMenu = true;
+    this.CloseMenu();
     // alert('4 - Página completamente cargada y activa.');
   }
 
@@ -502,6 +505,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
+    this.openMenu = false;
     this.CloseMenu();
   }
 

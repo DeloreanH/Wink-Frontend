@@ -191,13 +191,22 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   Swipe(event) {
     switch (event.offsetDirection) {
       case 2:
+        // this.Rigth();
         break;
       case 4:
         this.GoHome();
+        // this.Left();
         break;
       default:
         break;
     }
   }
 
+  private Rigth() {
+    this.tab = 'record';
+  }
+
+  private Left() {
+    this.tab = 'requests';
+  }
 }

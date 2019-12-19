@@ -90,7 +90,7 @@
       }
     },
     "HOME": {
-      "TITLE": "Home",
+      "TITLE": "Wink",
       "STATUS": "¿Qué estás pensando?",
       "REFRESHER": "Tire para actualizar",
       "REFRESHING": "Refrescando...",
@@ -127,7 +127,7 @@
 
     },
     "WINKS": {
-      "TITLE": "Winks",
+      "TITLE": "Notificaciones",
       "SEGMENTS": {
         "REQUESTS": "Solicitudes",
         "RECORD": "Historial"
