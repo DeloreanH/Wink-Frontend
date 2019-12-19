@@ -23,6 +23,7 @@ import { UpdateAvatarService } from 'src/app/core/services/update-avatar.service
 import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
 import { Photo } from 'src/app/common/class/photo.class';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'profile-settings',
@@ -81,7 +82,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private menu: MenuController,
+    private menuController: MenuController,
     private navController: NavController,
     private translateService: TranslateService,
     public tourService: TourService,
@@ -89,6 +90,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private alertService: AlertService,
     private platform: Platform,
     private avatarService: UpdateAvatarService,
+    private loaderService: LoaderService,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -410,8 +412,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         (resp: any) => {
           if (resp && resp.value) {
             this.authService.Logout();
-            if (this.menu.isOpen) {
-              this.menu.close();
+            if (this.menuController.isOpen) {
+              this.menuController.close();
             }
           }
         }
@@ -441,8 +443,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async CloseMenu() {
-    if (await this.menu.isOpen('menuSettings')) {
-      this.menu.close('menuSettings');
+    if (await this.menuController.isOpen('menuSettings')) {
+      this.menuController.close('menuSettings');
     }
   }
 
@@ -475,9 +477,9 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       (resp) => {
         resp.register(100,
           async () => {
-            const isOpen = await this.menu.isOpen('menuSettings');
+            const isOpen = await this.menuController.isOpen('menuSettings');
             if (isOpen) {
-              this.menu.close();
+              this.menuController.close();
             } else {
               if (!this.tour) {
                 await this.navController.navigateBack(
@@ -493,6 +495,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewDidEnter() {
+    this.loaderService.Close();
     this.openMenu = true;
     this.CloseMenu();
     // alert('4 - Página completamente cargada y activa.');

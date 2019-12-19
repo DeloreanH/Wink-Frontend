@@ -312,6 +312,9 @@
         "NEW": "{{ userName}} send you a wink.",
         "MULTIPLE": "You have {{ count }} wink request."
       }
+    },
+    "LOADER": {
+      "LOADING": "Loading..."
     }
   }
 }

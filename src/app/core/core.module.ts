@@ -40,6 +40,8 @@ import { WinkService } from './services/wink.service';
 import { ToolsModule } from '../common/tools/tools.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToursService } from './services/tours.service';
+import { LoaderService } from './services/loader.service';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -83,6 +85,7 @@ import { ToursService } from './services/tours.service';
     UserService,
     WinkService,
     ToursService,
+    LoaderService,
   ]
 })
 export class CoreModule {

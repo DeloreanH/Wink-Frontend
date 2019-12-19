@@ -13,6 +13,7 @@ import { VirtwooAuthServerService } from '../../services';
 import { VirtwooAuthPathName } from '../../virtwoo-auth-config.data';
 import { LanguageService, Language } from 'src/app/core/services/language.service';
 import { Platform } from '@ionic/angular';
+import { LoaderService } from 'src/app/core/services/loader.service';
 @Component({
   selector: 'mp-virtwoo-auth-login',
   templateUrl: './virtwoo-auth-login.component.html',
@@ -28,7 +29,8 @@ export class VirtwooAuthLoginComponent implements OnDestroy {
     private slRouterService: SlRouterService,
     private virtwooAuthServerService: VirtwooAuthServerService,
     private languageService: LanguageService,
-    private platform: Platform
+    private platform: Platform,
+    private loaderService: LoaderService,
   ) {}
 
   public goToRegister(): void {
@@ -44,6 +46,7 @@ export class VirtwooAuthLoginComponent implements OnDestroy {
   }
 
   public submitted(event: any): void {
+    this.loaderService.Show();
     this.virtwooAuthServerService.serverAppLogin(event)
       .subscribe(response => {
         console.log(response);

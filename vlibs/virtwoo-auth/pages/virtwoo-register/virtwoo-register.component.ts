@@ -12,6 +12,7 @@ import { VirtwooAuthPathName } from '../../virtwoo-auth-config.data';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'mp-virtwoo-register',
@@ -29,7 +30,8 @@ export class VirtwooRegisterComponent implements OnDestroy {
     private slRouterService: SlRouterService,
     private virtwooAuthServerService: VirtwooAuthServerService,
     private changeDetectorRef: ChangeDetectorRef,
-    private platform: Platform
+    private platform: Platform,
+    private loaderService: LoaderService,
   ) { }
 
 
@@ -69,6 +71,7 @@ export class VirtwooRegisterComponent implements OnDestroy {
 
   public submit(event: any): void {
     this.loading = true;
+    this.loaderService.Show();
     this.virtwooAuthServerService.registerUser(event)
       .pipe(
         finalize(() => {

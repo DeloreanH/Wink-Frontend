@@ -10,6 +10,7 @@ import { ToursService } from 'src/app/core/services/tours.service';
 import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Platform, NavController } from '@ionic/angular';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-winks',
@@ -45,6 +46,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private platform: Platform,
     private navController: NavController,
+    private loaderService: LoaderService,
   ) {
     this.ValidateTour();
     this.record = this.winkService.Record;
@@ -176,6 +178,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewDidEnter() {
+    this.loaderService.Close();
     // alert('4 - Página completamente cargada y activa.');
   }
 

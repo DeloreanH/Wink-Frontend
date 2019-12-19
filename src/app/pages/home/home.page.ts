@@ -6,14 +6,15 @@ import { Config } from '../../common/enums/config.enum';
 import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { WinkService } from '../../core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
-import { Router, NavigationEnd } from '@angular/router';
-import { Platform, NavController, AlertController } from '@ionic/angular';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Platform, NavController, AlertController, LoadingController } from '@ionic/angular';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { AlertService } from '../../common/alert/alert.service';
 import { AlertButtonType } from '../../common/alert/base';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -63,6 +64,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     public alertController: AlertController,
     private alertService: AlertService,
     private ngZone: NgZone,
+    private loaderService: LoaderService,
   ) {
     this.user = this.userService.User();
     for (let i = 0; i < 15; i++) {
@@ -73,13 +75,22 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.router.events.subscribe(
-      (valor: any) => {
-        if (valor instanceof NavigationEnd) {
-          if (valor.url.split('/')[2] === RoutesAPP.HOME ) {
+      (value: any) => {
+        if (value instanceof NavigationStart) {
+          if (value.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL || value.url.split('/')[2] === RoutesAPP.WINKS) {
+            this.loaderService.Show();
+          }
+          if (value.url.split('/')[2] === RoutesAPP.HOME ) {
             if (this.originNearbyUsers.length === 0) {
               this.GPS();
             }
-            this.VisibilityUser();
+          }
+        }
+        if (value instanceof NavigationEnd) {
+          if (value.url.split('/')[2] === RoutesAPP.HOME ) {
+            if (this.originNearbyUsers.length === 0) {
+              this.GPS();
+            }
           }
         }
       }
@@ -369,7 +380,8 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     this.countExit = 0;
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
+    this.loaderService.Close();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,

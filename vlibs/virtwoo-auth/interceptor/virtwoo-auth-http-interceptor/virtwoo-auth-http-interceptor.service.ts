@@ -19,6 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Injectable()
 export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
@@ -27,6 +28,7 @@ export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
     private matSnackBar: MatSnackBar,
     private translateService: TranslateService,
     private router: Router,
+    private loaderService: LoaderService,
   ) { }
 
   public intercept(
@@ -39,6 +41,7 @@ export class VirtwooAuthHttpInterceptorService implements HttpInterceptor {
   }
 
   private catchError = (error: HttpErrorResponse): Observable<never> => {
+    this.loaderService.Close();
     let errorCode = 'defaul';
 
     if (!error.status) {

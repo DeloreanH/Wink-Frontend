@@ -1,25 +1,50 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
+interface LoadingOptions {
+  spinner?: 'bubbles' | 'circles' | 'circular' | 'crescent'| 'dots' | 'lines' | 'lines-small' | null;
+  message?: string;
+  cssClass?: string | string[];
+  showBackdrop?: boolean;
+  duration?: number;
+  translucent?: boolean;
+  animated?: boolean;
+  backdropDismiss?: boolean;
+  keyboardClose?: boolean;
+  id?: string;
+}
 
 @Injectable()
 export class LoaderService  {
-  private dismissTime = 10000;
-  constructor(private loader: LoadingController) { }
 
-  async showLoading() {
-    const loading = await this.loader.create({
-    message: 'Loading...',
-    spinner: 'bubbles'
-    });
-    await loading.present();
+  constructor(
+    public loadingController: LoadingController,
+    private translateService: TranslateService,
+    ) { }
 
-    setTimeout(() => {
-      loading.dismiss();
-      }, this.dismissTime);
+  async Show(opts?: LoadingOptions) {
+    try {
+      const optsO: LoadingOptions = {
+        message: 'WINK.LOADER.LOADING',
+        spinner: 'bubbles'
+      };
+      opts = opts ? opts : optsO;
+      opts.message = opts.message ? this.translateService.instant(opts.message) : null;
+      const loading = await this.loadingController.create(opts);
+      await loading.present();
+    } catch (err) {
+      console.log('Error Show ', err);
+    }
   }
-  public setDismissTime(time: number) {
-    this.dismissTime = time;
+  public async Close() {
+    try {
+      if (await this.loadingController.getTop()) {
+        this.loadingController.dismiss();
+      }
+    } catch (err) {
+      this.loadingController.dismiss();
+    }
   }
 
 }

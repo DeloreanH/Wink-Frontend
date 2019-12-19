@@ -1,4 +1,4 @@
-<ion-menu side="start" contentId="main" menuId="menuSettings" [swipeGesture]="openMenu">
+<ion-menu side="start" contentId="main" menuId="menuSettings" [swipeGesture]="false">
   <ion-header>
     <ion-toolbar translucent>
       <ion-title>
@@ -38,7 +38,7 @@
       <ion-title>
           {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
       </ion-title>
-      <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
+      <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar-lg ripple-toolbar-mie" slot="end" >
         <fa-icon
           [icon]="[order ? 'far' : 'fas',  'list-alt']"
           class="icon-bar color-medium"
@@ -114,6 +114,7 @@
             {{ 'WINK.ITEM_TYPES.BIOGRAPHY' | translate}}
           </ion-label>
           <ion-textarea maxlength="50"
+          [placeholder]="'WINK.ITEM_TYPES.BIOGRAPHY' | translate"
           formControlName="biografia"
           (ionInput)="ChangeData()"
           ></ion-textarea>

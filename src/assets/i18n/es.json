@@ -317,6 +317,9 @@
         "NEW": "{{ userName }} te envio un wink.",
         "MULTIPLE": "Tienes {{ count }} solicitudes wink pendientes."
       }
+    },
+    "LOADER": {
+      "LOADING": "Cargando..."
     }
   }
 }
