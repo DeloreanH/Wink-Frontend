@@ -73,7 +73,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   noWhiteSpace =  new NoWhiteSpace();
 
   photo = new Photo();
-  openMenu = false;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -90,7 +89,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private alertService: AlertService,
     private platform: Platform,
     private avatarService: UpdateAvatarService,
-    private loaderService: LoaderService,
+    public loaderService: LoaderService,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -472,6 +471,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    this.loaderService.Close();
     this.CloseMenu();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
@@ -481,7 +481,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
             if (isOpen) {
               this.menuController.close();
             } else {
-              if (!this.tour) {
+              if (!this.tour && !this.loaderService.Status) {
                 await this.navController.navigateBack(
                   [ this.urlHome]
                 );
@@ -495,8 +495,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewDidEnter() {
-    this.loaderService.Close();
-    this.openMenu = true;
     this.CloseMenu();
     // alert('4 - Página completamente cargada y activa.');
   }
@@ -508,7 +506,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
-    this.openMenu = false;
     this.CloseMenu();
   }
 

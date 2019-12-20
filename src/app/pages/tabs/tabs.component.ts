@@ -81,6 +81,12 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.ocultar = true;
           } else {
             this.ocultar = false;
+            if (this.url === RoutesAPP.WINKS) {
+              if (this.winksTab) {
+                this.winksTab = false;
+                this.newWinks.clear();
+              }
+            }
           }
         }
         if (valor instanceof NavigationEnd) {

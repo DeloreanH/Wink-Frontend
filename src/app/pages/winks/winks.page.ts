@@ -46,7 +46,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private platform: Platform,
     private navController: NavController,
-    private loaderService: LoaderService,
+    public loaderService: LoaderService,
   ) {
     this.ValidateTour();
     this.record = this.winkService.Record;
@@ -55,6 +55,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.Subscriptions();
+    this.loaderService.Close();
   }
 
   private Subscriptions() {
@@ -84,6 +85,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     // this.ValidateTour();
+    this.loaderService.Close();
   }
 
 
@@ -165,11 +167,14 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    this.loaderService.Close();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
           async () => {
-            this.GoHome();
+            if (!this.tour && !this.loaderService.Status) {
+              this.GoHome();
+            }
           }
         );
       }

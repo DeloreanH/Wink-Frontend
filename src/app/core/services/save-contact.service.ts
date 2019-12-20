@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
 import { Config } from '../../common/enums/config.enum';
 import { ToastService } from './toast.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
+import { Photo } from 'src/app/common/class/photo.class';
 
 
 @Injectable({
@@ -23,6 +24,7 @@ export class SaveContactService {
   private birthday;
   private nickname;
   private address;
+  photo = new Photo();
 
   constructor(
     private contacts: Contacts,
@@ -35,13 +37,14 @@ export class SaveContactService {
 
   async Create(items: any[], user: User, photo?: boolean) {
     try {
+      console.log();
       const response: any = await this.LoadItems(items);
       if (response) {
         const contact: Contact =  this.contacts.create();
         if (contact) {
           contact.name = new ContactName(null, user.lastName, user.firstName);
           if (photo && user.avatarUrl) {
-            contact.photos = [new ContactField(Config.IMAGE_JPEG, user.avatarUrl, true)];
+            contact.photos = [new ContactField(Config.IMAGE_JPEG, this.photo.URLAvatar(user), true)];
           }
           contact.urls = this.urls;
           contact.phoneNumbers = this.phoneNumbers;

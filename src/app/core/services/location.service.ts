@@ -68,7 +68,9 @@ export class LocationService {
       async (resolve, reject) => {
         try {
           const result = await this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION);
+          console.log('result', result);
           if (result.hasPermission) {
+            await this.locationAccuracy.canRequest();
             const response = await this.askToTurnOnGPS();
             resolve(response);
           } else {
@@ -86,9 +88,10 @@ export class LocationService {
     return new Promise<any> (
       async (resolve, reject) => {
         try {
-          // await this.locationAccuracy.canRequest();
+          await this.locationAccuracy.canRequest();
           this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
             async (response) => {
+              console.log('hasPermission', response);
               if (response.hasPermission) {
                 const resp = await this.askToTurnOnGPS();
                 resolve(resp);
@@ -112,9 +115,10 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          await this.locationAccuracy.canRequest();
+          // await this.locationAccuracy.canRequest();
           this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
             async (value) => {
+              console.log('value', value);
               const resp = await this.getLocationCoordinates();
               resolve(resp);
             },
@@ -132,7 +136,7 @@ export class LocationService {
       async (resolve, reject) => {
         try {
           const geoposition = await this.geolocation.getCurrentPosition({
-            enableHighAccuracy: true,
+            // enableHighAccuracy: true,
             timeout: 3000
           });
           resolve(geoposition);
