@@ -20,11 +20,11 @@ $padding: 2rem;
   height: 100%;
 }
 .auth__content__top {
-  flex: 1;
+  flex: 0.9;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
   &.column {
     flex-direction: column;
   }
@@ -141,8 +141,8 @@ $padding: 2rem;
   }
   mat-icon {
     font-size: 5.5rem;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 5.5rem;
+    height: 5.5rem;
     color: #CDCDCD;
   }
 }

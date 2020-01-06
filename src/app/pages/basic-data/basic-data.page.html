@@ -293,7 +293,7 @@
           </ion-select>
         </ion-item>
       </ion-list>
-      <ion-button expand="block" type="submit" [disabled]="FormValid()">
+      <ion-button expand="block" (click)="onSubmit()" [disabled]="FormValid()">
           {{'WINK.BUTTONS.SAVE' | translate}}
       </ion-button>
       <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()">
