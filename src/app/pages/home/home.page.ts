@@ -77,9 +77,9 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     this.router.events.subscribe(
       (value: any) => {
         if (value instanceof NavigationStart) {
-          if (value.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL /*|| value.url.split('/')[2] === RoutesAPP.WINKS*/) {
-            this.loaderService.Show();
-          }
+          // if (value.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL /*|| value.url.split('/')[2] === RoutesAPP.WINKS*/) {
+          //   this.loaderService.Show();
+          // }
           if (value.url.split('/')[2] === RoutesAPP.HOME ) {
             if (this.originNearbyUsers.length === 0) {
               this.GPS();

@@ -256,9 +256,6 @@
           </ion-label>
           <ion-select
             interface="popover"
-            ok-text="Aceptar"
-            cancel-text="Cancelar"
-            placeholder="Seleccione un sexo"
             formControlName="gender">
             <ion-select-option *ngFor="let gender of genders" [value]="gender.value">
               {{gender.description | translate}}
@@ -277,6 +274,24 @@
         <ion-text color="danger">
           {{ MessageError('autosave') | translate }}
         </ion-text>
+        <ion-item>
+          <fa-icon
+          [icon]="['fas', 'language']"
+          class="icono icon-center"
+          slot="start" ></fa-icon>
+          <ion-label position="floating" >
+            {{'WINK.LANGUAGES.TITLE' | translate}}
+          </ion-label>
+          <ion-select
+            interface="popover"
+            [value]="currentLanguage"
+            (ionChange)="ChangeLanguage($event.target.value)"
+            >
+            <ion-select-option *ngFor="let language of languages" [value]="language.value">
+              {{language.description | translate}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
       </ion-list>
       <ion-button expand="block" type="submit" [disabled]="FormValid()">
           {{'WINK.BUTTONS.SAVE' | translate}}

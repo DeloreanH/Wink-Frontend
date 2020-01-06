@@ -8,26 +8,26 @@
   </ion-header>
 
   <ion-content class="ion-padding">
-    
-    <ion-segment (ionChange)="TabChanged($event)" [value]="tab">
+
+    <ion-segment (ionChange)="TabChanged($event)" [value]="tab" class="list-winks">
       <ion-segment-button value="requests" [disabled]="tour && tab === 'record'">
         <ion-label>
           {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
         </ion-label>
-        <div *ngIf="tour" tourAnchor="requests"></div>     
+        <div *ngIf="tour" tourAnchor="requests"></div>
       </ion-segment-button>
-      
+
       <ion-segment-button value="record" [disabled]="tour && tab === 'requests'">
         <ion-label>
           {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
         </ion-label>
-        <div *ngIf="tour" tourAnchor="record"></div>      
+        <div *ngIf="tour" tourAnchor="record"></div>
       </ion-segment-button>
-      
+
     </ion-segment>
 
-    
-    
+
+
     <div *ngIf="tour" tourAnchor="intro"></div>
     <ion-list *ngIf="tab === 'requests'">
       <item-wink
@@ -35,18 +35,18 @@
         [wink]="wink"
         [tour]="tour"
       ></item-wink>
-        
+
     </ion-list>
-    <div *ngIf="tour" tourAnchor="wink"></div> 
+    <div *ngIf="tour" tourAnchor="wink"></div>
     <ion-list *ngIf="tab === 'record'">
       <item-wink
         *ngFor="let wink of record"
         [wink]="wink"
         [tour]="tour"
       ></item-wink>
-        
+
     </ion-list>
-    <div *ngIf="tour" tourAnchor="delete"></div> 
+    <div *ngIf="tour" tourAnchor="delete"></div>
     <div *ngIf="record.length === 0 && tab === 'record'" class="vacio">
       <p >
         {{noHistorical | translate}}

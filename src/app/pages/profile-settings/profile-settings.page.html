@@ -26,7 +26,7 @@
   </ion-content>
 </ion-menu>
 
-<div class="ion-page" id="main" (swipe)="Swipe($event)">
+<div class="ion-page" id="main" (swipe)="Swipe($event)" main>
 
   <ion-header translucent>
     <ion-toolbar>
@@ -97,10 +97,8 @@
         </ion-avatar>
       </div>
 
-      <div>
-        <ion-title class="title-name">
-          {{user ? user.firstName + ' ' + user.lastName : 'John Doe'}}
-        </ion-title>
+      <div  class="title-name">
+        {{user ? user.firstName + ' ' + user.lastName : 'John Doe'}}
       </div>
 
       <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()" class="end-list">

@@ -137,10 +137,8 @@
       </ion-avatar>
     </div>
 
-    <div class="contenedor" >
-      <ion-title class="title-name">
-        {{userWink ? userWink.firstName + ' ' + userWink.lastName : 'John Doe'}}
-      </ion-title>
+    <div class="title-name" >
+      {{userWink ? userWink.firstName + ' ' + userWink.lastName : 'John Doe'}}
     </div>
     <ion-list *ngFor="let section of items; let i = index;" >
       <ion-list-header *ngIf="section.length > 0">

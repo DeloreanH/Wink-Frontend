@@ -55,7 +55,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.Subscriptions();
-    this.loaderService.Close();
+    // this.loaderService.Close();
   }
 
   private Subscriptions() {
@@ -85,7 +85,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     // this.ValidateTour();
-    this.loaderService.Close();
+    // this.loaderService.Close();
   }
 
 
@@ -167,12 +167,12 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillEnter() {
-    this.loaderService.Close();
+    // this.loaderService.Close();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
           async () => {
-            if (!this.tour && !this.loaderService.Status) {
+            if (!this.tour ) {
               this.GoHome();
             }
           }
@@ -183,7 +183,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewDidEnter() {
-    this.loaderService.Close();
+    // this.loaderService.Close();
     // alert('4 - Página completamente cargada y activa.');
   }
 

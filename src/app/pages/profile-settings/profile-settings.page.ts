@@ -408,10 +408,10 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         title: 'WINK.AUTH.LOGOUT.TITLE',
         description: 'WINK.AUTH.LOGOUT.MESSAGE',
       }).subscribe(
-        (resp: any) => {
+        async (resp: any) => {
           if (resp && resp.value) {
             this.authService.Logout();
-            if (this.menuController.isOpen) {
+            if (await this.menuController.isOpen('menuSettings')) {
               this.menuController.close();
             }
           }
@@ -471,17 +471,16 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillEnter() {
-    this.loaderService.Close();
+    // this.loaderService.Close();
     this.CloseMenu();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
           async () => {
-            const isOpen = await this.menuController.isOpen('menuSettings');
-            if (isOpen) {
+            if (await this.menuController.isOpen('menuSettings')) {
               this.menuController.close();
             } else {
-              if (!this.tour && !this.loaderService.Status) {
+              if (!this.tour /*&& !this.loaderService.Status*/) {
                 await this.navController.navigateBack(
                   [ this.urlHome]
                 );

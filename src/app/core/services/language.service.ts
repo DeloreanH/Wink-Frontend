@@ -16,6 +16,10 @@ export enum Language {
 export class LanguageService {
 
   private lang: string;
+  public languages: { value: string, description: string }[] = [
+    { value: 'en', description: 'WINK.LANGUAGES.ENGLISH' },
+    { value: 'es', description: 'WINK.LANGUAGES.SPANISH' },
+  ];
   constructor(
     private storageService: StorageService,
     private translateService: TranslateService,

@@ -315,6 +315,11 @@
     },
     "LOADER": {
       "LOADING": "Loading..."
+    },
+    "LANGUAGES": {
+      "TITLE": "Language",
+      "ENGLISH": "English",
+      "SPANISH": "Spanish"
     }
   }
 }

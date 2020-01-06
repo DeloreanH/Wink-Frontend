@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Phone } from 'src/app/common/models/phone.model';
 import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 import { Photo } from 'src/app/common/class/photo.class';
+import { LanguageService } from 'src/app/core/services/language.service';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -31,9 +32,12 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   uploadAvatar = false;
   edit = false;
   genders: { value: string, description: string}[] = [];
+  languages: { value: string, description: string}[] = [];
   backButtonSubs = new Subscription();
   noWhiteSpace =  new NoWhiteSpace();
   photo =  new Photo();
+  currentLanguage: string;
+  changeLanguage = false;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -45,10 +49,13 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
     private alertService: AlertService,
     private platform: Platform,
     private translateService: TranslateService,
+    private languageService: LanguageService,
   ) {
     this.user = this.userService.User();
     this.LoadForm();
     this.genders = this.userService.genders;
+    this.languages = this.languageService.languages;
+    this.currentLanguage = this.languageService.language;
    }
 
   ngOnInit() {
@@ -133,26 +140,34 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async onSubmit() {
-    console.log(this.form);
     if (this.form.valid) {
       this.loading = true;
       try {
-        await this.RemoveWhiteSpace();
-        console.log('ENTROOO', this.form.get('phoneCode').disabled);
-        if (this.form.get('phoneCode').disabled) {
-          this.form.removeControl('phone');
-        } else {
-          this.form.value.phone.phoneCode = this.form.value.phoneCode;
-          this.form.value.phone.phoneNumber = this.form.value.phoneNumber;
-        }
-        if (this.form.value.phone || this.form.get('phoneCode').disabled) {
-          console.log(this.form);
-          const response = await this.userService.UpdateDate(this.form.value);
-          if (response.status === 'user updated successfully' /*&& !response.user.emptyProfile*/) {
-            this.edit = false;
+        if (this.changeLanguage) {
+          this.currentLanguage = this.languageService.language;
+          this.changeLanguage = false;
+          if (!this.edit) {
             await this.navController.navigateRoot(
               '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
             );
+          }
+        }
+        if (this.edit) {
+          await this.RemoveWhiteSpace();
+          if (this.form.get('phoneCode').disabled) {
+            this.form.removeControl('phone');
+          } else {
+            this.form.value.phone.phoneCode = this.form.value.phoneCode;
+            this.form.value.phone.phoneNumber = this.form.value.phoneNumber;
+          }
+          if (this.form.value.phone || this.form.get('phoneCode').disabled) {
+            const response = await this.userService.UpdateDate(this.form.value);
+            if (response.status === 'user updated successfully' /*&& !response.user.emptyProfile*/) {
+              this.edit = false;
+              await this.navController.navigateRoot(
+                '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME
+              );
+            }
           }
         }
       } catch (err) {
@@ -222,7 +237,7 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
       if (this.user.emptyProfile) {
         return (this.form.valid && this.uploadAvatar) ? false : true;
       } else {
-        return (this.form.valid && this.edit) ? false : true;
+        return (this.form.valid && this.edit || this.form.valid && this.changeLanguage) ? false : true;
       }
     } else {
       return true;
@@ -332,6 +347,11 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   ionViewDidLeave() {
     // alert('7 - La página Home2 ha dejado de estar activa.');
     this.backButtonSubs.unsubscribe();
+  }
+
+  ChangeLanguage(value) {
+    this.languageService.ChangeLanguage(value);
+    this.changeLanguage = true;
   }
 
 }

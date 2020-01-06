@@ -320,6 +320,11 @@
     },
     "LOADER": {
       "LOADING": "Cargando..."
+    },
+    "LANGUAGES": {
+      "TITLE": "Idioma",
+      "ENGLISH": "Inglés",
+      "SPANISH": "Español"
     }
   }
 }
