@@ -54,7 +54,9 @@ export class LocationService {
             resolve(response);
           } else {
             this.toastService.Toast(MessagesServices.ACTIVATE_LOCATION);
-            reject({message: 'No LocationEnabled'});
+            const response = await this.askToTurnOnGPS();
+            resolve(response);
+            // reject({message: 'No LocationEnabled'});
           }
         } catch (err) {
           reject(err);
@@ -88,7 +90,7 @@ export class LocationService {
     return new Promise<any> (
       async (resolve, reject) => {
         try {
-          await this.locationAccuracy.canRequest();
+          // await this.locationAccuracy.canRequest();
           this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
             async (response) => {
               console.log('hasPermission', response);
@@ -115,7 +117,7 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          // await this.locationAccuracy.canRequest();
+          await this.locationAccuracy.canRequest();
           this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
             async (value) => {
               console.log('value', value);
