@@ -106,7 +106,11 @@ export class ItemListComponent implements OnInit {
         } else if (this.itemType.category === this.socialNetwork) {
           this.linkService.SocialNetwork(this.itemType.name, this.item.value);
         } else if (this.itemType.index === this.indexTel) {
-          this.linkService.Tel(this.item.value);
+          if (this.itemType.name === 'whatsapp') {
+            this.linkService.WhatsApp(this.item.value);
+          } else {
+            this.linkService.Tel(this.item.value);
+          }
         }
       }
       , 500);

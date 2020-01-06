@@ -12,6 +12,7 @@ export class LinkService {
   private socialNetworks: SocialNetworkLinks[] = [];
   private mail = 'mailto:';
   private tel = 'tel:';
+  private whatsapp = 'whatsapp://send?phone=';
 
   constructor(
     private plataform: Platform,
@@ -62,12 +63,21 @@ export class LinkService {
     }
   }
 
+  WhatsApp(num: string) {
+    try {
+      window.open(this.whatsapp + num , '_system');
+    } catch (err) {
+      console.log('Error OpenURL', err.message);
+    }
+  }
+
   URL(url: string) {
     try {
+      console.log('url', url);
       if (url.startsWith('http')) {
-        window.open(encodeURI(url), '_system');
+        window.open(url, '_system');
       } else {
-        window.open(encodeURI('http://' + url), '_system');
+        window.open('http://' + url, '_system');
       }
     } catch (err) {
       console.log('Error OpenURL', err.message);
@@ -76,7 +86,7 @@ export class LinkService {
 
   Tel(num: string) {
     try {
-        window.open(encodeURI(this.tel + num ), '_system', 'location=yes');
+        window.open(this.tel + num , '_system', 'location=yes');
     } catch (err) {
       console.log('Error OpenURL', err.message);
     }
