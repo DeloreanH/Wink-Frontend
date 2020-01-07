@@ -30,7 +30,7 @@
 
 .public-img {
   width: 100%;
-  height: 84%;
+  height: 95.5%;
 }
 
 .text-small {
@@ -47,11 +47,15 @@
 
 .button-wink {
   position: absolute;
-  top: 89.5%;
+  top: 95.5%;
   left: 0%;
   width: 100%;
+  border-bottom: 0.01rem solid var(--ion-color-medium);
 }
-
+.buttons-wink {
+  font-size: 1.2rem;
+  font-weight: inherit;
+}
 .top {
   height: auto;
   width: 100%;
@@ -71,7 +75,7 @@
 .gradient {
   -webkit-mask-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0,0,0,0.8)), to(rgba(0, 0, 0, 0)));
   background: black;
-  height: 69%;
+  height: 80.5%;
   width: 100%;
   position: absolute;
   top: 15%;

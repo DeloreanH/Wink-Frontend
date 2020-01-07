@@ -3,9 +3,9 @@
   <ion-header class="opt-top transparent">
       <ion-toolbar class="transparent">
         <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start">
-          <fa-icon 
-            [icon]="['fas', 'arrow-left']" 
-            class="icono-white" 
+          <fa-icon
+            [icon]="['fas', 'arrow-left']"
+            class="icono-white"
             (click)="Back()"
           ></fa-icon>
           <ion-ripple-effect></ion-ripple-effect>
@@ -24,33 +24,47 @@
     <div class="text-bottom skeleton-content-text">
         <ion-skeleton-text animated class="skeleton-name-public"></ion-skeleton-text>
         <ion-skeleton-text animated class="skeleton-name"></ion-skeleton-text>
-    </div>    
+    </div>
     <ion-fab class="button-wink end">
-      <ion-avatar class="button-float-skeleton"> 
+      <ion-avatar class="button-float-skeleton">
         <ion-skeleton-text animated></ion-skeleton-text>
       </ion-avatar>
     </ion-fab>
   </div>
 
   <div class="contenedor-card total" *ngIf="!load">
-    <img 
+    <img
       class="public-img img-avatar"
-      (ionError)="ErrorImagen()" 
+      (ionError)="ErrorImagen()"
       [srcPath]="Avatar()">
     <div class="gradient">
     </div>
     <div class="text-bottom">
       <ion-label  class="public-name text-card" >
-          {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') | names:25 }}
+        {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') | names:25 }}
       </ion-label>
       <ion-label class="text-card text-small">
-          {{userWink ? (userWink.distance | distance) : ''}}
+        <fa-icon
+          *ngIf="userWink  && userWink.distance"
+          [icon]="['fas', 'map-marker-alt']"
+          ></fa-icon>
+        {{userWink ? (userWink.distance | distance) : ''}}
       </ion-label>
     </div>
     <ion-buttons *ngIf="!load && !(load$ | async)" class="button-wink">
-      <ion-button expand="block" color="primary">WINK</ion-button>
-      |
-      <ion-button expand="block"  color="danger">IGNORE</ion-button>
+      <ion-button
+      expand="full"
+      [ngClass]="{'medium' : !testSend, 'primary' : testSend}"
+      class="width-100 buttons-wink "
+      (click)="SendWink()"
+      *ngIf="!wink || wink && !wink.approved">WINK</ion-button>
+      <span class="medium">
+        |
+      </span>
+      <ion-button expand="full" color="medium" class="width-100 buttons-wink "
+      *ngIf="wink && !wink.approved && !Sended()">IGNORE</ion-button>
+      <ion-button expand="full" color="medium" class="width-100 buttons-wink "
+      *ngIf="wink && wink.approved">SEE</ion-button>
     </ion-buttons>
     <!-- <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
       <div *ngIf="wink" class="end">
@@ -61,19 +75,19 @@
               <ion-icon name="close"></ion-icon>
           </ion-fab-button>
           <ion-fab-button *ngIf="Sended() && !wink.approved" (click)="CancelWink()" size="small" color="primary">
-              <fa-icon 
-              [icon]="['far', 'smile-wink']" 
-              class="icono-public" 
-              ></fa-icon>  
+              <fa-icon
+              [icon]="['far', 'smile-wink']"
+              class="icono-public"
+              ></fa-icon>
           </ion-fab-button>
       </div>
       <ion-fab-button *ngIf="wink && wink.approved" (click)="GoPrivateProfile()" size="small" color="light">
         <ion-icon name="document"></ion-icon>
       </ion-fab-button>
       <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light"[disabled]="userWink.status === 'WINK.STATUS.BUSY'">
-          <fa-icon 
-          [icon]="['far', 'smile-wink']" 
-          class="icono-public" 
+          <fa-icon
+          [icon]="['far', 'smile-wink']"
+          class="icono-public"
           ></fa-icon>
       </ion-fab-button>
     </ion-fab>

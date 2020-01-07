@@ -47,6 +47,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   load$ = this.loadB.asObservable();
   activateView: boolean;
   photo = new Photo();
+  testSend = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -388,6 +389,10 @@ ErrorImagen() {
     this.activateView = false;
     this.backButtonSubs.unsubscribe();
     // this.DestroySubs();
+  }
+
+  TestSend() {
+    this.testSend = !this.testSend;
   }
 
 }
