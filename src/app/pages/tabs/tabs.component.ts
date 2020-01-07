@@ -59,13 +59,19 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
    }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     this.Listen();
+    const permission = await this.localNotifications.hasPermission();
+    console.log('permission, permission', permission);
+    if (!permission) {
+      this.NotificationPermission();
+    }
   }
   public ngOnInit() {
     this.idUser = this.userService.User()._id;
     this.RouterController();
     if (this.platform.is('mobile')) {
+      console.log('mobile');
       this.backgroundMode.enable();
       this.backgroundMode.setDefaults({silent: true});
     }
@@ -107,8 +113,13 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
   }
+
+  async NotificationPermission() {
+    const response =  await this.localNotifications.requestPermission();
+  }
+
   async Background(wink: Wink) {
-    if (this.backgroundMode.isActive()) {
+    if (this.backgroundMode.isActive() && await this.localNotifications.hasPermission()) {
       console.log('this.newWinks.size', this.newWinks.size);
       if (this.newWinks.size === 1) {
         const user = await this.winkService.GetUserWink(wink);
@@ -138,8 +149,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       ['/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS, true]
     );
   }
-
-
 
   private Listen() {
     this.tour = this.toursService.tour;

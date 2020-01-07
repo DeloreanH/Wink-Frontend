@@ -1,7 +1,6 @@
 .button-ignore {
   --ion-color-contrast: var(--ion-color-light-contrast, rgb(214, 208, 208)) !important;
 }
-
 .note-wink {
   margin-left: 0.25rem;
   padding-left: 0%;
@@ -11,11 +10,9 @@
   display: flex;
   align-items: center;
 }
-
 .button-50 {
   width: 50%;
 }
-
 .title-wink {
   padding-left: 0%;
   font-weight: normal;
@@ -25,13 +22,13 @@
   width: 4.4rem;
   height: 4.4rem;
   margin-inline-start: 0.3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
-
 .label-item {
   width: auto;
   margin-inline-start: 1rem;
 }
-
 .item-win-badge {
   margin: 0%;
   padding: 0%;
@@ -39,7 +36,6 @@
   height: 0.6rem;
   border-radius: 50%;
 }
-
 .title-newWink {
   font-weight: bold;
 }

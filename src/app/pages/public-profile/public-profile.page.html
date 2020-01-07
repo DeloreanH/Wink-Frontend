@@ -37,6 +37,8 @@
       class="public-img img-avatar"
       (ionError)="ErrorImagen()" 
       [srcPath]="Avatar()">
+    <div class="gradient">
+    </div>
     <div class="text-bottom">
       <ion-label  class="public-name text-card" >
           {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') | names:25 }}
@@ -44,8 +46,13 @@
       <ion-label class="text-card text-small">
           {{userWink ? (userWink.distance | distance) : ''}}
       </ion-label>
-    </div>    
-    <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
+    </div>
+    <ion-buttons *ngIf="!load && !(load$ | async)" class="button-wink">
+      <ion-button expand="block" color="primary">WINK</ion-button>
+      |
+      <ion-button expand="block"  color="danger">IGNORE</ion-button>
+    </ion-buttons>
+    <!-- <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
       <div *ngIf="wink" class="end">
           <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="AceptWink()" size="small" color="primary">
               <ion-icon name="checkmark"></ion-icon>
@@ -88,7 +95,7 @@
       <ion-fab-button *ngIf="!wink"  size="small" color="light">
         <ion-spinner name="bubbles" color="dark"></ion-spinner>
       </ion-fab-button>
-    </ion-fab>
+    </ion-fab> -->
   </div>
 
 

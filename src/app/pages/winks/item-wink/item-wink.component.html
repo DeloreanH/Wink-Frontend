@@ -1,4 +1,6 @@
-<ion-item *ngIf="wink && !wink.approved && wink.user" class="ion-activatable ion-activatable-up">
+<ion-item 
+*ngIf="wink && !wink.approved && wink.user" 
+class="ion-activatable ion-activatable-up">
   <ion-avatar  class="avatar-wink ion-activatable ion-activatable-up" (click)="GoPrivateProfile()">
     <img [srcPath]="Avatar()" class="img-avatar" (ionError)="ErrorImagen()" >
   </ion-avatar>

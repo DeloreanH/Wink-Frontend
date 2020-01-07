@@ -138,7 +138,7 @@ export class LocationService {
       async (resolve, reject) => {
         try {
           const geoposition = await this.geolocation.getCurrentPosition({
-            // enableHighAccuracy: true,
+            enableHighAccuracy: true,
             timeout: 3000
           });
           resolve(geoposition);

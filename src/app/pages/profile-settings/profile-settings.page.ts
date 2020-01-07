@@ -412,7 +412,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
           if (resp && resp.value) {
             this.authService.Logout();
             if (await this.menuController.isOpen('menuSettings')) {
-              this.menuController.close();
+              this.menuController.close('menuSettings');
             }
           }
         }
@@ -478,7 +478,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         resp.register(100,
           async () => {
             if (await this.menuController.isOpen('menuSettings')) {
-              this.menuController.close();
+              this.menuController.close('menuSettings');
             } else {
               if (!this.tour /*&& !this.loaderService.Status*/) {
                 await this.navController.navigateBack(

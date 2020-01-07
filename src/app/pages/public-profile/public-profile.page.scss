@@ -47,9 +47,9 @@
 
 .button-wink {
   position: absolute;
-  top: 79.5%;
-  left: 53%;
-  width: 46%;
+  top: 89.5%;
+  left: 0%;
+  width: 100%;
 }
 
 .top {
@@ -66,4 +66,13 @@
 .skeleton-name-public {
   width: 50%;
   height: 40px;
+}
+
+.gradient {
+  -webkit-mask-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0,0,0,0.8)), to(rgba(0, 0, 0, 0)));
+  background: black;
+  height: 69%;
+  width: 100%;
+  position: absolute;
+  top: 15%;
 }
