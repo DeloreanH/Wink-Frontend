@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PagesRoutingModule } from '../pages-routing.module';
 import { TabsComponent } from './tabs.component';
 import { IonicModule } from '@ionic/angular';
+import { ImgLoadModule } from 'src/app/common/directives';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { IonicModule } from '@ionic/angular';
     CommonModule,
     IonicModule,
     PagesRoutingModule,
+    ImgLoadModule,
   ],
   exports: [
   ],

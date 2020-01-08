@@ -1,5 +1,6 @@
 .acordion{
-  min-height: 0.6rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
 }
 
 .item-name {
@@ -24,7 +25,7 @@ button {
 
 .order {
   border: 0.9px solid rgb(192, 189, 189);
-  border-radius: 0.25rem;
+  border-radius: 0.625rem;
 }
 
 .pad-let-10 {
@@ -47,5 +48,8 @@ button {
 
 .end-list {
   margin-bottom: 3rem;
+}
+.icon-section {
+  margin-right: 0.2rem;
 }
 

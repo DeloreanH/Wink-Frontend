@@ -66,3 +66,26 @@
     display: none;
   }
 }
+
+.avatar-tab {
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon-tab {
+  font-size: 2rem;
+}
+
+.tab-selected {
+
+  color: var(--ion-color-dark);
+  // & ion-avatar {
+  //   width: 1.75rem;
+  //   height: 1.75rem;
+  // }
+  & div {
+    margin-top: 0.15rem;
+    border-bottom: 3px solid var(--ion-color-primary);
+    width: 5rem;;
+  }
+}

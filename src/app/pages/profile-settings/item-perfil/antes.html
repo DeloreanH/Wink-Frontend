@@ -1,0 +1,148 @@
+<ion-item
+  class="item-has-placeholder item-perfil"
+  [ngClass]="{'item-has-focus': focus}"
+  [formGroup]="form"
+  >
+
+  <!--Icono del item-->
+  <fa-icon
+    *ngIf="itemType"
+    [icon]="itemType? [preIcon, icon] : null"
+    (click)="ShowSelector()"
+    class="icono"
+    slot="start" ></fa-icon>
+
+  <!--Titulo del item-->
+  <ion-label
+    position="floating"
+    class="padding-left-10"
+    *ngIf="itemType">
+    {{(itemType? itemType.description : '') | translate}}
+  </ion-label>
+
+  <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
+  <div
+  class="contenedor-doble"
+  *ngIf="itemType">
+    <!--Primer input-->
+    <ion-input
+    *ngIf="itemType && itemType.index === 0 || itemType.index === 2 || itemType.index === 1 ||  itemType.index === 3 ||  itemType.index === 6 ||  itemType.index === 7"
+    [placeholder]="Watermark(0) | translate"
+    class="input-item"
+    (ionInput)="OnInput($event.target.value, 0)"
+    [value]="Value(0)"
+    maxlength="150"
+    minlength="2"
+    [type]="type"
+    formControlName="campo1"></ion-input>
+
+    <!--Segundo input-->
+    <ion-input
+    *ngIf="itemType && itemType.index === 2  || itemType.index === 7 "
+    class="input-item"
+    [placeholder]="Watermark(1) | translate"
+    [value]="Value(1)"
+    (ionInput)="OnInput($event.target.value, 1)"
+    [type]="type"
+    formControlName="campo2"
+    ></ion-input>
+  </div>
+
+  <!--Selector para item de seleccion-->
+  <ion-select
+  *ngIf="itemType && itemType.index === 4"
+  class="input-item input-relative"
+  interface="popover"
+  [placeholder]="'WINK.PROFILE_SETTINGS.OPTIONS.SELECT_ITEMS' | translate"
+  (ionChange)="OnInput($event.target.value, 0)"
+  [value]="Value(0)"
+  formControlName="campo1">
+    <ion-select-option
+    *ngFor="let option of itemType.options"
+    [value]="option._id">
+      {{option.name | translate}}
+    </ion-select-option>
+  </ion-select>
+
+  <!--Input para fecha-->
+  <ion-datetime
+  *ngIf="itemType && itemType.index === 5"
+  class="input-item input-relative"
+  displayFormat="DD/MM/YYYY"
+  min="1900-01-01"
+  [max]="CurrentDate() | date:'yyy-MM-dd'"
+  [value]="Value(0)? (Value(0)) : null "
+  (ionChange)="OnInput($event.target.value, 0)"
+  formControlName="campo1"
+  ></ion-datetime>
+
+  <!--Campos para Chips-->
+  <mat-chip-list
+  #chipList
+  *ngIf="itemType && itemType.index === 8"
+  class="chip-item chip-margin">
+    <ion-input
+    #chipControl
+    [value]="Value(0)"
+    hidden
+    formControlName="campo1">
+    </ion-input>
+    <ion-chip outline color="primary"
+      *ngFor="let chip of chipArray"
+      >
+      {{chip}}
+      <ion-icon
+        name="close-circle"
+        (click)="DeleteChip(chip)">
+      </ion-icon>
+    </ion-chip>
+
+    <input
+    #inputChip
+    class="native-input sc-ion-input-md sc-ion-input-ios placeholder"
+    [placeholder]="Watermark(0)  | translate"
+    (focus)="Focus(true)"
+    (blur)="Focus(false)"
+    maxlength="12"
+    autocomplete="off"
+    [matChipInputFor]="chipList"
+    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+    [matChipInputAddOnBlur]="addOnBlur"
+    (matChipInputTokenEnd)="AddChip($event, chipControl)"
+    (input)="ValueChip($event.target.value, chipControl)"
+    (keyup)="KeyDown($event, inputChip)"
+    >
+  </mat-chip-list>
+
+  <!--Icono para eliminar-->
+  <ion-icon
+  *ngIf="!order && !value.basic"
+  name="close-circle-outline"
+  slot="end"
+  (click)="Delete()"
+  class="input-relative icon-del"
+  ></ion-icon>
+
+  <!--Seleccionar tipo de item-->
+  <ion-select
+  *ngIf="!itemType"
+  ok-text="Aceptar"
+  cancel-text="Cancelar"
+  class="select-type input-relative"
+  interface="popover"
+  [value]="itemType"
+  [placeholder]="'WINK.PROFILE_SETTINGS.OPTIONS.SELECT_ITEMS' | translate"
+  (ionChange)="SelectItemType($event.target.value)"
+  formControlName="selector"
+  >
+    <ion-select-option
+    *ngFor="let item of itemsType"
+    [disabled]="Unique(item)"
+    [value]="item">
+      {{item.description | translate}}
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+<ion-text color="danger">
+  {{ErrorMessage() | translate}}
+</ion-text>

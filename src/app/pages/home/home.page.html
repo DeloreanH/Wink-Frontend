@@ -105,26 +105,27 @@
       <div *ngIf="tour" tourAnchor="profiles"></div>
       <div *ngIf="tour" tourAnchor="profiles_buttons"></div>
       <ion-fab-button size="small">
-        <ion-icon name="eye"></ion-icon>
+        <ion-icon
+          class="icono-public"
+          src="/assets/icon/show.svg"></ion-icon>
       </ion-fab-button>
 
       <ion-fab-list side="top" [activated]="OpenFabList">
+
         <ion-fab-button
           (click)="ChangeProfiles('2')"
           [ngClass]="{'activo': isProfessional, 'inactivo' : !isProfessional}">
-            <fa-icon
-            [icon]="['fas', 'user-tie']"
-            class="icono-public"
-            ></fa-icon>
+          <ion-icon
+          class="icono-public"
+          src="/assets/icon/professional.svg"></ion-icon>
         </ion-fab-button>
 
         <ion-fab-button
           (click)="ChangeProfiles('1')"
           [ngClass]="{'activo': isPersonal, 'inactivo' : !isPersonal}">
-          <fa-icon
-            [icon]="['fas', 'user']"
-            class="icono-public"
-          ></fa-icon>
+          <ion-icon
+          class="icono-public"
+          src="/assets/icon/personal.svg"></ion-icon>
         </ion-fab-button>
       </ion-fab-list>
 
@@ -142,18 +143,18 @@
         </ion-card-header>
         <ion-card-content>
           <ion-text class="content-card-tour">
-              {{step?.content}}
+            {{step?.content}}
           </ion-text>
         </ion-card-content>
         <ion-buttons class="content-end">
           <ion-button *ngIf="tourService.hasPrev(step)" (click)="tourService.prev()">
-              <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+            <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
           </ion-button>
           <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
-              <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+            <ion-icon name="arrow-dropright" slot="end"></ion-icon>
           </ion-button>
           <ion-button (click)="tourService.end()">
-              {{step?.endBtnTitle}}
+            {{step?.endBtnTitle}}
           </ion-button>
         </ion-buttons>
     </ion-card>

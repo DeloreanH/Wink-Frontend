@@ -54,17 +54,29 @@
     <ion-buttons *ngIf="!load && !(load$ | async)" class="button-wink">
       <ion-button
       expand="full"
-      [ngClass]="{'medium' : !testSend, 'primary' : testSend}"
+      [ngClass]="{'medium' : !wink, 'primary' : wink}"
       class="width-100 buttons-wink "
-      (click)="SendWink()"
-      *ngIf="!wink || wink && !wink.approved">WINK</ion-button>
-      <span class="medium">
+      (click)="Wink()"
+      *ngIf="!wink || wink && !wink.approved">WINK
+      <ion-icon src="/assets/icon/wink.svg"></ion-icon>
+      </ion-button>
+      <span class="medium" *ngIf="wink && !wink.approved && !Sended()">
         |
       </span>
-      <ion-button expand="full" color="medium" class="width-100 buttons-wink "
-      *ngIf="wink && !wink.approved && !Sended()">IGNORE</ion-button>
-      <ion-button expand="full" color="medium" class="width-100 buttons-wink "
-      *ngIf="wink && wink.approved">SEE</ion-button>
+      <ion-button
+      expand="full"
+      color="medium"
+      class="width-100 buttons-wink "
+      *ngIf="wink && !wink.approved && !Sended()"
+      (click)="DeleteWink()">IGNORE
+      <ion-icon src="/assets/icon/ignore.svg" slot="end"></ion-icon>
+      </ion-button>
+      <ion-button
+      expand="full"
+      color="medium"
+      class="width-100 buttons-wink "
+      *ngIf="wink && wink.approved"
+      (click)="GoPrivateProfile()">SEE</ion-button>
     </ion-buttons>
     <!-- <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
       <div *ngIf="wink" class="end">

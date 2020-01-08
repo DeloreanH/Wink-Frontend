@@ -1,5 +1,5 @@
-<ion-item 
-*ngIf="wink && !wink.approved && wink.user" 
+<ion-item
+*ngIf="wink && !wink.approved && wink.user"
 class="ion-activatable ion-activatable-up">
   <ion-avatar  class="avatar-wink ion-activatable ion-activatable-up" (click)="GoPrivateProfile()">
     <img [srcPath]="Avatar()" class="img-avatar" (ionError)="ErrorImagen()" >
@@ -16,10 +16,10 @@ class="ion-activatable ion-activatable-up">
       </div>
     </div>
     <div *ngIf="!(load | async)"  class="date-wink content-center" >
-      <ion-button class="button-50 input-relative" (click)="Accept()">
+      <ion-button class="button-50 input-relative button-none-shadow" (click)="Accept()">
         {{'WINK.BUTTONS.WINK' | translate}}
       </ion-button>
-      <ion-button  class="button-ignore button-50 input-relative" color="light" (click)="Ignore()">
+      <ion-button  class="button-ignore button-50 input-relative contrast-pego button-none-shadow"  (click)="Ignore()">
         {{'WINK.BUTTONS.IGNORE' | translate}}
       </ion-button>
     </div>

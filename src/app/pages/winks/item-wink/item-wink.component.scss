@@ -1,5 +1,5 @@
 .button-ignore {
-  --ion-color-contrast: var(--ion-color-light-contrast, rgb(214, 208, 208)) !important;
+  --background: var(--color-pego);
 }
 .note-wink {
   margin-left: 0.25rem;
@@ -38,4 +38,7 @@
 }
 .title-newWink {
   font-weight: bold;
+}
+.button-none-shadow {
+  --box-shadow: none;
 }

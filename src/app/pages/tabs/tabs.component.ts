@@ -14,6 +14,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Photo } from 'src/app/common/class/photo.class';
 
 
 @Component({
@@ -30,9 +31,11 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   winksTab = false;
   newWinks = new Map();
   url: string;
-  idUser: string;
+  user: User;
   idUserProfile: string;
   notificationSubs: Subscription;
+
+  photo = new Photo();
 
   tour = true;
 
@@ -62,16 +65,14 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   async ngAfterViewInit(): Promise<void> {
     this.Listen();
     const permission = await this.localNotifications.hasPermission();
-    console.log('permission, permission', permission);
     if (!permission) {
       this.NotificationPermission();
     }
   }
   public ngOnInit() {
-    this.idUser = this.userService.User()._id;
+    this.user = this.userService.User();
     this.RouterController();
     if (this.platform.is('mobile')) {
-      console.log('mobile');
       this.backgroundMode.enable();
       this.backgroundMode.setDefaults({silent: true});
     }
@@ -161,7 +162,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updatedUserSubs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
       (user: User) => {
         if (user) {
-          if (user._id === this.idUser) {
+          if (user._id === this.user._id) {
             this.userService.User(user, true);
           } else {
             this.winkService.UpdateUser(user as User);
@@ -172,7 +173,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updatedAvatarSubs = this.socketService.Listen(SocketEventsListen.AVATAR_UPLOADED).subscribe(
       (user: User) => {
         if (user) {
-          if (user._id === this.idUser) {
+          if (user._id === this.user._id) {
             this.userService.User(user, true);
           } else {
             this.winkService.UpdateUser(user as User, true);
@@ -185,7 +186,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (data && data.wink) {
           const wink: Wink = data.wink;
           wink.user = null;
-          if (wink.receiver_id === this.idUser) {
+          if (wink.receiver_id === this.user._id) {
             this.newWinks.set(wink._id, wink._id);
             this.Background(wink);
             if (this.url !== RoutesAPP.WINKS) {
@@ -248,6 +249,10 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.handeledWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
     this.updatedAvatarSubs.unsubscribe();
+  }
+
+  Avatar() {
+    return this.photo.URLAvatar(this.user);
   }
 
 }

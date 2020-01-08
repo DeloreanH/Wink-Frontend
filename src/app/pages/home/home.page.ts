@@ -277,7 +277,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       buttons: [
         {
           label: Buttons.CANCEL,
-          type: AlertButtonType.Danger,
+          type: AlertButtonType.Medium,
           value: false
         },
         {

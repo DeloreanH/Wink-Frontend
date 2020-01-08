@@ -138,8 +138,8 @@ export class AlertService {
     const B = Buttons.NO;
 
     return [
-      { type: AlertButtonType.Danger, label: B, value: false },
-      { type: AlertButtonType.Secondary, label: A, value: true }
+      { type: AlertButtonType.Medium, label: B, value: false },
+      { type: AlertButtonType.Primary, label: A, value: true }
     ] as AlertButtons;
   }
 
@@ -148,8 +148,8 @@ export class AlertService {
     const B = Buttons.CANCEL;
 
     return [
-      { type: AlertButtonType.Danger, label: B, value: false },
-      { type: AlertButtonType.Secondary, label: A, value: true }
+      { type: AlertButtonType.Medium, label: B, value: false },
+      { type: AlertButtonType.Primary, label: A, value: true }
     ] as AlertButtons;
   }
 

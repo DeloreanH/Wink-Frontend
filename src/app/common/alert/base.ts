@@ -16,6 +16,7 @@ export enum AlertButtonType {
   Dark = 'dark',
   Danger = 'danger',
   Light = 'light',
+  Medium = 'medium'
 }
 
 export interface AlertButton {

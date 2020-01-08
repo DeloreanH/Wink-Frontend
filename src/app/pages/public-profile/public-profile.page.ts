@@ -225,6 +225,16 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  Wink() {
+    if (!this.wink) {
+      this.SendWink();
+    } else if (!this.wink.approved && !this.Sended()) {
+      this.AceptWink();
+    } else if (!this.wink.approved && this.Sended()) {
+      this.CancelWink();
+    }
+  }
+
   async SendWink() {
     try {
       this.loadB.next(false);
