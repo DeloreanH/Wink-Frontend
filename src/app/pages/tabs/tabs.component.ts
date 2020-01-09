@@ -32,6 +32,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   newWinks = new Map();
   url: string;
   user: User;
+  userSubs = new Subscription();
   idUserProfile: string;
   notificationSubs: Subscription;
 
@@ -76,6 +77,11 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.backgroundMode.enable();
       this.backgroundMode.setDefaults({silent: true});
     }
+    this.userSubs = this.userService.userChanged.subscribe(
+      (data) => {
+        this.user = data;
+      }
+    );
   }
 
   RouterController() {
@@ -249,6 +255,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.handeledWinkSubs.unsubscribe();
     this.deletedWinkSubs.unsubscribe();
     this.updatedAvatarSubs.unsubscribe();
+    this.userSubs.unsubscribe();
   }
 
   Avatar() {

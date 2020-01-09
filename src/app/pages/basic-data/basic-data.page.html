@@ -266,15 +266,6 @@
           {{ MessageError('gender') | translate }}
         </ion-text>
         <ion-item>
-          <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
-          <ion-label  >
-            {{'WINK.BASIC_DATA.FORM.AUTOSAVE_CONTACTS' | translate}}
-          </ion-label>
-        </ion-item>
-        <ion-text color="danger">
-          {{ MessageError('autosave') | translate }}
-        </ion-text>
-        <ion-item>
           <fa-icon
           [icon]="['fas', 'language']"
           class="icono icon-center"
@@ -292,6 +283,15 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <ion-item>
+          <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
+          <ion-label  >
+            {{'WINK.BASIC_DATA.FORM.AUTOSAVE_CONTACTS' | translate}}
+          </ion-label>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('autosave') | translate }}
+        </ion-text>
       </ion-list>
       <ion-button expand="block" (click)="onSubmit()" [disabled]="FormValid()" class="button-none-shadow">
           {{'WINK.BUTTONS.SAVE' | translate}}

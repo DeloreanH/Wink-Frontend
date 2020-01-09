@@ -1,4 +1,4 @@
-<ion-menu side="start" contentId="main" menuId="menuSettings" [swipeGesture]="false">
+<ion-menu side="start" contentId="main" menuId="menuSettings" type="overlay" [swipeGesture]="false">
   <ion-header>
     <ion-toolbar translucent>
       <ion-title>
@@ -112,21 +112,16 @@
             [icon]="['fas', 'book-open'] "
           class="icono"></fa-icon>
           </div>
-
-          <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
-          <div
-          class="contenedor-doble delete-column">
-          <ion-textarea maxlength="50"
+          <ion-input
+          class="delete-column"
+          maxlength="50"
           [placeholder]="'WINK.ITEM_TYPES.BIOGRAPHY' | translate"
           formControlName="biografia"
-          (ionInput)="ChangeData()"
-          ></ion-textarea>
-          <ion-text color="danger">
-            {{MessageError('biografia') | translate}}
-          </ion-text>
-          </div>
-
+          (ionInput)="ChangeData()"></ion-input>
         </div>
+        <ion-text color="danger" >
+          {{MessageError('biografia') | translate}}
+        </ion-text>
         <div *ngIf="tour" tourAnchor="sections"></div>
         <mat-accordion multi="true" cdkDropListGroup
         class="margin-bottom">
@@ -140,7 +135,7 @@
             formArrayName="0"
             class="none-shadow"
             >
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header class="padding-0 ">
               <mat-panel-title>
                 <ion-icon src="/assets/icon/public.svg" class="icon-section"></ion-icon>
                 {{'WINK.SECTIONS.PUBLIC' | translate}}
@@ -182,7 +177,7 @@
             formArrayName="1"
             class="none-shadow"
             >
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header class="padding-0 ">
               <mat-panel-title>
                 <ion-icon src="/assets/icon/private.svg" class="icon-section"></ion-icon>
                 {{'WINK.SECTIONS.GENERAL' | translate}}
@@ -220,7 +215,7 @@
             formArrayName="2"
             class="none-shadow"
           >
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header class="padding-0 ">
               <mat-panel-title>
                 <ion-icon src="/assets/icon/private.svg" class="icon-section"></ion-icon>
                 {{'WINK.SECTIONS.PERSONAL' | translate}}
@@ -258,7 +253,7 @@
             formArrayName="3"
             class="none-shadow"
           >
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header class="padding-0 ">
               <mat-panel-title>
                 <ion-icon src="/assets/icon/private.svg" class="icon-section"></ion-icon>
                 {{'WINK.SECTIONS.PROFESSIONAL' | translate}}

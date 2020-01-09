@@ -114,24 +114,31 @@ export class ProfilesService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          let response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
-          response = response.filter(
-            (item: Item) => {
-              if (item.position === -1) {
-                this.biography = item;
-              } else {
-                return item;
-              }
-            }
-          );
-          this.itemsUser = response;
-          resolve(response);
+          const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
+          resolve(this.FilterItems(response));
         } catch (err) {
           this.toastService.Toast(MessagesServices.ERROR_GET_INFORMATION);
           reject(err);
         }
       }
     );
+  }
+
+  FilterItems(items: Item[]) {
+    if (!items) {
+      return;
+    }
+    items = items.filter(
+      (item: Item) => {
+        if (item.position === -1) {
+          this.biography = item;
+        } else {
+          return item;
+        }
+      }
+    );
+    this.itemsUser = items;
+    return items;
   }
 
   async SaveItems(data: Item[]) {
@@ -143,7 +150,8 @@ export class ProfilesService {
           }
           const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
           this.toastService.Toast(MessagesServices.SAVE_ITEMS);
-          resolve(response);
+
+          resolve(this.FilterItems(response));
         } catch (err) {
           console.log(err);
           this.toastService.Toast(MessagesServices.ERROR_SAVE);

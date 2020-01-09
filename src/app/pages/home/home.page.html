@@ -18,7 +18,7 @@
             [icon]="['far',  'comment']"
             class="icon-bar"
             (click)="PromptStatus()"
-            [ngClass]="{'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'), 'icon-red' : (user.status === 'WINK.STATUS.BUSY'), 'icon-blue' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}"
+            [ngClass]="{'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'), 'icon-red' : (user.status === 'WINK.STATUS.BUSY'), 'icon-primary' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}"
           ></fa-icon>
           <ion-ripple-effect></ion-ripple-effect>
           <div *ngIf="tour" tourAnchor="status"></div>

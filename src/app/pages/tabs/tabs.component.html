@@ -2,7 +2,7 @@
   <ion-tab-bar slot="bottom" >
     <ion-tab-button [tab]="home" [disabled]="tour"  class="line-sub">
       <ion-icon src="/assets/icon/home.svg" class="icon-tab"></ion-icon>
-      <ion-label>
+      <ion-label  class="label-tab">
         {{'WINK.HOME.TITLE' | translate}}
       </ion-label>
       <div></div>
@@ -10,7 +10,7 @@
 
     <ion-tab-button [tab]="winks" [disabled]="tour" class="line-sub">
       <ion-icon src="/assets/icon/wink.svg" class="icon-tab"></ion-icon>
-      <ion-label>
+      <ion-label class="label-tab">
         {{'WINK.WINKS.TITLE'  | translate}}
       </ion-label>
       <div></div>
@@ -18,10 +18,11 @@
     </ion-tab-button>
 
     <ion-tab-button [tab]="profiles" [disabled]="tour"  class="line-sub">
+
       <ion-avatar class="avatar-tab">
-        <img [srcPath]="Avatar()">
+        <img [srcPath]="Avatar()" class="img-avatar">
       </ion-avatar>
-      <ion-label>
+      <ion-label class="label-tab">
         {{'WINK.PROFILE_SETTINGS.TITLE_TAB' | translate}}
       </ion-label>
       <div></div>

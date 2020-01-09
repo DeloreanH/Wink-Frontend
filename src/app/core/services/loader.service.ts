@@ -17,47 +17,37 @@ interface LoadingOptions {
 
 @Injectable()
 export class LoaderService  {
-
-  private status: boolean;
+  private isLoading = false;
+  private status = false;
   constructor(
     public loadingController: LoadingController,
     private translateService: TranslateService,
     ) { }
 
   async Show(opts?: LoadingOptions) {
-    // try {
-    //   this.Close();
-    //   if (!this.Status) {
-    //     const optsO: LoadingOptions = {
-    //       message: 'WINK.LOADER.LOADING',
-    //       spinner: 'bubbles'
-    //     };
-    //     opts = opts ? opts : optsO;
-    //     opts.message = opts.message ? this.translateService.instant(opts.message) : null;
-    //     const loading = await this.loadingController.create(opts);
-    //     this.status = true;
-    //     await loading.present();
-    //   }
-    // } catch (err) {
-    //   console.log('Error Show ', err);
-    // }
+    this.isLoading = true;
+    const optsO: LoadingOptions = {
+        message: 'WINK.LOADER.LOADING',
+        spinner: 'bubbles'
+      };
+    opts = opts ? opts : optsO;
+    opts.message = opts.message ? this.translateService.instant(opts.message) : null;
+    return await this.loadingController.create(opts).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
   }
   public async Close() {
-    // try {
-    //   console.log('cerrar...');
-    //   if (await this.loadingController.getTop()) {
-    //     console.log('cerrar');
-    //     this.loadingController.dismiss();
-    //   }
-    // } catch (err) {
-    //   this.loadingController.dismiss();
-    // }
-    // this.status = false;
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 
   public get Status(): boolean {
     return this.status;
   }
-
 }
 

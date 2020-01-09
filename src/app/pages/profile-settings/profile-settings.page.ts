@@ -98,7 +98,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     this.groupArray.push(this.personalArray);
     this.groupArray.push(this.profesionalArray);
     this.grupoForm = this.formBuilder.group({
-      biografia: new FormControl( null, [Validators.maxLength(50), this.noWhiteSpace.Validator]),
+      biografia: new FormControl( null, [Validators.minLength(2), Validators.maxLength(50), this.noWhiteSpace.Validator]),
       0: this.publicoArray,
       1: this.generalArray,
       2: this.personalArray,
@@ -292,6 +292,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       const valor = this.profilesServices.biography;
       if (valor) {
         this.grupoForm.controls.biografia.setValue(valor.value);
+      } else {
+        this.grupoForm.controls.biografia.setValue('');
       }
     }
   }
@@ -322,7 +324,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         ...this.LoadSection(),
         {
         text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
-        icon: 'close',
         role: 'cancel',
         handler: () => {
         }
@@ -338,8 +339,8 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         ...this.LoadCategories()
         , {
         text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
-        icon: 'close',
         role: 'cancel',
+        cssClass: 'contrast-pego',
         handler: () => {
         }
       }]
@@ -356,7 +357,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       if (categoria.name !== 'biografia') {
         obj.push({
           text: this.translateService.instant(categoria.description),
-          icon: 'add',
           handler: () => {
             this.item.category = categoria.name;
             this.AddItem(this.item, true);
@@ -372,7 +372,6 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     for (const seccion of this.sections) {
       obj.push({
         text: this.translateService.instant(seccion.name),
-        icon: 'add',
         handler: () => {
           this.item.section = seccion;
           this.SelectCategory();
