@@ -1,7 +1,8 @@
 $padding: 2rem;
 
 :root {
-  --auth-color-primary: #4183C4;
+  --auth-color-primary: var(--ion-color-primary);
+  --auth-color-primary-opacity: rgba(var(--ion-color-primary-rgb), 0.75);
   --auth-color-error: #f44336;
   --auth-color-primary-alpha: rgba(65, 131, 196, .1);
   --auth-color-text-primary: #4C4D4D;
@@ -89,7 +90,7 @@ $padding: 2rem;
 .auth__logo, .auth__add-avatar {
   width: 9.5rem;
   height: 9.5rem;
-  background-color: var(--auth-color-primary);
+  background-color: var(--auth-color-primary-opacity);
   border-radius: 2rem;
   display: flex;
   justify-content: center;
@@ -262,7 +263,7 @@ sl-base-page.auth {
     }
   }
   .bt-login {
-    background-color: var(--auth-color-primary);
+    background-color: var(--auth-color-primary-opacity);
     color: #ffffff;
     height: 3.6rem;
     max-height: 3.6rem;
@@ -285,4 +286,7 @@ sl-base-page.auth {
       width: 1.5rem;
     }
   }
+}
+.contrast {
+  color: var(--color-cpego);
 }

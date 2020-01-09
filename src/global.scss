@@ -354,5 +354,57 @@
 .contrast-pego {
   color: var(--color-cpego) !important;
 }
-
-
+.none-shadow {
+  box-shadow: none !important;
+}
+.button-none-shadow {
+  --box-shadow: none;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 5fr 0.5fr;
+  grid-gap: 0.1rem;
+}
+.design-style {
+  background: var(--color-pego);
+  border-radius: 0.625rem;
+  min-height: 3.125rem;
+}
+.wrapper-sub {
+  display: grid;
+  grid-template-columns: 0.7fr 4fr;
+  grid-gap: 0.1rem;
+  min-height: 3.125rem;
+}
+.wrapper-sub-item-list {
+  display: grid;
+  grid-template-columns: 0.5fr 4fr;
+  grid-gap: 0.1rem;
+  min-height: 3.125rem;
+}
+.icon-column {
+  grid-column: 1;
+  grid-row: 1;
+}
+.delete-column {
+  grid-column: 2;
+  grid-row: 1;
+}
+.select-column {
+  grid-column: 1;
+  grid-row: 1;
+}
+.all-column {
+  grid-column: 1 / 3;
+  grid-row: 1;
+}
+.none-item-border {
+  --inner-border-width: 0px !important;
+  --border-width: 0px !important;
+}
+.contenedor-doble {
+  display: flex;
+  flex-direction: column;
+  width:  100%;
+  height: 100%;
+}

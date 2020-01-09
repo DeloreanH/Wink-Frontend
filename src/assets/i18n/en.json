@@ -97,6 +97,7 @@
     },
     "PROFILE_SETTINGS": {
       "TITLE": "Profile settings",
+      "TITLE_TAB": "Profile",
       "MENU": {
         "TITLE": "Menu",
         "BASIC_DATA": "Basic data",

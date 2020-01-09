@@ -1,5 +1,7 @@
 .button-ignore {
   --background: var(--color-pego);
+  --background-focused: var(--color-cpego);
+  --background-hover: var(--color-pego);
 }
 .note-wink {
   margin-left: 0.25rem;
@@ -38,7 +40,4 @@
 }
 .title-newWink {
   font-weight: bold;
-}
-.button-none-shadow {
-  --box-shadow: none;
 }

@@ -2,13 +2,17 @@
   <ion-tab-bar slot="bottom" >
     <ion-tab-button [tab]="home" [disabled]="tour"  class="line-sub">
       <ion-icon src="/assets/icon/home.svg" class="icon-tab"></ion-icon>
-      <ion-label>Wink</ion-label>
+      <ion-label>
+        {{'WINK.HOME.TITLE' | translate}}
+      </ion-label>
       <div></div>
     </ion-tab-button>
 
     <ion-tab-button [tab]="winks" [disabled]="tour" class="line-sub">
       <ion-icon src="/assets/icon/wink.svg" class="icon-tab"></ion-icon>
-      <ion-label>Notification</ion-label>
+      <ion-label>
+        {{'WINK.WINKS.TITLE'  | translate}}
+      </ion-label>
       <div></div>
       <ion-badge color="primary" *ngIf="winksTab"></ion-badge>
     </ion-tab-button>
@@ -17,7 +21,9 @@
       <ion-avatar class="avatar-tab">
         <img [srcPath]="Avatar()">
       </ion-avatar>
-      <ion-label>Profile</ion-label>
+      <ion-label>
+        {{'WINK.PROFILE_SETTINGS.TITLE_TAB' | translate}}
+      </ion-label>
       <div></div>
     </ion-tab-button>
   </ion-tab-bar>

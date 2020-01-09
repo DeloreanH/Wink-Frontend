@@ -103,14 +103,19 @@
 
       <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()" class="end-list">
       <ion-list >
-        <ion-item>
-          <fa-icon
-          [icon]="['fas', 'book-open'] "
-          class="icono"
-          slot="start"></fa-icon>
-          <ion-label position="floating" class="pad-let-10">
-            {{ 'WINK.ITEM_TYPES.BIOGRAPHY' | translate}}
-          </ion-label>
+        <div
+        class="wrapper-sub design-style">
+
+        <!--Icono del item-->
+          <div class="center icon-column">
+            <fa-icon
+            [icon]="['fas', 'book-open'] "
+          class="icono"></fa-icon>
+          </div>
+
+          <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
+          <div
+          class="contenedor-doble delete-column">
           <ion-textarea maxlength="50"
           [placeholder]="'WINK.ITEM_TYPES.BIOGRAPHY' | translate"
           formControlName="biografia"
@@ -119,7 +124,9 @@
           <ion-text color="danger">
             {{MessageError('biografia') | translate}}
           </ion-text>
-        </ion-item>
+          </div>
+
+        </div>
         <div *ngIf="tour" tourAnchor="sections"></div>
         <mat-accordion multi="true" cdkDropListGroup
         class="margin-bottom">
@@ -131,6 +138,7 @@
             (cdkDropListEntered)="OpenPanel(pp)"
             (cdkDropListExited)="ClosePanel(pp)"
             formArrayName="0"
+            class="none-shadow"
             >
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -172,6 +180,7 @@
             (cdkDropListEntered)="OpenPanel(pg)"
             (cdkDropListExited)="ClosePanel(pg)"
             formArrayName="1"
+            class="none-shadow"
             >
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -209,6 +218,7 @@
             (cdkDropListDropped)="MoverItem($event)"
             (cdkDropListExited)="ClosePanel(pper)"
             formArrayName="2"
+            class="none-shadow"
           >
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -246,6 +256,7 @@
             (cdkDropListDropped)="MoverItem($event)"
             (cdkDropListExited)="ClosePanel(ppro)"
             formArrayName="3"
+            class="none-shadow"
           >
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -282,14 +293,14 @@
     <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
       <div *ngIf="tour" tourAnchor="add"></div>
       <div *ngIf="!loading">
-        <ion-fab-button *ngIf="FormValid()" size="small" color="danger" (click)="Cancel()">
+        <ion-fab-button *ngIf="FormValid()" size="small" class="button-cancel" (click)="Cancel()">
           <ion-icon name="close"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button *ngIf="FormValid()" size="small" color="success" (click)="onSubmit()">
+        <ion-fab-button *ngIf="FormValid()" size="small" color="primary" (click)="onSubmit()">
           <ion-icon name="save"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button size="small" (click)="SelectSection()">
-          <ion-icon name="add"></ion-icon>
+        <ion-fab-button size="small" (click)="SelectSection()" class="button-add">
+          <ion-icon name="add" class="icon-add"></ion-icon>
         </ion-fab-button>
       </div>
       <ion-avatar *ngIf="loading" class="button-float-skeleton">

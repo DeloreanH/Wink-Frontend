@@ -79,13 +79,14 @@
 .tab-selected {
 
   color: var(--ion-color-dark);
-  // & ion-avatar {
-  //   width: 1.75rem;
-  //   height: 1.75rem;
-  // }
+  & ion-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
   & div {
     margin-top: 0.15rem;
     border-bottom: 3px solid var(--ion-color-primary);
-    width: 5rem;;
+    width: 6rem;;
   }
 }

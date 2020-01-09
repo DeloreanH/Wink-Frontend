@@ -1,6 +1,6 @@
 <ion-item
 *ngIf="wink && !wink.approved && wink.user"
-class="ion-activatable ion-activatable-up">
+class="ion-activatable ion-activatable-up none-item-border">
   <ion-avatar  class="avatar-wink ion-activatable ion-activatable-up" (click)="GoPrivateProfile()">
     <img [srcPath]="Avatar()" class="img-avatar" (ionError)="ErrorImagen()" >
   </ion-avatar>
@@ -37,7 +37,7 @@ class="ion-activatable ion-activatable-up">
     </ion-item-option>
   </ion-item-options>
 
-  <ion-item  (click)="GoPrivateProfileA()" class="ion-activatable ion-activatable-up">
+  <ion-item  (click)="GoPrivateProfileA()" class="ion-activatable ion-activatable-up none-item-border">
     <ion-ripple-effect ></ion-ripple-effect>
     <ion-avatar  class="avatar-wink ion-activatable ion-activatable-up">
       <img [srcPath]="Avatar()" class="img-avatar" (ionError)="ErrorImagen()" >

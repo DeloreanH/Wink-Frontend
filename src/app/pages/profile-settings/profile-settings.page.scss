@@ -52,4 +52,15 @@ button {
 .icon-section {
   margin-right: 0.2rem;
 }
+.button-add {
+  --background: var(--color-pego);
+  --background-hover: var(--color-cpego);
+}
+.icon-add {
+  color: var(--color-cpego) !important;
+}
+.button-cancel {
+  --background: var(--color-danger);
+  --background-hover: var(--color-danger);
+}
 

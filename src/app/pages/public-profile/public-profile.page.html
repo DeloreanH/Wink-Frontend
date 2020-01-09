@@ -73,9 +73,10 @@
       </ion-button>
       <ion-button
       expand="full"
-      color="medium"
-      class="width-100 buttons-wink "
+      color="primary"
+      class="width-100 buttons-wink"
       *ngIf="wink && wink.approved"
+
       (click)="GoPrivateProfile()">SEE</ion-button>
     </ion-buttons>
     <!-- <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
@@ -172,8 +173,10 @@
         </ion-label>
       </ion-item>
     </ion-list>
-  <ion-list>
-    <item-list *ngFor="let item of publicItems"
-      [item]="item"></item-list>
-    </ion-list>
+  <ion-list class="margin-list">
+    <item-list
+    *ngFor="let item of publicItems"
+    [item]="item">
+    </item-list>
+  </ion-list>
 </ion-content>

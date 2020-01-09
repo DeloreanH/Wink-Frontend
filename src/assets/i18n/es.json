@@ -103,6 +103,7 @@
     },
     "PROFILE_SETTINGS": {
       "TITLE": "Configuración de perfiles",
+      "TITLE_TAB": "Perfil",
       "MENU": {
         "TITLE": "Menú",
         "BASIC_DATA": "Datos básicos",

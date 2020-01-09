@@ -5,6 +5,7 @@ import { PagesRoutingModule } from '../pages-routing.module';
 import { TabsComponent } from './tabs.component';
 import { IonicModule } from '@ionic/angular';
 import { ImgLoadModule } from 'src/app/common/directives';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { ImgLoadModule } from 'src/app/common/directives';
     IonicModule,
     PagesRoutingModule,
     ImgLoadModule,
+    TranslateModule.forChild(),
   ],
   exports: [
   ],
