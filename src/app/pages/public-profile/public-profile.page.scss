@@ -32,7 +32,10 @@
   width: 100%;
   height: 94.5%;
 }
-
+.public-img-skeleton {
+  width: 100%;
+  height: 100%;
+}
 .text-small {
   font-size: 1rem;
   text-align: start;
@@ -68,8 +71,8 @@
 }
 
 .skeleton-name-public {
-  width: 50%;
-  height: 40px;
+  width: 100%;
+  height: 2rem;
 }
 
 .gradient {

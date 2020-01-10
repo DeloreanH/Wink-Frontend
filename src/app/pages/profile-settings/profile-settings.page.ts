@@ -598,15 +598,15 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Swipe(event) {
-    switch (event.offsetDirection) {
-      case 2:
-        this.GoHome();
-        break;
-      case 4:
-        break;
-      default:
-        break;
-    }
+    // switch (event.offsetDirection) {
+    //   case 2:
+    //     this.GoHome();
+    //     break;
+    //   case 4:
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
 }

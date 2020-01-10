@@ -1,6 +1,6 @@
 .acordion{
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .item-name {
@@ -12,11 +12,6 @@
 .contenedorDerecha {
   justify-content: flex-end;
   display: flex;
-}
-.acordion {
-  margin-top: 1%;
-  margin-bottom: 1%;
-  min-height: 4rem;
 }
 
 button {
@@ -65,14 +60,12 @@ button {
   --background: var(--color-danger);
   --background-hover: var(--color-danger);
 }
+.bio {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
 .textarea-bio {
-  display: flex;
-  align-items: center;
-  margin-top: 0px;
-  & textarea {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    height: 1.25rem;
-  }
+  margin-top: 0.25rem !important;
 }
 

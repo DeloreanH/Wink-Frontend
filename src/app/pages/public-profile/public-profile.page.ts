@@ -48,6 +48,9 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
   activateView: boolean;
   photo = new Photo();
   testSend = false;
+  textBtnWink: string = Buttons.WINK;
+  textBtnIgnore: string = Buttons.IGNORE;
+  textBtnSee: string = Buttons.SEE;
 
   constructor(
     private route: ActivatedRoute,

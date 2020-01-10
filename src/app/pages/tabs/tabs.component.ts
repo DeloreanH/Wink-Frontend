@@ -65,9 +65,11 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async ngAfterViewInit(): Promise<void> {
     this.Listen();
-    const permission = await this.localNotifications.hasPermission();
-    if (!permission) {
-      this.NotificationPermission();
+    if (this.platform.is('ios')) {
+      const permission = await this.localNotifications.hasPermission();
+      if (!permission) {
+        this.NotificationPermission();
+      }
     }
   }
   public ngOnInit() {
@@ -122,11 +124,14 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async NotificationPermission() {
-    const response =  await this.localNotifications.requestPermission();
+    try {
+      await this.localNotifications.requestPermission();
+    } catch (error) {
+    }
   }
 
   async Background(wink: Wink) {
-    if (this.backgroundMode.isActive() && await this.localNotifications.hasPermission()) {
+    if (this.backgroundMode.isActive()) {
       console.log('this.newWinks.size', this.newWinks.size);
       if (this.newWinks.size === 1) {
         const user = await this.winkService.GetUserWink(wink);
@@ -134,14 +139,14 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
           id: 1,
           title: this.translateService.instant('WINK.NOTIFICATION.TITLE.NEW'),
           text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NEW', {userName: user.firstName}),
-          icon: 'https://www.iconsdb.com/icons/preview/tropical-blue/wink-xxl.png'
+          icon: '/assets/icon/wink.svg'
         });
       } else {
         this.localNotifications.schedule({
           id: 1,
           title: this.translateService.instant('WINK.NOTIFICATION.TITLE.MULTIPLE'),
           text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.MULTIPLE', {count: this.newWinks.size}),
-          icon: 'https://www.iconsdb.com/icons/preview/tropical-blue/wink-xxl.png'
+          icon: '/assets/icon/wink.svg'
         });
       }
       this.notificationSubs = this.localNotifications.on('click').subscribe( event => {

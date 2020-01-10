@@ -411,16 +411,16 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Swipe(event) {
-    switch (event.offsetDirection) {
-      case 2:
-        this.GoWinks();
-        break;
-      case 4:
-        this.GoProfilesSettings();
-        break;
-      default:
-        break;
-    }
+    // switch (event.offsetDirection) {
+    //   case 2:
+    //     this.GoWinks();
+    //     break;
+    //   case 4:
+    //     this.GoProfilesSettings();
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
 }

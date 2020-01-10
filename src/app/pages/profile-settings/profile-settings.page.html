@@ -104,7 +104,7 @@
       <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()" class="end-list">
       <ion-list >
         <div
-        class="wrapper-sub design-style">
+        class="wrapper-sub design-style bio">
 
         <!--Icono del item-->
           <div class="center icon-column">
@@ -112,14 +112,14 @@
             [icon]="['fas', 'book-open'] "
           class="icono"></fa-icon>
           </div>
-          <ion-input
-          class="delete-column"
+          <ion-textarea rows="1"   autoGrow="true"
+          class="delete-column textarea-bio"
           maxlength="50"
           [placeholder]="'WINK.ITEM_TYPES.BIOGRAPHY' | translate"
           formControlName="biografia"
-          (ionInput)="ChangeData()"></ion-input>
+          (ionInput)="ChangeData()"></ion-textarea>
         </div>
-        <ion-text color="danger" >
+        <ion-text color="danger" *ngIf="MessageError('biografia')">
           {{MessageError('biografia') | translate}}
         </ion-text>
         <div *ngIf="tour" tourAnchor="sections"></div>

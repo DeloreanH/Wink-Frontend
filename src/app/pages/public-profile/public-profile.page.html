@@ -20,16 +20,11 @@
     </ion-header>
   </ion-fab>
   <div class="contenedor-card total" *ngIf="load">
-    <ion-skeleton-text animated class="public-img img-avatar"></ion-skeleton-text>
+    <ion-skeleton-text animated class="public-img-skeleton img-avatar"></ion-skeleton-text>
     <div class="text-bottom skeleton-content-text">
         <ion-skeleton-text animated class="skeleton-name-public"></ion-skeleton-text>
         <ion-skeleton-text animated class="skeleton-name"></ion-skeleton-text>
     </div>
-    <ion-fab class="button-wink end">
-      <ion-avatar class="button-float-skeleton">
-        <ion-skeleton-text animated></ion-skeleton-text>
-      </ion-avatar>
-    </ion-fab>
   </div>
 
   <div class="contenedor-card total" *ngIf="!load">
@@ -57,8 +52,9 @@
       [ngClass]="{'medium' : !wink, 'primary' : wink}"
       class="width-100 buttons-wink "
       (click)="Wink()"
-      *ngIf="!wink || wink && !wink.approved">WINK
-      <ion-icon src="/assets/icon/wink.svg"></ion-icon>
+      *ngIf="!wink || wink && !wink.approved">
+        {{ textBtnWink | translate }}
+        <ion-icon src="/assets/icon/wink.svg"></ion-icon>
       </ion-button>
       <span class="medium" *ngIf="wink && !wink.approved && !Sended()">
         |
@@ -68,8 +64,9 @@
       color="medium"
       class="width-100 buttons-wink "
       *ngIf="wink && !wink.approved && !Sended()"
-      (click)="DeleteWink()">IGNORE
-      <ion-icon src="/assets/icon/ignore.svg" slot="end"></ion-icon>
+      (click)="DeleteWink()">
+        {{ textBtnIgnore | translate }}
+        <ion-icon src="/assets/icon/ignore.svg" slot="end"></ion-icon>
       </ion-button>
       <ion-button
       expand="full"
@@ -77,8 +74,14 @@
       class="width-100 buttons-wink"
       *ngIf="wink && wink.approved"
 
-      (click)="GoPrivateProfile()">SEE</ion-button>
+      (click)="GoPrivateProfile()">
+      {{ textBtnSee | translate }}
+      <ion-icon src="/assets/icon/show.svg" slot="end"></ion-icon>
+      </ion-button>
     </ion-buttons>
+    <div *ngIf="!load && (load$ | async)" class="date-wink content-center">
+      <ion-spinner name="bubbles"></ion-spinner>
+    </div>
     <!-- <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
       <div *ngIf="wink" class="end">
           <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="AceptWink()" size="small" color="primary">
