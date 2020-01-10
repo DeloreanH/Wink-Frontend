@@ -33,7 +33,12 @@ export class MyHammerConfig extends HammerGestureConfig  {
   imports: [
     BrowserModule,
     CoreModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot(
+      {
+        scrollAssist: false,
+        scrollPadding: false,
+      }
+    ),
     AppRoutingModule,
     SharedModule.forRoot(),
     VirtwooAuthModule.forRoot(virtwooAuthEnvironment),

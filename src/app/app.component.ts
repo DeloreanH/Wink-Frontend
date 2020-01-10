@@ -27,6 +27,11 @@ export class AppComponent {
     private languageService: LanguageService,
   ) {
     this.initializeApp();
+    document.addEventListener('deviceready', (e) => {
+      window.addEventListener('KeyboardDidShow', () => {
+              document.activeElement.scrollIntoView(false);
+          });
+  });
   }
 
   initializeApp() {
