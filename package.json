@@ -40,6 +40,7 @@
     "@ionic-native/globalization": "^5.17.1",
     "@ionic-native/in-app-browser": "^5.15.0",
     "@ionic-native/ionic-webview": "^5.15.1",
+    "@ionic-native/keyboard": "^5.19.1",
     "@ionic-native/local-notifications": "^5.18.0",
     "@ionic-native/location-accuracy": "^5.16.0",
     "@ionic-native/open-native-settings": "^5.15.1",
@@ -151,7 +152,8 @@
       "cordova-plugin-vibration": {},
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-background-mode": {},
-      "cordova-plugin-local-notification": {}
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
       "android",

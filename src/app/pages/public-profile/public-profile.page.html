@@ -3,18 +3,27 @@
   <ion-header class="opt-top transparent">
       <ion-toolbar class="transparent">
         <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start">
-          <fa-icon
-            [icon]="['fas', 'arrow-left']"
-            class="icono-white"
+          <ion-icon
+          class="icono-white center"
             (click)="Back()"
-          ></fa-icon>
+          src="/assets/icon/back.svg"
+          ></ion-icon>
+          <!-- <fa-icon
+            [icon]="['fas', 'arrow-left']"
+            class="icono-white center"
+            (click)="Back()"
+          ></fa-icon> -->
           <ion-ripple-effect></ion-ripple-effect>
         </div>
-        <div class="end status" slot="end">
-          <ion-label *ngIf="!load"
-          class="text-card text-status text-small">
-          {{ (userWink && userWink.status ? userWink.status : 'WINK.STATUS.AVAILABLE') | translate}}
-        </ion-label>
+        <div class="end status" slot="end" *ngIf="!load">
+          <ion-label
+          class="text-card text-status text-small center-vertical-text">
+            {{ (userWink && userWink.status ? userWink.status : 'WINK.STATUS.AVAILABLE') | translate}}
+          </ion-label>
+          <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" *ngIf="wink && wink.approved">
+            <ion-icon name="more" class="icono-white center" (click)="ShowMenu($event)"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -39,10 +48,10 @@
         {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') | names:25 }}
       </ion-label>
       <ion-label class="text-card text-small">
-        <fa-icon
-          *ngIf="userWink  && userWink.distance"
-          [icon]="['fas', 'map-marker-alt']"
-          ></fa-icon>
+        <ion-icon
+        *ngIf="userWink  && userWink.distance"
+          src="/assets/icon/location.svg"
+          ></ion-icon>
         {{userWink ? (userWink.distance | distance) : ''}}
       </ion-label>
     </div>
@@ -130,52 +139,31 @@
 
 
   <ion-list *ngIf="load">
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+  </ion-list>
   <ion-list class="margin-list">
     <item-list
     *ngFor="let item of publicItems"

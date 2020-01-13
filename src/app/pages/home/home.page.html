@@ -1,4 +1,4 @@
-<div class="ion-page" (swipe)="Swipe($event)">
+<div class="ion-page" id="home" (swipe)="Swipe($event)">
   <ion-header >
     <ion-toolbar>
       <ion-title>
@@ -6,29 +6,36 @@
       </ion-title>
       <ion-buttons slot="end">
         <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie">
-          <fa-icon
+          <ion-icon
+          src="/assets/icon/location.svg"
+          class="icon-bar-ion"
+          (click)="AlertRange()"
+          ></ion-icon>
+          <!-- <fa-icon
             [icon]="['fas',  'globe-americas']"
             class="icon-bar"
             (click)="AlertRange()"
-          ></fa-icon>
+          ></fa-icon> -->
           <ion-ripple-effect></ion-ripple-effect>
         </div>
         <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie">
-          <fa-icon
+          <ion-icon
+          src="/assets/icon/think.svg"
+          class="icon-bar-ion"
+          (click)="PromptStatus()"
+          [ngClass]="{'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'), 'icon-red' : (user.status === 'WINK.STATUS.BUSY'), 'icon-primary' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}"></ion-icon>
+          <!-- <fa-icon
             [icon]="['far',  'comment']"
             class="icon-bar"
             (click)="PromptStatus()"
             [ngClass]="{'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'), 'icon-red' : (user.status === 'WINK.STATUS.BUSY'), 'icon-primary' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}"
-          ></fa-icon>
+          ></fa-icon> -->
           <ion-ripple-effect></ion-ripple-effect>
           <div *ngIf="tour" tourAnchor="status"></div>
         </div>
       </ion-buttons>
-
-
     </ion-toolbar>
   </ion-header>
-
 
   <ion-content >
     <ion-refresher slot="fixed" (ionRefresh)="GPS($event)">

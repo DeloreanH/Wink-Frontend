@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
-      <fa-icon
-        [icon]="['fas', 'arrow-left']"
-        class="icono-arrow"
-        (click)="Back()"
-      ></fa-icon>
+      <ion-icon
+      class="icono-arrow center"
+      (click)="Back()"
+      src="/assets/icon/back.svg"
+      ></ion-icon>
       <ion-ripple-effect></ion-ripple-effect>
     </div>
     <ion-title>
@@ -14,7 +14,7 @@
     <div *ngIf="!load && !Empty" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie" slot="end" >
       <fa-icon
         [icon]="['far', 'save']"
-        class="icono-arrow primary"
+        class="icono-arrow primary center"
         (click)="Confirm()"
       ></fa-icon>
       <ion-ripple-effect></ion-ripple-effect>
@@ -37,93 +37,48 @@
       <ion-list-header >
         <ion-skeleton-text animated class="skeleton-title-list"></ion-skeleton-text>
       </ion-list-header>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
       <ion-list-header >
         <ion-skeleton-text animated class="skeleton-title-list"></ion-skeleton-text>
       </ion-list-header>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
       <ion-list-header >
         <ion-skeleton-text animated class="skeleton-title-list"></ion-skeleton-text>
       </ion-list-header>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
-          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
+      <ion-item class="none-item-border">
+        <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-item >
     </ion-list>
 
   </div>

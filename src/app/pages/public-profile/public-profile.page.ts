@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { User } from 'src/app/common/models/user.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WinkService } from 'src/app/core/services/wink.service';
-import { ModalController, AlertController, NavController, Platform } from '@ionic/angular';
+import { ModalController, AlertController, NavController, Platform, PopoverController } from '@ionic/angular';
 import { Item } from 'src/app/common/models/item.model';
 import { Wink } from 'src/app/common/models/wink.model';
 import { UserService } from 'src/app/core/services/user.service';
@@ -18,6 +18,7 @@ import { AlertService } from 'src/app/common/alert/alert.service';
 import { AlertButtonType } from 'src/app/common/alert/base';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
 import { Photo } from 'src/app/common/class/photo.class';
+import { MenuComponent } from './menu/menu.component';
 
 @Component({
   selector: 'public-profile',
@@ -64,6 +65,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private translateService: TranslateService,
     private alertService: AlertService,
+    public popoverController: PopoverController,
   ) {
     // this.user = this.userService.User();
   }
@@ -404,8 +406,18 @@ ErrorImagen() {
     // this.DestroySubs();
   }
 
-  TestSend() {
-    this.testSend = !this.testSend;
+  async ShowMenu(ev) {
+    const popover = await this.popoverController.create({
+      component: MenuComponent,
+      componentProps: {
+        wink: this.wink
+      },
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
   }
+
+
 
 }

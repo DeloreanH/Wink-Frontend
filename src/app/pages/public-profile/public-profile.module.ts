@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
 import { ImgLoadModule } from 'src/app/common/directives';
 import { AlertModule } from 'src/app/common/alert/alert.module';
+import { MenuComponent } from './menu/menu.component';
 
 
 const routes: Routes = [
@@ -40,8 +41,8 @@ const routes: Routes = [
     ImgLoadModule,
     AlertModule,
   ],
-  entryComponents: [ItemListComponent],
-  declarations: [PublicProfilePage],
+  entryComponents: [ItemListComponent, MenuComponent],
+  declarations: [PublicProfilePage, MenuComponent],
   providers: [],
 })
 export class PublicProfilePageModule {}

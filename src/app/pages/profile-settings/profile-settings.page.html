@@ -39,11 +39,17 @@
           {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
       </ion-title>
       <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar-lg ripple-toolbar-mie" slot="end" >
-        <fa-icon
+        <ion-icon
+        class="icon-bar center"
+        [ngClass]="{'primary' : !order, 'medium' : order}"
+        (click)="Ordenar()"
+        src="/assets/icon/drag.svg"
+        ></ion-icon>
+        <!-- <fa-icon
           [icon]="[order ? 'far' : 'fas',  'list-alt']"
-          class="icon-bar color-medium"
+          class="icon-bar color-medium center"
           (click)="Ordenar()"
-        ></fa-icon>
+        ></fa-icon> -->
         <ion-ripple-effect></ion-ripple-effect>
         <div *ngIf="tour" tourAnchor="order"></div>
       </div>
@@ -61,15 +67,10 @@
       <div class="content-center" >
           <ion-skeleton-text animated class="skeleton-name"></ion-skeleton-text>
       </div>
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-            <ion-skeleton-text animated class="skeleton-bio-label"></ion-skeleton-text>
-            <ion-skeleton-text animated class="skeleton-bio-content"></ion-skeleton-text>
-        </ion-label>
-      </ion-item>
+      <div class="design-style bio none-background">
+        <ion-skeleton-text animated class="skeleton-bio-content"></ion-skeleton-text>
+      </div>
+
         <ion-label>
             <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
         </ion-label>
@@ -113,7 +114,7 @@
           class="icono"></fa-icon>
           </div>
           <ion-textarea rows="1"   autoGrow="true"
-          class="delete-column textarea-bio"
+          class="delete-column textarea-bio medium"
           maxlength="50"
           [placeholder]="'WINK.ITEM_TYPES.BIOGRAPHY' | translate"
           formControlName="biografia"

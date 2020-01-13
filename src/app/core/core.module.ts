@@ -14,6 +14,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { Contacts } from '@ionic-native/contacts/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -67,6 +68,7 @@ import { LoaderService } from './services/loader.service';
     Diagnostic,
     Contacts,
     Globalization,
+    Keyboard,
     ScreenOrientation,
     LocalNotifications,
     BackgroundMode,

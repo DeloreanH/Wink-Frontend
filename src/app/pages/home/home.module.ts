@@ -10,9 +10,10 @@ import { HomePage } from './home.page';
 import { CardComponent } from './card/card.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
+import { TourNgxPopperModule, TourStepTemplateComponent } from 'ngx-tour-ngx-popper';
 import { ImgLoadModule } from 'src/app/common/directives';
 import { AlertModule } from '../../common/alert/alert.module';
+import { AlertComponent } from 'src/app/common/alert/alert.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
     ImgLoadModule,
     AlertModule
   ],
+  entryComponents: [CardComponent, AlertComponent, TourStepTemplateComponent],
   declarations: [HomePage, CardComponent]
 })
 export class HomePageModule {}

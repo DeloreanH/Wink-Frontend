@@ -59,12 +59,16 @@
 .icono-white {
   margin-inline-end: 0px !important;
   color: #fff;
-  font-size: 1.6rem;
+  font-size: 2.25rem;
+  height: 2.25rem;
+  width: 2.25rem;
 }
 
 .icono-arrow {
   color: var(--ion-color-medium, #989aa2) !important;
-  font-size: 1.6rem;
+  font-size: 2.25rem;
+  height: 2.25rem;
+  width: 2.25rem;
 }
 
 .color-medium {
@@ -200,7 +204,15 @@
 }
 
 .icon-bar {
-  font-size: 180%;
+  font-size: 1.6rem;
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+.icon-bar-ion {
+  font-size: 2.25rem;
+  height: 2.25rem;
+  width: 2.25rem;
 }
 
 .content-center {
@@ -310,8 +322,8 @@
 }
 
 .skeleton-content {
-  width: 80%;
-  height: 1.5rem;
+  width: 100%;
+  height: 2.5rem;
 }
 
 .skeleton-button {
@@ -424,4 +436,13 @@
   & button {
     color: var(--color-cpego) !important;
   }
+}
+
+.none-background {
+  background: none !important;
+}
+
+.center-vertical-text {
+  display: flex;
+  align-items: center;
 }

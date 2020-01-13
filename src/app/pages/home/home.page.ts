@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { User } from '../../common/models/user.model';
 import { UserService } from '../../core/services/user.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
@@ -7,7 +7,7 @@ import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { WinkService } from '../../core/services/wink.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { Platform, NavController, AlertController, LoadingController } from '@ionic/angular';
+import { Platform, NavController, AlertController } from '@ionic/angular';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { ToursService } from 'src/app/core/services/tours.service';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
@@ -63,7 +63,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private toursService: ToursService,
     public alertController: AlertController,
     private alertService: AlertService,
-    private ngZone: NgZone,
     public loaderService: LoaderService,
   ) {
     this.user = this.userService.User();
@@ -386,9 +385,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       (resp) => {
         resp.register(100,
           () => {
-            this.ngZone.run(() => {
-              this.ExitApp();
-            });
+            this.ExitApp();
           }
         );
       }

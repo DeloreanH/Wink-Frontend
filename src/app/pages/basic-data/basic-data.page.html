@@ -1,11 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <div *ngIf="!user.emptyProfile" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
-      <fa-icon
-        [icon]="['fas', 'arrow-left']"
-        class="icono-arrow"
+      <ion-icon
+      class="icono-arrow center"
         (click)="Back()"
-      ></fa-icon>
+      src="/assets/icon/back.svg"
+      ></ion-icon>
+      <!-- <fa-icon
+        [icon]="['fas', 'arrow-left']"
+        class="icono-arrow center"
+        (click)="Back()"
+      ></fa-icon> -->
       <ion-ripple-effect></ion-ripple-effect>
     </div>
     <ion-title>
