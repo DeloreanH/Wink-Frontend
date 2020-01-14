@@ -413,9 +413,14 @@ ErrorImagen() {
         wink: this.wink
       },
       event: ev,
-      translucent: true
+      translucent: false
     });
     return await popover.present();
+  }
+
+  onScroll(event) {
+    // used a couple of "guards" to prevent unnecessary assignments if scrolling in a direction and the var is set already:
+    console.log('scroll', event);
   }
 
 

@@ -15,6 +15,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { TourMatMenuModule } from 'ngx-tour-md-menu';
+import { IonicGestureConfig } from './common/tools/IonicGestureConfig';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -53,10 +54,11 @@ export class MyHammerConfig extends HammerGestureConfig  {
         deps: [HttpClient]
       }
     }),
-    TourMatMenuModule.forRoot()
+    TourMatMenuModule.forRoot(),
   ],
   providers: [
-    {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},
+    // {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},
+    {provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
   ],
   bootstrap: [AppComponent]
 })

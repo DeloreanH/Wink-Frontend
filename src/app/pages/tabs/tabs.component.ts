@@ -146,8 +146,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async Background(wink: Wink) {
-    if (this.backgroundMode.isActive()) {
-      console.log('this.newWinks.size', this.newWinks.size);
+    if (this.backgroundMode.isActive() && this.platform.is('mobile')) {
       if (this.newWinks.size === 1) {
         const user = await this.winkService.GetUserWink(wink);
         this.localNotifications.schedule({
@@ -220,7 +219,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
               if (this.idUserProfile && this.url === RoutesAPP.PERFIL_PUBLICO && wink.sender_id === this.idUserProfile) {
                 this.winksTab = false;
               } else {
-                if (!this.backgroundMode.isActive()) {
+                if (!this.backgroundMode.isActive() && this.platform.is('mobile')) {
                   this.toastService.Toast('WINK.DIALOGUES.MESSAGES.NEW_WINK', null, [{
                     text: this.translateService.instant('WINK.BUTTONS.SEE'),
                     side: 'end',
@@ -235,9 +234,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
               }
             }
-            this.winkService.AddWink(wink);
             this.songsService.Vibrate();
           }
+          this.winkService.AddWink(wink);
         }
       }
     );

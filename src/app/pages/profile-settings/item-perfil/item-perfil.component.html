@@ -98,6 +98,7 @@ class="wrapper design-style"
       <input
       #inputChip
       class="native-input sc-ion-input-md sc-ion-input-ios placeholder input-chips medium"
+      [ngClass]="{ 'list-chip-empty' : chipArray.length !== 0}"
       [placeholder]="Watermark(0)  | translate"
       (focus)="Focus(true)"
       (blur)="Focus(false)"

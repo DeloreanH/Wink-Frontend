@@ -42,6 +42,7 @@ import { ToolsModule } from '../common/tools/tools.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToursService } from './services/tours.service';
 import { LoaderService } from './services/loader.service';
+import { IonicGestureConfig } from '../common/tools/IonicGestureConfig';
 
 @NgModule({
   declarations: [],
@@ -88,6 +89,7 @@ import { LoaderService } from './services/loader.service';
     WinkService,
     ToursService,
     LoaderService,
+    IonicGestureConfig,
   ]
 })
 export class CoreModule {

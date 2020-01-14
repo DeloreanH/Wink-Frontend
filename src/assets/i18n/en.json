@@ -245,6 +245,7 @@
       "TITLES": {
         "CONFIRM": "Confirm!",
         "DELETE_WINK": "Delete Wink",
+        "DELETE_REQUEST": "Delete request",
         "SAVE_CONTACTS": "Save contact",
         "RANGE": "Search range"
       },
@@ -253,7 +254,11 @@
         "DELETE_WINK": "Are you sure?",
         "NEW_WINK": "You have a new request.",
         "SAVE_CONTACTS": "Select the items you want to save in the contact.",
-        "RANGE": "Current value: "
+        "RANGE": "Current value: ",
+        "DELETE_WINK_ITEM": "Do you want to delete {{ value }} Wink?",
+        "DELETE_WINK_ITEMS": "Do you want to delete {{ value }} Wink's?",
+        "DELETE_WINK_REQUEST": "Do you want to delete {{ value }} request?",
+        "DELETE_WINK_REQUESTS": "Do you want to delete {{ value }} requests?"
       }
     },
     "SERVICES": {

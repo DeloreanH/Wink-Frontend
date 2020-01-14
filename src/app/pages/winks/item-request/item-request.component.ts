@@ -1,23 +1,24 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Wink } from 'src/app/common/models/wink.model';
-import * as moment from 'moment';
-import { Config } from 'src/app/common/enums/config.enum';
-import { WinkService } from 'src/app/core/services/wink.service';
+import { User } from 'src/app/common/models/user.model';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
+import { BehaviorSubject } from 'rxjs';
+import { Photo } from 'src/app/common/class/photo.class';
+import { WinkService } from 'src/app/core/services/wink.service';
 import { NavController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/common/alert/alert.service';
-import { User } from 'src/app/common/models/user.model';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Photo } from 'src/app/common/class/photo.class';
+import * as moment from 'moment';
 import { MenuWinkComponent } from 'src/app/shared/components/menu-wink/menu-wink.component';
+import { Config } from 'src/app/common/enums/config.enum';
 
 @Component({
-  selector: 'item-wink',
-  templateUrl: './item-wink.component.html',
-  styleUrls: ['./item-wink.component.scss'],
+  selector: 'item-request',
+  templateUrl: './item-request.component.html',
+  styleUrls: ['./item-request.component.scss'],
 })
-export class ItemWinkComponent implements OnInit {
+export class ItemRequestComponent implements OnInit {
+
   @Input() wink: Wink;
   @Input() tour: boolean;
   @Output() removing: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -143,31 +144,31 @@ export class ItemWinkComponent implements OnInit {
   }
 
   async ShowMenu(ev) {
-    if (!await this.popoverController.getTop()) {
-      const popover = await this.popoverController.create({
-        component: MenuWinkComponent,
-        componentProps: {
-          wink: this.wink
-        },
-        event: ev,
-        translucent: false
-      });
-      popover.onDidDismiss()
-      .then((result) => {
-        if (result.data  && result.data.del) {
-          this.Removing();
-        }
-      });
-      return await popover.present();
+    const popover = await this.popoverController.create({
+      component: MenuWinkComponent,
+      componentProps: {
+        wink: this.wink
+      },
+      event: ev,
+      translucent: false
+    });
+    popover.onDidDismiss()
+    .then((result) => {
+      if (result.data  && result.data.del) {
+        this.removing.emit(true);
+        this.currentRemoving = true;
+        this.initRemoving = true;
       }
-    }
+    });
+    return await popover.present();
+  }
 
-    SelectRemove(event) {
-      if (this.currentRemoving) {
-        this.initRemoving = !this.initRemoving;
-        this.count.emit( this.initRemoving ? 1 : -1);
-      }
+  SelectRemove(event) {
+    if (this.currentRemoving) {
+      this.initRemoving = !this.initRemoving;
+      this.count.emit( this.initRemoving ? 1 : -1);
     }
+  }
 
   RemoveList() {
     if (this.initRemoving) {
@@ -183,5 +184,6 @@ export class ItemWinkComponent implements OnInit {
       this.count.emit(1);
     }
   }
+
 
 }

@@ -249,7 +249,8 @@
     "DIALOGUES": {
       "TITLES": {
         "CONFIRM": "Confirmar!",
-        "DELETE_WINK": "Borrar Wink",
+        "DELETE_WINK": "Eliminar Wink",
+        "DELETE_REQUEST": "Eliminar solitud",
         "SAVE_CONTACTS": "Guardar contacto",
         "RANGE": "Rango de búsqueda"
       },
@@ -258,7 +259,11 @@
         "DELETE_WINK": "¿Estás seguro?",
         "NEW_WINK": "Tienes una nueva solicitud.",
         "SAVE_CONTACTS": "Seleccione los elementos que desea guardar en el contacto.",
-        "RANGE": "Valor actual: "
+        "RANGE": "Valor actual: ",
+        "DELETE_WINK_ITEM": "¿Deseas eliminar 1 Wink?",
+        "DELETE_WINK_ITEMS": "¿Deseas eliminar {{ value }} Wink's?",
+        "DELETE_WINK_REQUEST": "¿Dsea eliminar 1 solicitud?",
+        "DELETE_WINK_REQUESTS": "¿Desea eliminar {{ value }} solicitudes?"
       }
     },
     "SERVICES": {

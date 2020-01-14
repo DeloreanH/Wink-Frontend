@@ -44,5 +44,6 @@ const routes: Routes = [
   entryComponents: [ItemListComponent, MenuComponent],
   declarations: [PublicProfilePage, MenuComponent],
   providers: [],
+  exports: [MenuComponent]
 })
 export class PublicProfilePageModule {}

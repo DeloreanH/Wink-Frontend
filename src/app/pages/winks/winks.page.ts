@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { WinkService } from 'src/app/core/services/wink.service';
 import { Wink } from 'src/app/common/models/wink.model';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,11 @@ import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Platform, NavController } from '@ionic/angular';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { AlertComponent } from 'src/app/common/alert/alert.component';
+import { ItemRequestComponent } from './item-request/item-request.component';
+import { AlertService } from 'src/app/common/alert/alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-winks',
@@ -20,6 +25,8 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(ItemWinkComponent, {static: false}) winkRecord: ItemWinkComponent;
+  @ViewChildren(ItemWinkComponent) itemsWink: QueryList<ItemWinkComponent>;
+  @ViewChildren(ItemRequestComponent) itemsRequest: QueryList<ItemRequestComponent>;
   tab: 'record' | 'requests' = 'requests';
 
   requests: Wink[] = [];
@@ -38,6 +45,12 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   backButtonSubs = new Subscription();
   urlHome = '/' + RoutesAPP.BASE + '/' + RoutesAPP.HOME;
+  removingRecord = false;
+  removingRequest = false;
+  removeRecord = false;
+  removeRequest = false;
+  countDelRequest = 0;
+  countDelRecord = 0;
 
   constructor(
     private winkService: WinkService,
@@ -47,6 +60,8 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private navController: NavController,
     public loaderService: LoaderService,
+    private alertService: AlertService,
+    private translateService: TranslateService,
   ) {
     this.ValidateTour();
     this.record = this.winkService.Record;
@@ -147,7 +162,8 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   TabChanged(event) {
     this.tab = event.target.value;
-
+    this.removingRecord = false;
+    this.removingRequest = false;
   }
 
   async Winks() {
@@ -217,4 +233,72 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
   private Left() {
     this.tab = 'requests';
   }
+
+  Remove() {
+    if (this.tab === 'requests' && this.removingRequest)  {
+      this.alertService.showConfirm({
+        title: null /* 'WINK.DIALOGUES.TITLES.DELETE_REQUEST'*/,
+        description: this.translateService.instant(
+          this.countDelRequest > 1 ?
+          'WINK.DIALOGUES.MESSAGES.DELETE_WINK_REQUESTS'
+          : 'WINK.DIALOGUES.MESSAGES.DELETE_WINK_REQUEST'
+          , {value: this.countDelRequest}
+          ),
+      }).subscribe(
+        async (resp: any) => {
+          if (resp && resp.value) {
+            this.itemsRequest.forEach(
+              (item) => {
+                item.RemoveList();
+              }
+            );
+            this.removeRequest = true;
+            this.removingRequest = false;
+          }
+        }
+      );
+    } else if (this.tab === 'record' && this.removingRecord) {
+      this.alertService.showConfirm({
+        title: null /*'WINK.DIALOGUES.TITLES.DELETE_WINK'*/,
+        description: this.translateService.instant(
+          this.countDelRecord > 1 ?
+          'WINK.DIALOGUES.MESSAGES.DELETE_WINK_ITEMS'
+          : 'WINK.DIALOGUES.MESSAGES.DELETE_WINK_ITEM',
+          {value: this.countDelRecord}
+          ),
+      }).subscribe(
+        async (resp: any) => {
+          if (resp && resp.value) {
+            this.itemsWink.forEach(
+              (item) => {
+                item.RemoveList();
+              }
+            );
+            this.removeRecord = true;
+            this.removingRecord = false;
+          }
+        }
+      );
+    }
+  }
+
+  NoRemove() {
+    this.removingRequest = false;
+    this.removingRecord = false;
+  }
+
+  CountRecord(event) {
+    this.countDelRecord += event;
+    if (this.countDelRecord === 0) {
+      this.removingRecord = false;
+    }
+  }
+  CountRequest(event) {
+    this.countDelRequest += event;
+    if (this.countDelRequest === 0) {
+      this.removingRequest = false;
+    }
+  }
+
+
 }

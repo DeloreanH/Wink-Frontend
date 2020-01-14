@@ -394,6 +394,12 @@
   grid-gap: 0.1rem;
   min-height: 3.125rem;
 }
+.wrapper-sub-itemWink {
+  display: grid;
+  grid-template-columns: 1.5rem 4fr;
+  grid-gap: 0.1rem;
+  min-height: 3.125rem;
+}
 .wrapper-sub-item-list {
   display: grid;
   grid-template-columns: 0.5fr 4fr;
@@ -445,4 +451,56 @@
 .center-vertical-text {
   display: flex;
   align-items: center;
+}
+.margin-0 {
+  margin: 0px !important;
+}
+
+
+.button-ignore {
+  --background: var(--color-pego);
+  --background-focused: var(--color-cpego);
+  --background-hover: var(--color-pego);
+}
+.note-wink {
+  margin-left: 0.25rem;
+  padding-left: 0%;
+  padding-bottom: 0.2rem;
+}
+.date-wink {
+  display: flex;
+  align-items: center;
+}
+.button-50 {
+  width: 50%;
+}
+.title-wink {
+  padding-left: 0%;
+  font-weight: normal;
+}
+
+.avatar-wink {
+  width: 4.4rem;
+  height: 4.4rem;
+  margin-inline-start: 0.3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.label-item {
+  width: auto;
+  margin-inline-start: 1rem;
+}
+.item-win-badge {
+  margin: 0%;
+  padding: 0%;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+}
+.title-newWink {
+  font-weight: bold;
+}
+
+.mat-chip-list-wrapper {
+  height: 100% !important;
 }

@@ -36,5 +36,8 @@
   font-size: 1.1rem;
   --placeholder-color: var(--ion-color-light);
   --placeholder-opacity: 1;
-  margin: 0px !important;
+  height: 100% !important;
+}
+.list-chip-empty {
+  max-height: 1.5rem;
 }
