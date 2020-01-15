@@ -6,7 +6,7 @@ import { mapTo } from 'rxjs/operators';
 
 @Injectable()
 export class NetworkService {
-    public online: Observable<boolean> = undefined;
+    private online: Observable<boolean> = undefined;
 
     constructor(public network: Network, public platform: Platform) {
         this.online = Observable.create(observer => {
