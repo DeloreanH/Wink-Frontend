@@ -15,8 +15,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Photo } from 'src/app/common/class/photo.class';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
-
 
 @Component({
   selector: 'app-tabs',
@@ -47,8 +45,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   handeledWinkSubs = new Subscription();
   deletedWinkSubs = new Subscription();
   tourSubs = new Subscription();
-  keyUpSubs = new Subscription();
-  keyDownSubs = new Subscription();
 
   constructor(
     private router: Router,
@@ -63,7 +59,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
     private platform: Platform,
-    private keyboard: Keyboard,
   ) {
    }
 
@@ -88,17 +83,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.user = data;
       }
     );
-    this.platform.ready().then( () => {
-
-      this.keyUpSubs = this.keyboard.onKeyboardShow().subscribe(() => {
-        document.body.classList.add('keyboard-is-open');
-      });
-
-      this.keyDownSubs = this.keyboard.onKeyboardHide().subscribe(() => {
-        document.body.classList.remove('keyboard-is-open');
-      });
-
-    });
   }
 
   RouterController() {
@@ -275,12 +259,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.deletedWinkSubs.unsubscribe();
     this.updatedAvatarSubs.unsubscribe();
     this.userSubs.unsubscribe();
-    this.keyUpSubs.unsubscribe();
-    this.keyDownSubs.unsubscribe();
   }
 
   Avatar() {
     return this.photo.URLAvatar(this.user);
   }
-
 }

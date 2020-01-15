@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -8,15 +8,19 @@ import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 import { StorageService } from './core/services/storage.service';
 import { LanguageService, Language } from './core/services/language.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+
   eventRouter = new Subscription();
   login = false;
+  keyUpSubs   = new Subscription();
+  // keyDownSubs = new Subscription();
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -25,13 +29,9 @@ export class AppComponent {
     private router: Router,
     private storageService: StorageService,
     private languageService: LanguageService,
+    private keyboard: Keyboard,
   ) {
     this.initializeApp();
-    document.addEventListener('deviceready', (e) => {
-      window.addEventListener('KeyboardDidShow', () => {
-              document.activeElement.scrollIntoView(false);
-          });
-  });
   }
 
   initializeApp() {
@@ -42,7 +42,19 @@ export class AppComponent {
         this.splashScreen.hide();
     }, 600);
       this.Language();
+      this.handleKeyboard();
     });
+  }
+
+  private handleKeyboard() {
+    this.keyUpSubs = this.keyboard.onKeyboardShow().subscribe(() => {
+      // document.body.classList.add('keyboard-is-open');
+      document.activeElement.scrollIntoView(false);
+    });
+    /*
+    this.keyDownSubs = this.keyboard.onKeyboardHide().subscribe(() => {
+      document.body.classList.remove('keyboard-is-open');
+    }); */
   }
 
   private Language() {
@@ -66,6 +78,9 @@ export class AppComponent {
     } else {
       this.router.navigate(['/' + RoutesPrincipal.LOGIN]);
     }
+  }
+  ngOnDestroy(): void {
+    this.keyUpSubs.unsubscribe();
   }
 
 }

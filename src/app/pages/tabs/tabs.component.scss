@@ -76,16 +76,6 @@
   font-size: 2rem;
 }
 
-body.keyboard-is-open {
-  div.tabbar.show-tabbar{
-    display: none;
-  }
-  scroll-content {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-}
-
 .tab-selected {
 
   color: var(--ion-color-dark);
