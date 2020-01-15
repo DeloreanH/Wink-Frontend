@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { Platform, ToastController } from '@ionic/angular';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Platform } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { ToastService } from './toast.service';

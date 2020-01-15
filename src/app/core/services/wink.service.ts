@@ -12,7 +12,8 @@ import { MessagesServices } from '../../common/enums/messagesServices.enum';
 import { SocketService } from './socket.service';
 import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 import { StorageService } from './storage.service';
-import { nearbyStorage, winksStorage } from 'src/app/common/constants/storage.constants';
+import { nearbyStorage, recordStorage, requestStorage } from 'src/app/common/constants/storage.constants';
+import { NetworkService } from './network.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,7 @@ export class WinkService {
     private toastService: ToastService,
     private socketService: SocketService,
     private storageService: StorageService,
+    private networkService: NetworkService,
   ) {
    }
 
@@ -68,12 +70,16 @@ export class WinkService {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude
             });
-            const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
-            StorageService.SetItem(nearbyStorage, response);
-            this.SetNearbyUsers((response as User[]));
-            this.userService.UpdateLocation(myLocation);
-            this.Init();
-            resolve(response);
+            if (await this.networkService.getNetworkStatus()) {
+              const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
+              StorageService.SetItem(nearbyStorage, response);
+              this.SetNearbyUsers((response as User[]));
+              this.userService.UpdateLocation(myLocation);
+              this.Init();
+              resolve(response);
+            } else {
+              reject({message: 'No network'});
+            }
           } else {
             this.SetNearbyUsers((StorageService.GetItem(nearbyStorage, true) as User[]));
             reject({message: 'No Location'});
@@ -88,6 +94,9 @@ export class WinkService {
   }
 
   SetNearbyUsers(nearbyUsers: User[]) {
+    if (!nearbyUsers) {
+      return;
+    }
     this.nearbyUsers = [];
     this.nearbyUsers.push(...nearbyUsers);
     this.nearbyUsersChanged.next(this.nearbyUsers);
@@ -114,8 +123,12 @@ export class WinkService {
           if (!rangeValue  || isNaN(rangeValue)) {
             reject({message: 'No range'});
           }
-          const response: any = await this.http.post(Routes.BASE + Routes.SET_SEARCH_RANGE, { range: (rangeValue * 1000)}).toPromise();
-          resolve(response);
+          if (await this.networkService.getNetworkStatus()) {
+            const response: any = await this.http.post(Routes.BASE + Routes.SET_SEARCH_RANGE, { range: (rangeValue * 1000)}).toPromise();
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (err) {
           this.toastService.Toast(MessagesServices.UNEXPECTED_ERROR);
           console.log('Error Range: ' + err.message);
@@ -132,14 +145,18 @@ export class WinkService {
           if (!idUser) {
             reject({message: 'No idUser'});
           }
-          const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
-          // response.wink.user = this.userService.User();
-          response.wink.user = null;
-          if (!response.wink.user) {
-            this.socketService.SendWink(idUser, response.wink, response.distance);
+          if (await this.networkService.getNetworkStatus()) {
+            const response: any = await this.http.post(Routes.BASE + Routes.SEND_WINK, { winkUserId: idUser}).toPromise();
+            // response.wink.user = this.userService.User();
+            response.wink.user = null;
+            if (!response.wink.user) {
+              this.socketService.SendWink(idUser, response.wink, response.distance);
+            }
+            this.toastService.Toast(MessagesServices.WINK_SENT);
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
           }
-          this.toastService.Toast(MessagesServices.WINK_SENT);
-          resolve(response);
         } catch (err) {
           this.toastService.Toast(MessagesServices.WINK_ERROR);
           console.log('Error SendWink: ' + err.message);
@@ -157,23 +174,27 @@ export class WinkService {
             reject({message: 'No wink'});
           }
           // const delWink = Object.assign({}, wink);
-          const response: any = await this.http.post(Routes.BASE + Routes.HANDLE_WINK, {
+          if (await this.networkService.getNetworkStatus()) {
+            const response: any = await this.http.post(Routes.BASE + Routes.HANDLE_WINK, {
             wink_id: wink._id,
             watch: false
           }).toPromise();
           // this.DeleteRequests(wink);
-          wink.approved = true;
-          wink.updatedAt = new Date().toString();
-          wink.user = null;
-          wink.watched = true;
-          if (wink.watched  && !wink.user && wink.approved) {
-            this.AddRecord(wink);
-            this.socketService.HandleWink(
-              wink.sender_id,
-              wink
-            );
+            wink.approved = true;
+            wink.updatedAt = new Date().toString();
+            wink.user = null;
+            wink.watched = true;
+            if (wink.watched  && !wink.user && wink.approved) {
+              this.AddRecord(wink);
+              this.socketService.HandleWink(
+                wink.sender_id,
+                wink
+              );
+            }
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
           }
-          resolve(response);
         } catch (err) {
           if (err.error.statusCode && err.error.statusCode === 404) {
             this.DeleteWinkUser(wink);
@@ -194,17 +215,21 @@ export class WinkService {
           if (!wink) {
             reject({message: 'No wink'});
           }
-          const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
-          wink.watched = true;
-          if (wink.watched) {
-            this.DeleteWinkUser(wink);
-            this.socketService.DeleteWink(
-              wink.receiver_id === this.idUser ? wink.sender_id : wink.receiver_id,
-              wink
-            );
+          if (await this.networkService.getNetworkStatus()) {
+            const response = await this.http.post(Routes.BASE + Routes.DELETE_WINK, { wink_id: wink._id}).toPromise();
+            wink.watched = true;
+            if (wink.watched) {
+              this.DeleteWinkUser(wink);
+              this.socketService.DeleteWink(
+                wink.receiver_id === this.idUser ? wink.sender_id : wink.receiver_id,
+                wink
+              );
+            }
+            this.deleteWink.next(wink);
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
           }
-          this.deleteWink.next(wink);
-          resolve(response);
         } catch (err) {
           console.log('Del wink', err);
           if (err.error.statusCode && err.error.statusCode === 404) {
@@ -246,7 +271,8 @@ export class WinkService {
           this.indexWink =  index;
           return true;
         }
-      });
+      }
+    );
   }
 
   GetWinkID(idWink: string) {
@@ -291,16 +317,37 @@ export class WinkService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get(Routes.BASE + Routes.GET_WINKS).toPromise();
-          StorageService.SetItem(winksStorage, response);
-          this.FilterWinks((response as Wink[]));
-          resolve(response);
+          if (await this.networkService.getNetworkStatus()) {
+            const response = await this.http.get(Routes.BASE + Routes.GET_WINKS).toPromise();
+            // StorageService.SetItem(winksStorage, response);
+            this.FilterWinks((response as Wink[]));
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (err) {
           console.log('Error GetWinks: ' + err.message);
           reject(err);
         }
       }
     );
+  }
+
+  async GetWinksLocal() {
+    const recordLocal: Wink[] = StorageService.GetItem(recordStorage, true);
+    if (recordLocal) {
+      this.FilterWinks(recordLocal);
+    }
+    const requestsLocal: Wink[] = StorageService.GetItem(requestStorage, true);
+    if (requestStorage) {
+      this.FilterWinks(requestsLocal);
+    }
+    if (!recordLocal && requestsLocal) {
+      try {
+        await this.GetWinks();
+      } catch (error) {
+      }
+    }
   }
 
   async WatchedWink(wink: Wink) {
@@ -310,20 +357,24 @@ export class WinkService {
           if (!wink || wink.sender_id === this.idUser) {
             reject({message: 'wink null'});
           }
-          const response = await this.http.post(Routes.BASE + Routes.HANDLE_WINK, {
-            wink_id: wink._id,
-            watch: true
-          }).toPromise();
-          wink.watched = true;
-          wink.user = null;
-          if (wink.watched && !wink.user) {
-            this.socketService.HandleWink(
-              wink.sender_id,
-              wink
-            );
-            this.AddRequests(wink);
+          if (await this.networkService.getNetworkStatus()) {
+            const response = await this.http.post(Routes.BASE + Routes.HANDLE_WINK, {
+              wink_id: wink._id,
+              watch: true
+            }).toPromise();
+            wink.watched = true;
+            wink.user = null;
+            if (wink.watched && !wink.user) {
+              this.socketService.HandleWink(
+                wink.sender_id,
+                wink
+              );
+              this.AddRequests(wink);
+            }
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
           }
-          resolve(response);
         } catch (err) {
           if (err.error.statusCode && err.error.statusCode === 404) {
             this.DeleteWinkUser(wink);
@@ -333,6 +384,18 @@ export class WinkService {
         }
       }
     );
+  }
+
+  private UpdateStorageRecord() {
+    // const recordLocal: Wink[] = [];
+    // recordLocal.push(...this.record);
+    // StorageService.SetItem(recordStorage, recordLocal);
+  }
+
+  private UpdateStorageRequests() {
+    // const requestsLocal: Wink[] = [];
+    // requestsLocal.push(...this.requests);
+    // StorageService.SetItem(requestStorage, requestsLocal);
   }
 
   private FilterWinks(winks: Wink[], newUser?: boolean) {
@@ -365,6 +428,7 @@ export class WinkService {
     this.record = [];
     this.record.push(...data);
     this.recordChanged.next(this.record);
+    this.UpdateStorageRecord();
   }
 
   SetRequests(data: Wink[]) {
@@ -374,6 +438,7 @@ export class WinkService {
     this.requests = [];
     this.requests.push(...data);
     this.requestsChanged.next(this.requests);
+    this.UpdateStorageRequests();
   }
 
   AddWink(wink: Wink) {
@@ -420,6 +485,11 @@ export class WinkService {
     }
     try {
       this.DeleteRequests(wink);
+      // const winksLocal: Wink[] = StorageService.GetItem(winksStorage, true);
+      // if (winksLocal) {
+      //   winksLocal.push(wink);
+      //   StorageService.SetItem(winksStorage, winksLocal);
+      // }
       const user = await this.GetUserWink(wink);
       wink.user = user;
       if (wink.user) {
@@ -443,6 +513,7 @@ export class WinkService {
           }
         );
         this.recordChanged.next(this.record);
+        this.UpdateStorageRecord();
       }
     } catch (err) {
       console.log('Error AddRecord', err.message);
@@ -478,6 +549,7 @@ export class WinkService {
           }
         );
         this.requestsChanged.next(this.requests);
+        this.UpdateStorageRequests();
       }
     } catch (err) {
       console.log('Error AddRequests', err.message);
@@ -517,6 +589,7 @@ export class WinkService {
     if (winkX && this.indexWink  >= 0) {
       this.record.splice(this.indexWink, 1);
       this.recordChanged.next(this.record);
+      this.UpdateStorageRecord();
     }
   }
 
@@ -533,6 +606,7 @@ export class WinkService {
     if (winkX && this.indexWink >= 0) {
       this.requests.splice(this.indexWink, 1);
       this.requestsChanged.next(this.requests);
+      this.UpdateStorageRequests();
     }
   }
 
@@ -645,8 +719,12 @@ export class WinkService {
           if (!idUser) {
             reject({message: 'No idUser'});
           }
-          const response: any = await this.http.post(Routes.BASE + Routes.GET_USER, {winkUserId: idUser}).toPromise();
-          resolve(response);
+          if (await this.networkService.getNetworkStatus()) {
+            const response: any = await this.http.post(Routes.BASE + Routes.GET_USER, {winkUserId: idUser}).toPromise();
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (error) {
           console.log('error', error);
           reject(error);

@@ -1,7 +1,7 @@
 <div class="wrapper-sub-itemWink ion-activatable ion-activatable-up"  (click)="SelectRemove($event)" ion-long-press [interval]="400" (longPressed)="Removing()">
-  <ion-radio-group *ngIf="currentRemoving" class="center icon-column" allowEmptySelection="true">
-    <ion-radio [checked]="initRemoving"></ion-radio>
-  </ion-radio-group>
+  <div *ngIf="currentRemoving" class="center icon-column">
+    <ion-checkbox color="primary" [checked]="initRemoving" class="check-del"></ion-checkbox>
+  </div>
   <ion-item [ngClass]="{'all-column' : !currentRemoving, 'delete-column': currentRemoving}"
   *ngIf="wink && !wink.approved && wink.user"
   class="ion-activatable ion-activatable-up none-item-border">

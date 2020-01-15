@@ -5,7 +5,7 @@ import {
   itemsTypeStorage,
   itemsUserStorage,
   categoriesStorage,
-  winksStorage,
+  recordStorage,
   requestStorage,
   nearbyStorage
 } from 'src/app/common/constants/storage.constants';
@@ -74,7 +74,7 @@ export class StorageService {
   public DeleteAuthorization() {
     StorageService.DeleteItem(auth);
     StorageService.DeleteItem(itemsUserStorage);
-    StorageService.DeleteItem(winksStorage);
+    StorageService.DeleteItem(recordStorage);
     StorageService.DeleteItem(requestStorage);
     StorageService.DeleteItem(nearbyStorage);
   }

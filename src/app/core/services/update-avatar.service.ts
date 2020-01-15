@@ -7,6 +7,7 @@ import { Routes } from '../../common/enums/routes/routes.enum';
 import { Platform, ActionSheetController } from '@ionic/angular';
 import { ToastService } from './toast.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
+import { NetworkService } from './network.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class UpdateAvatarService {
     private camera: Camera,
     private http: HttpClient,
     private toastService: ToastService,
-    private actionSheetController: ActionSheetController,
+    private networkService: NetworkService,
   ) { }
 
   /**

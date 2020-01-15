@@ -66,8 +66,8 @@
       <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
     </div>
     <ion-fab vertical="bottom" horizontal="center" *ngIf="(tab === 'requests' && removingRequest) || (tab === 'record' && removingRecord)">
-      <ion-fab-button (click)="Remove()">
-        <ion-icon name="trash"></ion-icon>
+      <ion-fab-button (click)="Remove()" color="danger">
+        <ion-icon src="/assets/icon/delete.svg"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </ion-content>

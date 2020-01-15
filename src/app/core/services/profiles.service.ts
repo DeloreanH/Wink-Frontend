@@ -9,6 +9,7 @@ import { ToastService } from './toast.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 import { StorageService } from './storage.service';
 import { categoriesStorage, itemsTypeStorage, itemsUserStorage } from 'src/app/common/constants/storage.constants';
+import { NetworkService } from './network.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class ProfilesService {
   constructor(
     private http: HttpClient,
     private toastService: ToastService,
+    private networkService: NetworkService,
   ) {
     this.LoadCategories();
     this.LoadTypesItems();
@@ -87,11 +89,15 @@ export class ProfilesService {
         try {
           const categoriesLocal = StorageService.GetItem(categoriesStorage, true);
           if (!categoriesLocal) {
-            const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
-            StorageService.SetItem(categoriesStorage, response);
-            this.categories = [];
-            this.categories.push(...response);
-            resolve(response);
+            if (await this.networkService.getNetworkStatus()) {
+              const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
+              StorageService.SetItem(categoriesStorage, response);
+              this.categories = [];
+              this.categories.push(...response);
+              resolve(response);
+            } else {
+              reject({message: 'No network'});
+            }
           } else {
             this.categories = [];
             this.categories.push(...categoriesLocal);
@@ -110,11 +116,15 @@ export class ProfilesService {
         try {
           const itemsTypeLocal = StorageService.GetItem(itemsTypeStorage, true);
           if (!itemsTypeLocal) {
-            const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
-            StorageService.SetItem(itemsTypeStorage, response);
-            this.itemTypes = [];
-            this.itemTypes.push(...response);
-            resolve(response);
+            if (await this.networkService.getNetworkStatus()) {
+              const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
+              StorageService.SetItem(itemsTypeStorage, response);
+              this.itemTypes = [];
+              this.itemTypes.push(...response);
+              resolve(response);
+            } else {
+              reject({message: 'No network'});
+            }
           } else {
             this.itemTypes = [];
             this.itemTypes.push(...itemsTypeLocal);
@@ -134,9 +144,13 @@ export class ProfilesService {
         try {
           const itemsUserLocal = StorageService.GetItem(itemsUserStorage, true);
           if (!itemsUserLocal) {
-            const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
-            StorageService.SetItem(itemsUserStorage, response);
-            resolve(this.FilterItems(response));
+            if (await this.networkService.getNetworkStatus()) {
+              const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
+              StorageService.SetItem(itemsUserStorage, response);
+              resolve(this.FilterItems(response));
+            } else {
+              reject({message: 'No network'});
+            }
           } else {
             resolve(this.FilterItems(itemsUserLocal as Item[]));
           }
@@ -172,10 +186,14 @@ export class ProfilesService {
           if (!data) {
             reject({message: 'No data'});
           }
-          const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
-          this.toastService.Toast(MessagesServices.SAVE_ITEMS);
-          StorageService.SetItem(itemsUserStorage, response);
-          resolve(this.FilterItems(response));
+          if (await this.networkService.getNetworkStatus()) {
+            const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
+            this.toastService.Toast(MessagesServices.SAVE_ITEMS);
+            StorageService.SetItem(itemsUserStorage, response);
+            resolve(this.FilterItems(response));
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (err) {
           console.log(err);
           this.toastService.Toast(MessagesServices.ERROR_SAVE);
@@ -192,8 +210,16 @@ export class ProfilesService {
           if (!idUser) {
             reject({message: 'No idUSer'});
           }
-          const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
-          resolve(response);
+          if (await this.networkService.getNetworkStatus()) {
+            if (await this.networkService.getNetworkStatus()) {
+              const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
+              resolve(response);
+            } else {
+              reject({message: 'No network'});
+            }
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (err) {
           console.log('Error GetPublicItems: ' + err.message);
           reject(err);
@@ -209,14 +235,18 @@ export class ProfilesService {
           if (!idUser || !idWink) {
             reject({message: 'No idUser/idWink'});
           }
-          const response = await this.http.post(
+          if (await this.networkService.getNetworkStatus()) {
+            const response = await this.http.post(
             Routes.BASE + Routes.SHOW_PRIVATE_PROFILE,
-            {
-              winkUserId: idUser,
-              wink_id: idWink
-            }
-          ).toPromise();
-          resolve(response);
+              {
+                winkUserId: idUser,
+                wink_id: idWink
+              }
+            ).toPromise();
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (err) {
           console.log('Error GetPrivateItems: ' + err.message);
           reject(err);

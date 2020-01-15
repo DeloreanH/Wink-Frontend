@@ -73,7 +73,6 @@ export class LinkService {
 
   URL(url: string) {
     try {
-      console.log('url', url);
       if (url.startsWith('http')) {
         window.open(url, '_system');
       } else {
