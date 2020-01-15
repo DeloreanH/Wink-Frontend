@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { auth, language } from 'src/app/common/constants/storage.constants';
+import {
+  auth,
+  language,
+  itemsTypeStorage,
+  itemsUserStorage,
+  categoriesStorage,
+  winksStorage,
+  requestStorage,
+  nearbyStorage
+} from 'src/app/common/constants/storage.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +73,11 @@ export class StorageService {
 
   public DeleteAuthorization() {
     StorageService.DeleteItem(auth);
+    StorageService.DeleteItem(itemsTypeStorage);
+    StorageService.DeleteItem(itemsUserStorage);
+    StorageService.DeleteItem(categoriesStorage);
+    StorageService.DeleteItem(winksStorage);
+    StorageService.DeleteItem(requestStorage);
+    StorageService.DeleteItem(nearbyStorage);
   }
 }

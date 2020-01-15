@@ -7,6 +7,8 @@ import { Routes } from '../../common/enums/routes/routes.enum';
 import { Item } from '../../common/models/item.model';
 import { ToastService } from './toast.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
+import { StorageService } from './storage.service';
+import { categoriesStorage, itemsTypeStorage, itemsUserStorage } from 'src/app/common/constants/storage.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +29,7 @@ export class ProfilesService {
   ];
   constructor(
     private http: HttpClient,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) {
     this.LoadCategories();
     this.LoadTypesItems();
@@ -83,10 +85,18 @@ export class ProfilesService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
-          this.categories = [];
-          this.categories.push(...response);
-          resolve(response);
+          const categoriesLocal = StorageService.GetItem(categoriesStorage, true);
+          if (!categoriesLocal) {
+            const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
+            StorageService.SetItem(categoriesStorage, response);
+            this.categories = [];
+            this.categories.push(...response);
+            resolve(response);
+          } else {
+            this.categories = [];
+            this.categories.push(...categoriesLocal);
+            resolve(categoriesLocal);
+          }
         } catch (err) {
           reject(err);
         }
@@ -98,10 +108,18 @@ export class ProfilesService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
-          this.itemTypes = [];
-          this.itemTypes.push(...response);
-          resolve(response);
+          const itemsTypeLocal = StorageService.GetItem(itemsTypeStorage, true);
+          if (!itemsTypeLocal) {
+            const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
+            StorageService.SetItem(itemsTypeStorage, response);
+            this.itemTypes = [];
+            this.itemTypes.push(...response);
+            resolve(response);
+          } else {
+            this.itemTypes = [];
+            this.itemTypes.push(...itemsTypeLocal);
+            resolve(itemsTypeLocal);
+          }
         } catch (err) {
           reject(err);
         }
@@ -114,8 +132,14 @@ export class ProfilesService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
-          resolve(this.FilterItems(response));
+          const itemsUserLocal = StorageService.GetItem(itemsUserStorage, true);
+          if (!itemsUserLocal) {
+            const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
+            StorageService.SetItem(itemsUserStorage, response);
+            resolve(this.FilterItems(response));
+          } else {
+            resolve(this.FilterItems(itemsUserLocal as Item[]));
+          }
         } catch (err) {
           this.toastService.Toast(MessagesServices.ERROR_GET_INFORMATION);
           reject(err);
@@ -150,7 +174,7 @@ export class ProfilesService {
           }
           const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
           this.toastService.Toast(MessagesServices.SAVE_ITEMS);
-
+          StorageService.SetItem(itemsUserStorage, response);
           resolve(this.FilterItems(response));
         } catch (err) {
           console.log(err);

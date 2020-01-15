@@ -12,6 +12,7 @@ import { MessagesServices } from '../../common/enums/messagesServices.enum';
 import { SocketService } from './socket.service';
 import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 import { StorageService } from './storage.service';
+import { nearbyStorage } from 'src/app/common/constants/storage.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -43,11 +44,13 @@ export class WinkService {
 
    async Init() {
     try {
+      if (!this.idUser) {
         const userData: UserData = this.storageService.apiAuthorization;
         if (userData && userData.user) {
           this.idUser = userData.user._id ? userData.user._id : null;
           await this.GetWinks();
         }
+      }
     } catch (err) {
       console.log('Error Init', err.message);
     }
@@ -67,14 +70,17 @@ export class WinkService {
               longitude: location.coords.longitude
             });
             const response = await this.http.post<User[]>(Routes.BASE + Routes.NEARBY_USER, myLocation).toPromise();
+            StorageService.SetItem(nearbyStorage, response);
             this.SetNearbyUsers((response as User[]));
             this.userService.UpdateLocation(myLocation);
             this.Init();
             resolve(response);
           } else {
+            this.SetNearbyUsers((StorageService.GetItem(nearbyStorage, true) as User[]));
             reject({message: 'No Location'});
           }
         } catch (err) {
+          this.SetNearbyUsers((StorageService.GetItem(nearbyStorage, true) as User[]));
           this.toastService.Toast(MessagesServices.TRY_AGAIN_LATER);
           reject(err);
         }
@@ -330,24 +336,25 @@ export class WinkService {
   }
 
   private FilterWinks(winks: Wink[], newUser?: boolean) {
-    if (winks.length === 0) {
+    if (!winks || winks.length === 0) {
       return;
     }
     const record: Wink[] = [];
     const requests: Wink[] = [];
     winks.forEach(
       (wink: Wink) => {
-        if (!newUser) {
-          wink.user = wink.user[0];
-        }
-        if (wink.approved) {
-          record.push(wink);
-        } else if (wink.sender_id === wink.user._id) {
-          this.AddRequests(wink);
-        }
+        this.AddWink(wink);
+        // if (!newUser) {
+        //   wink.user = wink.user[0];
+        // }
+        // if (wink.approved) {
+        //   record.push(wink);
+        // } else if (wink.sender_id === wink.user._id) {
+        //   this.AddRequests(wink);
+        // }
       }
     );
-    this.SetRecord(record);
+    // this.SetRecord(record);
     // this.SetRequests(requests);
   }
 
