@@ -12,7 +12,7 @@ import { MessagesServices } from '../../common/enums/messagesServices.enum';
 import { SocketService } from './socket.service';
 import { UserData } from 'src/app/common/interfaces/userData.interfaces';
 import { StorageService } from './storage.service';
-import { nearbyStorage } from 'src/app/common/constants/storage.constants';
+import { nearbyStorage, winksStorage } from 'src/app/common/constants/storage.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,6 @@ export class WinkService {
     private socketService: SocketService,
     private storageService: StorageService,
   ) {
-    // this.Init();
    }
 
    async Init() {
@@ -293,6 +292,7 @@ export class WinkService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get(Routes.BASE + Routes.GET_WINKS).toPromise();
+          StorageService.SetItem(winksStorage, response);
           this.FilterWinks((response as Wink[]));
           resolve(response);
         } catch (err) {

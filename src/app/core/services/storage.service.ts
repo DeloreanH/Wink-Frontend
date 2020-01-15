@@ -73,9 +73,7 @@ export class StorageService {
 
   public DeleteAuthorization() {
     StorageService.DeleteItem(auth);
-    StorageService.DeleteItem(itemsTypeStorage);
     StorageService.DeleteItem(itemsUserStorage);
-    StorageService.DeleteItem(categoriesStorage);
     StorageService.DeleteItem(winksStorage);
     StorageService.DeleteItem(requestStorage);
     StorageService.DeleteItem(nearbyStorage);

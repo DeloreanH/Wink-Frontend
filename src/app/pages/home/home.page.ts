@@ -184,9 +184,10 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         await this.winkService.GetNearby();
       } catch (err) {
         console.log('GPS error', err);
-      }
-      if (event) {
-        event.target.complete();
+      } finally {
+        if (event) {
+          event.target.complete();
+        }
       }
       this.load = false;
     }
@@ -305,7 +306,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       }).subscribe(
         async (response) => {
           if (response && !this.tour) {
-            console.log(response);
             await this.winkService.Range(response);
             this.user.searchRange = (response as number * 1000);
             this.userService.User(this.user, true);
