@@ -40,10 +40,12 @@ export class AppComponent implements OnDestroy {
   initializeApp() {
     this.checkUser();
     this.platform.ready().then(() => {
-      this.statusBar.styleLightContent();
-      setTimeout( () => {
-        this.splashScreen.hide();
-      }, 600);
+      if (this.platform.is('cordova')) {
+        this.statusBar.styleLightContent();
+        setTimeout( () => {
+          this.splashScreen.hide();
+        }, 600);
+      }
       this.Language();
       this.handleKeyboard();
     });

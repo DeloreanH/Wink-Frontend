@@ -1,13 +1,12 @@
 <div class="ion-page" id="winks" (swipe)="Swipe($event)">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>
-        {{'WINK.WINKS.TITLE' | translate}}
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content class="ion-padding" >
+  <ion-header class="header-segment ">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          {{'WINK.WINKS.TITLE' | translate}}
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
     <ion-segment (ionChange)="TabChanged($event)" [value]="tab" class="list-winks">
       <ion-segment-button value="requests" [disabled]="tour && tab === 'record'">
         <ion-label>
@@ -24,8 +23,20 @@
       </ion-segment-button>
 
     </ion-segment>
+  </ion-header>
 
-
+  <ion-content class="ion-padding" >
+    
+    
+    
+    <ion-refresher slot="fixed" (ionRefresh)="Winks($event)" *ngIf="!tour">
+      <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        [pullingText]="'WINK.HOME.REFRESHER' | translate"
+        refreshingSpinner="circles"
+        [refreshingText]="'WINK.HOME.REFRESHING' | translate">
+      </ion-refresher-content>
+    </ion-refresher>
 
     <div *ngIf="tour" tourAnchor="intro"></div>
     <ion-list *ngIf="tab === 'requests'">
@@ -65,9 +76,13 @@
       </p>
       <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
     </div>
+  
+
+
+    
     <ion-fab vertical="bottom" horizontal="center" *ngIf="(tab === 'requests' && removingRequest) || (tab === 'record' && removingRecord)">
-      <ion-fab-button (click)="Remove()" color="danger">
-        <ion-icon src="/assets/icon/delete.svg"></ion-icon>
+      <ion-fab-button (click)="Remove()" class="button-del">
+        <ion-icon src="/assets/icon/delete.svg" class="contrast-pego"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </ion-content>

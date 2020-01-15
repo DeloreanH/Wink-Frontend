@@ -437,17 +437,14 @@
     color: var(--color-cpego);
   }
 }
-
 .action-sheet-group {
   & button {
     color: var(--color-cpego) !important;
   }
 }
-
 .none-background {
   background: none !important;
 }
-
 .center-vertical-text {
   display: flex;
   align-items: center;
@@ -455,8 +452,6 @@
 .margin-0 {
   margin: 0px !important;
 }
-
-
 .button-ignore {
   --background: var(--color-pego);
   --background-focused: var(--color-cpego);
@@ -478,7 +473,6 @@
   padding-left: 0%;
   font-weight: normal;
 }
-
 .avatar-wink {
   width: 4.4rem;
   height: 4.4rem;
@@ -500,11 +494,9 @@
 .title-newWink {
   font-weight: bold;
 }
-
 .mat-chip-list-wrapper {
   height: 100% !important;
 }
-
 .check-del {
   --border-radius: 50%;
   width: 1.5rem !important;

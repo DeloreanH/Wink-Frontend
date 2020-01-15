@@ -166,11 +166,15 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     this.removingRequest = false;
   }
 
-  async Winks() {
+  async Winks(event?) {
     try {
       await this.winkService.GetWinks();
     } catch (err) {
       console.log(err);
+    } finally {
+      if (event) {
+        event.target.complete();
+      }
     }
   }
 
