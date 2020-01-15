@@ -9,6 +9,7 @@ import { StorageService } from './core/services/storage.service';
 import { LanguageService, Language } from './core/services/language.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { NetworkService } from './core/services/network.service';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnDestroy {
     private storageService: StorageService,
     private languageService: LanguageService,
     private keyboard: Keyboard,
+    private network: NetworkService,
   ) {
     this.initializeApp();
     // window.addEventListener('keyboardDidShow', () => {

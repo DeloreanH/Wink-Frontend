@@ -6,13 +6,9 @@ import { mapTo } from 'rxjs/operators';
 
 @Injectable()
 export class NetworkService {
-    private online: Observable<boolean> = undefined;
+    private online: Observable<boolean> =  new Observable();
 
     constructor(public network: Network, public platform: Platform) {
-        this.online = Observable.create(observer => {
-            observer.next(true);
-        }).pipe(mapTo(true));
-
         if (this.platform.is('cordova')) {
             // on Device
             this.online = merge(
