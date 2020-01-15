@@ -32,6 +32,9 @@ export class AppComponent implements OnDestroy {
     private keyboard: Keyboard,
   ) {
     this.initializeApp();
+    // window.addEventListener('keyboardDidShow', () => {
+    //   document.activeElement.scrollIntoView(false);
+    // });
   }
 
   initializeApp() {
@@ -40,7 +43,7 @@ export class AppComponent implements OnDestroy {
       this.statusBar.styleLightContent();
       setTimeout( () => {
         this.splashScreen.hide();
-    }, 600);
+      }, 600);
       this.Language();
       this.handleKeyboard();
     });
@@ -49,7 +52,9 @@ export class AppComponent implements OnDestroy {
   private handleKeyboard() {
     this.keyUpSubs = this.keyboard.onKeyboardShow().subscribe(() => {
       // document.body.classList.add('keyboard-is-open');
-      document.activeElement.scrollIntoView(false);
+      if (this.platform.is('ios')) {
+        document.activeElement.scrollIntoView(false);
+      }
     });
     /*
     this.keyDownSubs = this.keyboard.onKeyboardHide().subscribe(() => {
