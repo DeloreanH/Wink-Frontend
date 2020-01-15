@@ -43,7 +43,9 @@ export class LoaderService  {
   }
   public async Close() {
     this.isLoading = false;
-    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+    if ( await this.loadingController.getTop()) {
+      return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+    }
   }
 
   public get Status(): boolean {

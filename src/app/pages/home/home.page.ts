@@ -1,20 +1,20 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Platform, NavController, AlertController } from '@ionic/angular';
+import { TourService } from 'ngx-tour-ngx-popper';
 import { User } from '../../common/models/user.model';
 import { UserService } from '../../core/services/user.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Config } from '../../common/enums/config.enum';
 import { VisibilityOption } from '../../common/models/visibilityOptions.enum';
 import { WinkService } from '../../core/services/wink.service';
-import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { Platform, NavController, AlertController } from '@ionic/angular';
-import { TourService } from 'ngx-tour-ngx-popper';
-import { ToursService } from 'src/app/core/services/tours.service';
-import { PagesName } from 'src/app/common/enums/pagesName.enum';
+import { RoutesAPP } from '../../common/enums/routes/routesApp.enum';
+import { ToursService } from '../../core/services/tours.service';
+import { PagesName } from '../../common/enums/pagesName.enum';
 import { AlertService } from '../../common/alert/alert.service';
 import { AlertButtonType } from '../../common/alert/base';
-import { Buttons } from 'src/app/common/enums/buttons.enum';
-import { LoaderService } from 'src/app/core/services/loader.service';
+import { Buttons } from '../../common/enums/buttons.enum';
+import { LoaderService } from '../../core/services/loader.service';
 
 @Component({
   selector: 'app-home',
