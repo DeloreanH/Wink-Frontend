@@ -24,6 +24,7 @@ import { Vibration } from '@ionic-native/vibration/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Network } from '@ionic-native/network/ngx';
 
 import { AuthModule } from '../auth/auth.module';
 import { AuthInterceptorService } from '../auth/services/auth-interceptor.service';
@@ -43,6 +44,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToursService } from './services/tours.service';
 import { LoaderService } from './services/loader.service';
 import { IonicGestureConfig } from '../common/tools/IonicGestureConfig';
+import { NetworkService } from './services/network.service';
 
 @NgModule({
   declarations: [],
@@ -70,6 +72,7 @@ import { IonicGestureConfig } from '../common/tools/IonicGestureConfig';
     Contacts,
     Globalization,
     Keyboard,
+    Network,
     ScreenOrientation,
     LocalNotifications,
     BackgroundMode,
@@ -89,6 +92,7 @@ import { IonicGestureConfig } from '../common/tools/IonicGestureConfig';
     WinkService,
     ToursService,
     LoaderService,
+    NetworkService,
     IonicGestureConfig,
   ]
 })
