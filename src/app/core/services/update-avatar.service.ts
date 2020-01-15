@@ -77,9 +77,13 @@ export class UpdateAvatarService {
           const dataForm = new FormData();
           const imgBlob = this.ToBlob(this.imageBase64);
           dataForm.append('avatar', imgBlob, 'avatar.jpg');
-          const response: any = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
-          this.toastService.Toast(MessagesServices.SAVE_PHOTO);
-          resolve(response);
+          if (await this.networkService.getNetworkStatus()) {
+            const response: any = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
+            this.toastService.Toast(MessagesServices.SAVE_PHOTO);
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
         } catch (err) {
           this.toastService.Toast(MessagesServices.ERROR_PHOTO);
           console.log('error', err);
