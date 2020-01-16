@@ -84,6 +84,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.recordSubscription = this.winkService.recordChanged.subscribe(
       (record: Wink[]) => {
+        console.log('record', record);
         if (!this.tour) {
           this.record = record;
         }
@@ -91,6 +92,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.requestsSubscription = this.winkService.requestsChanged.subscribe(
       (requests: Wink[]) => {
+        console.log('requests', requests);
         if (!this.tour) {
           this.requests = requests;
         }
@@ -143,12 +145,16 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
           this.toursService.EndTour(PagesName.WINKS);
           this.tourSubscription.unsubscribe();
           this.stepShowSubs.unsubscribe();
-          this.Winks();
+          if (this.requests.length && this.record.length) {
+            this.Winks();
+          }
         }
       );
     } else {
       this.tour = false;
-      this.Winks();
+      if (this.requests.length && this.record.length) {
+        this.Winks();
+      }
     }
   }
 
@@ -168,6 +174,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   async Winks(event?) {
     try {
+      console.log('Winks desde winks');
       await this.winkService.GetWinks();
     } catch (err) {
       console.log(err);

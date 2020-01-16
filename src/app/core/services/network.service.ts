@@ -8,6 +8,7 @@ import { ToastService, PositionToast } from './toast.service';
 @Injectable()
 export class NetworkService {
   private online: Observable<boolean> =  new Observable();
+  private statusNetwork = false;
 
   constructor(
     public network: Network,
@@ -42,20 +43,26 @@ export class NetworkService {
     private NetworkDownMessage() {
       this.getNetworkStatus().subscribe(
         (status) => {
+          console.log('status', status);
+          this.statusNetwork = status;
           if (!status) {
             if (this.platform.is('cordova')) {
-              this.toastService.Toast('Sin internet.', null, null, PositionToast.BOTTOM, null, 'danger');
+              this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_DOWN', null, null, PositionToast.BOTTOM, null, 'danger');
             } else {
               window.alert('Sin internet');
             }
           } else {
             if (this.platform.is('cordova')) {
-              this.toastService.Toast('Reconectando', null, null, PositionToast.BOTTOM, null, 'primary');
+              this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_UP', null, null, PositionToast.BOTTOM, null, 'success');
             } else {
               window.alert('Reconectando');
             }
           }
         }
       );
+    }
+
+    public get StatusNetwork(): boolean {
+      return this.statusNetwork;
     }
 }

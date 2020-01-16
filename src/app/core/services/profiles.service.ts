@@ -89,7 +89,7 @@ export class ProfilesService {
         try {
           const categoriesLocal = StorageService.GetItem(categoriesStorage, true);
           if (!categoriesLocal) {
-            if (await this.networkService.getNetworkStatus()) {
+            if (this.networkService.StatusNetwork) {
               const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
               StorageService.SetItem(categoriesStorage, response);
               this.categories = [];
@@ -116,7 +116,7 @@ export class ProfilesService {
         try {
           const itemsTypeLocal = StorageService.GetItem(itemsTypeStorage, true);
           if (!itemsTypeLocal) {
-            if (await this.networkService.getNetworkStatus()) {
+            if (this.networkService.StatusNetwork) {
               const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
               StorageService.SetItem(itemsTypeStorage, response);
               this.itemTypes = [];
@@ -144,7 +144,7 @@ export class ProfilesService {
         try {
           const itemsUserLocal = StorageService.GetItem(itemsUserStorage, true);
           if (!itemsUserLocal) {
-            if (await this.networkService.getNetworkStatus()) {
+            if (this.networkService.StatusNetwork) {
               const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
               StorageService.SetItem(itemsUserStorage, response);
               resolve(this.FilterItems(response));
@@ -186,7 +186,7 @@ export class ProfilesService {
           if (!data) {
             reject({message: 'No data'});
           }
-          if (await this.networkService.getNetworkStatus()) {
+          if (this.networkService.StatusNetwork) {
             const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
             this.toastService.Toast(MessagesServices.SAVE_ITEMS);
             StorageService.SetItem(itemsUserStorage, response);
@@ -210,13 +210,9 @@ export class ProfilesService {
           if (!idUser) {
             reject({message: 'No idUSer'});
           }
-          if (await this.networkService.getNetworkStatus()) {
-            if (await this.networkService.getNetworkStatus()) {
-              const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
-              resolve(response);
-            } else {
-              reject({message: 'No network'});
-            }
+          if (this.networkService.StatusNetwork) {
+            const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
+            resolve(response);
           } else {
             reject({message: 'No network'});
           }
@@ -235,7 +231,7 @@ export class ProfilesService {
           if (!idUser || !idWink) {
             reject({message: 'No idUser/idWink'});
           }
-          if (await this.networkService.getNetworkStatus()) {
+          if (this.networkService.StatusNetwork) {
             const response = await this.http.post(
             Routes.BASE + Routes.SHOW_PRIVATE_PROFILE,
               {

@@ -321,7 +321,9 @@
       },
       "MESSAGE": {
         "NEW": "{{ userName }} te envio un wink.",
-        "MULTIPLE": "Tienes {{ count }} solicitudes wink pendientes."
+        "MULTIPLE": "Tienes {{ count }} solicitudes wink pendientes.",
+        "NETWORK_DOWN" : "Desconectado",
+        "NETWORK_UP": "Conectando"
       }
     },
     "LOADER": {

@@ -496,6 +496,12 @@
 }
 .mat-chip-list-wrapper {
   height: 100% !important;
+  margin: 0px !important;
+}
+.mat-chip-list{
+  & div {
+    margin: 0px !important;
+  }
 }
 .check-del {
   --border-radius: 50%;

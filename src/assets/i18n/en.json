@@ -316,7 +316,9 @@
       },
       "MESSAGE": {
         "NEW": "{{ userName}} send you a wink.",
-        "MULTIPLE": "You have {{ count }} wink request."
+        "MULTIPLE": "You have {{ count }} wink request.",
+        "NETWORK_DOWN" : "Disconnected",
+        "NETWORK_UP": "Connecting"
       }
     },
     "LOADER": {
