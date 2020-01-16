@@ -201,6 +201,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.url !== RoutesAPP.WINKS) {
               this.winksTab = true;
               if (this.idUserProfile && this.url === RoutesAPP.PERFIL_PUBLICO && wink.sender_id === this.idUserProfile) {
+                console.log('desactivar notificacion');
                 this.winksTab = false;
               } else {
                 if (!this.backgroundMode.isActive() && this.platform.is('mobile')) {

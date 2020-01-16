@@ -14,7 +14,9 @@
         {{'WINK.WINKS.TITLE'  | translate}}
       </ion-label>
       <div></div>
-      <ion-badge color="primary" *ngIf="winksTab"></ion-badge>
+      <ion-badge color="primary" *ngIf="winksTab" class="badge-tab">
+        <span>.</span>
+      </ion-badge>
     </ion-tab-button>
 
     <ion-tab-button [tab]="profiles" [disabled]="tour"  class="line-sub">
