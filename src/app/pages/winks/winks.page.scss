@@ -11,11 +11,10 @@
   position: static;
 }
 
-
-all-wh-0 {
-  display: none;
+.show {
+  display: block;
 }
 
-all-wh-100 {
-  display: block;
+.hidden {
+  display: none;
 }

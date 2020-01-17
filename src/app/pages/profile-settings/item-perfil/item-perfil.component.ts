@@ -139,9 +139,6 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   LoadItem() {
     if (this.value.value === '' || this.value.value) {
       this.SearchItemType();
-      if (this.itemType && !this.itemType.repeat) {
-        this.AddUnique();
-      }
     } else {
       this.SearchItemsType(this.value.category);
     }
@@ -349,6 +346,9 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
           this.AddInputForm();
           this.SearchItemsType(this.itemType.category);
           this.LoadChips();
+          if (this.itemType && !this.itemType.repeat) {
+            this.AddUnique();
+          }
         }
       }
       this.LoadIcon();
