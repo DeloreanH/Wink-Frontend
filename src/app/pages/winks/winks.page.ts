@@ -84,7 +84,6 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.recordSubscription = this.winkService.recordChanged.subscribe(
       (record: Wink[]) => {
-        console.log('record', record);
         if (!this.tour) {
           this.record = record;
         }
@@ -92,7 +91,6 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.requestsSubscription = this.winkService.requestsChanged.subscribe(
       (requests: Wink[]) => {
-        console.log('requests', requests);
         if (!this.tour) {
           this.requests = requests;
         }

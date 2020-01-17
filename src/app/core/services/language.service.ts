@@ -23,6 +23,7 @@ export class LanguageService {
   constructor(
     private storageService: StorageService,
     private translateService: TranslateService,
+    // tslint:disable-next-line: deprecation
     private globalization: Globalization,
   ) { }
 

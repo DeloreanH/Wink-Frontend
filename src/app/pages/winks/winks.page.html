@@ -39,7 +39,7 @@
     </ion-refresher>
 
     <div *ngIf="tour" tourAnchor="intro"></div>
-    <ion-list [ngClass]="{'show' : tab === 'requests', 'hidden' : tab !== 'requests'}" >
+    <ion-list *ngIf="tab === 'requests'" >
       <item-request
         *ngFor="let wink of requests"
         [wink]="wink"
@@ -52,7 +52,7 @@
 
     </ion-list>
     <div *ngIf="tour" tourAnchor="wink"></div>
-    <ion-list [ngClass]="{'show' : tab === 'record', 'hidden' : tab !== 'record'}">
+    <ion-list *ngIf="tab === 'record'" >
       <item-wink
         *ngFor="let wink of record"
         [wink]="wink"

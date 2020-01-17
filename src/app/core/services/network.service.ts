@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable()
 export class NetworkService {
   private online: Observable<boolean> =  new Observable();
-  private statusNetwork = false;
+  private statusNetwork = true;
 
   constructor(
     public network: Network,
