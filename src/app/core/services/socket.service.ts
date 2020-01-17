@@ -136,6 +136,9 @@ export class SocketService  {
   }
 
   Listen(eventName: SocketEventsListen) {
+    if (!this.connect) {
+      this.Connect();
+    }
     return new Observable(
       (subscriber) => {
         try {

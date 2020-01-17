@@ -4,6 +4,9 @@ import { Platform } from '@ionic/angular';
 import { fromEvent, merge, of, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { ToastService, PositionToast } from './toast.service';
+import { StorageService } from './storage.service';
+import { networkStorage } from 'src/app/common/constants/storage.constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class NetworkService {
@@ -14,6 +17,7 @@ export class NetworkService {
     public network: Network,
     public platform: Platform,
     private toastService: ToastService,
+    private translateService: TranslateService,
     ) {
     if (this.platform.is('cordova')) {
       // on Device
@@ -45,18 +49,21 @@ export class NetworkService {
         (status) => {
           console.log('status', status);
           this.statusNetwork = status;
-          if (!status) {
+          const networkLocal = StorageService.GetItem(networkStorage, true);
+          if (!status && networkLocal) {
             if (this.platform.is('cordova')) {
               this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_DOWN', null, null, PositionToast.BOTTOM, null, 'danger');
             } else {
-              window.alert('Sin internet');
+              window.alert(this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NETWORK_DOWN'));
             }
-          } else {
+            StorageService.SetItem(networkStorage, status);
+          } else if (status && !networkLocal) {
             if (this.platform.is('cordova')) {
               this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_UP', null, null, PositionToast.BOTTOM, null, 'success');
             } else {
-              window.alert('Reconectando');
+              window.alert(this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NETWORK_UP'));
             }
+            StorageService.SetItem(networkStorage, status);
           }
         }
       );

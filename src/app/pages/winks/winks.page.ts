@@ -145,16 +145,12 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
           this.toursService.EndTour(PagesName.WINKS);
           this.tourSubscription.unsubscribe();
           this.stepShowSubs.unsubscribe();
-          if (this.requests.length && this.record.length) {
-            this.Winks();
-          }
+          this.Winks();
         }
       );
     } else {
       this.tour = false;
-      if (this.requests.length && this.record.length) {
-        this.Winks();
-      }
+      this.Winks();
     }
   }
 
@@ -174,7 +170,6 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   async Winks(event?) {
     try {
-      console.log('Winks desde winks');
       await this.winkService.GetWinks();
     } catch (err) {
       console.log(err);

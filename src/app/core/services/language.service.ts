@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { TranslateService } from '@ngx-translate/core';
-import { language } from 'src/app/common/constants/storage.constants';
+import { languageStorage } from 'src/app/common/constants/storage.constants';
 import { Globalization } from '@ionic-native/globalization/ngx';
 
 export enum Language {
@@ -56,7 +56,7 @@ export class LanguageService {
   ChangeLanguage(lang: Language) {
     try {
       this.translateService.use(lang);
-      StorageService.SetItem(language, lang);
+      StorageService.SetItem(languageStorage, lang);
       this.lang = lang;
     } catch (err) {
       console.log('ChangeLanguage Error', err);

@@ -17,7 +17,7 @@ import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Tours } from 'src/app/common/interfaces/tours.interface';
 import { StorageService } from 'src/app/core/services/storage.service';
-import { tours } from 'src/app/common/constants/storage.constants';
+import { toursStorage } from 'src/app/common/constants/storage.constants';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
 import { TourService } from 'ngx-tour-ngx-popper';
 import { Subscription } from 'rxjs';
@@ -121,13 +121,13 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
   }
 
   ValidateTour() {
-    const tour: Tours = StorageService.GetItem(tours, true);
+    const tour: Tours = StorageService.GetItem(toursStorage, true);
     if (tour) {
       if (tour.private) {
         this.Tour(tour);
       }
     } else {
-      StorageService.SetItem(tours, {
+      StorageService.SetItem(toursStorage, {
         home: true,
         profile: true,
         public: true,
@@ -168,7 +168,7 @@ export class PrivateProfilesPage implements OnInit, OnDestroy {
     this.tourService.end$.subscribe(
       () => {
         tour.private = false;
-        StorageService.SetItem(tours, tour);
+        StorageService.SetItem(toursStorage, tour);
       }
     );
   }

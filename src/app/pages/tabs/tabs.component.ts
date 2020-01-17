@@ -70,24 +70,37 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.NotificationPermission();
       }
     }
+    this.EnableBackground();
+  }
+
+  EnableBackground() {
+    if (this.platform.is('cordova') && !this.backgroundMode.isEnabled()) {
+      try {
+        this.backgroundMode.setDefaults({silent: true});
+        // this.backgroundMode.setEnabled(true);
+        this.backgroundMode.enable();
+      } catch (error) {
+        console.log('error activate back', error);
+      }
+    }
   }
   public ngOnInit() {
     this.user = this.userService.User();
     this.RouterController();
-    if (this.platform.is('mobile')) {
-      this.backgroundMode.enable();
-      this.backgroundMode.setDefaults({silent: true});
-    }
+    this.socketService.Connect();
+    this.EnableBackground();
     this.userSubs = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
       }
     );
+    this.Listen();
   }
 
   RouterController() {
     this.router.events.subscribe(
       (valor: any) => {
+        this.EnableBackground();
         if (valor instanceof NavigationStart) {
           this.url =  valor.url.split('/')[2];
           this.idUserProfile = valor.url.split('/')[3] ? valor.url.split('/')[3] : null;
@@ -124,13 +137,20 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async NotificationPermission() {
     try {
-      await this.localNotifications.requestPermission();
+      const permission = await this.localNotifications.requestPermission();
+      console.log('NotificationPermission', permission);
     } catch (error) {
     }
   }
 
   async Background(wink: Wink) {
-    if (this.backgroundMode.isActive() && this.platform.is('mobile')) {
+    console.log('Background');
+    console.log('isEnabled backgroundMode', this.backgroundMode.isEnabled());
+    console.log('isActive backgroundMode', this.backgroundMode.isActive() );
+    this.EnableBackground();
+    console.log('isEnabled backgroundMode', this.backgroundMode.isEnabled());
+    if (this.backgroundMode.isActive() && this.platform.is('cordova')) {
+      console.log('Background cordova');
       if (this.newWinks.size === 1) {
         const user = await this.winkService.GetUserWink(wink);
         this.localNotifications.schedule({
@@ -167,7 +187,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tour = tour;
       }
     );
-    this.socketService.Connect();
     this.updatedUserSubs = this.socketService.Listen(SocketEventsListen.UPDATED_USER).subscribe(
       (user: User) => {
         if (user) {
@@ -204,7 +223,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log('desactivar notificacion');
                 this.winksTab = false;
               } else {
-                if (!this.backgroundMode.isActive() && this.platform.is('mobile')) {
+                if (!this.backgroundMode.isActive() && this.platform.is('cordova')) {
                   this.toastService.Toast('WINK.DIALOGUES.MESSAGES.NEW_WINK', null, [{
                     text: this.translateService.instant('WINK.BUTTONS.SEE'),
                     side: 'end',
@@ -220,8 +239,8 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             }
             this.songsService.Vibrate();
+            this.winkService.AddWink(wink);
           }
-          this.winkService.AddWink(wink);
         }
       }
     );

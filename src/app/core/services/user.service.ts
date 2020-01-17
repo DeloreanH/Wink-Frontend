@@ -45,7 +45,13 @@ export class UserService {
         this.UpdateStorage();
       }
     } else {
-      return this.user;
+      if (this.user) {
+        return this.user;
+      } else {
+        const userLocal = this.storageService.apiAuthorization.user;
+        this.User(userLocal);
+        return userLocal;
+      }
     }
 
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Tours } from 'src/app/common/interfaces/tours.interface';
 import { StorageService } from './storage.service';
-import { tours } from 'src/app/common/constants/storage.constants';
+import { toursStorage } from 'src/app/common/constants/storage.constants';
 import { PagesName } from 'src/app/common/enums/pagesName.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Buttons } from 'src/app/common/enums/buttons.enum';
@@ -268,7 +268,7 @@ export class ToursService {
   }
 
   ValidateTour(pageName: PagesName) {
-    const tourStorage = StorageService.GetItem(tours, true);
+    const tourStorage = StorageService.GetItem(toursStorage, true);
     let validate = false;
     if (tourStorage) {
       if (tourStorage[pageName]) {
@@ -278,7 +278,7 @@ export class ToursService {
         this.Tour(false);
       }
     } else {
-      StorageService.SetItem(tours, {
+      StorageService.SetItem(toursStorage, {
         home: true,
         settings: true,
         winks: true
@@ -290,11 +290,11 @@ export class ToursService {
   }
 
   EndTour(pageName: PagesName) {
-    const tourStorage = StorageService.GetItem(tours, true);
+    const tourStorage = StorageService.GetItem(toursStorage, true);
     if (tourStorage[pageName]) {
       this.Tour(false);
       tourStorage[pageName] = false;
-      StorageService.SetItem(tours, tourStorage);
+      StorageService.SetItem(toursStorage, tourStorage);
     }
   }
 

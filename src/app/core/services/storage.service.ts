@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
-  auth,
-  language,
+  authStorage,
+  languageStorage,
   itemsTypeStorage,
   itemsUserStorage,
   categoriesStorage,
@@ -64,15 +64,15 @@ export class StorageService {
   }
 
   public get apiAuthorization() {
-    return StorageService.GetItem(auth, true);
+    return StorageService.GetItem(authStorage, true);
   }
 
   public get apiLanguage() {
-    return StorageService.GetItem(language);
+    return StorageService.GetItem(languageStorage);
   }
 
   public DeleteAuthorization() {
-    StorageService.DeleteItem(auth);
+    StorageService.DeleteItem(authStorage);
     StorageService.DeleteItem(itemsUserStorage);
     StorageService.DeleteItem(recordStorage);
     StorageService.DeleteItem(requestStorage);

@@ -1,12 +1,10 @@
-export const auth = 'userData';
-export const language = 'configLanguaje';
-export const tours = 'tours';
+export const authStorage = 'userData';
+export const languageStorage = 'configLanguaje';
+export const toursStorage = 'tours';
 export const itemsUserStorage = 'items';
-export const dateItems = 'dateItems';
 export const nearbyStorage = 'nearby';
 export const requestStorage = 'request';
 export const recordStorage = 'record';
-export const dateRequest = 'dateRequest';
-export const dateRecord = 'dateRecord';
 export const categoriesStorage = 'categories';
 export const itemsTypeStorage = 'itemsType';
+export const networkStorage = 'network';
