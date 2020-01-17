@@ -45,6 +45,7 @@ import { ToursService } from './services/tours.service';
 import { LoaderService } from './services/loader.service';
 import { IonicGestureConfig } from '../common/tools/IonicGestureConfig';
 import { NetworkService } from './services/network.service';
+import { BackgroundService } from './services/background.service';
 
 @NgModule({
   declarations: [],
@@ -94,6 +95,7 @@ import { NetworkService } from './services/network.service';
     LoaderService,
     NetworkService,
     IonicGestureConfig,
+    BackgroundService,
   ]
 })
 export class CoreModule {

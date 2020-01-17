@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Photo } from 'src/app/common/class/photo.class';
+import { BackgroundService } from 'src/app/core/services/background.service';
 
 @Component({
   selector: 'app-tabs',
@@ -46,6 +47,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   deletedWinkSubs = new Subscription();
   tourSubs = new Subscription();
 
+
   constructor(
     private router: Router,
     private socketService: SocketService,
@@ -56,9 +58,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: ToastService,
     private navController: NavController,
     private translateService: TranslateService,
-    private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
     private platform: Platform,
+    private backgroundService: BackgroundService,
   ) {
    }
 
@@ -70,25 +72,13 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.NotificationPermission();
       }
     }
-    this.EnableBackground();
+    this.backgroundService.Enable();
   }
 
-  EnableBackground() {
-    if (this.platform.is('cordova') && !this.backgroundMode.isEnabled()) {
-      try {
-        this.backgroundMode.setDefaults({silent: true});
-        // this.backgroundMode.setEnabled(true);
-        this.backgroundMode.enable();
-      } catch (error) {
-        console.log('error activate back', error);
-      }
-    }
-  }
   public ngOnInit() {
     this.user = this.userService.User();
     this.RouterController();
     this.socketService.Connect();
-    this.EnableBackground();
     this.userSubs = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
@@ -100,7 +90,6 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   RouterController() {
     this.router.events.subscribe(
       (valor: any) => {
-        this.EnableBackground();
         if (valor instanceof NavigationStart) {
           this.url =  valor.url.split('/')[2];
           this.idUserProfile = valor.url.split('/')[3] ? valor.url.split('/')[3] : null;
@@ -145,11 +134,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async Background(wink: Wink) {
     console.log('Background');
-    console.log('isEnabled backgroundMode', this.backgroundMode.isEnabled());
-    console.log('isActive backgroundMode', this.backgroundMode.isActive() );
-    this.EnableBackground();
-    console.log('isEnabled backgroundMode', this.backgroundMode.isEnabled());
-    if (this.backgroundMode.isActive() && this.platform.is('cordova')) {
+    console.log('isEnabled backgroundMode', this.backgroundService.isEnabled );
+    console.log('isActive backgroundMode', this.backgroundService.isActive );
+    if (this.backgroundService.isActive && this.platform.is('cordova')) {
       console.log('Background cordova');
       if (this.newWinks.size === 1) {
         const user = await this.winkService.GetUserWink(wink);
@@ -223,7 +210,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log('desactivar notificacion');
                 this.winksTab = false;
               } else {
-                if (!this.backgroundMode.isActive() && this.platform.is('cordova')) {
+                if (!this.backgroundService.isActive && this.platform.is('cordova')) {
                   this.toastService.Toast('WINK.DIALOGUES.MESSAGES.NEW_WINK', null, [{
                     text: this.translateService.instant('WINK.BUTTONS.SEE'),
                     side: 'end',

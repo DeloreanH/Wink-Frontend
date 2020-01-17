@@ -16,6 +16,7 @@ import { Phone } from 'src/app/common/models/phone.model';
 import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 import { Photo } from 'src/app/common/class/photo.class';
 import { LanguageService } from 'src/app/core/services/language.service';
+import { LoaderService } from 'src/app/core/services/loader.service';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
@@ -50,6 +51,7 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private translateService: TranslateService,
     private languageService: LanguageService,
+    public loaderService: LoaderService,
   ) {
     this.user = this.userService.User();
     this.LoadForm();
@@ -320,6 +322,7 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    this.loaderService.Close();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,

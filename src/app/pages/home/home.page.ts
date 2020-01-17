@@ -15,6 +15,7 @@ import { AlertService } from '../../common/alert/alert.service';
 import { AlertButtonType } from '../../common/alert/base';
 import { Buttons } from '../../common/enums/buttons.enum';
 import { LoaderService } from '../../core/services/loader.service';
+import { BackgroundService } from 'src/app/core/services/background.service';
 
 @Component({
   selector: 'app-home',
@@ -64,6 +65,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     public alertController: AlertController,
     private alertService: AlertService,
     public loaderService: LoaderService,
+    private backgroundService: BackgroundService,
   ) {
     this.user = this.userService.User();
     for (let i = 0; i < 15; i++) {
@@ -381,6 +383,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   async ionViewWillEnter() {
     this.loaderService.Close();
+    this.backgroundService.Enable();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,

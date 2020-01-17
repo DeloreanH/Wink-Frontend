@@ -52,6 +52,9 @@ export class WinkService {
           this.idUser = userData.user._id ? userData.user._id : null;
         }
       }
+      if (!this.nearbyUsers.length) {
+        this.nearbyUsers = StorageService.GetItem(nearbyStorage, true);
+      }
     } catch (err) {
       console.log('Error Init', err.message);
     }
@@ -231,7 +234,6 @@ export class WinkService {
             reject({message: 'No network'});
           }
         } catch (err) {
-          console.log('Del wink', err);
           if (err.error.statusCode && err.error.statusCode === 404) {
             this.DeleteWinkUser(wink);
           } else {
@@ -317,16 +319,12 @@ export class WinkService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          console.log('GetWinks');
           if (this.networkService.StatusNetwork) {
-            console.log('GetWinks2');
             const response = await this.http.get(Routes.BASE + Routes.GET_WINKS).toPromise();
             // StorageService.SetItem(winksStorage, response);
             this.FilterWinks((response as Wink[]));
-            console.log(response);
             resolve(response);
           } else {
-            console.log('No network');
             reject({message: 'No network'});
           }
         } catch (err) {
@@ -410,7 +408,6 @@ export class WinkService {
     const requests: Wink[] = [];
     winks.forEach(
       (wink: Wink) => {
-        console.log('FilterWinks');
         this.AddWink(wink);
         // if (!newUser) {
         //   wink.user = wink.user[0];
@@ -456,7 +453,6 @@ export class WinkService {
     } else if (wink.receiver_id === this.idUser && !wink.user) {
       this.AddRequests(wink);
     }
-    console.log('AddWink');
   }
 
   async GetUserWink(wink: Wink) {
@@ -480,17 +476,14 @@ export class WinkService {
     if (!idUserWink) {
       return;
     }
-    console.log('GetUserID', idUserWink);
     try {
       let user: User = this.GetNearbyUser(idUserWink);
-      console.log('user', user);
       if (user) {
         return user;
       } else {
         const response = await this.GetUser(idUserWink);
         user = response.winkUser;
         user.distance = response.distance;
-        console.log('user', user);
         return user;
       }
     } catch (err) {
@@ -510,7 +503,6 @@ export class WinkService {
       //   StorageService.SetItem(winksStorage, winksLocal);
       // }
       const user = await this.GetUserWink(wink);
-      console.log('user AddRecord', user);
       wink.user = user;
       if (wink.user) {
         wink.user.newWink = !wink.watched;
@@ -533,7 +525,6 @@ export class WinkService {
           }
         );
         this.recordChanged.next(this.record);
-        console.log('AddRecord');
         this.UpdateStorageRecord();
       }
     } catch (err) {
@@ -549,7 +540,6 @@ export class WinkService {
       // this.DeleteRecord(wink);
       // const idUserWink = wink.sender_id === this.idUser ? wink.receiver_id : wink.sender_id;
       wink.user = await this.GetUserWink(wink);
-      console.log('user AddRequests', wink.user);
       if (wink.user) {
         const winkExist = this.GetWinkRequestsID(wink._id);
         wink.user.newWink = !wink.watched;
