@@ -8,12 +8,12 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomePage } from './home.page';
 import { CardComponent } from './card/card.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../..//shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TourNgxPopperModule, TourStepTemplateComponent } from 'ngx-tour-ngx-popper';
-import { ImgLoadModule } from 'src/app/common/directives';
+import { ImgLoadModule } from '../..//common/directives';
 import { AlertModule } from '../../common/alert/alert.module';
-import { AlertComponent } from 'src/app/common/alert/alert.component';
+import { AlertComponent } from '../../common/alert/alert.component';
 
 const routes: Routes = [
   {
@@ -33,9 +33,16 @@ const routes: Routes = [
     TranslateModule.forChild(),
     TourNgxPopperModule.forRoot(),
     ImgLoadModule,
-    AlertModule
+    AlertModule,
   ],
-  entryComponents: [CardComponent, AlertComponent, TourStepTemplateComponent],
-  declarations: [HomePage, CardComponent]
+  entryComponents: [
+    CardComponent,
+    AlertComponent,
+    TourStepTemplateComponent,
+  ],
+  declarations: [
+    HomePage,
+    CardComponent
+  ]
 })
 export class HomePageModule {}

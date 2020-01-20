@@ -5,27 +5,35 @@
         {{'WINK.HOME.TITLE' | translate}}
       </ion-title>
       <ion-buttons slot="end">
-        <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie">
-          <ion-icon
-          src="/assets/icon/location.svg"
-          class="icon-bar-ion"
-          (click)="AlertRange()"
-          ></ion-icon>
-          <ion-ripple-effect></ion-ripple-effect>
+        <div class="double-container total">
+          <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie">
+            <ion-icon
+            src="/assets/icon/location.svg"
+            class="icon-bar-ion"
+            (click)="AlertRange()"
+            ></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+          <div *ngIf="tour" tourAnchor="range"></div>
         </div>
-        <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie">
-          <ion-icon
-          src="/assets/icon/think.svg"
-          class="icon-bar-ion"
-          (click)="PromptStatus()"
-          [ngClass]="{
-            'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'),
-            'icon-red' : (user.status === 'WINK.STATUS.BUSY'),
-            'icon-primary' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}">
-          </ion-icon>
-          <ion-ripple-effect></ion-ripple-effect>
+        
+        <div class="double-container total">
+          <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mie">
+            <ion-icon
+            src="/assets/icon/think.svg"
+            class="icon-bar-ion"
+            (click)="PromptStatus()"
+            [ngClass]="{
+              'icon-green' : (user.status === 'WINK.STATUS.AVAILABLE'),
+              'icon-red' : (user.status === 'WINK.STATUS.BUSY'),
+              'icon-primary' : (user.status !== 'WINK.STATUS.AVAILABLE' && user.status !== 'WINK.STATUS.BUSY')}">
+            </ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+            
+          </div>
           <div *ngIf="tour" tourAnchor="status"></div>
         </div>
+        
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -102,38 +110,44 @@
       horizontal="end"
       slot="fixed"  >
 
-      <div *ngIf="tour" tourAnchor="profiles"></div>
+      
       <div *ngIf="tour" tourAnchor="profiles_buttons"></div>
-      <ion-fab-button size="small">
-        <ion-icon
-          class="icon-public"
-          src="/assets/icon/show.svg"></ion-icon>
-      </ion-fab-button>
-
-      <ion-fab-list side="top" [activated]="OpenFabList">
-
-        <ion-fab-button
-          (click)="ChangeProfiles('2')"
-          [ngClass]="{'activo': isProfessional, 'inactivo' : !isProfessional}">
+      <div class="row-container">
+        <div *ngIf="tour" tourAnchor="profiles"></div>
+        <ion-fab-button size="small">
           <ion-icon
-          class="icon-public"
-          src="/assets/icon/professional.svg"></ion-icon>
+            class="icon-public"
+            src="/assets/icon/show.svg"></ion-icon>
         </ion-fab-button>
+        
+        <ion-fab-list side="top" [activated]="OpenFabList">
+          
+          <ion-fab-button
+            (click)="ChangeProfiles('2')"
+            [ngClass]="{'activo': isProfessional, 'inactivo' : !isProfessional}">
+            <ion-icon
+            class="icon-public"
+            src="/assets/icon/professional.svg"></ion-icon>
+          </ion-fab-button>
 
-        <ion-fab-button
-          (click)="ChangeProfiles('1')"
-          [ngClass]="{'activo': isPersonal, 'inactivo' : !isPersonal}">
-          <ion-icon
-          class="icon-public"
-          src="/assets/icon/personal.svg"></ion-icon>
-        </ion-fab-button>
-      </ion-fab-list>
+          <ion-fab-button
+            (click)="ChangeProfiles('1')"
+            [ngClass]="{'activo': isPersonal, 'inactivo' : !isPersonal}">
+            <ion-icon
+            class="icon-public"
+            src="/assets/icon/personal.svg"></ion-icon>
+          </ion-fab-button>
+        </ion-fab-list>
+      </div>
+      
+
+      
 
     </ion-fab>
 
   </ion-content>
 </div>
-<tour-step-template >
+<tour-step-template class="tour-arrow-center-right">
   <ng-template let-step="step" >
     <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
         <ion-card-header *ngIf="step?.title">
@@ -151,7 +165,7 @@
             <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
           </ion-button>
           <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
-            <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+            <ion-icon name="arrow-dropright" slot="end" ></ion-icon>
           </ion-button>
           <ion-button (click)="tourService.end()">
             {{step?.endBtnTitle}}

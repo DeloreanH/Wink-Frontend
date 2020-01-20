@@ -1,11 +1,13 @@
 <ion-card 
   class="card-container card-list ion-activatable ion-activatable-up" 
   [ngClass]="{newWink: user.newWink}">
-  <div class="status-card">
-    <ion-label  class="text-card text-status size-text-status" >
+  <div class="status-card ">
+    <div class="double-container">
+      <ion-label  class="text-card text-status size-text-status" >
         {{(user.status ? user.status : 'WINK.STATUS.AVAILABLE' ) | translate}}
-    </ion-label>
-    <div *ngIf="tour" tourAnchor="see_status"></div>
+      </ion-label>
+      <div *ngIf="tour" tourAnchor="see_status"></div>
+    </div>
   </div>
   <img 
     class="image-full" 
