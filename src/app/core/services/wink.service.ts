@@ -113,6 +113,20 @@ export class WinkService {
         this.AddUserLocal(user);
       }
     );
+    this.UpdateNearbyRequest();
+  }
+
+  UpdateNearbyRequest() {
+    if (this.nearbyUsers.length && this.requests.length) {
+      this.requests.forEach(
+        (request: Wink) => {
+          const nearby = this.GetNearbyUser(this.IDUserOther(request));
+          if (nearby) {
+            this.nearbyUsers[this.indexUser].newWink =  !request.watched;
+          }
+        }
+      );
+    }
   }
 
   GetNearbyUser(idUser: string) {
@@ -429,6 +443,7 @@ export class WinkService {
         // }
       }
     );
+    this.UpdateNearbyRequest();
     // this.SetRecord(record);
     // this.SetRequests(requests);
   }

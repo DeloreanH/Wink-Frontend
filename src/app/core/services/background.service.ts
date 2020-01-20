@@ -39,17 +39,19 @@ export class BackgroundService {
   }
 
   Listen() {
-    this.backgroundMode.on('activate').subscribe(
-      (value) => {
-        console.log('activado backgroundmode', value);
-      }
-    );
-    this.backgroundMode.on('deactivate').subscribe(
-      (value) => {
-        console.log('desactivado backgroundmode', value);
-        this.localNotificationsService.CloseAll();
-      }
-    );
+    if (this.platform.is('cordova')) {
+      this.backgroundMode.on('activate').subscribe(
+        (value) => {
+          console.log('activado backgroundmode', value);
+        }
+      );
+      this.backgroundMode.on('deactivate').subscribe(
+        (value) => {
+          console.log('desactivado backgroundmode', value);
+          this.localNotificationsService.CloseAll();
+        }
+      );
+    }
   }
 
 }
