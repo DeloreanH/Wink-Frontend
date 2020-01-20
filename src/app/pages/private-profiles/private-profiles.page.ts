@@ -13,7 +13,6 @@ import { SaveContactService } from 'src/app/core/services/save-contact.service';
 import { NameCategories } from 'src/app/common/enums/nameCaterogies.enum';
 import { IndexItemType } from 'src/app/common/enums/indexItemType.emun';
 import { Config } from 'src/app/common/enums/config.enum';
-import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Tours } from 'src/app/common/interfaces/tours.interface';
 import { StorageService } from 'src/app/core/services/storage.service';

@@ -80,7 +80,7 @@
         </ion-row>
       </ion-grid>
 
-      <div *ngIf="nearbyUsers.length === 0 && !load" class="vacio">
+      <div *ngIf="nearbyUsers.length === 0 && !load" class="empty">
         <p>
           {{'WINK.HOME.NO_NEARBY' | translate}}
         </p>
@@ -106,7 +106,7 @@
       <div *ngIf="tour" tourAnchor="profiles_buttons"></div>
       <ion-fab-button size="small">
         <ion-icon
-          class="icono-public"
+          class="icon-public"
           src="/assets/icon/show.svg"></ion-icon>
       </ion-fab-button>
 
@@ -116,7 +116,7 @@
           (click)="ChangeProfiles('2')"
           [ngClass]="{'activo': isProfessional, 'inactivo' : !isProfessional}">
           <ion-icon
-          class="icono-public"
+          class="icon-public"
           src="/assets/icon/professional.svg"></ion-icon>
         </ion-fab-button>
 
@@ -124,7 +124,7 @@
           (click)="ChangeProfiles('1')"
           [ngClass]="{'activo': isPersonal, 'inactivo' : !isPersonal}">
           <ion-icon
-          class="icono-public"
+          class="icon-public"
           src="/assets/icon/personal.svg"></ion-icon>
         </ion-fab-button>
       </ion-fab-list>

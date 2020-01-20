@@ -41,10 +41,10 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   isDrag = false;
 
-  publicoArray = new FormArray([]);
+  publicArray = new FormArray([]);
   generalArray = new FormArray([]);
   personalArray = new FormArray([]);
-  profesionalArray = new FormArray([]);
+  professionalArray = new FormArray([]);
   grupoForm: FormGroup;
 
   groupArray: FormArray[] = [];
@@ -93,21 +93,21 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
-    this.groupArray.push(this.publicoArray);
+    this.groupArray.push(this.publicArray);
     this.groupArray.push(this.generalArray);
     this.groupArray.push(this.personalArray);
-    this.groupArray.push(this.profesionalArray);
+    this.groupArray.push(this.professionalArray);
     this.grupoForm = this.formBuilder.group({
       biografia: new FormControl( null, [Validators.minLength(2), Validators.maxLength(50), this.noWhiteSpace.Validator]),
-      0: this.publicoArray,
+      0: this.publicArray,
       1: this.generalArray,
       2: this.personalArray,
-      3: this.profesionalArray,
+      3: this.professionalArray,
     });
     this.ValidateTour();
   }
 
-  MoverItem(event: any) {
+  MoveItem(event: any) {
     this.changeData = true;
     if (event.previousContainer === event.container) {
       const item = (event.container.data as FormArray).at(event.previousIndex);
@@ -298,7 +298,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  Ordenar() {
+  Order() {
     this.order = !this.order;
   }
 

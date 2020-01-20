@@ -1,5 +1,5 @@
 <ion-card 
-  class="contenedor-card card-list ion-activatable ion-activatable-up" 
+  class="card-container card-list ion-activatable ion-activatable-up" 
   [ngClass]="{newWink: user.newWink}">
   <div class="status-card">
     <ion-label  class="text-card text-status size-text-status" >
@@ -8,7 +8,7 @@
     <div *ngIf="tour" tourAnchor="see_status"></div>
   </div>
   <img 
-    class="imagen-full" 
+    class="image-full" 
     alt="Avatar" 
     [srcPath]="Avatar()"
   >

@@ -64,13 +64,13 @@
       ></item-wink>
     </ion-list>
     <div *ngIf="tour" tourAnchor="delete"></div>
-    <div *ngIf="record.length === 0 && tab === 'record'" class="vacio">
+    <div *ngIf="record.length === 0 && tab === 'record'" class="empty">
       <p >
         {{noHistorical | translate}}
       </p>
       <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
     </div>
-    <div *ngIf="requests.length === 0 && tab === 'requests'" class="vacio">
+    <div *ngIf="requests.length === 0 && tab === 'requests'" class="empty">
       <p >
         {{noRequests | translate}}
       </p>

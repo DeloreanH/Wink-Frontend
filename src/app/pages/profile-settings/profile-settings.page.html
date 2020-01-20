@@ -42,7 +42,7 @@
         <ion-icon
         class="icon-bar center"
         [ngClass]="{'primary' : !order, 'medium' : order}"
-        (click)="Ordenar()"
+        (click)="Order()"
         src="/assets/icon/drag.svg"
         ></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>
@@ -54,7 +54,7 @@
   <ion-content class="ion-padding" >
 
     <div *ngIf="loading">
-      <div class="contenedorAvatar" >
+      <div class="avatar-container" >
         <ion-avatar  class="avatar-profile">
           <ion-skeleton-text animated></ion-skeleton-text>
         </ion-avatar>
@@ -81,7 +81,7 @@
     </div>
 
     <div *ngIf="!loading">
-      <div class="contenedorAvatar" >
+      <div class="avatar-container" >
         <ion-avatar class="avatar-profile" (click)="SelectImage()">
           <img
             [srcPath]="Avatar()"
@@ -125,7 +125,7 @@
           <mat-expansion-panel #pp
           cdkDropList
             [cdkDropListData]="publicoForm"
-            (cdkDropListDropped)="MoverItem($event)"
+            (cdkDropListDropped)="MoveItem($event)"
             (cdkDropListEntered)="OpenPanel(pp)"
             (cdkDropListExited)="ClosePanel(pp)"
             formArrayName="0"
@@ -158,7 +158,7 @@
                   >
                 </app-item-perfil>
             </div>
-            <div *ngIf="publicoForm.length === 0" class="vacio">
+            <div *ngIf="publicoForm.length === 0" class="empty">
               <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
             </div>
           </mat-expansion-panel>
@@ -167,7 +167,7 @@
           <mat-expansion-panel  #pg
           cdkDropList
             [cdkDropListData]="generalForm"
-            (cdkDropListDropped)="MoverItem($event)"
+            (cdkDropListDropped)="MoveItem($event)"
             (cdkDropListEntered)="OpenPanel(pg)"
             (cdkDropListExited)="ClosePanel(pg)"
             formArrayName="1"
@@ -197,7 +197,7 @@
                 >
                 </app-item-perfil>
               </div>
-              <div *ngIf="generalForm.length === 0" class="vacio">
+              <div *ngIf="generalForm.length === 0" class="empty">
                 <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
               </div>
           </mat-expansion-panel>
@@ -206,7 +206,7 @@
             cdkDropList
             [cdkDropListData]="personalForm"
             (cdkDropListEntered)="OpenPanel(pper)"
-            (cdkDropListDropped)="MoverItem($event)"
+            (cdkDropListDropped)="MoveItem($event)"
             (cdkDropListExited)="ClosePanel(pper)"
             formArrayName="2"
             class="none-shadow"
@@ -235,7 +235,7 @@
               >
               </app-item-perfil>
             </div>
-            <div *ngIf="personalForm.length === 0" class="vacio">
+            <div *ngIf="personalForm.length === 0" class="empty">
               <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
             </div>
           </mat-expansion-panel>
@@ -244,7 +244,7 @@
             cdkDropList
             [cdkDropListData]="profesionalForm"
             (cdkDropListEntered)="OpenPanel(ppro)"
-            (cdkDropListDropped)="MoverItem($event)"
+            (cdkDropListDropped)="MoveItem($event)"
             (cdkDropListExited)="ClosePanel(ppro)"
             formArrayName="3"
             class="none-shadow"
@@ -273,7 +273,7 @@
               >
               </app-item-perfil>
             </div>
-            <div *ngIf="profesionalForm.controls.length === 0" class="vacio">
+            <div *ngIf="profesionalForm.controls.length === 0" class="empty">
               <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
             </div>
           </mat-expansion-panel>

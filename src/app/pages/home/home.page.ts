@@ -30,7 +30,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   nearbyUsers: User[] = [];
   originNearbyUsers: User[] = [];
   nearbyUsersSubs = new Subscription();
-  private contadorUser = 10;
+  private accountantUser = 10;
 
   user: User = null;
   userSubs = new Subscription();
@@ -200,13 +200,13 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   LoadUsers(event?) {
     this.ChangeExit();
     if (!this.tour) {
-      if (this.contadorUser < this.originNearbyUsers.length) {
-        this.contadorUser += 10;
+      if (this.accountantUser < this.originNearbyUsers.length) {
+        this.accountantUser += 10;
       }
-      this.nearbyUsers = this.originNearbyUsers.slice(0, this.contadorUser);
+      this.nearbyUsers = this.originNearbyUsers.slice(0, this.accountantUser);
       if (event) {
         event.target.complete();
-        if (this.contadorUser >= this.originNearbyUsers.length) {
+        if (this.accountantUser >= this.originNearbyUsers.length) {
           event.target.disabled = true;
         }
       }

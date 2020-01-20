@@ -9,7 +9,6 @@ import { UpdateAvatarService } from '../../core/services/update-avatar.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
 import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
-import { Routes } from 'src/app/common/enums/routes/routes.enum';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Phone } from 'src/app/common/models/phone.model';

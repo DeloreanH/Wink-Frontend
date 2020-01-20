@@ -2,13 +2,13 @@
   <ion-toolbar>
     <div *ngIf="!user.emptyProfile" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
       <ion-icon
-      class="icono-arrow center"
+      class="icon-arrow center"
         (click)="Back()"
       src="/assets/icon/back.svg"
       ></ion-icon>
       <!-- <fa-icon
         [icon]="['fas', 'arrow-left']"
-        class="icono-arrow center"
+        class="icon-arrow center"
         (click)="Back()"
       ></fa-icon> -->
       <ion-ripple-effect></ion-ripple-effect>
@@ -20,7 +20,7 @@
 </ion-header>
 <ion-content  class="ion-padding">
   <div *ngIf="loading">
-    <div class="contenedorAvatar" >
+    <div class="avatar-container" >
       <ion-avatar class="avatar-profile">
         <ion-skeleton-text animated></ion-skeleton-text>
       </ion-avatar>
@@ -105,7 +105,7 @@
     <form
       [formGroup]="form"
       (ngSubmit)="onSubmit()">
-      <div class="contenedorAvatar" >
+      <div class="avatar-container" >
         <ion-avatar (click)="SelectImage()" class="avatar-profile">
           <img
             class="img-avatar"
@@ -115,7 +115,7 @@
           <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
         </ion-avatar>
       </div>
-      <div *ngIf="user.emptyProfile && !uploadAvatar" class="contenedorAvatar" >
+      <div *ngIf="user.emptyProfile && !uploadAvatar" class="avatar-container" >
         <ion-text color="danger">
           {{'WINK.BASIC_DATA.FORM.AVATAR' | translate}}
         </ion-text>
@@ -124,7 +124,7 @@
         <ion-item >
             <fa-icon
               [icon]="['fas', 'user']"
-              class="icono icon-center"
+              class="icon icon-center"
               slot="start" >
             </fa-icon>
           <ion-label position="floating" >
@@ -142,7 +142,7 @@
         <ion-item>
             <fa-icon
               [icon]="['fas', 'user']"
-              class="icono icon-center"
+              class="icon icon-center"
               slot="start" >
             </fa-icon>
           <ion-label position="floating" >
@@ -159,7 +159,7 @@
         <!-- <ion-item>
             <fa-icon
               [icon]="['fas', 'user']"
-              class="icono icon-center"
+              class="icon icon-center"
               slot="start" >
             </fa-icon>
           <ion-label position="floating" >
@@ -178,7 +178,7 @@
         <ion-item>
             <fa-icon
               [icon]="['fas', 'envelope']"
-              class="icono icon-center"
+              class="icon icon-center"
               slot="start" >
             </fa-icon>
           <ion-label position="floating" >
@@ -198,7 +198,7 @@
             <ion-item>
               <fa-icon
                 [icon]="['fas', 'mobile-alt']"
-                class="icono icon-center"
+                class="icon icon-center"
                 slot="start" >
               </fa-icon>
               <ion-label position="floating" >
@@ -233,7 +233,7 @@
         <ion-item>
           <fa-icon
             [icon]="['fas', 'calendar-alt']"
-            class="icono icon-center"
+            class="icon icon-center"
             slot="start" >
           </fa-icon>
           <ion-label position="floating" >
@@ -254,7 +254,7 @@
         <ion-item>
           <fa-icon
           [icon]="['fas', 'genderless']"
-          class="icono icon-center"
+          class="icon icon-center"
           slot="start" ></fa-icon>
           <ion-label position="floating" >
             {{'WINK.BASIC_DATA.FORM.GENDER' | translate}}
@@ -273,7 +273,7 @@
         <ion-item>
           <fa-icon
           [icon]="['fas', 'language']"
-          class="icono icon-center"
+          class="icon icon-center"
           slot="start" ></fa-icon>
           <ion-label position="floating" >
             {{'WINK.LANGUAGES.TITLE' | translate}}

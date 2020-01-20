@@ -1,6 +1,6 @@
-<ion-tabs [ngClass]="{'ocultar': ocultar}">
+<ion-tabs [ngClass]="{'ocultar': hidden}">
   <ion-tab-bar slot="bottom" class="tabs">
-    <ion-tab-button [tab]="home" [disabled]="tour"  class="line-sub">
+    <ion-tab-button [tab]="homeRoute" [disabled]="tour"  class="line-sub">
       <ion-icon src="/assets/icon/home.svg" class="icon-tab"></ion-icon>
       <ion-label  class="label-tab">
         {{'WINK.HOME.TITLE' | translate}}
@@ -8,7 +8,7 @@
       <div></div>
     </ion-tab-button>
 
-    <ion-tab-button [tab]="winks" [disabled]="tour" class="line-sub">
+    <ion-tab-button [tab]="winksRoute" [disabled]="tour" class="line-sub">
       <ion-icon src="/assets/icon/wink.svg" class="icon-tab"></ion-icon>
       <ion-label class="label-tab">
         {{'WINK.WINKS.TITLE'  | translate}}
@@ -19,7 +19,7 @@
       </ion-badge>
     </ion-tab-button>
 
-    <ion-tab-button [tab]="profiles" [disabled]="tour"  class="line-sub">
+    <ion-tab-button [tab]="profilesRoute" [disabled]="tour"  class="line-sub">
 
       <ion-avatar class="avatar-tab">
         <img [srcPath]="Avatar()" class="img-avatar">
