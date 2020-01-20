@@ -56,6 +56,7 @@ export class SocketService  {
         this.Create();
         this.socket.open();
         this.connect = true;
+        console.log('Socket connect');
       }
     } catch (err) {
       console.log('Error SocketService Connetc ', err.message);
@@ -68,6 +69,7 @@ export class SocketService  {
         this.socket.close();
         this.connect = false;
         this.socket = null;
+        console.log('Socket Disconnect');
       }
     } catch (err) {
       console.log('Error SocketService Connetc ', err.message);

@@ -23,7 +23,7 @@ export class LocalNotificationsService {
   ) { }
 
   async Permission() {
-    if (this.platform.is('ios')) {
+    if (this.platform.is('cordova') && this.platform.is('ios')) {
       const permission = await this.localNotifications.hasPermission();
       if (!permission) {
         this.NotificationPermission();
@@ -33,38 +33,47 @@ export class LocalNotificationsService {
 
   private async NotificationPermission() {
     try {
-      const permission = await this.localNotifications.requestPermission();
-      console.log('NotificationPermission', permission);
+      if (this.platform.is('cordova')) {
+        const permission = await this.localNotifications.requestPermission();
+        console.log('NotificationPermission', permission);
+      }
     } catch (error) {
     }
   }
 
   async NewRequest(wink: Wink) {
-    const user = await this.winkService.GetUserWink(wink);
-    this.localNotifications.schedule({
-      id: 1,
-      title: this.translateService.instant('WINK.NOTIFICATION.TITLE.NEW'),
-      text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NEW', {userName: user.firstName}),
-      icon: '/assets/icon/wink.svg'
-    });
-    this.Listen();
+    if (this.platform.is('cordova')) {
+      const user = await this.winkService.GetUserWink(wink);
+      this.localNotifications.schedule({
+        id: 1,
+        title: this.translateService.instant('WINK.NOTIFICATION.TITLE.NEW'),
+        text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NEW', {userName: user.firstName}),
+        icon: '/assets/icon/wink.svg'
+      });
+      this.Listen();
+    }
+    
   }
 
   async NewRequests(size: number) {
-    this.localNotifications.schedule({
-      id: 1,
-      title: this.translateService.instant('WINK.NOTIFICATION.TITLE.MULTIPLE'),
-      text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.MULTIPLE', {count: size}),
-      icon: '/assets/icon/wink.svg'
-    });
-    this.Listen();
+    if (this.platform.is('cordova')) {
+      this.localNotifications.schedule({
+        id: 1,
+        title: this.translateService.instant('WINK.NOTIFICATION.TITLE.MULTIPLE'),
+        text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.MULTIPLE', {count: size}),
+        icon: '/assets/icon/wink.svg'
+      });
+      this.Listen();
+    }
   }
 
   Listen() {
-    this.notificationSubs = this.localNotifications.on('click').subscribe( event => {
-      this.goToWinks();
-      this.notificationSubs.unsubscribe();
-    });
+    if (this.platform.is('cordova')) { 
+      this.notificationSubs = this.localNotifications.on('click').subscribe( event => {
+        this.goToWinks();
+        this.notificationSubs.unsubscribe();
+      });
+    }
   }
 
   private async goToWinks() {
@@ -75,7 +84,9 @@ export class LocalNotificationsService {
 
   async CloseAll() {
     try {
-      await this.localNotifications.clearAll();
+      if (this.platform.is('cordova')) {
+        await this.localNotifications.clearAll();
+      }
     } catch (error) {
       console.log('CloseAll', error);
     }
