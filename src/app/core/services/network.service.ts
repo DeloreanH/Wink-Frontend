@@ -7,6 +7,7 @@ import { ToastService, PositionToast } from './toast.service';
 import { StorageService } from './storage.service';
 import { networkStorage } from 'src/app/common/constants/storage.constants';
 import { TranslateService } from '@ngx-translate/core';
+import { SocketService } from './socket.service';
 
 @Injectable()
 export class NetworkService {
@@ -18,6 +19,7 @@ export class NetworkService {
     public platform: Platform,
     private toastService: ToastService,
     private translateService: TranslateService,
+    private socketService: SocketService,
     ) {
     if (this.platform.is('cordova')) {
       // on Device
@@ -51,6 +53,7 @@ export class NetworkService {
           this.statusNetwork = status;
           const networkLocal = StorageService.GetItem(networkStorage, true);
           if (!status && networkLocal) {
+            this.socketService.Disconnect();
             if (this.platform.is('cordova')) {
               this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_DOWN', null, null, PositionToast.BOTTOM, null, 'danger');
             } else {
@@ -58,6 +61,7 @@ export class NetworkService {
             }
             StorageService.SetItem(networkStorage, status);
           } else if (status && !networkLocal) {
+            this.socketService.Connect();
             if (this.platform.is('cordova')) {
               this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_UP', null, null, PositionToast.BOTTOM, null, 'success');
             } else {

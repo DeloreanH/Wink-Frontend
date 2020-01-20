@@ -78,7 +78,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnInit() {
     this.user = this.userService.User();
     this.RouterController();
-    this.socketService.Connect();
+    // this.socketService.Connect();
     this.userSubs = this.userService.userChanged.subscribe(
       (data) => {
         this.user = data;
