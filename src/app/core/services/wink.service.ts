@@ -31,6 +31,7 @@ export class WinkService {
   private indexUser: number = null;
   idUser: string;
   deleteWink = new Subject<Wink>();
+  requestWink = false;
 
   constructor(
     private locationService: LocationService,
@@ -78,7 +79,9 @@ export class WinkService {
               StorageService.SetItem(nearbyStorage, response);
               this.SetNearbyUsers((response as User[]));
               this.userService.UpdateLocation(myLocation);
-              await this.GetWinks();
+              if (!this.requests.length && !this.record.length) {
+                await this.GetWinks();
+              }
               resolve(response);
             } else {
               reject({message: 'No network'});

@@ -188,6 +188,9 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
 
   ionViewWillEnter() {
     // this.loaderService.Close();
+    if (!this.record.length && !this.requests.length) {
+      this.Winks();
+    }
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
         resp.register(100,
