@@ -31,19 +31,6 @@ export class MenuWinkComponent implements OnInit {
           del: true
         }
       );
-      // if (this.wink.approved) {
-      //   this.alertService.showConfirm({
-      //     title: 'WINK.DIALOGUES.TITLES.DELETE_WINK',
-      //     description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
-      //   }).subscribe(
-      //     async (resp: any) => {
-      //       if (resp.value) {
-      //         this.popoverController.dismiss();
-      //         await this.winkService.DeleteWink(this.wink);
-      //       }
-      //     }
-      //   );
-      // }
     } catch (err) {
       console.log('Error DelWInk', err.message);
     }

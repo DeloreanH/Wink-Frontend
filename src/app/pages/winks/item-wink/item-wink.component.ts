@@ -75,7 +75,7 @@ export class ItemWinkComponent implements OnInit {
             description: 'WINK.DIALOGUES.MESSAGES.DELETE_WINK',
           }).subscribe(
             async (resp: any) => {
-              if (resp.value) {
+              if (resp && resp.value) {
                 this.Remove();
               }
             }

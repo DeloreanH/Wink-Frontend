@@ -46,6 +46,7 @@ import { LoaderService } from './services/loader.service';
 import { IonicGestureConfig } from '../common/tools/IonicGestureConfig';
 import { NetworkService } from './services/network.service';
 import { BackgroundService } from './services/background.service';
+import { LocalNotificationsService } from './services/local-notifications.service';
 
 @NgModule({
   declarations: [],
@@ -96,6 +97,7 @@ import { BackgroundService } from './services/background.service';
     NetworkService,
     IonicGestureConfig,
     BackgroundService,
+    LocalNotificationsService,
   ]
 })
 export class CoreModule {

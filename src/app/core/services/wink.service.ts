@@ -21,6 +21,7 @@ import { NetworkService } from './network.service';
 export class WinkService {
 
   private nearbyUsers: User[] = [];
+  private usersLocal: User[] = [];
   nearbyUsersChanged = new Subject<User[]>();
   private requests: Wink[] = [];
   requestsChanged = new Subject<Wink[]>();
@@ -29,6 +30,7 @@ export class WinkService {
   private winkType: boolean;
   private indexWink: number = null;
   private indexUser: number = null;
+  private indexUserLocal: number = null;
   idUser: string;
   deleteWink = new Subject<Wink>();
   requestWink = false;
@@ -106,6 +108,11 @@ export class WinkService {
     this.nearbyUsers = [];
     this.nearbyUsers.push(...nearbyUsers);
     this.nearbyUsersChanged.next(this.nearbyUsers);
+    nearbyUsers.forEach(
+      (user) => {
+        this.AddUserLocal(user);
+      }
+    );
   }
 
   GetNearbyUser(idUser: string) {
@@ -480,14 +487,25 @@ export class WinkService {
       return;
     }
     try {
-      let user: User = this.GetNearbyUser(idUserWink);
+      let user: User = this.GetUserLocal(idUserWink);
+      console.log('usersLocal', this.usersLocal);
       if (user) {
+        console.log('userLocal', user);
         return user;
       } else {
-        const response = await this.GetUser(idUserWink);
-        user = response.winkUser;
-        user.distance = response.distance;
-        return user;
+        user = this.GetNearbyUser(idUserWink);
+        console.log('usersLocal', this.nearbyUsers);
+        if (user) {
+          console.log('userNearby', user);
+          return user;
+        } else {
+          const response = await this.GetUser(idUserWink);
+          user = response.winkUser;
+          user.distance = response.distance;
+          this.AddUserLocal(user);
+          console.log('userHttp', user);
+          return user;
+        }
       }
     } catch (err) {
       return null;
@@ -746,6 +764,33 @@ export class WinkService {
         }
       }
     );
+  }
+
+  AddUserLocal(user: User) {
+    if (!user) {
+      return ;
+    }
+    const newUserLocal = this.GetUserLocal(user._id);
+    if (newUserLocal && this.indexUserLocal >= 0) {
+      this.usersLocal[this.indexUserLocal] = user;
+    } else {
+      this.usersLocal.push(user);
+    }
+    
+  }
+
+  GetUserLocal(idUser: string) {
+    if (!idUser) {
+      return ;
+    }
+    this.indexUserLocal = null;
+    return this.usersLocal.find(
+      (user, index: number, obj) => {
+        if (user._id === idUser) {
+          this.indexUserLocal =  index;
+          return true;
+        }
+      });
   }
 
 }

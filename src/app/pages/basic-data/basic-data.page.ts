@@ -189,7 +189,7 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
       description: 'WINK.AUTH.LOGOUT.MESSAGE',
     }).subscribe(
       (resp: any) => {
-        if (resp.value) {
+        if (resp && resp.value) {
           this.authService.Logout();
         }
       }

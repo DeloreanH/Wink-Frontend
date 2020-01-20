@@ -12,10 +12,9 @@ import { SongsService } from 'src/app/core/services/songs.service';
 import { Platform, NavController } from '@ionic/angular';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
-import { BackgroundMode } from '@ionic-native/background-mode/ngx';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Photo } from 'src/app/common/class/photo.class';
 import { BackgroundService } from 'src/app/core/services/background.service';
+import { LocalNotificationsService } from 'src/app/core/services/local-notifications.service';
 
 @Component({
   selector: 'app-tabs',
@@ -24,17 +23,16 @@ import { BackgroundService } from 'src/app/core/services/background.service';
 })
 export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  ocultar = false;
-  home = RoutesAPP.HOME;
-  profiles = RoutesAPP.CONFIGURAR_PERFIL;
-  winks = RoutesAPP.WINKS;
+  hidden = false;
+  homeRoute = RoutesAPP.HOME;
+  profilesRoute = RoutesAPP.CONFIGURAR_PERFIL;
+  winksRoute = RoutesAPP.WINKS;
   winksTab = false;
   newWinks = new Map();
   url: string;
   user: User;
   userSubs = new Subscription();
   idUserProfile: string;
-  notificationSubs: Subscription;
 
   photo = new Photo();
 
@@ -58,20 +56,15 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: ToastService,
     private navController: NavController,
     private translateService: TranslateService,
-    private localNotifications: LocalNotifications,
     private platform: Platform,
     private backgroundService: BackgroundService,
+    private localNotificationsService: LocalNotificationsService,
   ) {
    }
 
   async ngAfterViewInit(): Promise<void> {
     this.Listen();
-    if (this.platform.is('ios')) {
-      const permission = await this.localNotifications.hasPermission();
-      if (!permission) {
-        this.NotificationPermission();
-      }
-    }
+    this.localNotificationsService.Permission();
     this.backgroundService.Enable();
   }
 
@@ -94,9 +87,9 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.url =  valor.url.split('/')[2];
           this.idUserProfile = valor.url.split('/')[3] ? valor.url.split('/')[3] : null;
           if (this.url === RoutesAPP.PERFIL_PUBLICO || this.url === RoutesAPP.PRIVATE_PROFILES) {
-            this.ocultar = true;
+            this.hidden = true;
           } else {
-            this.ocultar = false;
+            this.hidden = false;
             if (this.url === RoutesAPP.WINKS) {
               if (this.winksTab) {
                 this.winksTab = false;
@@ -109,7 +102,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.url =  valor.url.split('/')[2];
           this.idUserProfile = valor.url.split('/')[3] ? valor.url.split('/')[3] : null;
           if (this.url === RoutesAPP.PERFIL_PUBLICO || this.url === RoutesAPP.PRIVATE_PROFILES) {
-            this.ocultar = true;
+            this.hidden = true;
           } else {
             if (this.url === RoutesAPP.WINKS) {
               if (this.winksTab) {
@@ -117,19 +110,11 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.newWinks.clear();
               }
             }
-            this.ocultar = false;
+            this.hidden = false;
           }
         }
       }
     );
-  }
-
-  async NotificationPermission() {
-    try {
-      const permission = await this.localNotifications.requestPermission();
-      console.log('NotificationPermission', permission);
-    } catch (error) {
-    }
   }
 
   async Background(wink: Wink) {
@@ -139,30 +124,15 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.backgroundService.isActive && this.platform.is('cordova')) {
       console.log('Background cordova');
       if (this.newWinks.size === 1) {
-        const user = await this.winkService.GetUserWink(wink);
-        this.localNotifications.schedule({
-          id: 1,
-          title: this.translateService.instant('WINK.NOTIFICATION.TITLE.NEW'),
-          text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NEW', {userName: user.firstName}),
-          icon: '/assets/icon/wink.svg'
-        });
+        this.localNotificationsService.NewRequest(wink);
       } else {
-        this.localNotifications.schedule({
-          id: 1,
-          title: this.translateService.instant('WINK.NOTIFICATION.TITLE.MULTIPLE'),
-          text: this.translateService.instant('WINK.NOTIFICATION.MESSAGE.MULTIPLE', {count: this.newWinks.size}),
-          icon: '/assets/icon/wink.svg'
-        });
+        this.localNotificationsService.NewRequests(this.newWinks.size);
       }
-      this.notificationSubs = this.localNotifications.on('click').subscribe( event => {
-        this.goToWinks();
-        this.notificationSubs.unsubscribe();
-      });
     }
   }
 
   async goToWinks() {
-    await this.navController.navigateBack(
+    await this.navController.navigateForward(
       ['/' + RoutesAPP.BASE + '/' + RoutesAPP.WINKS, true]
     );
   }

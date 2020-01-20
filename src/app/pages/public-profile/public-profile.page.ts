@@ -269,7 +269,7 @@ export class PublicProfilePage implements OnInit, OnDestroy, AfterViewInit {
       ]
     }).subscribe(
       (resp: any) => {
-        if (resp.value) {
+        if (resp && resp.value) {
           this.DeleteWink();
         }
       }
@@ -420,7 +420,7 @@ ErrorImagen() {
 
   onScroll(event) {
     // used a couple of "guards" to prevent unnecessary assignments if scrolling in a direction and the var is set already:
-    console.log('scroll', event);
+    // console.log('scroll', event);
   }
 
 
