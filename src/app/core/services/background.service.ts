@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Platform } from '@ionic/angular';
+import { LocalNotificationsService } from './local-notifications.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackgroundService {
 
-
   constructor(
     private backgroundMode: BackgroundMode,
     private platform: Platform,
-  ) { }
+    private localNotificationsService: LocalNotificationsService,
+  ) { 
+    this.Listen();
+  }
 
   Enable() {
     if (this.platform.is('cordova') && !this.backgroundMode.isEnabled()) {
@@ -33,6 +36,20 @@ export class BackgroundService {
 
   get isEnabled() {
     return this.backgroundMode.isEnabled();
+  }
+
+  Listen() {
+    this.backgroundMode.on('activate').subscribe(
+      (value) => {
+        console.log('activado backgroundmode', value);
+      }
+    );
+    this.backgroundMode.on('deactivate').subscribe(
+      (value) => {
+        console.log('desactivado backgroundmode', value);
+        this.localNotificationsService.CloseAll();
+      }
+    );
   }
 
 }
