@@ -8,15 +8,19 @@ class="wrapper design-style"
   class="wrapper-sub"
   [ngClass]="{'item-has-focus': focus, 'select-column' : !order && !value.basic , 'all-column' : value.basic || order}">
 
-  <!--Icono del item-->
-    <div class="center icon-column">
-      <fa-icon
-      *ngIf="itemType"
-      [icon]="itemType? [preIcon, icon] : null"
-      (click)="ShowSelector()"
-      class="icon"
-      slot="start" ></fa-icon>
+    <!--Icono del item-->
+    <div class="double-container total icon-column">
+      <div *ngIf="tour" tourAnchor="item_icon"></div>
+      <div class="center">
+        <fa-icon
+        *ngIf="itemType"
+        [icon]="itemType? [preIcon, icon] : null"
+        (click)="ShowSelector()"
+        class="icon"
+        slot="start" ></fa-icon>
+      </div>
     </div>
+    
 
     <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
     <div

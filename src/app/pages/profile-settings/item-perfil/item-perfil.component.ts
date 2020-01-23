@@ -29,6 +29,7 @@ export class ItemPerfilComponent implements ControlValueAccessor, OnInit {
   @Output() delete = new EventEmitter();
   @Output() changeData = new EventEmitter();
   @Input() chipInput: any;
+  @Input() tour: boolean;
 
 
   preIcon: string;

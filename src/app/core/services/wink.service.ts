@@ -503,22 +503,17 @@ export class WinkService {
     }
     try {
       let user: User = this.GetUserLocal(idUserWink);
-      console.log('usersLocal', this.usersLocal);
       if (user) {
-        console.log('userLocal', user);
         return user;
       } else {
         user = this.GetNearbyUser(idUserWink);
-        console.log('usersLocal', this.nearbyUsers);
         if (user) {
-          console.log('userNearby', user);
           return user;
         } else {
           const response = await this.GetUser(idUserWink);
           user = response.winkUser;
           user.distance = response.distance;
           this.AddUserLocal(user);
-          console.log('userHttp', user);
           return user;
         }
       }

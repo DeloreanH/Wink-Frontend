@@ -7,22 +7,26 @@
         </ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-segment (ionChange)="TabChanged($event)" [value]="tab" class="list-winks">
-      <ion-segment-button value="requests" [disabled]="tour && tab === 'record'">
-        <ion-label>
-          {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
-        </ion-label>
-        <div *ngIf="tour" tourAnchor="requests"></div>
-      </ion-segment-button>
+    <div class="double-container total">
+      <ion-segment (ionChange)="TabChanged($event)" [value]="tab" class="list-winks">
+        <ion-segment-button value="requests" [disabled]="tour && tab === 'record'">
+          <ion-label>
+            {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
+          </ion-label>
+          <div *ngIf="tour" tourAnchor="requests"></div>
+        </ion-segment-button>
 
-      <ion-segment-button value="record" [disabled]="tour && tab === 'requests'">
-        <ion-label>
-          {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
-        </ion-label>
-        <div *ngIf="tour" tourAnchor="record"></div>
-      </ion-segment-button>
+        <ion-segment-button value="record" [disabled]="tour && tab === 'requests'">
+          <ion-label>
+            {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
+          </ion-label>
+          <div *ngIf="tour" tourAnchor="record"></div>
+        </ion-segment-button>
 
-    </ion-segment>
+      </ion-segment>
+      <div *ngIf="tour" tourAnchor="intro"></div>
+    </div>
+    
   </ion-header>
 
   <ion-content class="ion-padding" >
@@ -38,7 +42,7 @@
       </ion-refresher-content>
     </ion-refresher>
 
-    <div *ngIf="tour" tourAnchor="intro"></div>
+    
     <ion-list *ngIf="tab === 'requests'" >
       <item-request
         *ngFor="let wink of requests"

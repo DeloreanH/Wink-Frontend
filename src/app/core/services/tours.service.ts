@@ -213,6 +213,7 @@ export class ToursService {
     }, {
       anchorId: 'private',
       content: this.translateService.instant(MessageTour.SETTINGS_PRIVATE),
+      placement: 'top',
       prevBtnTitle: this.translateService.instant(Buttons.PREV),
       nextBtnTitle: this.translateService.instant(Buttons.NEXT),
       endBtnTitle: this.translateService.instant(Buttons.END),
@@ -222,6 +223,7 @@ export class ToursService {
     }, {
       anchorId: 'item',
       content: this.translateService.instant(MessageTour.SETTINGS_ITEM),
+      placement: 'top',
       prevBtnTitle: this.translateService.instant(Buttons.PREV),
       nextBtnTitle: this.translateService.instant(Buttons.NEXT),
       endBtnTitle: this.translateService.instant(Buttons.END),
@@ -231,6 +233,7 @@ export class ToursService {
     }, {
       anchorId: 'item_icon',
       content: this.translateService.instant(MessageTour.SETTINGS_ITEM_ICON),
+      placement: 'top-start',
       prevBtnTitle: this.translateService.instant(Buttons.PREV),
       nextBtnTitle: this.translateService.instant(Buttons.NEXT),
       endBtnTitle: this.translateService.instant(Buttons.END),

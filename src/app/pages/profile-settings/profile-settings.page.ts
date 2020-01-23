@@ -195,28 +195,35 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     if (this.toursService.ValidateTour(PagesName.SETTINGS)) {
       this.loading = false;
       this.tourService.initialize(this.toursService.tourSettings);
+      // this.tourService.initialize([{
+      //   placement: 'top-start'
+      // }]);
       this.tourService.start();
       this.stepShowSubs = this.tourService.stepShow$.subscribe(
         (step) => {
           if (step.anchorId === 'item') {
             if (!this.itemTour) {
               this.itemTour = true;
-              this.groupArray.forEach(
-                (group) => {
-                  group.clear();
-                }
-              );
-              this.AddItem(this.toursService.itemTourOne, false);
+              // this.groupArray.forEach(
+              //   (group) => {
+              //     group.clear();
+              //   }
+              // );
+              if (!this.groupArray[0].length) {
+                this.AddItem(this.toursService.itemTourOne, false);
+              }
               this.publicPanel.open();
             }
           } else if (step.anchorId !== 'item_icon') {
             this.itemTour = false;
             this.publicPanel.close();
-            this.groupArray.forEach(
-              (group) => {
-                group.clear();
-              }
-            );
+            // this.groupArray.forEach(
+            //   (group) => {
+            //     group.clear();
+            //   }
+            // );
+          } else if (step.anchorId === 'item_icon') {
+            this.publicPanel.open();
           }
         }
       );

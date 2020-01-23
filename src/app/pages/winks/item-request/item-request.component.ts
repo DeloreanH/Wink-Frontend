@@ -177,7 +177,7 @@ export class ItemRequestComponent implements OnInit {
   }
 
   Removing() {
-    if (!this.currentRemoving)  {
+    if (!this.currentRemoving && !this.tour)  {
       this.removing.emit(true);
       this.currentRemoving = true;
       this.initRemoving = true;

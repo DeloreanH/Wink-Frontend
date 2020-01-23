@@ -509,3 +509,15 @@
 .tour-arrow-center-right {
   top: calc(50% - 5px) !important;
 }
+.ngxp__arrow__update {
+  & popper-content {
+    & div {
+      & div {
+        & .ngxp__arrow {
+          top: calc(50% - 5px) !important;
+        }
+      }
+    }
+  }
+  
+}

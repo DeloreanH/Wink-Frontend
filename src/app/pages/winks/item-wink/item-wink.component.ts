@@ -184,4 +184,13 @@ export class ItemWinkComponent implements OnInit {
     }
   }
 
+  NoRemoving() {
+    if (this.currentRemoving)  {
+      this.removing.emit(false);
+      this.currentRemoving = false;
+      this.initRemoving = false;
+      this.count.emit(-1);
+    }
+  }
+
 }

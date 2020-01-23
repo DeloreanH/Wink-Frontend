@@ -11,8 +11,6 @@ import { ItemWinkComponent } from './item-wink/item-wink.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Platform, NavController } from '@ionic/angular';
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { AlertComponent } from 'src/app/common/alert/alert.component';
 import { ItemRequestComponent } from './item-request/item-request.component';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,8 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./winks.page.scss'],
 })
 export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
-
-  @ViewChild(ItemWinkComponent, {static: false}) winkRecord: ItemWinkComponent;
+  
   @ViewChildren(ItemWinkComponent) itemsWink: QueryList<ItemWinkComponent>;
   @ViewChildren(ItemRequestComponent) itemsRequest: QueryList<ItemRequestComponent>;
   tab: 'record' | 'requests' = 'requests';
@@ -126,9 +123,17 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
             this.tab = 'record';
             this.record = [];
             this.record.push(this.toursService.winkRecordTour);
-            this.winkRecord.Close();
+            this.itemsWink.forEach(
+              (item) => {
+                item.NoRemoving();
+              }
+            );
           } else if (step.anchorId === 'delete') {
-            this.winkRecord.Open();
+            this.itemsWink.forEach(
+              (item) => {
+                item.Removing();
+              }
+            );
           } else {
             this.record = [];
           }
@@ -253,7 +258,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
           ),
       }).subscribe(
         async (resp: any) => {
-          if (resp && resp.value) {
+          if (resp && resp.value && !this.tour) {
             this.itemsRequest.forEach(
               (item) => {
                 item.RemoveList();
@@ -275,7 +280,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
           ),
       }).subscribe(
         async (resp: any) => {
-          if (resp && resp.value) {
+          if (resp && resp.value && !this.tour) {
             this.itemsWink.forEach(
               (item) => {
                 item.RemoveList();

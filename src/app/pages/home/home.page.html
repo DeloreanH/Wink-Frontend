@@ -109,7 +109,6 @@
       vertical="bottom"
       horizontal="end"
       slot="fixed"  >
-
       
       <div *ngIf="tour" tourAnchor="profiles_buttons"></div>
       <div class="row-container">
@@ -139,15 +138,12 @@
           </ion-fab-button>
         </ion-fab-list>
       </div>
-      
-
-      
-
+    
     </ion-fab>
 
   </ion-content>
 </div>
-<tour-step-template class="tour-arrow-center-right">
+<tour-step-template class="tour-arrow-center-right" [ngClass]="{'ngxp__arrow__update': OpenFabList}">
   <ng-template let-step="step" >
     <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
         <ion-card-header *ngIf="step?.title">

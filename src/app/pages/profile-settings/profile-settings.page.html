@@ -30,24 +30,36 @@
 
   <ion-header translucent>
     <ion-toolbar>
+      
       <ion-buttons slot="start">
-        <ion-menu-button >
-        </ion-menu-button>
-        <div *ngIf="tour" tourAnchor="menu"></div>
+        <div class="double-container total">
+          <ion-menu-button >
+          </ion-menu-button>
+          <div *ngIf="tour" tourAnchor="menu"></div>
+        
+        </div>
+        
       </ion-buttons>
+      
       <ion-title>
           {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
       </ion-title>
-      <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar-lg ripple-toolbar-mie" slot="end" >
-        <ion-icon
-        class="icon-bar center"
-        [ngClass]="{'primary' : !order, 'medium' : order}"
-        (click)="Order()"
-        src="/assets/icon/drag.svg"
-        ></ion-icon>
-        <ion-ripple-effect></ion-ripple-effect>
-        <div *ngIf="tour" tourAnchor="order"></div>
-      </div>
+      <ion-buttons slot="end">
+        <div class="double-container total">
+          <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar-lg ripple-toolbar-mie"  >
+            <ion-icon
+            class="icon-bar center"
+            [ngClass]="{'primary' : !order, 'medium' : order}"
+            (click)="Order()"
+            src="/assets/icon/drag.svg"
+            ></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+          <div *ngIf="tour" tourAnchor="order"></div>
+        </div>
+      </ion-buttons>
+      
+      
     </ion-toolbar>
   </ion-header>
 
@@ -138,7 +150,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div *ngIf="tour" tourAnchor="item"></div>
-            <div *ngIf="tour" tourAnchor="item_icon"></div>
+            <!-- <div *ngIf="tour" tourAnchor="item_icon"></div> -->
             <div
 
               class="acordion width-100"
@@ -150,6 +162,7 @@
               (cdkDragEnded)="Drop()"
               >
                 <app-item-perfil
+                  [tour]="tour"
                   [form]="itemPublico"
                   formControlName="item"
                   [order]="order"
@@ -189,6 +202,7 @@
               (cdkDragEnded)="Drop()"
               >
                 <app-item-perfil
+                [tour]="tour"
                 [form]="itemGeneral"
                 formControlName="item"
                 [order]="order"
@@ -227,6 +241,7 @@
             (cdkDragEnded)="Drop()"
             >
               <app-item-perfil
+              [tour]="tour"
               [form]="itemPersonal"
               formControlName="item"
               [order]="order"
@@ -265,6 +280,7 @@
             (cdkDragEnded)="Drop()"
             >
               <app-item-perfil
+              [tour]="tour"
               [form]="itemProfesional"
               formControlName="item"
               [order]="order"
@@ -283,7 +299,7 @@
     </div>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
       <div *ngIf="tour" tourAnchor="add"></div>
-      <div *ngIf="!loading">
+      <div class="row-container" *ngIf="!loading">
         <ion-fab-button *ngIf="FormValid()" size="small" class="button-cancel" (click)="Cancel()">
           <ion-icon name="close"></ion-icon>
         </ion-fab-button>
