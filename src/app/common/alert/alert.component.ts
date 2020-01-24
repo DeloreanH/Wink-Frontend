@@ -110,7 +110,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
         select = true;
     } else {
       if (this.custom && this.custom.value) {
-        if (this.custom.value.trim() === '') {
+        if ((this.custom.value as string).trim() === '') {
           select = true;
         }
       }
