@@ -84,7 +84,7 @@
 
 
     
-    <ion-fab vertical="bottom" horizontal="center" *ngIf="(tab === 'requests' && removingRequest) || (tab === 'record' && removingRecord)">
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed"  *ngIf="(tab === 'requests' && removingRequest) || (tab === 'record' && removingRecord)">
       <ion-fab-button (click)="Remove()" class="button-del">
         <ion-icon src="/assets/icon/delete.svg" class="contrast-pego"></ion-icon>
       </ion-fab-button>
