@@ -57,7 +57,6 @@ export class UpdateAvatarService {
             correctOrientation: true,
             allowEdit: true
           });
-          // image = await this.crop.crop(image, { quality: 100 });
           this.imageBase64 = image;
           resolve(image);
       } catch (err) {

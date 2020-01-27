@@ -52,6 +52,7 @@ export class NetworkService {
           console.log('status', status);
           this.statusNetwork = status;
           const networkLocal = StorageService.GetItem(networkStorage, true);
+          console.log('networkLocal', networkLocal);
           if (!status && networkLocal) {
             this.socketService.Disconnect();
             if (this.platform.is('cordova')) {
@@ -61,14 +62,16 @@ export class NetworkService {
             }
             StorageService.SetItem(networkStorage, status);
           } else if (status && !networkLocal) {
-            this.socketService.Connect();
-            if (this.platform.is('cordova')) {
-              this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_UP', null, null, PositionToast.BOTTOM, null, 'success');
-            } else {
-              window.alert(this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NETWORK_UP'));
+            if (networkLocal === false) {
+              this.socketService.Connect();
+              if (this.platform.is('cordova')) {
+                this.toastService.Toast('WINK.NOTIFICATION.MESSAGE.NETWORK_UP', null, null, PositionToast.BOTTOM, null, 'success');
+              } else {
+                window.alert(this.translateService.instant('WINK.NOTIFICATION.MESSAGE.NETWORK_UP'));
+              }
             }
             StorageService.SetItem(networkStorage, status);
-          }
+          } 
         }
       );
     }

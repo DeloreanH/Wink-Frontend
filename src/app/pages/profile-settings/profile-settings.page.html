@@ -300,7 +300,7 @@
     <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
       <div *ngIf="tour" tourAnchor="add"></div>
       <div *ngIf="!loading">
-        <ion-fab-button *ngIf="FormValid()" size="small" class="button-cancel" (click)="Cancel()">
+        <ion-fab-button *ngIf="changeData" size="small" class="button-cancel" (click)="Cancel()">
           <ion-icon name="close"></ion-icon>
         </ion-fab-button>
         <ion-fab-button *ngIf="FormValid()" size="small" color="primary" (click)="onSubmit()">

@@ -167,6 +167,7 @@
 }
 
 .image-full {
+  object-position: top;
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -520,4 +521,16 @@
     }
   }
   
+}
+
+.div-dateTime {
+  & div {
+    height: 1.2rem !important;
+    min-height: 1.2rem !important;
+  }
+}
+
+ion-item {
+  --inner-border-width: 0px !important;
+  --border-width: 0px !important;
 }

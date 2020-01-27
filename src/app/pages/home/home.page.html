@@ -39,7 +39,7 @@
   </ion-header>
 
   <ion-content >
-    <ion-refresher slot="fixed" (ionRefresh)="GPS($event)" *ngIf="!tour">
+    <ion-refresher slot="fixed" (ionRefresh)="GPS($event)" *ngIf="!tour" [disabled]="load">
       <ion-refresher-content
         pullingIcon="arrow-dropdown"
         [pullingText]="'WINK.HOME.REFRESHER' | translate"

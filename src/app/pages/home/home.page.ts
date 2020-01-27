@@ -426,18 +426,4 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     // }
   }
 
-  NewTour() {
-    this.alertService.showTutorial(
-      {
-        title: 'WINK.DIALOGUES.TITLES.RANGE',
-        description: 'WINK.DIALOGUES.MESSAGES.RANGE',
-        steps: ['paso 1', 'paso 2', 'paso 3']
-      }
-    ).subscribe(
-      () => {
-        
-      }
-    );
-  }
-
 }
