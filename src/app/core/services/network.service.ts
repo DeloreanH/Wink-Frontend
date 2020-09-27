@@ -71,7 +71,7 @@ export class NetworkService {
               }
             }
             StorageService.SetItem(networkStorage, status);
-          } 
+          }
         }
       );
     }

@@ -1,21 +1,15 @@
 import { VirtwooAuthConfig } from '@virtwoo/auth';
-import { Routes } from '../app/common/enums/routes/routes.enum';
-import { RoutesPrincipal } from '../app/common/enums/routes/routesPrincipal.enum';
+import { authConfig, AuthResponse } from './auth.config';
 // import { Paths } from '@common/route';
 
 export const virtwooAuthEnvironment: VirtwooAuthConfig = {
-  accesssId: '5de7fac0da9f2274ba04bf08',
-  apiUrl:  Routes.IP + ':5000',
-  apiVersion: 'v1',
-  social: 'ALL',
-  redirectUrl: Routes.BASE + Routes.AUTH,
-  logoUrl: '/assets/icon/favicon.png',
-  resCallback: (response) => {
-    // console.log('esta es la respuesta', response);
-    localStorage.setItem('userData', JSON.stringify(response));
-    // console.log('token en', JSON.parse(localStorage.getItem('userData')));
-    return RoutesPrincipal.APP;
-  }
+  accesssId: authConfig.accesssId,
+  apiUrl:  authConfig.apiUrl,
+  apiVersion: authConfig.apiVersion,
+  social: authConfig.social as any,
+  redirectUrl: authConfig.redirectUrl,
+  logoUrl: authConfig.logoUrl,
+  resCallback: AuthResponse,
 };
 
 // This file can be replaced during build by using the `fileReplacements` array.
