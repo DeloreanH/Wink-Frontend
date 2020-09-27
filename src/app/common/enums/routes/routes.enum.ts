@@ -1,9 +1,10 @@
+
 export enum Routes {
   // IP = 'http://190.9.32.117',
-  IP = 'http://190.9.32.117',
-  PHOTO = 'http://190.9.32.117:3050',
-  BASE = 'http://190.9.32.117:3050/api/',
-  SOCKET = 'http://190.9.32.117:3055',
+  IP = 'http://virtwoo.com',
+  PHOTO = 'http://virtwoo.com:3050',
+  BASE = 'http://virtwoo.com:3050/api/',
+  SOCKET = 'http://virtwoo.com:3055',
 
   AUTH = 'auth/authenticate',
   LOGOUT = 'auth/logout',
