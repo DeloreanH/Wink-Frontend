@@ -65,7 +65,7 @@ export class AppComponent implements OnDestroy {
   }
 
   private Language() {
-    if (this.platform.is('mobile')) {
+    if (this.platform.is('cordova')) {
       this.languageService.Init();
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
     } else {

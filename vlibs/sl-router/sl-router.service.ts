@@ -200,6 +200,7 @@ export class SlRouterService {
         )
         .then(
           isPush => {
+            console.log(routeApp, pathParams, extras);
             if (isPush) {
               this.pushChange(routeApp, pathParams, extras);
               this.backActios = [];
@@ -313,7 +314,7 @@ export class SlRouterService {
       SLRouter: routeApp
     };
 
-    if (routeApp.name === routeRoot.name) {
+    if (routeRoot && routeApp.name === routeRoot.name) {
       const length =  routesSource.length;
 
       routesSource.splice(0, length);

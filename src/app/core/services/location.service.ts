@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Platform } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
@@ -22,10 +22,10 @@ export class LocationService {
   ) { }
 
   GetPosition() {
-    return new Promise<any> (
+    return new Promise<Geoposition> (
       async (resolve, reject) => {
         try {
-          if (this.platform.is('mobile')) {
+          if (this.platform.is('cordova')) {
             if (this.platform.is('ios')) {
               const response = await this.checkIOS();
               resolve(response);
@@ -45,7 +45,7 @@ export class LocationService {
   }
 
   async checkIOS() {
-    return new Promise<any> (
+    return new Promise<Geoposition> (
       async (resolve, reject) => {
         try {
           const state = await this.diagnostic.isLocationEnabled();
@@ -66,12 +66,12 @@ export class LocationService {
   }
 
   private async checkAndroid() {
-    return new Promise<any> (
+    return new Promise<Geoposition> (
       async (resolve, reject) => {
         try {
           const result = await this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION);
           if (result.hasPermission) {
-            await this.locationAccuracy.canRequest();
+            // await this.locationAccuracy.canRequest();
             const response = await this.askToTurnOnGPS();
             resolve(response);
           } else {
@@ -86,64 +86,66 @@ export class LocationService {
   }
 
   private requestGPSPermission() {
-    return new Promise<any> (
-      async (resolve, reject) => {
-        try {
-          // await this.locationAccuracy.canRequest();
-          this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+    return new Promise<any>(async (resolve, reject) => {
+      try {
+        await this.locationAccuracy.canRequest();
+        this.androidPermissions
+          .requestPermission(
+            this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION
+          )
+          .then(
             async (response) => {
               if (response.hasPermission) {
-                const resp = await this.askToTurnOnGPS();
-                resolve(resp);
+                this.askToTurnOnGPS().then(
+                  (resp) => {
+                    resolve(resp);
+                  }
+                ).catch( error => reject(error));
               } else {
-                this.toastService.Toast(MessagesServices.ACTIVATE_LOCATION);
-                reject({message: 'No hasPermission'});
+                reject({messge: 'No hasPermission'});
               }
             },
-            err => {
+            (err) => {
               reject(err);
             }
-          );
-        } catch (err) {
-          reject(err);
-        }
+          ).catch( error => reject(error));
+      } catch (err) {
+        reject(err);
       }
-    );
+    });
   }
 
   private askToTurnOnGPS() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          await this.locationAccuracy.canRequest();
-          this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-            async (value) => {
-              const resp = await this.getLocationCoordinates();
-              resolve(resp);
-            },
-            err => reject(err)
-          );
-        } catch (err) {
-          reject(err);
-        }
+    return new Promise<Geoposition>(async (resolve, reject) => {
+      try {
+        await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+        const resp = await this.getLocationCoordinates();
+        resolve(resp);
+      } catch (err) {
+        reject(err);
       }
-    );
+    });
   }
 
   private async getLocationCoordinates() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          const geoposition = await this.geolocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 3000
-          });
-          resolve(geoposition);
-        } catch (err) {
-          reject(err);
-        }
+    return new Promise<Geoposition>(async (resolve, reject) => {
+      try {
+        this.geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 3000,
+        }).then(
+          (geoposition) => {
+            resolve(geoposition);
+          }
+        ).catch(
+          (error) => {
+            reject(error);
+          }
+        );
+      } catch (err) {
+        reject(err);
       }
-    );
+    });
   }
 
 }

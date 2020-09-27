@@ -34,7 +34,7 @@ export class LinkService {
       }
       const socialNetwork = this.SearchSocialNetwork(nameSocialNetwork);
       if (socialNetwork) {
-        if ( this.plataform.is('mobile') ) {
+        if ( this.plataform.is('cordova') ) {
           if (toReturn) {
             return socialNetwork.url + userName + socialNetwork.complement;
           } else {

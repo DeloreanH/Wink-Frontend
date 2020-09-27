@@ -14,7 +14,7 @@ export class SongsService {
 
   Vibrate() {
     try {
-      if (this.platform.is('mobile')) {
+      if (this.platform.is('cordova')) {
         this.vibration.vibrate([1000, 500, 1000]);
       }
     } catch (err) {
