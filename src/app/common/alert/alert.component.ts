@@ -40,7 +40,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   @Input()
   public alertType: AlertType = null;
 
-  private stepIndex = 0;
+  stepIndex = 0;
 
   private sub$ = new Subscription();
 

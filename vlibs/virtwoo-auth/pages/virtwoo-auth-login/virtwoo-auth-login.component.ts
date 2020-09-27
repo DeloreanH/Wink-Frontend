@@ -91,7 +91,7 @@ export class VirtwooAuthLoginComponent implements OnDestroy {
     return this.languageService.language === 'es';
   }
 
-  ChangeLanguage(lang: Language) {
-    this.languageService.ChangeLanguage(lang);
+  ChangeLanguage(lang: string) {
+    this.languageService.ChangeLanguage(lang as Language);
   }
 }

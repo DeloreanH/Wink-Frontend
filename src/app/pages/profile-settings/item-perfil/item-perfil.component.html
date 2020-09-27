@@ -114,8 +114,8 @@ class="wrapper design-style"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       [matChipInputAddOnBlur]="addOnBlur"
-      (matChipInputTokenEnd)="AddChip($event, chipControl)"
-      (input)="ValueChip($event.target.value, chipControl)"
+      (matChipInputTokenEnd)="AddChip($event)"
+      (input)="ValueChip($event.target.value)"
       (keyup)="KeyDown($event, inputChip)"
       >
     </mat-chip-list>

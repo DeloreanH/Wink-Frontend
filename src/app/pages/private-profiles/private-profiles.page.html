@@ -108,7 +108,7 @@
     </ion-list>
     <div *ngIf="Empty" class="empty">
       <p >
-        {{ noItems | translate}}
+        {{ noItems.toString() | translate}}
       </p>
       <fa-icon [icon]="['fas', 'exclamation-circle']" class="icono"></fa-icon>
     </div>

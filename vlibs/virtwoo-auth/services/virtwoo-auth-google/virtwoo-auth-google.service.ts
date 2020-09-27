@@ -101,6 +101,16 @@ export class VirtwooAuthGoogleService {
     : this.config.google.iosWebClientId;
   }
 
+  private googleLogin2() {
+    // const webClientId = this.platform.is('android')
+    //   ? this.options.webClientId.android
+    //   : this.options.webClientId.ios;
+
+    // return ObservableFrom(
+    //   this.google.login({ webClientId }) as Promise<GoogleResponse>
+    // );
+  }
+
   private googleLogin(): Observable<GoogleResponse> {
     return new Observable<GoogleResponse>(observer => {
       (window as any).plugins.googleplus.login(

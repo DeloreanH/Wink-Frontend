@@ -70,13 +70,13 @@
     <div *ngIf="tour" tourAnchor="delete"></div>
     <div *ngIf="record.length === 0 && tab === 'record'" class="empty">
       <p >
-        {{noHistorical | translate}}
+        {{noHistorical.toString() | translate}}
       </p>
       <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
     </div>
     <div *ngIf="requests.length === 0 && tab === 'requests'" class="empty">
       <p >
-        {{noRequests | translate}}
+        {{noRequests.toString() | translate}}
       </p>
       <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
     </div>
