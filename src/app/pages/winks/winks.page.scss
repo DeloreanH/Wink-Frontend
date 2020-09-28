@@ -1,0 +1,20 @@
+.list-winks {
+    margin-bottom: 0.25rem;
+}
+.button-del {
+  --background: var(--color-pego);
+  --background-activated: var(--color-pego);
+  --background-focused: var(--color-pego);
+  --background-hover: var(--color-pego);
+}
+.header-segment {
+  position: static;
+}
+
+.show {
+  display: block !important;
+}
+
+.hidden {
+  display: none !important;
+}

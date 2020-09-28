@@ -1,0 +1,338 @@
+{
+  "VIRTWOO_AUTH": {
+    "APP_NAME": "WINK",
+    "ERROR": {
+      "FACEBOOK": {
+        "PLUGIN": "Plugin Facebook no instalado"
+      },
+      "GOOGLE": {
+        "PLUGIN": "Plugin Google no instalado"
+      }
+    },
+    "MESSAGE": {
+      "WITHOUT_ACCOUNT": "¿No tienes una cuenta?",
+      "ALREADY_ACCOUNT": "¿Ya tienes una cuenta?",
+      "OTHER_METHODS": "¿Otros métodos para iniciar?",
+      "SENDING_SMS": "Enviado SMS...",
+      "EMAIL_SENT": "Te hemos enviado un correo para restablecer tu contraseña",
+      "FORGOT_PASSWORD": {
+        "TITLE": "¿Olvidaste tu contraseña?",
+        "SUB_TITLE": "Por favor ingresa tu dirección de correo, te enviaremos un email para resetear tu contraseña."
+      },
+      "SEND_SMS": {
+        "TITLE": "Iniciar con SMS",
+        "SUB_TITLE": "Por favor ingresa tu número de teléfono"
+      },
+      "HTTP_RESPONSE": {
+        "CODE_NOT_VALID": "Código inválido.",
+        "COULD_NOT_SEND_MAIL": "No pudimos enviar el correo.",
+        "NOT_NETWORK_CON": "Revisa tu conexión a internet.",
+        "PASSWORD_NOT_VALID": "Usuario o contraseña incorrectos.",
+        "REGISTERED_USER": "Este usuario ya se encuentra registrado.",
+        "SERVER_ERROR": "Tuvimos un problema, intente más tarde.",
+        "SERVER_UNREACHABLE": "Tuvimos problemas para conectar.",
+        "USER_NOT_EXIST": "Usuario o contraseña incorrectos."
+      }
+    },
+    "FORM": {
+      "PLACEHOLDER": {
+        "USERNAME": "Usuario",
+        "EMAIL": "Correo",
+        "PASSWORD": "Contraseña"
+      },
+      "BUTTON": {
+        "LOGIN": "Ingresar",
+        "REGISTER": "Registrar",
+        "SEND": "ENVIAR",
+        "VERIFY": "Verificar"
+      },
+      "CONTROL": {
+        "REQUIRED": "Debes ingresar un valor",
+        "EMAIL": "Email inválido",
+        "MINLENGTH": "Mínimo 8 caracteres",
+        "MAXLENGTH": "Máximo 8 caracteres"
+      }
+    }
+  },
+  "TITLES": {
+    "PROFILE_TYPE": "Seleccione un tipo de perfil"
+  },
+  "USER_TYPE": {
+    "TITLE": "Seleccione su tipo de usuario",
+    "MESSAGES": {
+      "OR": "Or",
+      "CLIENT": "Usuario cliente",
+      "PROFESSIONAL": "Ofrecer servicios"
+    },
+    "BUTTONS": {
+      "CLIENT": "Cliente",
+      "PROFESSIONAL": "Ofrecer Servicios",
+      "STARTED": "Empezar"
+    }
+  },
+  "WINK": {
+    "ERROR": {
+
+    },
+    "BASIC_DATA": {
+      "TITLE": "Datos básicos",
+      "FORM": {
+        "FIRST_NAME": "Nombre",
+        "LAST_NAME": "Apellido",
+        "USERNAME": "Nombre de usuario",
+        "EMAIL": "Email",
+        "CODE": "Código",
+        "PHONE_NUMBER": "Número de teléfono",
+        "BIRTHDAY": "Fecha de nacimiento",
+        "GENDER": "Género",
+        "AUTOSAVE_CONTACTS": "Guardar automáticamente contactos",
+        "AVATAR": "Selecciona una imagen para continuar."
+      }
+    },
+    "HOME": {
+      "TITLE": "Wink",
+      "STATUS": "¿Qué estás pensando?",
+      "REFRESHER": "Tire para actualizar",
+      "REFRESHING": "Refrescando...",
+      "LOADING_NEARBY": "Cargando cercanos ...",
+      "NO_NEARBY": "No hay usuarios cercanos."
+    },
+    "PRIVATE_PROFILES": {
+      "TITLE": "Perfiles privados",
+      "ITEMS_EMPTY": "No hay ítems para mostrar."
+    },
+    "PROFILE_SETTINGS": {
+      "TITLE": "Configuración de perfiles",
+      "TITLE_TAB": "Perfil",
+      "MENU": {
+        "TITLE": "Menú",
+        "BASIC_DATA": "Datos básicos",
+        "LOGOUT": "Cerrar sesión"
+      },
+      "OPTIONS": {
+        "SECTION": "Seleccione una sección",
+        "CATEGORY": "Seleccione una categoría",
+        "SELECT_ITEMS": "Seleccione una opción",
+        "COMPANY": "Empresa",
+        "POSITION": "Cargo",
+        "TITLE": "Título",
+        "VALUE": "Valor"
+      },
+      "CHIP": "Solo puedes agregar entre 3 a 12 caracteres por palabra.",
+      "SELECT_AVATAR": "Seleccione una opción."
+    },
+    "PUBLIC_PROFILE": {
+
+    },
+    "TABS": {
+
+    },
+    "WINKS": {
+      "TITLE": "Notificaciones",
+      "SEGMENTS": {
+        "REQUESTS": "Solicitudes",
+        "RECORD": "Historial"
+      },
+      "EMPTY": {
+        "REQUESTS": "No hay solicitudes pendientes.",
+        "RECORD": "No hay winks."
+      }
+    },
+    "STATUS": {
+      "TITLE": "Estado",
+      "AVAILABLE": "Disponible",
+      "BUSY": "Ocupado"
+    },
+    "SECTIONS": {
+      "PUBLIC": "Público",
+      "GENERAL": "General",
+      "PERSONAL": "Personal",
+      "PROFESSIONAL": "Profesional"
+    },
+    "BUTTONS": {
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "WINK": "Wink",
+      "IGNORE": "Ignorar",
+      "DELETE": "Borrar",
+      "OK": "Okay",
+      "DISCARD": "Descartar",
+      "YES": "Si",
+      "NO": "No",
+      "END": "Fin",
+      "PREVIOUS": "Anterior",
+      "PREV": "Previo",
+      "NEXT": "Siguiente",
+      "NEXT2": "Sig",
+      "SEE": "Ver",
+      "CAMERA": "Cámara",
+      "GALLERY": "Galería",
+      "CONFIRM": "Confirmar"
+    },
+    "CATEGORY": {
+      "CONTACT":	"Contacto",
+      "EDUCATION":	"Educación",
+      "LABOR":	"Laboral",
+      "MESSENGER_SERVICE":	"Mensajería",
+      "PERSONAL":	"Personal",
+      "SOCIAL_NETWORK":	"Red Social",
+      "OTHERS":	"Otros"
+    },
+    "ITEM_TYPES": {
+      "AVATAR": "Avatar",
+      "MOBILE": "Celular",
+      "MAIL": "Correo",
+      "WEBSITE": "Sitio web",
+      "PHONE": "Teléfono",
+      "LEVEL_OF_INSTRUCTION": "Nivel de instrucción",
+      "PROFESSION": "Profesión",
+      "COLLEGE": "Universidad",
+      "LINKEDIN": "LinkedIn",
+      "OCCUPATION": "Ocupación",
+      "JOB": "Trabajo",
+      "LINE": "Line",
+      "SKYPE": "Skype",
+      "TELEGRAM": "Telegram",
+      "WECHAT": "Wechat",
+      "WHATSAPP": "WhatsApp",
+      "NICKNAME": "Apodo",
+      "DIRECTION": "Dirección",
+      "MARITAL_STATUS": "Estado civil",
+      "BIRTHDAY": "Fecha de nacimiento",
+      "HOBBIES": "Hobbies",
+      "INTERESTS": "Intereses",
+      "FACEBOOK": "Facebook",
+      "INSTAGRAM": "Instagram",
+      "MEDIUM": "Medium",
+      "PINTEREST": "Pinterest",
+      "REDDIT": "Reddit",
+      "SNAPCHAT": "Snapchat",
+      "TUMBLR": "Tumblr",
+      "TWITTER": "Twitter",
+      "YOUTUBE": "YouTube",
+      "PERSONALIZED": "Personalizado",
+      "SEX": "Sexo",
+      "BIOGRAPHY": "Biografía",
+      "AGE": "Edad",
+      "YEARS": "años"
+    },
+    "OPTIONS_ITEMS": {
+      "PRIMARY":	"Primaria",
+      "HIGH_SCHOOL":	"Secundaria",
+      "JUNIOR_COLLEGE":	"Media-Superior",
+      "COLLEGE":	"Superior",
+
+      "MARRIED":	"Casado/a",
+      "ENGAGED":	"Comprometido/a",
+      "DIVORCED":	"Divorciado/a",
+      "IN_RELATIONSHIP":	"En Relación",
+      "SEPARATED":	"Separado/a",
+      "SINGLE":	"Soltero/a",
+      "WIDOWER":	"Viudo/a",
+
+      "FEMILE":	"Femenino",
+      "MALE":	"Masculino",
+      "OTHER":	"Otro",
+      "I_PREFER_NOT_TO_SAY":	"Prefiero no decirlo"
+    },
+    "FORMS": {
+      "ERROR": {
+        "REQUIRED":	"Campo requerido.",
+        "MAXIMUM":	"Supera el límite de caracteres.",
+        "EMAIL":	"Email inválido.",
+        "URL":	"URL invalida.",
+        "MINIMUM":	"No cumple con los caracteres mínimos.",
+        "CHARACTER":	"Carácter no permitido.",
+        "WHITE_SPACE": "Por favor, introduzca datos válidos."
+      }
+    },
+    "DIALOGUES": {
+      "TITLES": {
+        "CONFIRM": "Confirmar!",
+        "DELETE_WINK": "Eliminar Wink",
+        "DELETE_REQUEST": "Eliminar solitud",
+        "SAVE_CONTACTS": "Guardar contacto",
+        "RANGE": "Rango de búsqueda"
+      },
+      "MESSAGES": {
+        "CANCEL_WINK":	"¿Desea cancelar el wink?",
+        "DELETE_WINK": "¿Estás seguro?",
+        "NEW_WINK": "Tienes una nueva solicitud.",
+        "SAVE_CONTACTS": "Seleccione los elementos que desea guardar en el contacto.",
+        "RANGE": "Valor actual: ",
+        "DELETE_WINK_ITEM": "¿Deseas eliminar 1 Wink?",
+        "DELETE_WINK_ITEMS": "¿Deseas eliminar {{ value }} Wink's?",
+        "DELETE_WINK_REQUEST": "¿Dsea eliminar 1 solicitud?",
+        "DELETE_WINK_REQUESTS": "¿Desea eliminar {{ value }} solicitudes?"
+      }
+    },
+    "SERVICES": {
+      "WINK_SENT":	"Wink enviado.",
+      "TRY_AGAIN_LATER":	"Intenta nuevamente más tarde.",
+      "CONTACT_SAVE":	"¡Contacto guardado!",
+      "WINK_ERROR":	"Se produjo un error inesperado al enviar el wink.",
+      "ACTIVATE_LOCATION": "Active la ubicación de su dispositivo para continuar.",
+
+      "SAVE_ITEMS":	"Su configuración se ha guardado correctamente.",
+      "SAVE_PHOTO":	"La foto se cargó correctamente.",
+      "SAVE_INFORMATION":	"Su información ha sido guardada con éxito.",
+
+      "ERROR_CONTACT_SAVE":	"Hubo un problema al intentar guardar. intente nuevamente más tarde.",
+      "ERROR_GET_INFORMATION":	"Se ha producido un problema al intentar obtener su información. intente nuevamente más tarde.",
+      "ERROR_PHOTO":	"Hubo un problema al intentar subir tu foto.",
+      "UNEXPECTED_ERROR": "Ha ocurrido un error inesperado al intentar realizar esta acción."
+    },
+    "TOUR": {
+      "HOME": {
+        "STATUS": "Aquí puedes cambiar tus estados.",
+        "SEE_STATUS": "Las otras personas ven tu estado reflejado aquí.",
+        "PROFILES": "Aquí estableces qué datos deseas enviar en un wink.",
+        "CARD": "Al hacer clic sobre la tarjeta te llevará al perfil público de la persona.",
+        "PROFILES_BUTTONS": "La sección general siempre sera enviada. Con estos botones tu eliges cual otra sección privada deseas enviar."
+      },
+      "WINKS": {
+        "INTRODUCTION": "Aquí encontrarás tus winks.",
+        "REQUESTS": "De este lado puedes encontrar las solicitudes que tienes pendientes.",
+        "WINK": "Desde aquí puedes aceptar o ignorar un wink.",
+        "RECORD": "Por este otro lado lado verás todos los winks aprobados que tienes.",
+        "DELETE": "Si deslizas la tarjeta hacia los lados podrás eliminar el wink."
+      },
+      "SETTINGS": {
+        "SECTIONS": "Éstas son tus secciones.",
+        "PUBLIC": "Los ítems de aquí se mostrarán en tu perfil público.",
+        "PRIVATE": "Los ítems de estas secciones se mostrarán en tu perfil privado.",
+        "ADD": "Aquí puedes agregar nuevos ítems a tus secciones.",
+        "ORDER": "Al hacer clic en este botón puedes ordenar tus items de la manera que te guste y/o eliminarlos.",
+        "MENU": "Aquí puedes encontrar más opciones de configuración.",
+        "ITEM": "En estos items podrás escribir toda la informacion que deseas mostrar sobre ti.",
+        "ITEM_ICON": "Haciendo clic sobre el icono del ítem puedes cambiar el tipo item que se mostrará."
+      }
+    },
+    "AUTH": {
+      "LOGOUT": {
+        "TITLE": "Cerrar sesión",
+        "MESSAGE": "¿Estás seguro?"
+      }
+    },
+    "NOTIFICATION":{
+      "TITLE": {
+        "NEW": "Nueva solicitud",
+        "MULTIPLE": "Nuevas solicitudes"
+      },
+      "MESSAGE": {
+        "NEW": "{{ userName }} te envio un wink.",
+        "MULTIPLE": "Tienes {{ count }} solicitudes wink pendientes.",
+        "NETWORK_DOWN" : "Desconectado",
+        "NETWORK_UP": "Conectando"
+      }
+    },
+    "LOADER": {
+      "LOADING": "Cargando..."
+    },
+    "LANGUAGES": {
+      "TITLE": "Idioma",
+      "ENGLISH": "Inglés",
+      "SPANISH": "Español"
+    }
+  }
+}

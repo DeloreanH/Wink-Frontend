@@ -1,21 +1,30 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule } from '@angular/router';
+import { Routes } from '@virtwoo/sl-router';
+import { AuthGuard } from './auth/guards/auth.guard';
+import { EmptyProfilePGuard } from './auth/guards/empty-profile-p.guard';
+import { RoutesPrincipal } from './common/enums/routes/routesPrincipal.enum';
 
-const routes: Routes = [
+
+
+export const routesApp: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: 'app',
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsModule),
+    name: RoutesPrincipal.APP,
+    canActivate: [AuthGuard, EmptyProfilePGuard],
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'perfil',
+    loadChildren: () => import('./pages/basic-data/basic-data.module').then( m => m.BasicDataPageModule),
+    name: RoutesPrincipal.DATOS_BASICOS,
+    canActivate: [AuthGuard]
   },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routesApp, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })

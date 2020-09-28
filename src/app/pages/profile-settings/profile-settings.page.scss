@@ -1,0 +1,74 @@
+.acordion{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.item-name {
+  width: 90%;
+}
+.item {
+  align-self: center;
+}
+.contenedorDerecha {
+  justify-content: flex-end;
+  display: flex;
+}
+
+button {
+  width: 0% !important;
+}
+
+.order {
+  border: 0.9px solid rgb(192, 189, 189);
+  border-radius: 0.625rem;
+}
+
+.pad-let-10 {
+  padding-left: 0.6rem;
+}
+
+.skeleton-section {
+  width: 100%;
+  height: 3rem;
+}
+.skeleton-bio-label {
+  width: 50%;
+}
+
+.skeleton-bio-content {
+  width: 100%;
+  height: 50px;
+}
+
+
+.end-list {
+  margin-bottom: 3rem;
+}
+.icon-section {
+  margin-right: 0.2rem;
+}
+.button-add {
+  --background: var(--color-pego);
+  --background-hover: var(--color-pego);
+  --background-activated: var(--color-cpego);
+  --background-focused: var(--color-cpego);
+}
+.icon-add {
+  color: var(--color-cpego) !important;
+}
+.button-cancel {
+  --background: var(--color-danger);
+  --background-hover: var(--color-danger);
+}
+.bio {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.textarea-bio {
+  margin-top: 0.25rem !important;
+}
+
+mat-expansion-panel-header {
+  padding: 0 14px !important;
+}

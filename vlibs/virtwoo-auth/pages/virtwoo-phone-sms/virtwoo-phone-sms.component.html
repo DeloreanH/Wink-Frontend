@@ -1,0 +1,53 @@
+<sl-base-page class="auth">
+  <div class="ion-activatable ion-activatable-up ripple-toolbar" slot="start">
+    <ion-icon
+    class="icon-arrow center"
+    (click)="Back()"
+    src="/assets/icon/back.svg"
+    ></ion-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <div class="auth__content">
+    <div class="auth__content__wrapper">
+
+      <div class="auth__content__top column">
+        <div class="auth__add-avatar primary"
+          [ngClass]="{
+            loading: loading
+          }"
+        >
+          <mat-icon>perm_phone_msg</mat-icon>
+        </div>
+        <div class="auth__text-title">
+          {{ 'VIRTWOO_AUTH.MESSAGE.SEND_SMS.TITLE' | translate }}
+        </div>
+        <div class="auth__text-sub-title"
+          [ngSwitch]="step"
+        >
+          <ng-container *ngSwitchCase="1">{{ 'VIRTWOO_AUTH.MESSAGE.SEND_SMS.SUB_TITLE' | translate }}</ng-container>
+          <ng-container *ngSwitchCase="2">{{ 'VIRTWOO_AUTH.MESSAGE.SENDING_SMS' | translate }}</ng-container>
+        </div>
+      </div>
+
+      <div class="auth__content__bottom">
+        <virtwoo-auth-form
+          [fields]="['phone', 'prefix']"
+          [submitText]="'VIRTWOO_AUTH.FORM.BUTTON.SEND' | translate"
+          [disabled]="loading"
+          (submitted)="sendPhoneNumber($event)"
+        >
+          <div class="forgot-password">
+            <span
+              (click)="goToLoginNormal()"
+              class="register"
+            >
+            <b>
+              {{ 'VIRTWOO_AUTH.MESSAGE.OTHER_METHODS' | translate }}
+            </b>
+            </span>
+          </div>
+        </virtwoo-auth-form>
+      </div>
+    </div>
+  </div>
+</sl-base-page>

@@ -1,0 +1,36 @@
+<ion-item
+  (click)="OpenLink()"
+  class="ion-activatable ion-activatable-up none-item-border">
+  <!--Icono del item-->
+  <div class="icon-item-list">
+    <fa-icon
+    *ngIf="item"
+    [icon]="[preIcono, icon]"
+    class="icon"></fa-icon>
+  </div>
+  <ion-label class="label-item" >
+    <div>
+      <ion-label class="padding-left-10 font-size-12" >
+        {{(itemType? itemType.description : 'Title') | translate}}
+      </ion-label>
+      <div class="text-margin">
+        <mat-chip-list
+          *ngIf="itemType && itemType.index === indexChip"
+          class="chip-item chip-margin "
+          >
+          <ion-chip outline color="dark"
+          *ngFor="let chip of chips">
+          {{chip}}
+          </ion-chip>
+
+        </mat-chip-list>
+
+        <ion-text *ngIf="itemType &&  itemType.index !== indexChip "
+          class="text-margin ion-text-wrap" [ngClass]="{'text-link': isLink}">
+          {{item? item.value : ''}}
+        </ion-text>
+      </div>
+    </div>
+  </ion-label>
+  <ion-ripple-effect></ion-ripple-effect>
+</ion-item>

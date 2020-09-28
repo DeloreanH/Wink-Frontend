@@ -1,0 +1,349 @@
+<ion-menu side="start" contentId="main" menuId="menuSettings" type="overlay" [swipeGesture]="false">
+  <ion-header>
+    <ion-toolbar translucent>
+      <ion-title>
+          {{'WINK.PROFILE_SETTINGS.MENU.TITLE' | translate}}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item (click)="GoBasicData()" class="ion-activatable ion-activatable-up">
+        <ion-icon name="person" slot="start"></ion-icon>
+        <ion-label>
+            {{'WINK.PROFILE_SETTINGS.MENU.BASIC_DATA' | translate}}
+        </ion-label>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item (click)="Logout()" class="ion-activatable ion-activatable-up">
+        <ion-icon name="exit" slot="start"></ion-icon>
+        <ion-label>
+            {{'WINK.PROFILE_SETTINGS.MENU.LOGOUT' | translate}}
+        </ion-label>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main" (swipe)="Swipe($event)">
+
+  <ion-header translucent>
+    <ion-toolbar>
+      
+      <ion-buttons slot="start">
+        <div class="double-container total">
+          <ion-menu-button >
+          </ion-menu-button>
+          <div *ngIf="tour" tourAnchor="menu"></div>
+        
+        </div>
+        
+      </ion-buttons>
+      
+      <ion-title>
+          {{'WINK.PROFILE_SETTINGS.TITLE' | translate}}
+      </ion-title>
+      <ion-buttons slot="end">
+        <div class="double-container total">
+          <div *ngIf="!loading" class="ion-activatable ion-activatable-up ripple-toolbar-lg ripple-toolbar-mie"  >
+            <ion-icon
+            class="icon-bar center"
+            [ngClass]="{'primary' : !order, 'medium' : order}"
+            (click)="Order()"
+            src="/assets/icon/drag.svg"
+            ></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+          <div *ngIf="tour" tourAnchor="order"></div>
+        </div>
+      </ion-buttons>
+      
+      
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding" >
+
+    <div *ngIf="loading">
+      <div class="avatar-container" >
+        <ion-avatar  class="avatar-profile">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-avatar>
+      </div>
+      <div class="content-center" >
+          <ion-skeleton-text animated class="skeleton-name"></ion-skeleton-text>
+      </div>
+      <div class="design-style bio none-background">
+        <ion-skeleton-text animated class="skeleton-bio-content"></ion-skeleton-text>
+      </div>
+
+        <ion-label>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
+        </ion-label>
+        <ion-label>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
+        </ion-label>
+        <ion-label>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
+        </ion-label>
+        <ion-label>
+            <ion-skeleton-text animated class="skeleton-section"></ion-skeleton-text>
+        </ion-label>
+    </div>
+
+    <div *ngIf="!loading">
+      <div class="avatar-container" >
+        <ion-avatar class="avatar-profile" (click)="SelectImage()">
+          <img
+            [srcPath]="Avatar()"
+            *ngIf="!loadingAvatar"
+            class="img-avatar"
+            alt="Avatar"
+            (ionError)="ErrorImagen()">
+          <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
+        </ion-avatar>
+      </div>
+
+      <div  class="title-name">
+        {{user ? user.firstName + ' ' + user.lastName : 'John Doe'}}
+      </div>
+
+      <form [formGroup]="grupoForm"  (ngSubmit)="onSubmit()" class="end-list">
+      <ion-list >
+        <div
+        class="wrapper-sub design-style bio">
+
+        <!--Icono del item-->
+          <div class="center icon-column">
+            <fa-icon
+            [icon]="['fas', 'book-open'] "
+          class="icon"></fa-icon>
+          </div>
+          <ion-textarea rows="1"   autoGrow="true"
+          class="delete-column textarea-bio medium"
+          maxlength="50"
+          [placeholder]="'WINK.ITEM_TYPES.BIOGRAPHY' | translate"
+          formControlName="biografia"
+          (ionInput)="ChangeData()"></ion-textarea>
+        </div>
+        <ion-text color="danger" *ngIf="MessageError('biografia')">
+          {{MessageError('biografia') | translate}}
+        </ion-text>
+        <div *ngIf="tour" tourAnchor="sections"></div>
+        <mat-accordion multi="true" cdkDropListGroup
+        class="margin-bottom">
+
+          <mat-expansion-panel #pp
+          cdkDropList
+            [cdkDropListData]="publicoForm"
+            (cdkDropListDropped)="MoveItem($event)"
+            (cdkDropListEntered)="OpenPanel(pp)"
+            (cdkDropListExited)="ClosePanel(pp)"
+            formArrayName="0"
+            class="none-shadow"
+            >
+            <mat-expansion-panel-header >
+              <mat-panel-title>
+                <ion-icon src="/assets/icon/public.svg" class="icon-section"></ion-icon>
+                {{'WINK.SECTIONS.PUBLIC' | translate}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="tour" tourAnchor="item"></div>
+            <!-- <div *ngIf="tour" tourAnchor="item_icon"></div> -->
+            <div
+
+              class="acordion width-100"
+              *ngFor="let itemPublico of publicoForm.controls; let i = index"
+              [formGroupName]="i"
+              cdkDrag
+              [cdkDragDisabled]="order"
+              (cdkDragStarted)="Drag()"
+              (cdkDragEnded)="Drop()"
+              >
+                <app-item-perfil
+                  [tour]="tour"
+                  [form]="itemPublico"
+                  formControlName="item"
+                  [order]="order"
+                  (delete)="DeleteItem(publicoForm, i)"
+                  (changeData)="ChangeData()"
+                  >
+                </app-item-perfil>
+            </div>
+            <div *ngIf="publicoForm.length === 0" class="empty">
+              <fa-icon [icon]="['fas', 'exclamation-circle']" class="icon"></fa-icon>
+            </div>
+          </mat-expansion-panel>
+          <div *ngIf="tour" tourAnchor="public"></div>
+          <div *ngIf="tour" tourAnchor="private"></div>
+          <mat-expansion-panel  #pg
+          cdkDropList
+            [cdkDropListData]="generalForm"
+            (cdkDropListDropped)="MoveItem($event)"
+            (cdkDropListEntered)="OpenPanel(pg)"
+            (cdkDropListExited)="ClosePanel(pg)"
+            formArrayName="1"
+            class="none-shadow"
+            >
+            <mat-expansion-panel-header >
+              <mat-panel-title>
+                <ion-icon src="/assets/icon/private.svg" class="icon-section"></ion-icon>
+                {{'WINK.SECTIONS.GENERAL' | translate}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+              <div
+              class="acordion width-100"
+              *ngFor="let itemGeneral of generalForm.controls; let i = index"
+              [formGroupName]="i"
+              cdkDrag
+              [cdkDragDisabled]="order"
+              (cdkDragStarted)="Drag()"
+              (cdkDragEnded)="Drop()"
+              >
+                <app-item-perfil
+                [tour]="tour"
+                [form]="itemGeneral"
+                formControlName="item"
+                [order]="order"
+                (delete)="DeleteItem(generalForm, i)"
+                (changeData)="ChangeData()"
+                >
+                </app-item-perfil>
+              </div>
+              <div *ngIf="generalForm.length === 0" class="empty">
+                <fa-icon [icon]="['fas', 'exclamation-circle']" class="icon"></fa-icon>
+              </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel  #pper
+            cdkDropList
+            [cdkDropListData]="personalForm"
+            (cdkDropListEntered)="OpenPanel(pper)"
+            (cdkDropListDropped)="MoveItem($event)"
+            (cdkDropListExited)="ClosePanel(pper)"
+            formArrayName="2"
+            class="none-shadow"
+          >
+            <mat-expansion-panel-header >
+              <mat-panel-title>
+                <ion-icon src="/assets/icon/private.svg" class="icon-section"></ion-icon>
+                {{'WINK.SECTIONS.PERSONAL' | translate}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div
+            class="acordion width-100"
+            *ngFor="let itemPersonal of personalForm.controls; let i = index"
+            [formGroupName]="i"
+            cdkDrag
+            [cdkDragDisabled]="order"
+            (cdkDragStarted)="Drag()"
+            (cdkDragEnded)="Drop()"
+            >
+              <app-item-perfil
+              [tour]="tour"
+              [form]="itemPersonal"
+              formControlName="item"
+              [order]="order"
+              (delete)="DeleteItem(personalForm, i)"
+              (changeData)="ChangeData()"
+              >
+              </app-item-perfil>
+            </div>
+            <div *ngIf="personalForm.length === 0" class="empty">
+              <fa-icon [icon]="['fas', 'exclamation-circle']" class="icon"></fa-icon>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel  #ppro
+            cdkDropList
+            [cdkDropListData]="profesionalForm"
+            (cdkDropListEntered)="OpenPanel(ppro)"
+            (cdkDropListDropped)="MoveItem($event)"
+            (cdkDropListExited)="ClosePanel(ppro)"
+            formArrayName="3"
+            class="none-shadow"
+          >
+            <mat-expansion-panel-header >
+              <mat-panel-title>
+                <ion-icon src="/assets/icon/private.svg" class="icon-section"></ion-icon>
+                {{'WINK.SECTIONS.PROFESSIONAL' | translate}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div
+            class="acordion width-100"
+            *ngFor="let itemProfesional of profesionalForm.controls; let i = index"
+            [formGroupName]="i"
+            cdkDrag
+            [cdkDragDisabled]="order"
+            (cdkDragStarted)="Drag()"
+            (cdkDragEnded)="Drop()"
+            >
+              <app-item-perfil
+              [tour]="tour"
+              [form]="itemProfesional"
+              formControlName="item"
+              [order]="order"
+              (delete)="DeleteItem(profesionalForm, i)"
+              (changeData)="ChangeData()"
+              >
+              </app-item-perfil>
+            </div>
+            <div *ngIf="profesionalForm.controls.length === 0" class="empty">
+              <fa-icon [icon]="['fas', 'exclamation-circle']" class="icon"></fa-icon>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ion-list>
+      </form>
+    </div>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isDrag" >
+      <div *ngIf="tour" tourAnchor="add"></div>
+      <div *ngIf="!loading">
+        <ion-fab-button *ngIf="changeData" size="small" class="button-cancel" (click)="Cancel()">
+          <ion-icon name="close"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="FormValid()" size="small" color="primary" (click)="onSubmit()">
+          <ion-icon name="save"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" (click)="SelectSection()" class="button-add">
+          <ion-icon name="add" class="icon-add"></ion-icon>
+        </ion-fab-button>
+      </div>
+      <ion-avatar *ngIf="loading" class="button-float-skeleton">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+
+    </ion-fab>
+
+  </ion-content>
+</div>
+
+
+<tour-step-template>
+  <ng-template let-step="step" >
+    <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
+      <ion-card-header *ngIf="step?.title">
+        <ion-card-title>
+          {{step?.title}}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text class="content-card-tour">
+          {{step?.content}}
+        </ion-text>
+      </ion-card-content>
+      <ion-buttons class="content-end">
+        <ion-button *ngIf="tourService.hasPrev(step)" (click)="tourService.prev()">
+          <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
+          <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+        </ion-button>
+        <ion-button (click)="tourService.end()">
+          {{step?.endBtnTitle}}
+        </ion-button>
+      </ion-buttons>
+    </ion-card>
+  </ng-template>
+</tour-step-template>

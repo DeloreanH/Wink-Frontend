@@ -1,0 +1,39 @@
+<sl-base-page class="auth"
+  nav="top"
+  backButton="top"
+>
+  <div class="auth__content">
+    <div class="auth__content__wrapper">
+
+      <div class="auth__content__top column">
+        <div class="auth__add-avatar primary"
+          [ngClass]="{
+            loading: loading
+          }"
+        >
+          <mat-icon>lock</mat-icon>
+        </div>
+        <div class="auth__text-title">
+          Location
+        </div>
+        <div class="auth__text-sub-title">
+          Please enable your location to <br/>
+          get better search results in your location.
+        </div>
+      </div>
+
+      <div class="auth__content__bottom">
+        <div class="auth-buttons">
+          <button class="bt-login center separer"
+            mat-flat-button
+            [disabled]="loading"
+            (click)="enabled()"
+          >
+            Enable Location
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</sl-base-page>

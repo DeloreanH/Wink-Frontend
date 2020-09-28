@@ -1,0 +1,173 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" >
+  <ion-fab vertical="top" horizontal="start" slot="fixed"  class="top">
+  <ion-header class="opt-top transparent">
+      <ion-toolbar class="transparent">
+        <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start">
+          <ion-icon
+          class="icon-white center"
+            (click)="Back()"
+          src="/assets/icon/back.svg"
+          ></ion-icon>
+          <!-- <fa-icon
+            [icon]="['fas', 'arrow-left']"
+            class="icon-white center"
+            (click)="Back()"
+          ></fa-icon> -->
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+        <div class="end status" slot="end" *ngIf="!load">
+          <ion-label
+          class="text-card text-status text-small center-vertical-text">
+            {{ (userWink && userWink.status ? userWink.status : 'WINK.STATUS.AVAILABLE') | translate}}
+          </ion-label>
+          <div class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" *ngIf="wink && wink.approved">
+            <ion-icon name="more" class="icon-white center" (click)="ShowMenu($event)"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+  </ion-fab>
+  <div class="card-container total" *ngIf="load">
+    <ion-skeleton-text animated class="public-img-skeleton img-avatar"></ion-skeleton-text>
+    <div class="text-bottom skeleton-content-text">
+        <ion-skeleton-text animated class="skeleton-name-public"></ion-skeleton-text>
+        <ion-skeleton-text animated class="skeleton-name"></ion-skeleton-text>
+    </div>
+  </div>
+
+  <div class="card-container total" *ngIf="!load">
+    <img
+      class="public-img img-avatar"
+      (ionError)="ErrorImagen()"
+      [srcPath]="Avatar()">
+    <div class="gradient">
+    </div>
+    <div class="text-bottom">
+      <ion-label  class="public-name text-card" >
+        {{(userWink ? userWink.firstName + ' ' +  userWink.lastName : 'John Doe') | names:25 }}
+      </ion-label>
+      <ion-label class="text-card text-small">
+        <ion-icon
+        *ngIf="userWink  && userWink.distance"
+          src="/assets/icon/location.svg"
+          ></ion-icon>
+        {{userWink ? (userWink.distance | distance) : ''}}
+      </ion-label>
+    </div>
+    <ion-buttons *ngIf="!load && !(load$ | async)" class="button-wink">
+      <ion-button
+      expand="full"
+      [ngClass]="{'medium' : !wink, 'primary' : wink}"
+      class="width-100 buttons-wink "
+      (click)="Wink()"
+      *ngIf="!wink || wink && !wink.approved">
+        {{ textBtnWink | translate }}
+        <ion-icon src="/assets/icon/wink.svg"></ion-icon>
+      </ion-button>
+      <span class="medium" *ngIf="wink && !wink.approved && !Sended()">
+        |
+      </span>
+      <ion-button
+      expand="full"
+      color="medium"
+      class="width-100 buttons-wink "
+      *ngIf="wink && !wink.approved && !Sended()"
+      (click)="DeleteWink()">
+        {{ textBtnIgnore | translate }}
+        <ion-icon src="/assets/icon/ignore.svg" slot="end"></ion-icon>
+      </ion-button>
+      <ion-button
+      expand="full"
+      color="primary"
+      class="width-100 buttons-wink"
+      *ngIf="wink && wink.approved"
+
+      (click)="GoPrivateProfile()">
+      {{ textBtnSee | translate }}
+      <ion-icon src="/assets/icon/show.svg" slot="end"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div *ngIf="!load && (load$ | async)" class="date-wink content-center">
+      <ion-spinner name="bubbles"></ion-spinner>
+    </div>
+    <!-- <ion-fab *ngIf="!load && !(load$ | async)" class="button-wink end">
+      <div *ngIf="wink" class="end">
+          <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="AceptWink()" size="small" color="primary">
+              <ion-icon name="checkmark"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="!Sended() && !wink.approved" (click)="DeleteWink()" size="small" color="light">
+              <ion-icon name="close"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="Sended() && !wink.approved" (click)="CancelWink()" size="small" color="primary">
+              <fa-icon
+              [icon]="['far', 'smile-wink']"
+              class="icon-public"
+              ></fa-icon>
+          </ion-fab-button>
+      </div>
+      <ion-fab-button *ngIf="wink && wink.approved" (click)="GoPrivateProfile()" size="small" color="light">
+        <ion-icon name="document"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="!wink" (click)="SendWink()"  size="small" color="light"[disabled]="userWink.status === 'WINK.STATUS.BUSY'">
+          <fa-icon
+          [icon]="['far', 'smile-wink']"
+          class="icon-public"
+          ></fa-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab *ngIf="!load && (load$ | async)"  class="button-wink end" >
+      <div *ngIf="wink" class="end">
+          <ion-fab-button *ngIf="!Sended() && !wink.approved"  size="small" color="primary">
+            <ion-spinner name="bubbles" color="dark"></ion-spinner>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="!Sended() && !wink.approved" size="small" color="light">
+            <ion-spinner name="bubbles" color="dark"></ion-spinner>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="Sended() && !wink.approved" size="small" color="primary">
+            <ion-spinner name="bubbles" color="dark"></ion-spinner>
+          </ion-fab-button>
+      </div>
+      <ion-fab-button *ngIf="wink && wink.approved" size="small" color="light">
+        <ion-spinner name="bubbles" color="dark"></ion-spinner>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="!wink"  size="small" color="light">
+        <ion-spinner name="bubbles" color="dark"></ion-spinner>
+      </ion-fab-button>
+    </ion-fab> -->
+  </div>
+
+
+  <ion-list *ngIf="load">
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+    <ion-item class="none-item-border">
+      <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+    </ion-item >
+  </ion-list>
+  <ion-list class="margin-list">
+    <item-list
+    *ngFor="let item of publicItems"
+    [item]="item">
+    </item-list>
+  </ion-list>
+</ion-content>

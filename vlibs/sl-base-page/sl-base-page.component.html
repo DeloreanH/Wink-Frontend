@@ -1,0 +1,140 @@
+<div class="base__page base__page--top"
+  *ngIf="!float && (nav === 'top' || nav === 'both')"
+>
+
+  <div class="base__page__nav"
+    [ngClass]="{
+      align: search,
+      'no-buttons': getButtons(ButtonPosition.BottomLeft).length === 0
+    }"
+  >
+    <button
+      *ngIf="backButton === 'top'"
+      mat-icon-button
+      (click)="backEmit()"
+    >
+      <mat-icon>
+        {{ isKeyboard ? 'keyboard_arrow_down' : 'arrow_back_ios' }}
+      </mat-icon>
+    </button>
+
+    <button
+      *ngFor="let item of getButtons(ButtonPosition.TopLeft)"
+      mat-icon-button
+      (click)="buttonSelect(item)"
+    >
+      <mat-icon>
+        {{ item.icon }}
+      </mat-icon>
+    </button>
+  </div>
+  <div class="base__page__nav align-center search-content"
+    *ngIf="search"
+  >
+    <input class="base__page__search" type="text"
+      #searchInput
+      [placeholder]="'Buscar places'"
+      (keyup)="searchChange($event.target.value)"
+    >
+    <mat-icon class="base__page__search__icon"
+      *ngIf="searchInput.value.length > 0"
+      (click)="searchInput.value = ''; searchChange('')"
+    >
+      clear
+    </mat-icon>
+  </div>
+  <div class="base__page__nav"
+    [ngClass]="{ align: search }"
+  >
+    <button
+      *ngFor="let item of getButtons(ButtonPosition.TopRight)"
+      mat-icon-button
+      (click)="buttonSelect(item)"
+    >
+      <mat-icon>
+        {{ item.icon }}
+      </mat-icon>
+    </button>
+  </div>
+</div>
+
+<ng-content></ng-content>
+
+<div class="base__page base__page--bottom"
+  *ngIf="!float && (nav === 'bottom' || nav === 'both')"
+>
+  <div class="base__page__nav left">
+    <button
+      *ngIf="backButton === 'bottom' || isKeyboard"
+      mat-icon-button
+      (click)="backEmit()"
+    >
+      <mat-icon>
+        {{ isKeyboard ? 'keyboard_arrow_down' : 'arrow_back_ios' }}
+      </mat-icon>
+    </button>
+
+    <button
+      *ngFor="let item of getButtons(ButtonPosition.BottomLeft)"
+      mat-icon-button
+      (click)="buttonSelect(item)"
+    >
+      <mat-icon>
+        {{ item.icon }}
+      </mat-icon>
+    </button>
+  </div>
+
+  <div class="base__page__nav align-center"
+    *ngIf="search && (nav === 'bottom' || nav === 'both')"
+  >
+    <button class="material__button__search"
+      mat-icon-button
+      (click)="searchFocus()"
+    >
+      <mat-icon class="icon">search</mat-icon>
+    </button>
+  </div>
+
+  <div class="base__page__nav right">
+    <button
+      *ngFor="let item of getButtons(ButtonPosition.BottomRight)"
+      mat-icon-button
+      (click)="buttonSelect(item)"
+    >
+      <mat-icon>
+        {{ item.icon }}
+      </mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="base__page base__page--bottom float transparent"
+  *ngIf="float"
+>
+
+  <div class="base__page__nav left">
+    <button class="animation--scale-open"
+      mat-icon-button
+      (click)="backEmit()"
+    >
+      <mat-icon>
+        {{ isKeyboard ? 'keyboard_arrow_down' : 'arrow_back_ios' }}
+      </mat-icon>
+    </button>
+  </div>
+
+  <div class="base__page__nav align-center">
+    <button class="material__button__float"
+      mat-icon-button
+      (click)="floatEmit(true)"
+    >
+      <mat-icon>
+        {{ float }}
+      </mat-icon>
+    </button>
+  </div>
+
+  <div class="base__page__nav right"></div>
+
+</div>

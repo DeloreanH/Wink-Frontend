@@ -1,0 +1,135 @@
+<div class="alert-overlay"
+  (click)="close()"
+>
+</div>
+
+<div class="alert-content fadeInDown">
+  <div class="alert__title"
+  >
+    {{ title | translate }}
+  </div>
+  <div class="alert__message"
+  *ngIf="isPromptStatus"
+  >
+      <ion-radio-group >
+
+        <ion-item>
+          <ion-label>
+            {{'WINK.STATUS.AVAILABLE' | translate}}
+          </ion-label>
+          <ion-radio
+            slot="start"
+            value="WINK.STATUS.AVAILABLE"
+            (ionFocus)="Blur($event)"
+            [checked]="description && description === 'WINK.STATUS.AVAILABLE'">
+          </ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            {{'WINK.STATUS.BUSY' | translate}}
+          </ion-label>
+          <ion-radio
+            slot="start"
+            value="WINK.STATUS.BUSY"
+            (ionFocus)="Blur($event)"
+            [checked]="description && description === 'WINK.STATUS.BUSY'">
+          </ion-radio>
+        </ion-item>
+
+        <ion-item #item >
+          <ion-input #custom
+            (ionFocus)="Focus($event)"
+            [placeholder]="'WINK.HOME.STATUS' | translate"
+            [maxlength]="maxStatus"
+            [value]="description && isInput ? description : null">
+          </ion-input>
+          <ion-radio
+            slot="start"
+            value="input"
+            [checked]="!description || focusInput">
+          </ion-radio>
+        </ion-item>
+      </ion-radio-group>
+  </div>
+
+  <div class="alert__message"
+    *ngIf="description && !isPromptStatus"
+  >
+    {{ (description | translate) + (isRange ? valueRange + 'Km' : '') }}
+  </div>
+  <div class="alert__message"
+  *ngIf="isRange"
+  >
+  <ion-item>
+    <ion-range #rangeC [(ngModel)]="valueRange" [min]="min" [max]="max" pin color="secondary" [value]="value ? value : 50" >
+      <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
+      <ion-icon slot="end" name="add-circle-outline"></ion-icon>
+    </ion-range>
+  </ion-item>
+  </div>
+  <div class="alert__message alert__list__inputs"
+    *ngIf="isInputs && inputs.length > 0"
+  >
+  <ion-content [scrollEvents]="true"
+  [ngClass]="{'one__input': inputs.length === 1, 'two__input': inputs.length === 2, 'three__input': inputs.length >= 3}">
+    <ion-list >
+      <ion-item *ngFor="let input of inputs">
+        <ion-label>
+          {{ input.label | translate}}
+        </ion-label>
+        <ion-checkbox slot="end" [checked]="input.checked" [value]="input.value" [name]="input.name"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  </div>
+
+  <div class="alert__message"
+    *ngIf="isTutorial"
+  >
+    {{ step }}
+  </div>
+
+  <div class="alert__buttons"
+    *ngIf="buttons.length > 1"
+    [ngClass]="{
+      confirm: isConfirm
+    }"
+  >
+  <ion-buttons class="alert__buttons__row">
+    <ion-button
+      *ngFor="let button of buttons"
+      [color]="button.type"
+      (click)="close(button)"
+      [disabled]="disabledButton(button)"
+    >
+      {{ button.label | translate }}
+    </ion-button>
+  </ion-buttons>
+  </div>
+
+  <div class="alert__buttons__tutorial"
+    *ngIf="isTutorial"
+  >
+    <div class="alert__step__points">
+      <div class="alert__step__point"
+        *ngFor="let st of steps; index as i"
+        [ngClass]="{ active: stepIndex === i }"
+      >
+      </div>
+    </div>
+    <div class="alert__buttons confirm">
+      <ion-button class="icon-only" color="dark"
+        (click)="backStep()"
+      >
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-button class="icon-only" color="secondary"
+        (click)="nextStep()"
+      >
+        <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+</div>

@@ -1,5 +1,7 @@
 {
   "name": "wink_frontend_v2",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,257 @@
+import { Injectable } from '@angular/core';
+import { Category } from '../../common/models/category.model';
+import { ItemType } from '../../common/models/itemType.model';
+import { Section } from '../../common/models/section.model';
+import { HttpClient } from '@angular/common/http';
+import { Routes } from '../../common/enums/routes/routes.enum';
+import { Item } from '../../common/models/item.model';
+import { ToastService } from './toast.service';
+import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
+import { StorageService } from './storage.service';
+import { categoriesStorage, itemsTypeStorage, itemsUserStorage } from 'src/app/common/constants/storage.constants';
+import { NetworkService } from './network.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProfilesService {
+
+  unique: string[] = [];
+  categories: Category[] = [];
+  biography: Item = null;
+  itemTypes: ItemType[] = [];
+  private itemsUser: Item[] = [];
+
+  sections: Section[] = [
+    new Section({name: 'WINK.SECTIONS.PUBLIC', key: 0}),
+    new Section({name: 'WINK.SECTIONS.GENERAL', key: 1}),
+    new Section({name: 'WINK.SECTIONS.PERSONAL', key: 2}),
+    new Section({name: 'WINK.SECTIONS.PROFESSIONAL', key: 3}),
+  ];
+  constructor(
+    private http: HttpClient,
+    private toastService: ToastService,
+    private networkService: NetworkService,
+  ) {
+    this.LoadCategories();
+    this.LoadTypesItems();
+   }
+
+  async SearchItemTypeCategoryName(nameCategory: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!nameCategory) {
+            reject({message: 'No name Category'});
+          }
+          if (this.itemTypes.length === 0) {
+            await this.LoadTypesItems();
+          }
+          const resultado = this.itemTypes.filter(
+            (item: ItemType) => {
+              return item.category === nameCategory;
+            }
+          );
+          resolve(resultado);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async SearchItemType(nameItemType: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!nameItemType) {
+            reject({message: 'No name itemType'});
+          }
+          if (this.itemTypes.length === 0) {
+            await this.LoadTypesItems();
+          }
+          const response = this.itemTypes.filter(
+            (item: ItemType) => {
+              return item.name === nameItemType;
+            }
+          );
+          resolve(response[0]);
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async LoadCategories() {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const categoriesLocal = StorageService.GetItem(categoriesStorage, true);
+          if (!categoriesLocal) {
+            if (this.networkService.StatusNetwork) {
+              const response = await this.http.get<Category[]>(Routes.BASE + Routes.CATEGORIES).toPromise();
+              StorageService.SetItem(categoriesStorage, response);
+              this.categories = [];
+              this.categories.push(...response);
+              resolve(response);
+            } else {
+              reject({message: 'No network'});
+            }
+          } else {
+            this.categories = [];
+            this.categories.push(...categoriesLocal);
+            resolve(categoriesLocal);
+          }
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async LoadTypesItems() {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const itemsTypeLocal = StorageService.GetItem(itemsTypeStorage, true);
+          if (!itemsTypeLocal) {
+            if (this.networkService.StatusNetwork) {
+              const response = await this.http.get<ItemType[]>(Routes.BASE + Routes.ITEM_TYPES).toPromise();
+              StorageService.SetItem(itemsTypeStorage, response);
+              this.itemTypes = [];
+              this.itemTypes.push(...response);
+              resolve(response);
+            } else {
+              reject({message: 'No network'});
+            }
+          } else {
+            this.itemTypes = [];
+            this.itemTypes.push(...itemsTypeLocal);
+            resolve(itemsTypeLocal);
+          }
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async LoadItemsUser() {
+    this.biography = null;
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          const itemsUserLocal = StorageService.GetItem(itemsUserStorage, true);
+          if (!itemsUserLocal) {
+            if (this.networkService.StatusNetwork) {
+              const response = await this.http.get<Item[]>(Routes.BASE + Routes.ITEMS_USER).toPromise();
+              StorageService.SetItem(itemsUserStorage, response);
+              resolve(this.FilterItems(response));
+            } else {
+              reject({message: 'No network'});
+            }
+          } else {
+            resolve(this.FilterItems(itemsUserLocal as Item[]));
+          }
+        } catch (err) {
+          this.toastService.Toast(MessagesServices.ERROR_GET_INFORMATION);
+          reject(err);
+        }
+      }
+    );
+  }
+
+  FilterItems(items: Item[]) {
+    if (!items) {
+      return;
+    }
+    items = items.filter(
+      (item: Item) => {
+        if (item.position === -1) {
+          this.biography = item;
+        } else {
+          return item;
+        }
+      }
+    );
+    this.itemsUser = items;
+    return items;
+  }
+
+  async SaveItems(data: Item[]) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!data) {
+            reject({message: 'No data'});
+          }
+          if (this.networkService.StatusNetwork) {
+            const response = await this.http.post<Item[]>(Routes.BASE + Routes.CREATE_ITEM, { items: data }).toPromise();
+            this.toastService.Toast(MessagesServices.SAVE_ITEMS);
+            StorageService.SetItem(itemsUserStorage, response);
+            resolve(this.FilterItems(response));
+          } else {
+            reject({message: 'No network'});
+          }
+        } catch (err) {
+          console.log(err);
+          this.toastService.Toast(MessagesServices.ERROR_SAVE);
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async GetPublicItems(idUser: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!idUser) {
+            reject({message: 'No idUSer'});
+          }
+          if (this.networkService.StatusNetwork) {
+            const response = await this.http.post(Routes.BASE + Routes.SHOW_PUBLIC_PROFILE, { winkUserId: idUser}).toPromise();
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
+        } catch (err) {
+          console.log('Error GetPublicItems: ' + err.message);
+          reject(err);
+        }
+      }
+    );
+  }
+
+  async GetPrivateItems(idUser: string, idWink: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!idUser || !idWink) {
+            reject({message: 'No idUser/idWink'});
+          }
+          if (this.networkService.StatusNetwork) {
+            const response = await this.http.post(
+            Routes.BASE + Routes.SHOW_PRIVATE_PROFILE,
+              {
+                winkUserId: idUser,
+                wink_id: idWink
+              }
+            ).toPromise();
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
+        } catch (err) {
+          console.log('Error GetPrivateItems: ' + err.message);
+          reject(err);
+        }
+      }
+    );
+  }
+
+  get ItemsUser() {
+    return this.itemsUser.slice();
+  }
+}

@@ -1,0 +1,120 @@
+<div class="ion-page" id="winks" (swipe)="Swipe($event)">
+  <ion-header class="header-segment ">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          {{'WINK.WINKS.TITLE' | translate}}
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <div class="double-container total">
+      <ion-segment (ionChange)="TabChanged($event)" [value]="tab" class="list-winks">
+        <ion-segment-button value="requests" [disabled]="tour && tab === 'record'">
+          <ion-label>
+            {{'WINK.WINKS.SEGMENTS.REQUESTS' | translate}}
+          </ion-label>
+          <div *ngIf="tour" tourAnchor="requests"></div>
+        </ion-segment-button>
+
+        <ion-segment-button value="record" [disabled]="tour && tab === 'requests'">
+          <ion-label>
+            {{'WINK.WINKS.SEGMENTS.RECORD' | translate}}
+          </ion-label>
+          <div *ngIf="tour" tourAnchor="record"></div>
+        </ion-segment-button>
+
+      </ion-segment>
+      <div *ngIf="tour" tourAnchor="intro"></div>
+    </div>
+    
+  </ion-header>
+
+  <ion-content class="ion-padding" >
+    
+    
+    
+    <ion-refresher slot="fixed" (ionRefresh)="Winks($event)" *ngIf="!tour">
+      <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        [pullingText]="'WINK.HOME.REFRESHER' | translate"
+        refreshingSpinner="circles"
+        [refreshingText]="'WINK.HOME.REFRESHING' | translate">
+      </ion-refresher-content>
+    </ion-refresher>
+
+    
+    <ion-list *ngIf="tab === 'requests'" >
+      <item-request
+        *ngFor="let wink of requests"
+        [wink]="wink"
+        [tour]="tour"
+        [currentRemoving]="removingRequest"
+        (removing)="removingRequest = $event"
+        [remove]="removeRequest"
+        (count)="CountRequest($event)"
+      ></item-request>
+
+    </ion-list>
+    <div *ngIf="tour" tourAnchor="wink"></div>
+    <ion-list *ngIf="tab === 'record'" >
+      <item-wink
+        *ngFor="let wink of record"
+        [wink]="wink"
+        [tour]="tour"
+        [currentRemoving]="removingRecord"
+        (removing)="removingRecord = $event"
+        [remove]="removeRecord"
+        (count)="CountRecord($event)"
+      ></item-wink>
+    </ion-list>
+    <div *ngIf="tour" tourAnchor="delete"></div>
+    <div *ngIf="record.length === 0 && tab === 'record'" class="empty">
+      <p >
+        {{noHistorical.toString() | translate}}
+      </p>
+      <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
+    </div>
+    <div *ngIf="requests.length === 0 && tab === 'requests'" class="empty">
+      <p >
+        {{noRequests.toString() | translate}}
+      </p>
+      <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
+    </div>
+  
+
+
+    
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed"  *ngIf="(tab === 'requests' && removingRequest) || (tab === 'record' && removingRecord)">
+      <ion-fab-button (click)="Remove()" class="button-del">
+        <ion-icon src="/assets/icon/delete.svg" class="contrast-pego"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-content>
+</div>
+<tour-step-template>
+    <ng-template let-step="step" >
+        <ion-card (click)="$event.stopPropagation()" class="padding-0 margin-0">
+            <ion-card-header *ngIf="step?.title">
+              <ion-card-title>
+                {{step?.title}}
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-text class="content-card-tour">
+                    {{step?.content}}
+                </ion-text>
+            </ion-card-content>
+            <ion-buttons class="content-end">
+              <ion-button *ngIf="tourService.hasPrev(step)" (click)="tourService.prev()">
+                  <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+              </ion-button>
+              <ion-button *ngIf="tourService.hasNext(step)" (click)="tourService.next()">
+                  <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+              </ion-button>
+              <ion-button (click)="tourService.end()">
+                  {{step?.endBtnTitle}}
+              </ion-button>
+            </ion-buttons>
+        </ion-card>
+      </ng-template>
+</tour-step-template>

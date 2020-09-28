@@ -1,0 +1,58 @@
+<sl-base-page class="auth"
+  nav="null"
+  backButton="top"
+>
+  <div class="auth__content">
+    <div class="auth__content__wrapper">
+      <div class="auth__content__top column">
+        <div class="auth__add-avatar primary"
+          matRipple
+          [ngClass]="{
+            loading: loading
+          }"
+        >
+          <mat-icon>
+            {{ !outTimer ? 'vpn_key': 'timer_off' }}
+          </mat-icon>
+
+        </div>
+        <div class="auth__text-title">
+
+          Verify SMS to {{ this.phone }}
+        </div>
+        <div class="auth__text-sub-title"
+        >
+          <ng-container
+            *ngIf="!outTimer"
+          >
+            <div>Ingresa el codigo enviado por sms</div>
+          </ng-container>
+
+          <ng-container *ngIf="outTimer">
+            <div>Espiro el tiempo de espera.</div>
+          </ng-container>
+
+          <div class="wrong__number" (click)="wrongNumber()">wrong number?</div>
+        </div>
+      </div>
+
+      <div class="auth__content__bottom">
+        <virtwoo-auth-form
+          [fields]="['code']"
+          [submitText]="'VIRTWOO_AUTH.FORM.BUTTON.VERIFY' | translate"
+          [disabled]="loading || outTimer"
+          (submitted)="sendCodeNumber($event)"
+        >
+          <div class="forgot-password">
+            <span
+              (click)="wrongNumber()"
+            >
+              Timeout, {{ getTimer() }}
+            </span>
+          </div>
+        </virtwoo-auth-form>
+      </div>
+
+    </div>
+  </div>
+</sl-base-page>

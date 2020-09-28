@@ -1,0 +1,26 @@
+.example-viewport,
+:host ::ng-deep .cdk-virtual-scroll-content-wrapper,
+.mat-list.mat-list-base {
+  height: 100%;
+  max-width: 100%;
+}
+.mat-list.mat-list-base {
+  overflow: hidden;
+  overflow-y: auto;
+  padding-top: 0px;
+  ::ng-deep {
+    .cdk-virtual-scroll-content-wrapper {
+      contain: initial;
+      display: flex;
+      flex-direction: column;
+      .scroll-viewport-fixed {
+        height: 100%;
+      }
+    }
+    .item-content {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

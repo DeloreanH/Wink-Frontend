@@ -1,0 +1,10 @@
+export const authStorage = 'userData';
+export const languageStorage = 'configLanguaje';
+export const toursStorage = 'tours';
+export const itemsUserStorage = 'items';
+export const nearbyStorage = 'nearby';
+export const requestStorage = 'request';
+export const recordStorage = 'record';
+export const categoriesStorage = 'categories';
+export const itemsTypeStorage = 'itemsType';
+export const networkStorage = 'network';

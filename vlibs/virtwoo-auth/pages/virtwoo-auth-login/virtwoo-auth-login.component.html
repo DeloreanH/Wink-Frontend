@@ -1,0 +1,61 @@
+<sl-base-page class="auth">
+
+  <div class="auth__content">
+    <div class="auth__content__wrapper">
+
+      <div class="auth__content__top column">
+        <div class="auth__logo"
+          *ngIf="config.logoUrl"
+        >
+          <img [src]="'/assets/icon/wink_white.png'"/>
+        </div>
+        <div class="auth__title">
+          {{ 'VIRTWOO_AUTH.APP_NAME' | translate }}
+        </div>
+      </div>
+
+      <div class="auth__content__bottom">
+
+        <virtwoo-auth-form
+          [fields]="['email', 'password']"
+          [submitText]="'VIRTWOO_AUTH.FORM.BUTTON.LOGIN' | translate"
+          [submitIconUrl]="'/assets/icon/sign-in.png'"
+          (submitted)="submitted($event)"
+        >
+          <div class="forgot-password">
+            <span
+              (click)="goToForgot()"
+              class="register"
+            >
+            <b>
+            {{ 'VIRTWOO_AUTH.MESSAGE.FORGOT_PASSWORD.TITLE' | translate }}
+            </b>
+            </span>
+          </div>
+        </virtwoo-auth-form>
+
+        <!-- <virtwoo-auth-social
+          [fields]="['google', 'facebook', 'sms']"
+        >
+        </virtwoo-auth-social> -->
+        
+        <virtwoo-auth-social
+          [fields]="['google']"
+        >
+        </virtwoo-auth-social>
+
+        <div class="register-message">
+          {{ 'VIRTWOO_AUTH.MESSAGE.WITHOUT_ACCOUNT' | translate }}
+          <b><a class="register" (click)="goToRegister()">&nbsp; {{ 'VIRTWOO_AUTH.FORM.BUTTON.REGISTER' | translate }}</a></b>
+        </div>
+        <div class="language-message">
+          <a class="register" [ngClass]="{'language-select': isEs()}" (click)="ChangeLanguage('es')">Español&nbsp;</a>
+          <a class="register" [ngClass]="{'language-select': isEn()}" (click)="ChangeLanguage('en')">English</a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</sl-base-page>

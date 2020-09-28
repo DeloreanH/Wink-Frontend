@@ -1,0 +1,38 @@
+<div class="wrapper-sub-itemWink ion-activatable ion-activatable-up"  (click)="SelectRemove($event)" ion-long-press [interval]="400" (longPressed)="Removing()">
+  <div *ngIf="currentRemoving" class="center icon-column">
+    <ion-checkbox color="primary" [checked]="initRemoving" class="check-del"></ion-checkbox>
+  </div>
+  <ion-item [ngClass]="{'all-column' : !currentRemoving, 'delete-column': currentRemoving}"
+  *ngIf="wink && !wink.approved && wink.user"
+  class="ion-activatable ion-activatable-up none-item-border">
+    <ion-avatar  class="avatar-wink ion-activatable ion-activatable-up" (click)="GoPrivateProfile()">
+      <img [srcPath]="Avatar()" class="img-avatar" (ionError)="ErrorImagen()" >
+    </ion-avatar>
+    <ion-label class="label-item">
+      <div>
+        <div class="title-wink" (click)="GoPrivateProfile()" [ngClass]="{'title-newWink': wink.user.newWink}">
+          {{wink && wink.user ? wink.user.firstName + ' ' + wink.user.lastName : 'John Doe'}}
+          <ion-badge *ngIf="wink.user.newWink" class="item-win-badge">*</ion-badge>
+        </div>
+        <div *ngIf="wink" class="date-wink">
+          <ion-icon name="time" color="medium"></ion-icon>
+          <ion-note class="note-wink"  color="medium">{{ Time(wink.createdAt)  }}</ion-note>
+        </div>
+      </div>
+      <div *ngIf="!(load | async) && !currentRemoving"  class="date-wink content-center" >
+        <ion-button class="button-50 input-relative button-none-shadow" (click)="Accept()">
+          {{'WINK.BUTTONS.WINK' | translate}}
+        </ion-button>
+        <ion-button  class="button-ignore button-50 input-relative contrast-pego button-none-shadow"  (click)="Ignore()">
+          {{'WINK.BUTTONS.IGNORE' | translate}}
+        </ion-button>
+      </div>
+      <div *ngIf="(load | async)" class="date-wink content-center">
+        <ion-spinner name="bubbles"></ion-spinner>
+      </div>
+    </ion-label>
+    <!-- <ion-icon name="more" slot="end" *ngIf="!currentRemoving || false" (click)="ShowMenu($event)" class="margin-0"></ion-icon> -->
+    <ion-ripple-effect  *ngIf="!currentRemoving"></ion-ripple-effect>
+  </ion-item>
+  <ion-ripple-effect  *ngIf="currentRemoving"></ion-ripple-effect>
+</div>

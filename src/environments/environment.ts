@@ -1,3 +1,18 @@
+import { VirtwooAuthConfig } from '@virtwoo/auth';
+import { authConfig, AuthResponse } from './auth.config';
+// import { Paths } from '@common/route';
+
+export const virtwooAuthEnvironment: VirtwooAuthConfig = {
+  accesssId: authConfig.accesssId,
+  apiUrl:  authConfig.apiUrl,
+  apiVersion: authConfig.apiVersion,
+  social: authConfig.social as any,
+  redirectUrl: authConfig.redirectUrl,
+  logoUrl: authConfig.logoUrl,
+  google: authConfig.google,
+  resCallback: AuthResponse,
+};
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -14,3 +29,5 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+

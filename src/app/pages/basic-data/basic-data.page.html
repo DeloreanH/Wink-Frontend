@@ -1,0 +1,309 @@
+<ion-header>
+  <ion-toolbar>
+    <div *ngIf="!user.emptyProfile" class="ion-activatable ion-activatable-up ripple-toolbar ripple-toolbar-mis" slot="start" >
+      <ion-icon
+      class="icon-arrow center"
+        (click)="Back()"
+      src="/assets/icon/back.svg"
+      ></ion-icon>
+      <!-- <fa-icon
+        [icon]="['fas', 'arrow-left']"
+        class="icon-arrow center"
+        (click)="Back()"
+      ></fa-icon> -->
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+    <ion-title>
+        {{'WINK.BASIC_DATA.TITLE' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="ion-padding">
+  <div *ngIf="loading">
+    <div class="avatar-container" >
+      <ion-avatar class="avatar-profile">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+    </div>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <div class="phone">
+      <div class="phoneCode">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </div>
+      <div class="phoneNumber">
+        <ion-item >
+          <ion-label>
+            <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+        </ion-label>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+          <ion-skeleton-text animated class="skeleton-content"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+    <ion-skeleton-text animated class="skeleton-button"></ion-skeleton-text>
+    <ion-skeleton-text animated class="skeleton-button"></ion-skeleton-text>
+
+
+  </div>
+  <div *ngIf="!loading">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()">
+      <div class="avatar-container" >
+        <ion-avatar (click)="SelectImage()" class="avatar-profile">
+          <img
+            class="img-avatar"
+            *ngIf="!loadingAvatar"
+            alt="Avatar"
+            [srcPath]="Avatar()" >
+          <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
+        </ion-avatar>
+      </div>
+      <div *ngIf="user.emptyProfile && !uploadAvatar" class="avatar-container" >
+        <ion-text color="danger">
+          {{'WINK.BASIC_DATA.FORM.AVATAR' | translate}}
+        </ion-text>
+      </div>
+      <ion-list>
+        <ion-item >
+            <fa-icon
+              [icon]="['fas', 'user']"
+              class="icon icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.FIRST_NAME' | translate}}
+          </ion-label>
+          <ion-input
+
+            formControlName="firstName"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('firstName') | translate }}
+        </ion-text>
+        <ion-item>
+            <fa-icon
+              [icon]="['fas', 'user']"
+              class="icon icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.LAST_NAME' | translate}}
+          </ion-label>
+          <ion-input
+            formControlName="lastName"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('lastName') | translate }}
+        </ion-text>
+        <!-- <ion-item>
+            <fa-icon
+              [icon]="['fas', 'user']"
+              class="icon icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.USERNAME' | translate}}
+          </ion-label>
+          <ion-input
+            formControlName="username"
+            maxlength="16"
+            minlength="4"
+          >
+          </ion-input>
+        </ion-item> -->
+        <!-- <ion-text color="danger">
+          {{ MessageError('username') | translate }}
+        </ion-text> -->
+        <ion-item>
+            <fa-icon
+              [icon]="['fas', 'envelope']"
+              class="icon icon-center"
+              slot="start" >
+            </fa-icon>
+          <ion-label position="floating" >
+              {{'WINK.BASIC_DATA.FORM.EMAIL' | translate}}
+          </ion-label>
+          <ion-input
+            formControlName="email"
+            type="email"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('email') | translate }}
+        </ion-text>
+        <div class="phone">
+          <div class="phoneCode">
+            <ion-item>
+              <fa-icon
+                [icon]="['fas', 'mobile-alt']"
+                class="icon icon-center"
+                slot="start" >
+              </fa-icon>
+              <ion-label position="floating" >
+                {{'WINK.BASIC_DATA.FORM.CODE' | translate}}
+              </ion-label>
+              <ion-input
+                type="number"
+                formControlName="phoneCode"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger">
+              {{ MessageError('phoneCode') | translate }}
+            </ion-text>
+          </div>
+          <div class="phoneNumber">
+            <ion-item >
+              <ion-label position="floating" >
+                  {{'WINK.BASIC_DATA.FORM.PHONE_NUMBER' | translate}}
+              </ion-label>
+              <ion-input
+                type="number"
+                formControlName="phoneNumber"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger">
+              {{ MessageError('phoneNumber') | translate }}
+            </ion-text>
+          </div>
+        </div>
+        <ion-item>
+          <fa-icon
+            [icon]="['fas', 'calendar-alt']"
+            class="icon icon-center"
+            slot="start" >
+          </fa-icon>
+          <ion-label position="floating" >
+            {{'WINK.BASIC_DATA.FORM.BIRTHDAY' | translate}}
+          </ion-label>
+          <ion-datetime
+            displayFormat="DD/MM/YYYY"
+            min="1900-01-01"
+            [max]="FechaActual() | date:'yyy-MM-dd'"
+            cancel-text="Cancelar"
+            done-text="Aceptar"
+            formControlName="birthday"
+          ></ion-datetime>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('birthday') | translate }}
+        </ion-text>
+        <ion-item>
+          <fa-icon
+          [icon]="['fas', 'genderless']"
+          class="icon icon-center"
+          slot="start" ></fa-icon>
+          <ion-label position="floating" >
+            {{'WINK.BASIC_DATA.FORM.GENDER' | translate}}
+          </ion-label>
+          <ion-select
+            interface="popover"
+            formControlName="gender">
+            <ion-select-option *ngFor="let gender of genders" [value]="gender.value">
+              {{gender.description | translate}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('gender') | translate }}
+        </ion-text>
+        <ion-item>
+          <fa-icon
+          [icon]="['fas', 'language']"
+          class="icon icon-center"
+          slot="start" ></fa-icon>
+          <ion-label position="floating" >
+            {{'WINK.LANGUAGES.TITLE' | translate}}
+          </ion-label>
+          <ion-select
+            interface="popover"
+            [value]="currentLanguage"
+            (ionChange)="ChangeLanguage($event.target.value)"
+            >
+            <ion-select-option *ngFor="let language of languages" [value]="language.value">
+              {{language.description | translate}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-toggle color="primary" formControlName="autosave" class="toggle-profle"></ion-toggle>
+          <ion-label  >
+            {{'WINK.BASIC_DATA.FORM.AUTOSAVE_CONTACTS' | translate}}
+          </ion-label>
+        </ion-item>
+        <ion-text color="danger">
+          {{ MessageError('autosave') | translate }}
+        </ion-text>
+      </ion-list>
+      <ion-button expand="block" (click)="onSubmit()" [disabled]="FormValid()" class="button-none-shadow">
+          {{'WINK.BUTTONS.SAVE' | translate}}
+      </ion-button>
+      <ion-button expand="block" color="light" (click)="user.emptyProfile ? Logout() : Back()" class="button-none-shadow">
+        {{'WINK.BUTTONS.CANCEL' | translate}}
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

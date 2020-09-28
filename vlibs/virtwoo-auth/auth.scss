@@ -1,0 +1,293 @@
+$padding: 2rem;
+
+:root {
+  --auth-color-primary: var(--ion-color-primary);
+  --auth-color-primary-opacity: rgba(var(--ion-color-primary-rgb), 0.75);
+  --auth-color-error: #f44336;
+  --auth-color-primary-alpha: rgba(65, 131, 196, .1);
+  --auth-color-text-primary: #4C4D4D;
+  --auth-color-text-secondary: #A4A4A4;
+}
+
+
+
+.auth__content {
+  height: 100%;
+}
+.auth__content__wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.auth__content__top {
+  flex: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1rem;
+  &.column {
+    flex-direction: column;
+  }
+}
+.auth__content__forms {
+  display: flex;
+  flex-direction: column;
+  .text__input, .auth__field {
+    font-size: 1.2rem;
+  }
+  .mat-form-field {
+    &.separer {
+      margin-bottom: 3rem;
+    }
+    &.mat-focused {
+      .mat-form-field-label {
+        color: var(--auth-color-primary);
+      }
+      .mat-form-field-ripple {
+        background-color: var(--auth-color-primary);
+      }
+    }
+    &.mat-form-field-invalid {
+      .mat-form-field-label {
+        color: var(--auth-color-error);
+      }
+      .mat-form-field-ripple {
+        background-color: var(--auth-color-error);;
+      }
+    }
+    .mat-input-element {
+      color: var(--auth-color-text-primary);
+    }
+    .mat-form-field-label {
+      color: var(--auth-color-text-secondary);
+    }
+    .mat-form-field-underline {
+      background-color: var(--auth-color-text-secondary);
+    }
+  }
+}
+.auth__title {
+  margin-top: 1rem;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--auth-color-primary);
+}
+.auth__text-title {
+  font-weight: 500;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  color: var(--auth-color-text-primary);
+}
+.auth__text-sub-title {
+  text-align: center;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--auth-color-text-primary);
+}
+.auth__logo, .auth__add-avatar {
+  width: 9.5rem;
+  height: 9.5rem;
+  background-color: var(--auth-color-primary-opacity);
+  border-radius: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  img {
+    width: 60%;
+    // height: 60%;
+  }
+}
+.auth__logo, .auth__add-avatar {
+  &.loading {
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      border-radius: 500rem;
+      border: 0.2em solid transparent;
+    }
+    &::after {
+      position: absolute;
+      content: '';
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      animation: loader 0.6s linear infinite;
+      border-radius: 500rem;
+      border-color: #767676 transparent transparent;
+      border-style: solid;
+      border-width: 0.2em;
+      box-shadow: 0px 0px 0px 1px transparent;
+      border-color: #767676 transparent transparent;
+    }
+  }
+}
+.auth__add-avatar {
+  border-radius: 50%;
+  background-color: #EDEDED;
+  position: relative;
+  &.primary {
+    background-color: var(--auth-color-primary-alpha);
+    mat-icon {
+      color: var(--auth-color-primary);
+    }
+  }
+  mat-icon {
+    font-size: 5.5rem;
+    width: 5.5rem;
+    height: 5.5rem;
+    color: #CDCDCD;
+  }
+}
+.button-camera-add.mat-icon-button {
+  $width: 3.8rem;
+  $width-icon: 2.4rem;
+  background-color: var(--auth-color-primary);
+  width: $width;
+  height: $width;
+  bottom: ($width / 2);
+  border: .25rem solid #fff;
+  mat-icon.add {
+    font-size: $width-icon;
+    width: $width-icon;
+    height: $width-icon;
+    color: #ffffff;
+    line-height: $width-icon;
+  }
+}
+sl-base-page.auth {
+  padding: $padding;
+  padding-bottom: 0px;
+  .field__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.row-separer {
+      margin-bottom: 3rem;
+    }
+    > .mat-form-field.prefix {
+      max-width: 6rem;
+    }
+    > .mat-form-field.auth__field--full {
+      flex: 1;
+    }
+    > .mat-form-field.separer-left {
+      margin-left: 1rem;
+    }
+  }
+  .row-separer {
+    margin-bottom: 3rem;
+  }
+  .forgot-password {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+    color: var(--auth-color-text-secondary);
+    .register {
+      color: var(--auth-color-primary);
+    }
+  }
+  .register-message {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: var(--auth-color-text-secondary);
+    .register {
+      color: var(--auth-color-primary);
+    }
+  }
+  .language-message {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--auth-color-text-secondary);
+    .register {
+      color: var(--auth-color-primary);
+    }
+  }
+
+  .language-select {
+    font-weight: bold;
+  }
+
+  .auth-buttons {
+    display: flex;
+    flex-direction: column;
+    button {
+      font-size: 1.16rem;
+      padding: .5rem 1rem;
+    }
+  }
+  .auth-buttons-social {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    button {
+      height: 3.5rem;
+      min-height: 3.5rem;
+      width: 3.5rem;
+      min-width: 3.5rem;
+      margin-bottom: 0px;
+      background-color: #ffffff;
+      border-radius: .25rem !important;
+      padding: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:first-child {
+        margin-right: .5rem;
+      }
+      &:last-child {
+        margin-left: .5rem;
+      }
+      &.bt-facebook {
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: .25rem !important;
+        }
+      }
+      img {
+        width: 60%;
+        height: 60%;
+      }
+    }
+  }
+  .bt-login {
+    background-color: var(--auth-color-primary-opacity);
+    color: #ffffff;
+    height: 3.6rem;
+    max-height: 3.6rem;
+    font-size: 1.16rem;
+    &.center {
+      .mat-button-wrapper {
+        display: initial;
+        justify-content: initial;
+      }
+    }
+    &.separer {
+      margin-bottom: $padding;
+    }
+    .mat-button-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    img {
+      width: 1.5rem;
+    }
+  }
+}
+.contrast {
+  color: var(--color-cpego);
+}

@@ -1,0 +1,46 @@
+
+.item-selector {
+  height: 3rem;
+}
+.item-perfil {
+  padding: 0px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1%;
+}
+
+
+.select-type {
+  font-size: 1.1rem;
+  min-width: 100% !important;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  min-height: 3.125rem;
+  --placeholder-color: var(--ion-color-light);
+  --placeholder-opacity: 1;
+}
+
+.icon-del {
+  color: var(--ion-color-medium);
+  font-size: 1.5rem;
+  align-self:center;
+  padding: 0.4rem;
+}
+.order {
+  border: 0.9px solid rgb(192, 189, 189);
+}
+
+.input-chips {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-size: 1.1rem;
+  --placeholder-color: var(--ion-color-light);
+  --placeholder-opacity: 1;
+  height: 100% !important;
+  min-width: 50%;
+  margin: 0 !important;
+}
+.list-chip-empty {
+  max-height: 2.125rem;
+  height: 2.125rem !important;
+}

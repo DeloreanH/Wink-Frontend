@@ -1,0 +1,23 @@
+<ion-card 
+  class="card-container card-list ion-activatable ion-activatable-up" 
+  [ngClass]="{newWink: user.newWink}">
+  <div class="status-card ">
+    <div class="double-container">
+      <ion-label  class="text-card text-status size-text-status" >
+        {{(user.status ? user.status : 'WINK.STATUS.AVAILABLE' ) | translate}}
+      </ion-label>
+      <div *ngIf="tour" tourAnchor="see_status"></div>
+    </div>
+  </div>
+  <img 
+    class="image-full" 
+    alt="Avatar" 
+    [srcPath]="Avatar()"
+  >
+  <ion-label class="name-card text-card text-name" >
+      {{(user ? user.firstName + ' ' +  user.lastName : 'John Doe') | names}}
+  </ion-label>
+  <ion-ripple-effect></ion-ripple-effect>
+</ion-card>
+
+<div *ngIf="tour" tourAnchor="card"></div>

@@ -1,0 +1,49 @@
+<sl-base-page class="auth">
+  <div class="ion-activatable ion-activatable-up ripple-toolbar" slot="start">
+    <ion-icon
+      class="icon-arrow center"
+        (click)="Back()"
+      src="/assets/icon/back.svg"
+      ></ion-icon>
+      <!-- <fa-icon
+      [icon]="['fas', 'arrow-left']"
+      class="icon-arrow"
+      (click)="Back()"
+    ></fa-icon> -->
+      <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <div class="auth__content">
+    <div class="auth__content__wrapper">
+
+      <div class="auth__content__top column">
+        <div class="auth__add-avatar"
+          [ngClass]="{
+            loading: loading
+          }"
+        >
+          <mat-icon>face</mat-icon>
+        </div>
+      </div>
+
+      <div class="auth__content__bottom">
+
+        <virtwoo-auth-form
+          [fields]="['email', 'password']"
+          [submitText]="'VIRTWOO_AUTH.FORM.BUTTON.REGISTER' | translate"
+          [submitIconUrl]="'/assets/icon/email.png'"
+          [disabled]="loading"
+          (submitted)="submit($event)"
+        >
+        </virtwoo-auth-form>
+
+        <div class="register-message">
+          {{ 'VIRTWOO_AUTH.MESSAGE.ALREADY_ACCOUNT' | translate }}
+          <b><a class="register" (click)="goToLogin()">&nbsp; {{ 'VIRTWOO_AUTH.FORM.BUTTON.LOGIN' | translate }}</a></b>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</sl-base-page>

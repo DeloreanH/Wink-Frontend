@@ -1,0 +1,156 @@
+<div
+class="wrapper design-style"
+[ngClass]="{'order': !order}"
+[formGroup]="form"
+>
+  <div
+  *ngIf="itemType"
+  class="wrapper-sub"
+  [ngClass]="{'item-has-focus': focus, 'select-column' : !order && !value.basic , 'all-column' : value.basic || order}">
+
+    <!--Icono del item-->
+    <div class="double-container total icon-column">
+      <div *ngIf="tour" tourAnchor="item_icon"></div>
+      <div class="center">
+        <fa-icon
+        *ngIf="itemType"
+        [icon]="itemType? [preIcon, icon] : null"
+        (click)="ShowSelector()"
+        class="icon"
+        slot="start" ></fa-icon>
+      </div>
+    </div>
+    
+
+    <!--Columna con dos inputs, el primero aparece cuando el item solo acepta un valor, el segundo cuando el item acepta dos valores-->
+    <div
+    class="double-container delete-column total"
+    *ngIf="itemType && itemType.index === 0 || itemType.index === 2 || itemType.index === 1 ||  itemType.index === 3 ||  itemType.index === 6 ||  itemType.index === 7">
+      <!--Primer input-->
+      <ion-input
+      *ngIf="itemType && itemType.index === 0 || itemType.index === 2 || itemType.index === 1 ||  itemType.index === 3 ||  itemType.index === 6 ||  itemType.index === 7"
+      [placeholder]="Watermark(0) | translate"
+      class="input-item medium"
+      (ionInput)="OnInput($event.target.value, 0)"
+      [value]="Value(0)"
+      maxlength="150"
+      minlength="2"
+      [type]="type"
+      formControlName="campo1"></ion-input>
+
+      <!--Segundo input-->
+      <ion-input
+      *ngIf="itemType && itemType.index === 2  || itemType.index === 7 "
+      class="input-item  medium"
+      [placeholder]="Watermark(1) | translate"
+      [value]="Value(1)"
+      (ionInput)="OnInput($event.target.value, 1)"
+      [type]="type"
+      formControlName="campo2"></ion-input>
+    </div>
+
+    <!--Selector para item de seleccion-->
+    <ion-select
+    *ngIf="itemType && itemType.index === 4"
+    class="date-item input-relative delete-column  medium center-vertical-text div-dateTime "
+    interface="popover"
+    [placeholder]="'WINK.PROFILE_SETTINGS.OPTIONS.SELECT_ITEMS' | translate"
+    (ionChange)="OnInput($event.target.value, 0)"
+    [value]="Value(0)"
+    formControlName="campo1">
+      <ion-select-option
+      class=" medium"
+      *ngFor="let option of itemType.options"
+      [value]="option._id">
+        {{option.name | translate}}
+      </ion-select-option>
+    </ion-select>
+
+    <!--Input para fecha-->
+    <ion-datetime
+    *ngIf="itemType && itemType.index === 5"
+    class="date-item input-relative delete-column  medium center-vertical-text div-dateTime "
+    displayFormat="DD/MM/YYYY"
+    min="1900-01-01"
+    [max]="CurrentDate() | date:'yyy-MM-dd'"
+    [placeholder]="Watermark(0) | translate"
+    [doneText]=" 'WINK.BUTTONS.OK' | translate"
+    [cancelText]=" 'WINK.BUTTONS.CANCEL' | translate"
+    [value]="Value(0)? (Value(0)) : null "
+    (ionChange)="OnInput($event.target.value, 0)"
+    formControlName="campo1"
+    ></ion-datetime>
+
+    <!--Campos para Chips-->
+    <mat-chip-list
+    #chipList
+    *ngIf="itemType && itemType.index === 8"
+    class="chip-item delete-column">
+      <ion-input
+      #chipControl
+      [value]="Value(0)"
+      hidden
+      formControlName="campo1">
+      </ion-input>
+      <ion-chip outline color="medium"
+        *ngFor="let chip of chipArray"
+        >
+        {{chip}}
+        <ion-icon
+          name="close-circle"
+          (click)="DeleteChip(chip)">
+        </ion-icon>
+      </ion-chip>
+
+      <input
+      #inputChip
+      class="native-input sc-ion-input-md sc-ion-input-ios placeholder input-chips medium"
+      [ngClass]="{ 'list-chip-empty' : chipArray.length !== 0}"
+      [placeholder]="Watermark(0)  | translate"
+      (focus)="Focus(true)"
+      (blur)="Focus(false)"
+      maxlength="12"
+      autocomplete="off"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+      (matChipInputTokenEnd)="AddChip($event)"
+      (input)="ValueChip($event.target.value)"
+      (keyup)="KeyDown($event, inputChip)"
+      >
+    </mat-chip-list>
+
+  </div>
+
+  <!--Seleccionar tipo de item-->
+  <ion-select
+  *ngIf="!itemType"
+  ok-text="Aceptar"
+  cancel-text="Cancelar"
+  class="select-type input-relative center-vertical-text div-dateTime "
+  [ngClass]="{'select-column' : !order && !value.basic , 'all-column' : value.basic || order}"
+  interface="popover"
+  [value]="itemType"
+  [placeholder]="'WINK.PROFILE_SETTINGS.OPTIONS.SELECT_ITEMS' | translate"
+  (ionChange)="SelectItemType($event.target.value)"
+  formControlName="selector"
+  >
+    <ion-select-option
+    *ngFor="let item of itemsType"
+    [disabled]="Unique(item)"
+    [value]="item">
+      {{item.description | translate}}
+    </ion-select-option>
+  </ion-select>
+
+  <!--Icono para eliminar-->
+  <ion-icon
+  *ngIf="!order && !value.basic"
+  name="close-circle-outline"
+  (click)="Delete()"
+  class="input-relative icon-del delete-column"
+  ></ion-icon>
+</div>
+<ion-text color="danger" *ngIf="ErrorMessage()">
+  {{ErrorMessage() | translate}}
+</ion-text>

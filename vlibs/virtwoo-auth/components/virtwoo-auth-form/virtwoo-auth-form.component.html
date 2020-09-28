@@ -1,0 +1,134 @@
+<form class="auth__content__forms"
+  *ngIf="load"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <mat-form-field class="auth__field"
+    *ngIf="isControl(field.Username)"
+  >
+    <input class="text__input" type="text"
+      matInput
+      formControlName="username"
+      [placeholder]="'VIRTWOO_AUTH.FORM.PLACEHOLDER.USERNAME' | translate"
+    />
+    <mat-error
+      *ngIf="isFormControlStatus('username', 'INVALID')"
+    >
+      {{ getErrorMessage('username') }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="auth__field"
+    *ngIf="isControl(field.Email)"
+  >
+    <input class="text__input" type="email"
+      matInput
+      formControlName="email"
+      [placeholder]="'VIRTWOO_AUTH.FORM.PLACEHOLDER.EMAIL' | translate"
+    />
+    <mat-error
+      *ngIf="isFormControlStatus('email', 'INVALID')"
+    >
+      {{ getErrorMessage('email') }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="auth__field"
+    *ngIf="isControl(field.Password)"
+  >
+    <input class="text__input"
+      matInput
+      formControlName="password"
+      [type]="visibility ? 'text' : 'password'"
+      [placeholder]="'VIRTWOO_AUTH.FORM.PLACEHOLDER.PASSWORD' | translate"
+    />
+    <mat-icon
+      matSuffix
+      class="contrast"
+      (click)="changeVisibility()"
+    >
+      {{ !visibility ? 'visibility' : 'visibility_off' }}
+    </mat-icon>
+    <mat-error
+      *ngIf="isFormControlStatus('password', 'INVALID')"
+    >
+      {{ getErrorMessage('password') }}
+    </mat-error>
+  </mat-form-field>
+
+  <div class="field__row"
+    *ngIf="isControl(field.Phone)"
+  >
+    <mat-form-field class="auth__field prefix">
+      <input class="text__input" type="number"
+        #inputPrefix
+        matInput
+        placeholder="Code"
+        formControlName="prefix"
+        (keyup)="changePrefix(inputPrefix.value)"
+      />
+      <i matPrefix class="flag"
+        *ngIf="country"
+        [ngClass]="country.cca2"
+        (click)="openCountries()"
+      >
+      </i>
+      <mat-error
+        *ngIf="isFormControlStatus('prefix', 'INVALID')"
+      >
+      {{ getErrorMessage('prefix') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="auth__field auth__field--full separer-left">
+      <input class="text__input" type="number"
+        matInput
+        placeholder="Phone number"
+        formControlName="phone"
+      />
+      <mat-error
+        *ngIf="isFormControlStatus('phone', 'INVALID')"
+      >
+        {{ getErrorMessage('phone') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field class="auth__field auth__field--full separer-left"
+    *ngIf="isControl(field.Code)"
+  >
+    <input class="text__input" type="number"
+      matInput
+      placeholder="Code"
+      formControlName="code"
+    />
+    <mat-error
+      *ngIf="isFormControlStatus('code', 'INVALID')"
+    >
+      {{ getErrorMessage('code') }}
+    </mat-error>
+  </mat-form-field>
+
+  <ng-content></ng-content>
+
+  <button class="bt-login" type="submit"
+    mat-flat-button
+    [disabled]="form.status === 'INVALID' || disabled"
+    [ngClass]="{ center: !submitIconUrl && !submitIcon }"
+  >
+    <span>{{ submitText }}</span>
+    <img
+      *ngIf="submitIconUrl"
+      [src]="submitIconUrl"
+      class="icon-submit"
+    >
+    <ng-container></ng-container>
+
+    <mat-icon
+      *ngIf="submitIcon"
+    >
+      {{ submitIcon }}
+    </mat-icon>
+  </button>
+
+</form>
