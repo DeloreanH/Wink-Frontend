@@ -144,7 +144,7 @@ export class VirtwooAuthGoogleService {
   private googleLogin(): Observable<GoogleResponse> {
     return new Observable<GoogleResponse>(observer => {
       (window as any).plugins.googleplus.login(
-        { webClientId: this.webClientId },
+        { webClientId: this.webClientId() },
         async (response: GoogleResponse) => {
           console.log('response', response);
           observer.next(response);
