@@ -18,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { VIRTWOO_AUTH_CONFIG } from '../../virtwoo-auth-config.data';
 import { VirtwooAuthConfig } from '../../virtwoo-auth-config';
 import { VirtwooAuthServerService } from '../virtwoo-auth-server';
+import { authConfig } from '../../../../src/environments/auth.config';
 
 interface GoogleResponse {
   accessToken?: string;
@@ -53,7 +54,8 @@ export class VirtwooAuthGoogleService {
               console.log('response', response);
               return {
                 access_token: response.accessToken,
-                access_audience: this.webClientId()
+                access_audience: this.webClientId(),
+                platform: authConfig
               };
             })
           ).subscribe(
