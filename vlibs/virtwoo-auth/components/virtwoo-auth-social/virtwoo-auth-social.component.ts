@@ -69,9 +69,11 @@ export class VirtwooAuthSocialComponent {
     this.virtwooAuthGoogleService.launch()
       .subscribe(
         (response) => {
+          console.log('google', response);
           console.log(response);
         },
         (error) => {
+          console.log('google', error);
           console.log(error);
         }
       );

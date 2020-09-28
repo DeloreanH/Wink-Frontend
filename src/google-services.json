@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "431905030876",
+    "firebase_url": "https://pqp-virtwoo-272712.firebaseio.com",
+    "project_id": "pqp-virtwoo-272712",
+    "storage_bucket": "pqp-virtwoo-272712.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431905030876:android:43e08367a060ed9d0e6a19",
+        "android_client_info": {
+          "package_name": "com.virtwoo.pqp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431905030876-6fkajh8spoujocod76nefo4eeiq7fs7k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.virtwoo.pqp",
+            "certificate_hash": "0ffc12279a07fc5b04d7ba095e6da971b73d23dc"
+          }
+        },
+        {
+          "client_id": "431905030876-c5jmqp2opd7so6kk1fmn0acbd51j268h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4Oje-ojnnJUNJXTcAfLBpC7DqEwfxAWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431905030876-c5jmqp2opd7so6kk1fmn0acbd51j268h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

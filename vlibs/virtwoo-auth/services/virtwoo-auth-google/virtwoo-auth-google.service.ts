@@ -48,26 +48,53 @@ export class VirtwooAuthGoogleService {
     return new Observable<any>(observer => {
       try {
         if (this.isGooglePlugin) {
-          concat(
-            this.googleLogin().pipe(
-              map(response => {
-                return {
-                  access_token: response.idToken,
-                  access_audience: this.webClientId
-                };
-              })
-            ),
-            this.virtwooAuthServerService.loginGoogle
-          )
-          .pipe(finalize(() => observer.complete() ))
-          .subscribe(
+          this.googleLogin().pipe(
+            map(response => {
+              console.log('response', response);
+              return {
+                access_token: response.accessToken,
+                access_audience: this.webClientId()
+              };
+            })
+          ).subscribe(
             (response) => {
-              observer.next(response);
-            },
-            (error) => {
-              observer.error(error);
+            this.virtwooAuthServerService.loginGoogle(response)
+            .pipe(finalize(() => observer.complete() ))
+            .subscribe(
+              (data) => {
+                console.log('data', data);
+                observer.next(data);
+              },
+              (error) => {
+                console.log('error', error);
+                observer.error(error);
+              }
+            );
             }
           );
+          // concat(
+          //   this.googleLogin().pipe(
+          //     map(response => {
+          //       console.log('response', response);
+          //       return {
+          //         access_token: response.accessToken,
+          //         access_audience: this.webClientId()
+          //       };
+          //     })
+          //   ),
+          //   this.virtwooAuthServerService.loginGoogle
+          // )
+          // .pipe(finalize(() => observer.complete() ))
+          // .subscribe(
+          //   (response) => {
+          //     console.log('response', response);
+          //     observer.next(response);
+          //   },
+          //   (error) => {
+          //     console.log('error', error);
+          //     observer.error(error);
+          //   }
+          // );
         }
       } catch (error) {
         observer.error(error);
@@ -96,8 +123,9 @@ export class VirtwooAuthGoogleService {
   }
 
   private webClientId(): string {
+    console.log('this.config', this.config);
     return this.platform.ANDROID
-    ? this.config.google.androidWebClientId
+    ? '604204991836-n0pqda9hi5k320oscqnerblqqb17u0s9.apps.googleusercontent.com'
     : this.config.google.iosWebClientId;
   }
 
@@ -116,6 +144,7 @@ export class VirtwooAuthGoogleService {
       (window as any).plugins.googleplus.login(
         { webClientId: this.webClientId },
         async (response: GoogleResponse) => {
+          console.log('response', response);
           observer.next(response);
           observer.complete();
         },

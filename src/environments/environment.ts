@@ -9,6 +9,7 @@ export const virtwooAuthEnvironment: VirtwooAuthConfig = {
   social: authConfig.social as any,
   redirectUrl: authConfig.redirectUrl,
   logoUrl: authConfig.logoUrl,
+  google: authConfig.google,
   resCallback: AuthResponse,
 };
 

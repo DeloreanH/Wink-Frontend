@@ -2,7 +2,7 @@ import { Routes } from '../app/common/enums/routes/routes.enum';
 import { RoutesPrincipal } from '../app/common/enums/routes/routesPrincipal.enum';
 
 export const WebClientId = {
-  android: '431905030876-c5jmqp2opd7so6kk1fmn0acbd51j268h.apps.googleusercontent.com',
+  android: '604204991836-n0pqda9hi5k320oscqnerblqqb17u0s9.apps.googleusercontent.com',
   ios: 'com.googleusercontent.apps.431905030876-44d13bo8u5e19bkqmomrqgghllg7bsmv',
 };
 
@@ -13,6 +13,10 @@ export const authConfig = {
   social: 'ALL',
   redirectUrl: Routes.BASE + Routes.AUTH,
   logoUrl: '/assets/icon/favicon.png',
+  google: {
+    androidWebClientId: WebClientId.android,
+    iosWebClientId: WebClientId.ios,
+  },
 };
 
 export function AuthResponse(data: any) {

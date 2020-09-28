@@ -80,6 +80,18 @@ export class VirtwooAuthServerService {
   }
 
   public loginGoogle(access: { access_token: string, access_audience: string }): Observable<VirtwooAuthResponse> {
+    console.log('access', access);
+    console.log('access', this.httpHeaders );
+    console.log('access', this.url(VirtwooAuthProvider.Google) );
+    // this.http.post<VirtwooAuthResponse>(
+    //   this.url(VirtwooAuthProvider.Google),
+    //   access,
+    //   { headers: this.httpHeaders }
+    // ).subscribe(
+    //   (data) => {
+    //     console.log(data);
+    //   }
+    // );
     return this.http.post<VirtwooAuthResponse>(
       this.url(VirtwooAuthProvider.Google),
       access,

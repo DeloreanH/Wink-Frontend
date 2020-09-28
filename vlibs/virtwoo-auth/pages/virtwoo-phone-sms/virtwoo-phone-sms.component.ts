@@ -78,6 +78,7 @@ export class VirtwooPhoneSmsComponent implements OnDestroy {
       )
       .subscribe(
         ({ access_token }) => {
+          console.log('access_token', access_token);
           const queryParams = Object.assign({}, $event, { access_token });
 
           this.slRouterService.push(
