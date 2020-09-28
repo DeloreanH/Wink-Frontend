@@ -129,4 +129,9 @@
     <plugin name="cordova-plugin-device" spec="2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
+    <plugin name="cordova-plugin-googleplus" spec="^7.0.1">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.431905030876-44d13bo8u5e19bkqmomrqgghllg7bsmv"/>
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="604204991836-n0pqda9hi5k320oscqnerblqqb17u0s9.apps.googleusercontent.com"/>
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.1"/>
+    </plugin>
 </widget>
