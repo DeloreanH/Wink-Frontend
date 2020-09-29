@@ -92,6 +92,31 @@ export class UpdateAvatarService {
     );
   }
 
+  async UpdateAvatar64(imageBase64) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!imageBase64) {
+            reject({message: 'No imageBase64'});
+          }
+          const dataForm = new FormData();
+          dataForm.append('avatar', imageBase64, 'avatar.jpg');
+          if (this.networkService.StatusNetwork) {
+            const response: any = await this.http.post(Routes.BASE + Routes.UPLOAD_AVATAR, dataForm).toPromise();
+            this.toastService.Toast(MessagesServices.SAVE_PHOTO);
+            resolve(response);
+          } else {
+            reject({message: 'No network'});
+          }
+        } catch (err) {
+          this.toastService.Toast(MessagesServices.ERROR_PHOTO);
+          console.log('error', err);
+          reject(err);
+        }
+      }
+    );
+  }
+
   private ToBlob(b64Data, contentType = 'image/jpg', sliceSize = 512) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];

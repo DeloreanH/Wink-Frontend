@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../common/models/user.model';
 import { Subscription } from 'rxjs';
@@ -16,12 +16,16 @@ import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 import { Photo } from 'src/app/common/class/photo.class';
 import { LanguageService } from 'src/app/core/services/language.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { ReadFile } from '../../common/function';
 @Component({
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
   styleUrls: ['./basic-data.page.scss'],
 })
 export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
+
+  @ViewChild('inputFile')
+  inputFile: ElementRef<HTMLInputElement>;
 
   avatar: string = Config.AVATAR;
   user: User;
@@ -62,7 +66,7 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.Subscriptions();
     this.RemoveWhiteSpace();
-    this.uploadAvatar =  !!this.Avatar();
+    this.uploadAvatar =  !!this.user?.avatarUrl;
   }
 
   ngAfterViewInit(): void {
@@ -197,29 +201,33 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async SelectImage() {
-    const actionSheet = await this.actionSheetController.create({
-      header: this.translateService.instant('WINK.PROFILE_SETTINGS.SELECT_AVATAR'),
-      buttons: [{
-        text: this.translateService.instant('WINK.BUTTONS.CAMERA'),
-        icon: 'camera',
-        handler:  async () => {
-          this.RequestImage(true);
-        }
-      }, {
-        text: this.translateService.instant('WINK.BUTTONS.GALLERY'),
-        icon: 'image',
-        handler:   () => {
-          this.RequestImage(false);
-        }
-      }, {
-        text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-        }
-      }]
-    });
-    await actionSheet.present();
+    if (this.platform.is('cordova')) {
+      const actionSheet = await this.actionSheetController.create({
+        header: this.translateService.instant('WINK.PROFILE_SETTINGS.SELECT_AVATAR'),
+        buttons: [{
+          text: this.translateService.instant('WINK.BUTTONS.CAMERA'),
+          icon: 'camera',
+          handler:  async () => {
+            this.RequestImage(true);
+          }
+        }, {
+          text: this.translateService.instant('WINK.BUTTONS.GALLERY'),
+          icon: 'image',
+          handler:   () => {
+            this.RequestImage(false);
+          }
+        }, {
+          text: this.translateService.instant('WINK.BUTTONS.CANCEL'),
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+          }
+        }]
+      });
+      await actionSheet.present();
+    } else {
+      this.inputFile.nativeElement.click();
+    }
   }
 
   private async RequestImage(camera: boolean) {
@@ -355,6 +363,20 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   ChangeLanguage(value) {
     this.languageService.ChangeLanguage(value);
     this.changeLanguage = true;
+  }
+
+  changeImageInput($event: Event) {
+    const target = $event.target as HTMLInputElement;
+
+    if (target.files.length > 0) {
+      const file = target.files[0];
+      this.avatarService.UpdateAvatar64(file).then(
+        (img) => {
+          this.userService.UpdateAvatar(img.link as any);
+          this.uploadAvatar = true;
+        }
+      );
+    }
   }
 
 }

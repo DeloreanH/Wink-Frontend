@@ -113,6 +113,12 @@
             alt="Avatar"
             [srcPath]="Avatar()" >
           <ion-skeleton-text *ngIf="loadingAvatar"  animated></ion-skeleton-text>
+          <input
+            class="none"
+            #inputFile
+            type="file"
+            (change)="changeImageInput($event)"
+          />
         </ion-avatar>
       </div>
       <div *ngIf="user.emptyProfile && !uploadAvatar" class="avatar-container" >
