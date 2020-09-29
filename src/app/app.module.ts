@@ -11,7 +11,6 @@ import * as Hammer from 'hammerjs';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { File } from '@ionic-native/file/ngx';
 
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
@@ -64,7 +63,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
   providers: [
     // {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig},
-    File,
   ],
   bootstrap: [AppComponent]
 })

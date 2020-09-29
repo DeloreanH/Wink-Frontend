@@ -16,7 +16,6 @@ import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 import { Photo } from 'src/app/common/class/photo.class';
 import { LanguageService } from 'src/app/core/services/language.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { ReadFile } from '../../common/function';
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'basic-data',

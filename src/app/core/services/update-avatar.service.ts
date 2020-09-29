@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   Camera,
-} from '@ionic-native/camera/ngx/';
+} from '@ionic-native/camera/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Routes } from '../../common/enums/routes/routes.enum';
-import { Platform, ActionSheetController } from '@ionic/angular';
 import { ToastService } from './toast.service';
 import { MessagesServices } from 'src/app/common/enums/messagesServices.enum';
 import { NetworkService } from './network.service';
