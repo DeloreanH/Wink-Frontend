@@ -45,6 +45,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   private sub$ = new Subscription();
 
   public focusInput: boolean;
+  valueRadio: string;
 
   constructor(
     private ngZone: NgZone,
@@ -170,7 +171,8 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public get description(): string {
-    return this.option('description');
+    const description = this.option('description');
+    return description !== 'WINK.STATUS.BUSY' && description !== 'WINK.STATUS.AVAILABLE' ? 'input' : description;
   }
 
   public get buttons() {

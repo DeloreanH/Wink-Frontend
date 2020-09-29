@@ -51,11 +51,11 @@ export class VirtwooAuthGoogleService {
         if (this.isGooglePlugin) {
           this.googleLogin().pipe(
             map(response => {
-              console.log('response', response);
+              console.log('response launch', response);
               return {
-                access_token: response.accessToken,
+                access_token: response.idToken,
                 access_audience: this.webClientId(),
-                platform: authConfig
+                // platform: authConfig
               };
             })
           ).subscribe(
@@ -74,29 +74,6 @@ export class VirtwooAuthGoogleService {
             );
             }
           );
-          // concat(
-          //   this.googleLogin().pipe(
-          //     map(response => {
-          //       console.log('response', response);
-          //       return {
-          //         access_token: response.accessToken,
-          //         access_audience: this.webClientId()
-          //       };
-          //     })
-          //   ),
-          //   this.virtwooAuthServerService.loginGoogle
-          // )
-          // .pipe(finalize(() => observer.complete() ))
-          // .subscribe(
-          //   (response) => {
-          //     console.log('response', response);
-          //     observer.next(response);
-          //   },
-          //   (error) => {
-          //     console.log('error', error);
-          //     observer.error(error);
-          //   }
-          // );
         }
       } catch (error) {
         observer.error(error);
@@ -125,28 +102,18 @@ export class VirtwooAuthGoogleService {
   }
 
   private webClientId(): string {
-    console.log('this.config', this.config);
     return this.platform.ANDROID
-    ? '604204991836-n0pqda9hi5k320oscqnerblqqb17u0s9.apps.googleusercontent.com'
-    : this.config.google.iosWebClientId;
+    ? '604204991836-erv6no982pa879cvsd6cce8hg9n3c0c9.apps.googleusercontent.com'
+    : '604204991836-hnipnqfv91srhfk6fg09dijt1idt0g75.apps.googleusercontent.com';
   }
 
-  private googleLogin2() {
-    // const webClientId = this.platform.is('android')
-    //   ? this.options.webClientId.android
-    //   : this.options.webClientId.ios;
-
-    // return ObservableFrom(
-    //   this.google.login({ webClientId }) as Promise<GoogleResponse>
-    // );
-  }
 
   private googleLogin(): Observable<GoogleResponse> {
     return new Observable<GoogleResponse>(observer => {
+      const webId = this.webClientId();
       (window as any).plugins.googleplus.login(
-        { webClientId: this.webClientId() },
+        { webClientId:  webId, offline: true },
         async (response: GoogleResponse) => {
-          console.log('response', response);
           observer.next(response);
           observer.complete();
         },
