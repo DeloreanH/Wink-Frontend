@@ -24,15 +24,21 @@ import { NoWhiteSpace } from 'src/app/common/validators/noWhitespace.validator';
 import { MessageErrorForms } from 'src/app/common/enums/messageError.enum';
 import { Photo } from 'src/app/common/class/photo.class';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'profile-settings',
   templateUrl: './profile-settings.page.html',
   styleUrls: ['./profile-settings.page.scss'],
 })
 export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('pp', {static: false}) publicPanel: MatExpansionPanel;
+  @ViewChild('pp') publicPanel: MatExpansionPanel;
+  @ViewChild('pg') generalPanel: MatExpansionPanel;
+  @ViewChild('pper') personalPanel: MatExpansionPanel;
+  @ViewChild('ppro') professionalPanel: MatExpansionPanel;
+  panels: MatExpansionPanel[] = [];
   avatar: string = Config.AVATAR;
   order = true;
 
@@ -90,6 +96,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     private platform: Platform,
     private avatarService: UpdateAvatarService,
     public loaderService: LoaderService,
+    private toastService: ToastService,
     ) {
     this.user = this.userService.User();
     this.sections = this.profilesServices.sections;
@@ -186,6 +193,15 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
+  }
+
+  private managePanel() {
+    this.panels = [
+      this.publicPanel,
+      this.generalPanel,
+      this.personalPanel,
+      this.professionalPanel
+    ];
   }
 
   ngAfterViewInit(): void {
@@ -325,6 +341,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async SelectSection() {
+    this.managePanel();
     const actionSheet = await this.actionSheetController.create({
       header: this.translateService.instant('WINK.PROFILE_SETTINGS.OPTIONS.SECTION'),
       buttons: [
@@ -355,7 +372,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     await actionSheet.present();
   }
 
-  LoadCategories(): [] {
+  private LoadCategories(): [] {
     const obj: any = [];
     if (this.categories.length === 0) {
       this.categories = this.profilesServices.categories;
@@ -366,6 +383,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
           text: this.translateService.instant(categoria.description),
           handler: () => {
             this.item.category = categoria.name;
+            this.manageOpenPanel(Object.assign({}, this.item ));
             this.AddItem(this.item, true);
           }
         });
@@ -374,7 +392,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
     return obj;
   }
 
-  LoadSection() {
+  private LoadSection() {
     const obj: any = [];
     for (const seccion of this.sections) {
       obj.push({
@@ -386,6 +404,19 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       });
     }
     return obj;
+  }
+
+
+  private manageOpenPanel(item: Item) {
+    if (!item) {
+      return;
+    }
+    this.sections.forEach(
+      (section) => {
+        this.panels[section.key].close();
+      }
+    );
+    this.panels[item.section.key].open();
   }
 
   get publicoForm() {
@@ -416,10 +447,20 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
       }).subscribe(
         async (resp: any) => {
           if (resp && resp.value) {
-            this.authService.Logout();
-            if (await this.menuController.isOpen('menuSettings')) {
-              this.menuController.close('menuSettings');
-            }
+            this.loaderService.Show();
+            this.authService.Logout().then(
+              async () => {
+                if (await this.menuController.isOpen('menuSettings')) {
+                  this.menuController.close('menuSettings');
+                }
+              }
+            )
+            .catch(() => this.toastService.error('SOMETHING'))
+            .finally(
+              () => setTimeout(() => {
+                this.loaderService.Close();
+              }, 5000)
+            );
           }
         }
       );
@@ -465,19 +506,9 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
 
   Avatar() {
     return this.photo.URLAvatar(this.user);
-    // if (this.user && this.user.avatarUrl) {
-    //   if (this.user.avatarUrl.startsWith('http')) {
-    //     return this.user.avatarUrl;
-    //   } else {
-    //     return Routes.PHOTO + this.user.avatarUrl;
-    //   }
-    // } else {
-    //   return this.avatar;
-    // }
   }
 
   ionViewWillEnter() {
-    // this.loaderService.Close();
     this.CloseMenu();
     this.backButtonSubs = this.platform.backButton.subscribe(
       (resp) => {
