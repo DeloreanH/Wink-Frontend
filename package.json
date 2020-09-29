@@ -80,6 +80,7 @@
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-badge": "^0.8.8",
+    "cordova-plugin-camera": "^5.0.0",
     "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "^4.0.2",
@@ -137,8 +138,7 @@
       },
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.604204991836-hnipnqfv91srhfk6fg09dijt1idt0g75",
-        "WEB_APPLICATION_CLIENT_ID": "604204991836-erv6no982pa879cvsd6cce8hg9n3c0c9.apps.googleusercontent.com",
-        "PLAY_SERVICES_VERSION": "15.0.1"
+        "WEB_APPLICATION_CLIENT_ID": "604204991836-erv6no982pa879cvsd6cce8hg9n3c0c9.apps.googleusercontent.com"
       },
       "cordova-plugin-androidx": {},
       "cordova-plugin-androidx-adapter": {},
