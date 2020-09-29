@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../common/models/user.model';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/services/auth.service';
-import { ActionSheetController, MenuController, NavController, Platform } from '@ionic/angular';
+import { ActionSheetController, NavController, Platform } from '@ionic/angular';
 import { UpdateAvatarService } from '../../core/services/update-avatar.service';
 import { RoutesAPP } from 'src/app/common/enums/routes/routesApp.enum';
 import { Config } from 'src/app/common/enums/config.enum';
@@ -62,6 +62,7 @@ export class BasicDataPage implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.Subscriptions();
     this.RemoveWhiteSpace();
+    this.uploadAvatar =  !!this.Avatar();
   }
 
   ngAfterViewInit(): void {

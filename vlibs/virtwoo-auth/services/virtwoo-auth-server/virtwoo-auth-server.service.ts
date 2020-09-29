@@ -39,7 +39,7 @@ export interface VirtwooAuthResponse {
 export interface UserCredentials {
   username?: string;
   email?: string;
-  password?: string
+  password?: string;
 }
 
 

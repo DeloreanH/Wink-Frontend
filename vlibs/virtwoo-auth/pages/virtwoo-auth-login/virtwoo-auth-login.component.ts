@@ -14,6 +14,7 @@ import { VirtwooAuthPathName } from '../../virtwoo-auth-config.data';
 import { LanguageService, Language } from 'src/app/core/services/language.service';
 import { Platform } from '@ionic/angular';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'mp-virtwoo-auth-login',
   templateUrl: './virtwoo-auth-login.component.html',
@@ -48,10 +49,14 @@ export class VirtwooAuthLoginComponent implements OnDestroy {
   public submitted(event: any): void {
     this.loaderService.Show();
     this.virtwooAuthServerService.serverAppLogin(event)
+      .pipe(finalize( () => this.loaderService.Close()))
       .subscribe(response => {
         console.log(response);
+      }, (error) => {
+        console.log(error);
       });
   }
+
   ionViewWillEnter() {
     this.countExit = 0;
     this.backButtonSub = this.platform.backButton.subscribe(

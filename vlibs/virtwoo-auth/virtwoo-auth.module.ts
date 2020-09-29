@@ -47,6 +47,7 @@ import {
 } from './components';
 import { IonicModule } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 const DECLARATIONS = [
   VirtwooAuthLoginComponent,
@@ -87,7 +88,8 @@ const IMPORT_MATERIAL = [
   exports: [
     ...IMPORT_MATERIAL,
     ...DECLARATIONS
-  ]
+  ],
+  providers: [GooglePlus]
 })
 export class VirtwooAuthModule {
   static forRoot(config: VirtwooAuthConfig): ModuleWithProviders<any> {

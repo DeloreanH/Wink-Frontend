@@ -2,11 +2,10 @@ import { Routes } from '../app/common/enums/routes/routes.enum';
 import { RoutesPrincipal } from '../app/common/enums/routes/routesPrincipal.enum';
 
 export const WebClientId = {
-  android: '604204991836-n0pqda9hi5k320oscqnerblqqb17u0s9.apps.googleusercontent.com',
-  ios: 'com.googleusercontent.apps.431905030876-44d13bo8u5e19bkqmomrqgghllg7bsmv',
+  android: '604204991836-erv6no982pa879cvsd6cce8hg9n3c0c9.apps.googleusercontent.com',
+  ios: 'com.googleusercontent.apps.604204991836-hnipnqfv91srhfk6fg09dijt1idt0g75',
 };
 
-// 
 
 export const authConfig = {
   accesssId: '5f70dab440bf746c476ea7dc',

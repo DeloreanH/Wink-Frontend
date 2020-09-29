@@ -66,6 +66,7 @@ export class VirtwooAuthSocialComponent {
   }
 
   private google(): void {
+    
     this.virtwooAuthGoogleService.launch()
       .subscribe(
         (response) => {

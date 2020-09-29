@@ -2,12 +2,12 @@ import {
   Injectable,
   Inject
 } from '@angular/core';
-import { Platform } from '@angular/cdk/platform';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   Observable,
   concat,
-  BehaviorSubject
+  BehaviorSubject,
+  from as ObservableFrom,
 } from 'rxjs';
 import {
   finalize,
@@ -18,7 +18,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { VIRTWOO_AUTH_CONFIG } from '../../virtwoo-auth-config.data';
 import { VirtwooAuthConfig } from '../../virtwoo-auth-config';
 import { VirtwooAuthServerService } from '../virtwoo-auth-server';
-import { authConfig } from '../../../../src/environments/auth.config';
+import { WebClientId } from '../../../../src/environments/auth.config';
+import { LoaderService } from '../../../../src/app/core/services/loader.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Platform } from '@ionic/angular';
 
 interface GoogleResponse {
   accessToken?: string;
@@ -42,7 +45,9 @@ export class VirtwooAuthGoogleService {
     private matSnackBar: MatSnackBar,
     private translateService: TranslateService,
     private virtwooAuthServerService: VirtwooAuthServerService,
-    private platform: Platform
+    private loaderService: LoaderService,
+    private google: GooglePlus,
+    private platform: Platform,
   ) { }
 
   public launch(): Observable<any> {
@@ -60,18 +65,24 @@ export class VirtwooAuthGoogleService {
             })
           ).subscribe(
             (response) => {
-            this.virtwooAuthServerService.loginGoogle(response)
-            .pipe(finalize(() => observer.complete() ))
-            .subscribe(
-              (data) => {
-                console.log('data', data);
-                observer.next(data);
-              },
-              (error) => {
-                console.log('error', error);
-                observer.error(error);
-              }
-            );
+              this.loaderService.Show();
+              this.virtwooAuthServerService.loginGoogle(response)
+              .pipe(finalize(() => {
+                observer.complete();
+                this.loaderService.Close();
+              } ))
+              .subscribe(
+                (data) => {
+                  console.log('data', data);
+                  observer.next(data);
+                },
+                (error) => {
+                  console.log('error', error);
+                  observer.error(error);
+                }
+              );
+            }, (error) => {
+              console.log(error);
             }
           );
         }
@@ -102,27 +113,34 @@ export class VirtwooAuthGoogleService {
   }
 
   private webClientId(): string {
-    return this.platform.ANDROID
-    ? '604204991836-erv6no982pa879cvsd6cce8hg9n3c0c9.apps.googleusercontent.com'
-    : '604204991836-hnipnqfv91srhfk6fg09dijt1idt0g75.apps.googleusercontent.com';
+    return this.platform.is('android')
+            ? WebClientId.android
+            : WebClientId.ios;
   }
 
 
-  private googleLogin(): Observable<GoogleResponse> {
-    return new Observable<GoogleResponse>(observer => {
-      const webId = this.webClientId();
-      (window as any).plugins.googleplus.login(
-        { webClientId:  webId, offline: true },
-        async (response: GoogleResponse) => {
-          observer.next(response);
-          observer.complete();
-        },
-        (error: any) => {
-          observer.error(error);
-          observer.complete();
-        }
-      );
-    });
+  // private googleLogin(): Observable<GoogleResponse> {
+  //   return new Observable<GoogleResponse>(observer => {
+  //     const webId = this.webClientId();
+  //     (window as any).plugins.googleplus.login(
+  //       { webClientId:  webId, offline: true },
+  //       async (response: GoogleResponse) => {
+  //         observer.next(response);
+  //         observer.complete();
+  //       },
+  //       (error: any) => {
+  //         observer.error(error);
+  //         observer.complete();
+  //       }
+  //     );
+  //   });
+  // }
+
+  private googleLogin() {
+    const webClientId = this.webClientId();
+    return ObservableFrom(
+      this.google.login({ webClientId }) as Promise<GoogleResponse>
+    );
   }
 
 }
