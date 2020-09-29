@@ -184,9 +184,14 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public get description(): string {
-    let description = this.option('description');
+    const description = this.option('description');
     if (this.isPromptStatus) {
-      description = description !== 'WINK.STATUS.BUSY' && description !== 'WINK.STATUS.AVAILABLE' ? 'input' : description;
+      this.valueRadio =
+        (description !== 'WINK.STATUS.BUSY' &&
+          description !== 'WINK.STATUS.AVAILABLE') ||
+        this.focusInput
+          ? 'input'
+          : description;
     }
     return description.toString();
   }
