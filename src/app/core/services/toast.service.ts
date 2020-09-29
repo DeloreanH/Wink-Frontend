@@ -43,4 +43,17 @@ export class ToastService {
       toast.present();
   }
 
+  async show(messageText: string, position: PositionToast = PositionToast.TOP, duration = 3000) {
+    if (await this.toastController.getTop()) {
+      this.toastController.dismiss();
+    }
+    const toast = await this.toastController.create({
+      header: null,
+      message: this.translateService.instant(messageText),
+      position,
+      duration,
+    });
+    toast.present();
+  }
+
 }
