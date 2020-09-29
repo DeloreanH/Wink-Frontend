@@ -18,6 +18,7 @@ import { LanguageService } from 'src/app/core/services/language.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { ReadFile } from '../../common/function';
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'basic-data',
   templateUrl: './basic-data.page.html',
   styleUrls: ['./basic-data.page.scss'],

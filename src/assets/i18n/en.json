@@ -328,6 +328,16 @@
       "TITLE": "Language",
       "ENGLISH": "English",
       "SPANISH": "Spanish"
+    },
+    "CHANGE_PROFILE": {
+      "PERSONAL": {
+        "ACTIVE": "Visible personal profile",
+        "INACTIVE": "Hidden personal profile"
+      },
+      "PROFESSIONAL": {
+        "ACTIVE": "Visible professional profile",
+        "INACTIVE": "Hidden professional profile"
+      }
     }
   }
 }

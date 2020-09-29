@@ -333,6 +333,16 @@
       "TITLE": "Idioma",
       "ENGLISH": "Inglés",
       "SPANISH": "Español"
+    },
+    "CHANGE_PROFILE": {
+      "PERSONAL": {
+        "ACTIVE": "Perfil personal visible",
+        "INACTIVE": "Perfil personal oculto"
+      },
+      "PROFESSIONAL": {
+        "ACTIVE": "Perfil profesional visible",
+        "INACTIVE": "Perfil profesional oculto"
+      }
     }
   }
 }

@@ -17,6 +17,7 @@ import { Buttons } from '../../common/enums/buttons.enum';
 import { LoaderService } from '../../core/services/loader.service';
 import { BackgroundService } from 'src/app/core/services/background.service';
 import { LocalNotificationsService } from 'src/app/core/services/local-notifications.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -68,6 +69,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     public loaderService: LoaderService,
     private backgroundService: BackgroundService,
     private localNotificationsServices: LocalNotificationsService,
+    private toastService: ToastService,
   ) {
     this.user = this.userService.User();
     for (let i = 0; i < 15; i++) {
@@ -81,9 +83,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       (value: any) => {
         if (Array.isArray(this.originNearbyUsers)) {
           if (value instanceof NavigationStart) {
-            // if (value.url.split('/')[2] === RoutesAPP.CONFIGURAR_PERFIL /*|| value.url.split('/')[2] === RoutesAPP.WINKS*/) {
-            //   this.loaderService.Show();
-            // }
             if (value.url.split('/')[2] === RoutesAPP.HOME ) {
               if (this.originNearbyUsers.length === 0) {
                 this.GPS();
@@ -223,6 +222,22 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  showToastProfessional() {
+    if (this.professional) {
+      this.toastService.show('WINK.CHANGE_PROFILE.PROFESSIONAL.ACTIVE');
+    } else {
+      this.toastService.show('WINK.CHANGE_PROFILE.PROFESSIONAL.INACTIVE');
+    }
+  }
+
+  showToastPersonal() {
+    if (this.personal) {
+      this.toastService.show('WINK.CHANGE_PROFILE.PERSONAL.ACTIVE');
+    } else {
+      this.toastService.show('WINK.CHANGE_PROFILE.PERSONAL.INACTIVE');
+    }
+  }
+
   async ChangeProfiles(profile: string) {
     try {
       this.ChangeExit();
@@ -246,6 +261,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
               this.personal = false;
               break;
           }
+          this.showToastPersonal();
         } else {
           switch (this.user.visibility) {
             case VisibilityOption.GENERAL:
@@ -265,6 +281,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
               this.professional = false;
               break;
           }
+          this.showToastProfessional();
         }
         await this.userService.UpdateProfiles(this.user.visibility);
       }
