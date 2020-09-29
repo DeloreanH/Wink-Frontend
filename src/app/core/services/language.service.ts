@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { TranslateService } from '@ngx-translate/core';
 import { languageStorage } from 'src/app/common/constants/storage.constants';
-import { Globalization } from '@ionic-native/globalization/ngx';
+import * as moment from 'moment';
 
 export enum Language {
   ES = 'es',
@@ -23,21 +23,15 @@ export class LanguageService {
   constructor(
     private storageService: StorageService,
     private translateService: TranslateService,
-    // tslint:disable-next-line: deprecation
-    private globalization: Globalization,
   ) { }
 
   async Init() {
     this.lang = this.storageService.apiLanguage;
+    console.log(this.lang);
     if (this.lang) {
       this.DefaultLanguage(this.lang);
     } else {
-      const preLang = await this.globalization.getPreferredLanguage();
-      if (preLang && preLang.value) {
-        this.DefaultLanguage(preLang.value.split('-')[0]);
-      } else {
-        this.DefaultLanguage(Language.EN);
-      }
+      this.DefaultLanguage(Language.EN);
     }
   }
 
@@ -45,19 +39,15 @@ export class LanguageService {
     if (!lang) {
       return;
     }
-    if (lang === 'es') {
-      this.translateService.setDefaultLang('en');
-      this.ChangeLanguage(Language.ES);
-    } else {
-      this.translateService.setDefaultLang('es');
-      this.ChangeLanguage(Language.EN);
-    }
+    this.translateService.setDefaultLang(lang);
+    this.ChangeLanguage(lang as Language);
   }
 
   ChangeLanguage(lang: Language) {
     try {
-      this.translateService.use(lang);
+      this.translateService.use(lang).subscribe();
       StorageService.SetItem(languageStorage, lang);
+      moment.locale(Language.EN);
       this.lang = lang;
     } catch (err) {
       console.log('ChangeLanguage Error', err);
@@ -65,6 +55,6 @@ export class LanguageService {
   }
 
   public get language() {
-    return this.lang;
+    return this.translateService.defaultLang;
   }
 }

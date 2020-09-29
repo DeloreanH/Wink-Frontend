@@ -143,4 +143,11 @@ export class VirtwooAuthGoogleService {
     );
   }
 
+  googleLogout() {
+    const webClientId = this.webClientId();
+    return ObservableFrom(
+      this.google.logout()
+    );
+  }
+
 }

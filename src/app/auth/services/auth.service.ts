@@ -13,6 +13,7 @@ import { SocketService } from 'src/app/core/services/socket.service';
 import { WinkService } from 'src/app/core/services/wink.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { UserData } from 'src/app/common/interfaces/userData.interfaces';
+import { VirtwooAuthGoogleService } from '../../../../vlibs/virtwoo-auth/services';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,7 @@ export class AuthService {
     private socketService: SocketService,
     private winkService: WinkService,
     private storageService: StorageService,
+    private virtwooAuthGoogleService: VirtwooAuthGoogleService,
   ) {
    }
 
@@ -73,6 +75,7 @@ export class AuthService {
       if (this.tokenExpiration) {
         clearTimeout(this.tokenExpiration);
       }
+      this.virtwooAuthGoogleService.googleLogout().subscribe();
       this.tokenExpiration = null;
     // }
     } catch (error) {

@@ -93,6 +93,7 @@ export class WinkService {
             reject({message: 'No Location'});
           }
         } catch (err) {
+          console.log(err);
           this.SetNearbyUsers((StorageService.GetItem(nearbyStorage, true) as User[]));
           this.toastService.Toast(MessagesServices.TRY_AGAIN_LATER);
           reject(err);
@@ -786,7 +787,6 @@ export class WinkService {
     } else {
       this.usersLocal.push(user);
     }
-    
   }
 
   GetUserLocal(idUser: string) {

@@ -19,7 +19,6 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { Globalization } from '@ionic-native/globalization/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
@@ -72,7 +71,6 @@ import { LocalNotificationsService } from './services/local-notifications.servic
     LocationAccuracy,
     Diagnostic,
     Contacts,
-    Globalization,
     Keyboard,
     Network,
     ScreenOrientation,

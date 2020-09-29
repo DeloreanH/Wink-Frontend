@@ -49,10 +49,8 @@ export class NetworkService {
     private NetworkDownMessage() {
       this.getNetworkStatus().subscribe(
         (status) => {
-          console.log('status', status);
           this.statusNetwork = status;
           const networkLocal = StorageService.GetItem(networkStorage, true);
-          console.log('networkLocal', networkLocal);
           if (!status && networkLocal) {
             this.socketService.Disconnect();
             if (this.platform.is('cordova')) {

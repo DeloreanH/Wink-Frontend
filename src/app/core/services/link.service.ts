@@ -12,7 +12,7 @@ export class LinkService {
   private socialNetworks: SocialNetworkLinks[] = [];
   private mail = 'mailto:';
   private tel = 'tel:';
-  private whatsapp = 'whatsapp://send?phone=';
+  private whatsapp = 'https://wa.me/';
 
   constructor(
     private plataform: Platform,
