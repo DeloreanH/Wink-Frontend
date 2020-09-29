@@ -171,7 +171,6 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
         return null;
       }
       if (ready) {
-        console.log(value);
         return value;
       }
     } else {

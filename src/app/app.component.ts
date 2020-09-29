@@ -9,6 +9,8 @@ import { StorageService } from './core/services/storage.service';
 import { LanguageService, Language } from './core/services/language.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +32,11 @@ export class AppComponent implements OnDestroy {
     private storageService: StorageService,
     private languageService: LanguageService,
     private keyboard: Keyboard,
+    private translateService: TranslateService,
   ) {
+    this.translateService.setDefaultLang(Language.EN);
+    this.translateService.use(Language.EN).subscribe();
+    moment.locale(Language.EN);
     this.initializeApp();
     // window.addEventListener('keyboardDidShow', () => {
     //   document.activeElement.scrollIntoView(false);

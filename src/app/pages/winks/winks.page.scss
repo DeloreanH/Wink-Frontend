@@ -18,3 +18,12 @@
 .hidden {
   display: none !important;
 }
+:host {
+  .empty {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

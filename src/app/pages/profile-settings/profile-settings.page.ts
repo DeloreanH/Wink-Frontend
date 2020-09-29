@@ -459,7 +459,7 @@ export class ProfileSettingsPage implements OnInit, OnDestroy, AfterViewInit {
             .finally(
               () => setTimeout(() => {
                 this.loaderService.Close();
-              }, 5000)
+              }, 500)
             );
           }
         }
