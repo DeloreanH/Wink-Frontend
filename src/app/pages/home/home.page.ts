@@ -80,25 +80,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    // this.router.events.subscribe(
-    //   (value: any) => {
-    //     if (Array.isArray(this.originNearbyUsers)) {
-    //       if (value instanceof NavigationStart) {
-    //         if (value.url.split('/')[2] === RoutesAPP.HOME ) {
-    //           if (this.originNearbyUsers.length === 0) {
-    //             this.GPS();
-    //           }
-    //         }
-    //       } else if (value instanceof NavigationEnd) {
-    //         if (value.url.split('/')[2] === RoutesAPP.HOME ) {
-    //           if (this.originNearbyUsers.length === 0) {
-    //             this.GPS();
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // );
     this.originNearbyUsers = this.winkService.NearbyUsers;
     this.nearbyUsersSubs = this.winkService.nearbyUsersChanged.subscribe(
       (nearbyUsers) => {
@@ -190,12 +171,12 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       } catch (err) {
         console.log('GPS error', err);
       } finally {
-        if (event) {
-          event.target.complete();
-        }
         setTimeout(() => {
+          if (event) {
+            event.target.complete();
+          }
           this.load = false;
-        }, 500);
+        }, 2000);
       }
     }
   }
