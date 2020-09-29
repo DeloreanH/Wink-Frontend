@@ -52,6 +52,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   backButtonSubs = new Subscription();
   exit = 'app';
   countExit = 0;
+  Array = Array;
 
   private goPage = new BehaviorSubject<boolean>(false);
   private goPage$ = this.goPage.asObservable();

@@ -49,7 +49,7 @@
     </ion-refresher>
 
     <ion-list>
-      <ion-grid *ngIf="nearbyUsers.length > 0  && !load" class="grid-home">
+      <ion-grid *ngIf="Array.isArray(nearbyUsers) && nearbyUsers.length > 0  && !load" class="grid-home">
         <ion-row >
           <ion-col
           sizeXs="6"
@@ -88,7 +88,7 @@
         </ion-row>
       </ion-grid>
 
-      <div *ngIf="nearbyUsers.length === 0 && !load" class="empty">
+      <div *ngIf="Array.isArray(nearbyUsers) &&  nearbyUsers.length === 0 && !load" class="empty">
         <p>
           {{'WINK.HOME.NO_NEARBY' | translate}}
         </p>
