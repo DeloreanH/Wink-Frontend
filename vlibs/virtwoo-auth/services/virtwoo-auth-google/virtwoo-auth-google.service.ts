@@ -57,6 +57,13 @@ export class VirtwooAuthGoogleService {
           this.googleLogin().pipe(
             map(response => {
               console.log('response launch', response);
+              if (response && Object.keys(response).length) {
+                Object.keys(response).forEach(
+                  (key) => {
+                    console.log(key, response[key]);
+                  }
+                );
+              }
               return {
                 access_token: response.idToken,
                 access_audience: this.webClientId(),

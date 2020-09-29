@@ -21,7 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./winks.page.scss'],
 })
 export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
-  
+
   @ViewChildren(ItemWinkComponent) itemsWink: QueryList<ItemWinkComponent>;
   @ViewChildren(ItemRequestComponent) itemsRequest: QueryList<ItemRequestComponent>;
   tab: 'record' | 'requests' = 'requests';
@@ -61,13 +61,13 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     private translateService: TranslateService,
   ) {
     this.ValidateTour();
-    this.record = this.winkService.Record;
-    this.requests = this.winkService.Requests;
    }
 
   ngOnInit() {
     this.Subscriptions();
     // this.loaderService.Close();
+    this.record = this.winkService.Record;
+    this.requests = this.winkService.Requests;
   }
 
   private Subscriptions() {
@@ -81,6 +81,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.recordSubscription = this.winkService.recordChanged.subscribe(
       (record: Wink[]) => {
+        console.log(record);
         if (!this.tour) {
           this.record = record;
         }
@@ -88,6 +89,7 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     );
     this.requestsSubscription = this.winkService.requestsChanged.subscribe(
       (requests: Wink[]) => {
+        console.log(requests);
         if (!this.tour) {
           this.requests = requests;
         }
@@ -169,6 +171,8 @@ export class WinksPage implements OnInit, OnDestroy, AfterViewInit {
     this.tab = event.target.value;
     this.removingRecord = false;
     this.removingRequest = false;
+    console.log(this.record);
+    console.log(this.requests);
   }
 
   async Winks(event?) {

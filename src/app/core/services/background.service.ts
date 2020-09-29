@@ -12,7 +12,7 @@ export class BackgroundService {
     private backgroundMode: BackgroundMode,
     private platform: Platform,
     private localNotificationsService: LocalNotificationsService,
-  ) { 
+  ) {
     this.Listen();
   }
 

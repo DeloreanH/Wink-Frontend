@@ -171,6 +171,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (data && data.wink) {
           const wink: Wink = data.wink;
           wink.user = null;
+          console.log(data);
           if (wink.receiver_id === this.user._id) {
             this.newWinks.set(wink._id, wink._id);
             this.Background(wink);
