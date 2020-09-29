@@ -192,8 +192,10 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
         if (event) {
           event.target.complete();
         }
+        setTimeout(() => {
+          this.load = false;
+        }, 500);
       }
-      this.load = false;
     }
   }
 
