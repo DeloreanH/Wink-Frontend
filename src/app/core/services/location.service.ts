@@ -132,7 +132,7 @@ export class LocationService {
       try {
         this.geolocation.getCurrentPosition({
           enableHighAccuracy: true,
-          timeout: 3000,
+          timeout: 10000,
         }).then(
           (geoposition) => {
             resolve(geoposition);
