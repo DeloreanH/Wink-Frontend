@@ -11,22 +11,35 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { AlertType, AlertButtons, maxStatus, AlertInputs, AlertRangeOption } from './base';
+import {
+  AlertType,
+  AlertButtons,
+  maxStatus,
+  AlertInputs,
+  AlertRangeOption,
+} from './base';
 import { Subscription } from 'rxjs';
-import { Platform, IonRadioGroup, IonInput, IonItem, IonCheckbox, IonRange } from '@ionic/angular';
+import {
+  Platform,
+  IonRadioGroup,
+  IonInput,
+  IonItem,
+  IonCheckbox,
+  IonRange,
+} from '@ionic/angular';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.scss'],
 })
 export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
-
-  @ViewChild(IonRadioGroup, {static: false}) groupRadio: IonRadioGroup;
-  @ViewChild(IonInput, {static: false}) custom: IonInput;
+  @ViewChild(IonRadioGroup, { static: false }) groupRadio: IonRadioGroup;
+  @ViewChild(IonInput, { static: false }) custom: IonInput;
   @ViewChildren(IonItem) items: QueryList<HTMLImageElement>; // ElementRef<HTMLImageElement>;
   @ViewChildren(IonCheckbox) checkboxs: QueryList<HTMLImageElement>;
-  @ViewChild(IonRange, {static: false}) range: IonRange;
+  @ViewChild(IonRange, { static: false }) range: IonRange;
   listInputs: any[] = [];
   maxStatus = maxStatus;
   valueRange = 1;
@@ -47,10 +60,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   public focusInput: boolean;
   valueRadio: string;
 
-  constructor(
-    private ngZone: NgZone,
-    private platform: Platform,
-  ) {}
+  constructor(private ngZone: NgZone, private platform: Platform) {}
 
   public ngOnInit(): void {
     this.initBack();
@@ -62,7 +72,6 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // this.elementIonItemRef();
-
   }
 
   public ngOnDestroy(): void {
@@ -106,9 +115,10 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     if (
       this.groupRadio &&
       this.groupRadio.value === 'input' &&
-      this.custom && !this.custom.value
-      ) {
-        select = true;
+      this.custom &&
+      !this.custom.value
+    ) {
+      select = true;
     } else {
       if (this.custom && this.custom.value) {
         if ((this.custom.value as string).trim() === '') {
@@ -121,7 +131,12 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   disabledButton(button: any) {
     let disabled = false;
-    if (button && button.value && this.isPromptStatus && this.SelectRadioInput) {
+    if (
+      button &&
+      button.value &&
+      this.isPromptStatus &&
+      this.SelectRadioInput
+    ) {
       disabled = true;
     }
     return disabled;
@@ -129,7 +144,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   ValueRange(emit: any) {
     if (emit && emit.value) {
-        return this.range.value;
+      return this.range.value;
     }
     return null;
   }
@@ -144,16 +159,14 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
     if (emit && emit.value) {
       this.listInputs.push(...(this.checkboxs as any)._results);
       if (this.listInputs.length > 0) {
-        this.listInputs.forEach(
-          (input: any, index: number) => {
-            if (input.checked) {
-              value.push(input.value);
-            }
-            if (index === (this.listInputs.length - 1)) {
-              ready = true;
-            }
+        this.listInputs.forEach((input: any, index: number) => {
+          if (input.checked) {
+            value.push(input.value);
           }
-        );
+          if (index === this.listInputs.length - 1) {
+            ready = true;
+          }
+        });
       } else {
         return null;
       }
@@ -171,8 +184,11 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public get description(): string {
-    const description = this.option('description');
-    return description !== 'WINK.STATUS.BUSY' && description !== 'WINK.STATUS.AVAILABLE' ? 'input' : description;
+    let description = this.option('description');
+    if (this.isPromptStatus) {
+      description = description !== 'WINK.STATUS.BUSY' && description !== 'WINK.STATUS.AVAILABLE' ? 'input' : description;
+    }
+    return description.toString();
   }
 
   public get buttons() {
@@ -196,9 +212,7 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public option<T>(key: string, DEFAULT = null): T {
-    return this.options && this.options[key]
-      ? this.options[key]
-      : DEFAULT;
+    return this.options && this.options[key] ? this.options[key] : DEFAULT;
   }
 
   public get isConfirm(): boolean {
@@ -218,11 +232,15 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public get isPromptStatus(): boolean {
-    return this.alertType === AlertType.PromptStatus;
+    return !!(this.alertType === AlertType.PromptStatus);
   }
 
   public get isInput(): boolean {
-    return this.description && this.description !== 'WINK.STATUS.BUSY' && this.description !== 'WINK.STATUS.AVAILABLE';
+    return (
+      this.description &&
+      this.description !== 'WINK.STATUS.BUSY' &&
+      this.description !== 'WINK.STATUS.AVAILABLE'
+    );
   }
 
   public get steps(): string[] {
@@ -249,17 +267,14 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
 
   private initBack(): void {
     this.sub$.add(
-      this.platform.backButton
-      .subscribe(
-        (res) => {
-          res.register(200, () => {
-            this.ngZone.run(() => {
-              this.close(null);
-              // TODO: Implementar opciones para  back button
-            });
+      this.platform.backButton.subscribe((res) => {
+        res.register(200, () => {
+          this.ngZone.run(() => {
+            this.close(null);
+            // TODO: Implementar opciones para  back button
           });
-        }
-      )
+        });
+      })
     );
   }
 
@@ -270,6 +285,4 @@ export class AlertComponent implements OnDestroy, OnInit, AfterViewInit {
   Blur(event) {
     this.focusInput = false;
   }
-
 }
-
