@@ -49,51 +49,57 @@
     </ion-refresher>
 
     <ion-list>
-      <ion-grid *ngIf="Array.isArray(nearbyUsers) && nearbyUsers.length > 0  && !load" class="grid-home">
-        <ion-row >
-          <ion-col
-          sizeXs="6"
-          sizeSm="4"
-          sizeMd="3"
-          sizeLg="2.4"
-          sizeXl="2"
-          class="col-home"
-          *ngFor="let user of nearbyUsers">
-            <card
-            (click)="GoPublicProfile(user)"
-            [user]="user"
-            [tour]="tour">
-          </card>
+      <ng-container *ngIf="!load; else sckeleton">
+        <ion-grid *ngIf="Array.isArray(nearbyUsers) && nearbyUsers.length > 0; else empty" class="grid-home">
+          <ion-row >
+            <ion-col
+            sizeXs="6"
+            sizeSm="4"
+            sizeMd="3"
+            sizeLg="2.4"
+            sizeXl="2"
+            class="col-home"
+            *ngFor="let user of nearbyUsers">
+              <card
+              (click)="GoPublicProfile(user)"
+              [user]="user"
+              [tour]="tour">
+            </card>
+            </ion-col>
+          </ion-row>
 
-          </ion-col>
+        </ion-grid>
+        <ng-template #empty>
+          <div *ngIf="Array.isArray(nearbyUsers) &&  nearbyUsers.length === 0" class="empty">
+            <p>
+              {{'WINK.HOME.NO_NEARBY' | translate}}
+            </p>
+            <fa-icon [icon]="['fas', 'user-slash']" class="icono"></fa-icon>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-template #sckeleton>
+        <ion-grid *ngIf="!tour" class="grid-home">
+          <ion-row >
+            <ion-col
+            sizeXs="6"
+            sizeSm="4"
+            sizeMd="3"
+            sizeLg="2.4"
+            sizeXl="2"
+            class="col-home"
+            *ngFor="let item of arrayLoad">
+              <ion-card class="card-list card-skeleton">
+                <ion-skeleton-text animated class="margin-0 card-skeleton-text"></ion-skeleton-text>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
 
-        </ion-row>
 
-      </ion-grid>
 
-      <ion-grid *ngIf="load && !tour" class="grid-home">
-        <ion-row >
-          <ion-col
-          sizeXs="6"
-          sizeSm="4"
-          sizeMd="3"
-          sizeLg="2.4"
-          sizeXl="2"
-          class="col-home"
-          *ngFor="let item of arrayLoad">
-            <ion-card class="card-list card-skeleton">
-              <ion-skeleton-text animated class="margin-0 card-skeleton-text"></ion-skeleton-text>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
 
-      <div *ngIf="Array.isArray(nearbyUsers) &&  nearbyUsers.length === 0 && !load" class="empty">
-        <p>
-          {{'WINK.HOME.NO_NEARBY' | translate}}
-        </p>
-        <fa-icon [icon]="['fas', 'user-slash']" class="icono"></fa-icon>
-      </div>
 
     </ion-list>
 

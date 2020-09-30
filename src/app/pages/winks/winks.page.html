@@ -30,9 +30,6 @@
   </ion-header>
 
   <ion-content class="ion-padding" >
-    
-    
-    
     <ion-refresher slot="fixed" (ionRefresh)="Winks($event)" *ngIf="!tour">
       <ion-refresher-content
         pullingIcon="arrow-dropdown"
@@ -42,48 +39,51 @@
       </ion-refresher-content>
     </ion-refresher>
 
-    
-    <ion-list *ngIf="tab === 'requests'" >
-      <item-request
-        *ngFor="let wink of requests"
-        [wink]="wink"
-        [tour]="tour"
-        [currentRemoving]="removingRequest"
-        (removing)="removingRequest = $event"
-        [remove]="removeRequest"
-        (count)="CountRequest($event)"
-      ></item-request>
+    <ng-container *ngIf="tab === 'requests'; else recordTab">
+      <ion-list *ngIf="requests && requests.length; else emptyRequest">
+        <item-request
+          *ngFor="let wink of requests"
+          [wink]="wink"
+          [tour]="tour"
+          [currentRemoving]="removingRequest"
+          (removing)="removingRequest = $event"
+          [remove]="removeRequest"
+          (count)="CountRequest($event)"
+        ></item-request>
+      </ion-list>
+      <ng-template #emptyRequest>
+        <div class="empty">
+          <p >
+            {{noRequests.toString() | translate}}
+          </p>
+          <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
+        </div>
+      </ng-template>
+    </ng-container>
 
-    </ion-list>
     <div *ngIf="tour" tourAnchor="wink"></div>
-    <ion-list *ngIf="tab === 'record'" >
-      <item-wink
-        *ngFor="let wink of record"
-        [wink]="wink"
-        [tour]="tour"
-        [currentRemoving]="removingRecord"
-        (removing)="removingRecord = $event"
-        [remove]="removeRecord"
-        (count)="CountRecord($event)"
-      ></item-wink>
-    </ion-list>
+    <ng-template #recordTab>
+      <ion-list *ngIf="record && record.length; else emptyRecord">
+        <item-wink
+          *ngFor="let wink of record"
+          [wink]="wink"
+          [tour]="tour"
+          [currentRemoving]="removingRecord"
+          (removing)="removingRecord = $event"
+          [remove]="removeRecord"
+          (count)="CountRecord($event)"
+        ></item-wink>
+      </ion-list>
+      <ng-template #emptyRecord>
+        <div  class="empty">
+          <p >
+            {{noHistorical.toString() | translate}}
+          </p>
+          <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
+        </div>
+      </ng-template>
+    </ng-template>
     <div *ngIf="tour" tourAnchor="delete"></div>
-    <div *ngIf="record.length === 0 && tab === 'record'" class="empty">
-      <p >
-        {{noHistorical.toString() | translate}}
-      </p>
-      <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
-    </div>
-    <div *ngIf="requests.length === 0 && tab === 'requests'" class="empty">
-      <p >
-        {{noRequests.toString() | translate}}
-      </p>
-      <fa-icon [icon]="['far', 'eye-slash']" class="icono"></fa-icon>
-    </div>
-  
-
-
-    
     <ion-fab vertical="bottom" horizontal="center" slot="fixed"  *ngIf="(tab === 'requests' && removingRequest) || (tab === 'record' && removingRecord)">
       <ion-fab-button (click)="Remove()" class="button-del">
         <ion-icon src="/assets/icon/delete.svg" class="contrast-pego"></ion-icon>
