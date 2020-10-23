@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1064844659746",
+    "firebase_url": "https://wink-develop.firebaseio.com",
+    "project_id": "wink-develop",
+    "storage_bucket": "wink-develop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064844659746:android:9e4573a82c617537d6ce7b",
+        "android_client_info": {
+          "package_name": "com.virtwoo.wink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064844659746-l58tfe3edk0kt184kh9jdumlmdfkmabe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzK2Dx2mCjG_MZOTx-iCuau7IqCttykaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064844659746-l58tfe3edk0kt184kh9jdumlmdfkmabe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

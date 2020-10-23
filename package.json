@@ -34,6 +34,7 @@
     "@ionic-native/contacts": "^5.28.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/diagnostic": "^5.28.0",
+    "@ionic-native/fcm": "^5.29.0",
     "@ionic-native/geolocation": "^5.28.0",
     "@ionic-native/google-plus": "^5.28.0",
     "@ionic-native/keyboard": "^5.28.0",
@@ -83,6 +84,7 @@
     "cordova-plugin-camera": "^5.0.0",
     "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-fcm-with-dependecy-updated": "^7.3.1",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googleplus": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
@@ -140,7 +142,8 @@
       },
       "cordova-plugin-androidx": {},
       "cordova-plugin-androidx-adapter": {},
-      "cordova-plugin-camera": {}
+      "cordova-plugin-camera": {},
+      "cordova-plugin-fcm-with-dependecy-updated": {}
     },
     "platforms": [
       "ios",
